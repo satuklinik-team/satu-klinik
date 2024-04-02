@@ -1,3 +1,5 @@
+// import Image from "next/image";
+
 import { CheckBadgeIcon } from "@/components/icons/check-badge";
 import { Badge } from "@/components/ui/badge";
 
@@ -7,7 +9,7 @@ import { SectionContainer } from "./shared/section-container";
 export function Digitalization(): JSX.Element {
   return (
     <div className="w-screen bg-background">
-      <SectionContainer className="pb-[169px]">
+      <SectionContainer className="relative pb-[169px]">
         <Badge className="text-background bg-secondary font-extrabold px-3 py-2 rounded-none hover:bg-secondary">
           DIGITALISASI KLINIK
         </Badge>
@@ -22,11 +24,41 @@ export function Digitalization(): JSX.Element {
                 <p className="text-secondary text-[32px] font-bold">
                   {item.title}
                 </p>
-                <p className="text-secondary text-xl">{item.description}</p>
+                <p className="text-secondary text-xl max-w-[598px]">
+                  {item.description}
+                </p>
               </div>
             </div>
           ))}
         </div>
+        {/* <div className="absolute bottom-0 right-[100px]">
+          <Image
+            alt="Digitalization Preview"
+            className="translate-y-[86px]"
+            height={229.59}
+            src="/home/digitalization-preview.png"
+            width={470}
+          />
+          <Image
+            alt="Curly Arrow"
+            className="translate-x-[240px] translate-y-[114px]"
+            height={130.8}
+            src="/curly-arrow.png"
+            width={46.58}
+          />
+          <Image
+            alt="Digitalization Image"
+            height={269.78}
+            src="/home/digitalization-image.png"
+            width={457.35}
+          />
+          <Image
+            alt="Brand Logo"
+            height={192.44}
+            src="/brand-logo-2.png"
+            width={191.22}
+          />
+        </div> */}
       </SectionContainer>
     </div>
   );
