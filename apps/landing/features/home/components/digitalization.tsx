@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { features } from "../utils";
 import { SectionContainer } from "./shared/section-container";
 
-export function Features(): JSX.Element {
+export function Digitalization(): JSX.Element {
   return (
     <div className="w-screen bg-background">
       <SectionContainer className="pb-[169px]">
