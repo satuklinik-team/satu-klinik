@@ -11,7 +11,10 @@ export function SectionContainer({
 }: SectionContainerProps): JSX.Element {
   return (
     <div
-      className={cn("mx-auto max-w-[96rem] px-[200px] py-[100px]", className)}
+      className={cn(
+        "mx-auto w-full max-w-[96rem] px-[200px] py-[100px]",
+        className,
+      )}
       {...rest}
     >
       {children}
