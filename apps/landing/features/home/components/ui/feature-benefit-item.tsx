@@ -27,26 +27,26 @@ export function FeatureBenefitItem({
   ...rest
 }: FeatureBenefitItemProps) {
   return (
-    <div className={cn("flex flex-row gap-4", className)} {...rest}>
-      {leftIcon}
-      <div>
+    <div className={cn("flex flex-col gap-2", className)} {...rest}>
+      <div className="flex flex-row items-center gap-4">
+        {leftIcon}
         <p
           className={cn(
-            "text-secondary text-[32px] font-bold mb-2",
+            "text-secondary text-2xl sm:text-3xl md:text-3xl lg:text-3xl xl:text-[32px] 2xl:text-[32px] font-bold",
             classNames?.title,
           )}
         >
           {title}
         </p>
-        <p
-          className={cn(
-            "text-secondary text-xl max-w-[598px]",
-            classNames?.description,
-          )}
-        >
-          {description}
-        </p>
       </div>
+      <p
+        className={cn(
+          "text-secondary text-xl max-w-[598px] ps-[56px]",
+          classNames?.description,
+        )}
+      >
+        {description}
+      </p>
     </div>
   );
 }
