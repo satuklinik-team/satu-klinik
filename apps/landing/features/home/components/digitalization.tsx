@@ -1,10 +1,10 @@
 // import Image from "next/image";
 
-import { CheckBadgeIcon } from "@/components/icons/check-badge";
 import { Badge } from "@/components/ui/badge";
 
-import { features } from "../utils";
+import { digitalizations } from "../utils";
 import { SectionContainer } from "./shared/section-container";
+import { FeatureBenefitItem } from "./ui/feature-benefit-item";
 
 export function Digitalization(): JSX.Element {
   return (
@@ -17,18 +17,12 @@ export function Digitalization(): JSX.Element {
           Pelayanan menjadi lebih mudah
         </h2>
         <div className="flex flex-col gap-10">
-          {features.map((item) => (
-            <div className="flex flex-row gap-4" key={item.title}>
-              <CheckBadgeIcon className="fill-secondary" size={40} />
-              <div className="flex flex-col gap-2">
-                <p className="text-secondary text-[32px] font-bold">
-                  {item.title}
-                </p>
-                <p className="text-secondary text-xl max-w-[598px]">
-                  {item.description}
-                </p>
-              </div>
-            </div>
+          {digitalizations.map((item) => (
+            <FeatureBenefitItem
+              description={item.description}
+              key={item.title}
+              title={item.title}
+            />
           ))}
         </div>
         {/* <div className="absolute bottom-0 right-[100px]">

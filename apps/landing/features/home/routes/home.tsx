@@ -1,6 +1,7 @@
 import { ClinicIssues } from "../components/clinic-issues";
 import { Digitalization } from "../components/digitalization";
 import { Hero } from "../components/hero";
+import { Standardization } from "../components/standardization";
 
 export function Home(): JSX.Element {
   return (
@@ -8,6 +9,7 @@ export function Home(): JSX.Element {
       <Hero />
       <ClinicIssues />
       <Digitalization />
+      <Standardization />
     </>
   );
 }
