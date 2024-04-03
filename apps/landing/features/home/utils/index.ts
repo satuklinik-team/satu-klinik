@@ -84,3 +84,26 @@ export const digitalMarketingBenefits = [
       "Pasien dapat dengan mudah menemukan informasi klinik Anda dan lokasinya melalui pencarian online.",
   },
 ];
+
+export const dataSecurityBenefits = [
+  {
+    title: "Keamanan Terjamin",
+    description:
+      "Teknologi SSL, SLA 99,9%, dan enkripsi password unik memberikan lapisan perlindungan yang kokoh.",
+  },
+  {
+    title: "Kepatuhan Regulasi",
+    description:
+      "Dukungan backup data berkala membantu klinik Anda mematuhi standar keamanan data yang berlaku.",
+  },
+  {
+    title: "Kendali Penuh",
+    description:
+      "Kemampuan untuk meminta ekspor data kapan saja memberikan kendali penuh atas informasi klinik Anda.",
+  },
+  {
+    title: "Transparansi Server",
+    description:
+      "Kami memberikan informasi tentang posisi server kami, memberikan kepercayaan tambahan pada keamanan data Anda.",
+  },
+];
