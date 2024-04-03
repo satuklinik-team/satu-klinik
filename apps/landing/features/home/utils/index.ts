@@ -39,7 +39,7 @@ export const digitalizations = [
   },
 ];
 
-export const standardization = [
+export const standardizations = [
   {
     title: "Metadata Terstandarisasi KMK No 1423/2022",
     description:
@@ -64,5 +64,23 @@ export const standardization = [
     title: "Pendampingan Legalitas & Akreditasi Klinik",
     description:
       "Dapatkan bantuan dalam mengurus legalitas dan akreditasi klinik Anda untuk memastikan kepatuhan yang tepat terhadap standar dan peraturan industri.",
+  },
+];
+
+export const digitalMarketingBenefits = [
+  {
+    title: "Online Presence yang Kuat",
+    description:
+      "Memiliki website klinik yang profesional dan terdaftar di Google Maps akan meningkatkan visibilitas klinik Anda di dunia maya.",
+  },
+  {
+    title: "Interaksi dengan Pasien",
+    description:
+      "Sosial media klinik akan memungkinkan interaksi yang lebih dekat dengan pasien, memperkuat hubungan, dan membangun kepercayaan.",
+  },
+  {
+    title: "Meningkatkan Aksesibilitas",
+    description:
+      "Pasien dapat dengan mudah menemukan informasi klinik Anda dan lokasinya melalui pencarian online.",
   },
 ];
