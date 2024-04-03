@@ -5,8 +5,8 @@ import { SectionContainer } from "./shared/section-container";
 export function Hero(): JSX.Element {
   return (
     <div className="w-screen">
-      <SectionContainer className="flex flex-col items-center pt-[120px] sm:pt-[160px] md:pt-[160px] lg:pt-[160px] xl:pt-[180px] 2xl:pt-[180px] pb-[40px] sm:pb-[40px] md:pb-[40px] lg:pb-[40px] xl:pb-[60px] 2xl:pb-[60px]">
-        <h1 className="text-8xl text-center font-extrabold text-secondary">
+      <SectionContainer className="flex flex-col items-center pb-[40px] sm:pb-[40px] md:pb-[40px] lg:pb-[40px] xl:pb-[60px] 2xl:pb-[60px] py-[120px] sm:py-[160px] md:py-[160px] lg:py-[160px] xl:pt-[180px] 2xl:pt-[180px]">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl 2xl:text-8xl text-center font-extrabold text-secondary">
           Klinik Resmi Satu Sehat.
         </h1>
         <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl 2xl:text-8xl text-center font-extrabold text-secondary">
