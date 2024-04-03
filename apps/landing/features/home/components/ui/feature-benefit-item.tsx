@@ -32,7 +32,7 @@ export function FeatureBenefitItem({
         {leftIcon}
         <p
           className={cn(
-            "text-secondary text-[32px] font-bold",
+            "text-secondary text-2xl sm:text-3xl md:text-3xl lg:text-3xl xl:text-[32px] 2xl:text-[32px] font-bold",
             classNames?.title,
           )}
         >
