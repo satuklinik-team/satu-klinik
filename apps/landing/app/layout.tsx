@@ -3,6 +3,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import CreatoDisplay from "next/font/local";
 
+import { Footer } from "@/components/layout/footer";
 import { Navigation } from "@/components/layout/navigation";
 import { cn } from "@/lib/utils";
 
@@ -31,6 +32,7 @@ export default function RootLayout({
       <body className={cn(creatoDisplay.className, "overflow-x-hidden")}>
         <Navigation />
         {children}
+        <Footer />
       </body>
     </html>
   );
