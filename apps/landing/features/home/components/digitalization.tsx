@@ -13,7 +13,7 @@ export function Digitalization(): JSX.Element {
         <Badge className="text-background bg-secondary font-extrabold px-3 py-2 rounded-none hover:bg-secondary">
           DIGITALISASI KLINIK
         </Badge>
-        <h2 className="text-secondary text-4xl sm:text-5xl md:text-5xl lg:text-5xl xl:text-[60px] 2xl:text-[60px] font-extrabold mb-12 mt-5">
+        <h2 className="text-secondary text-4xl sm:text-5xl md:text-5xl lg:text-5xl xl:text-[60px] 2xl:text-[60px] font-extrabold mb-xl mt-md">
           Pelayanan menjadi lebih mudah
         </h2>
         <div className="mb-[320px] sm:mb-[450px] md:mb-[480px] lg:mb-[640px] xl:mb-0 2xl:mb-0">
