@@ -8,8 +8,8 @@ import { Button } from "../ui/button";
 
 export function Navigation(): JSX.Element {
   return (
-    <div className="fixed w-screen bg-background shadow-sm">
-      <SectionContainer className="flex flex-row justify-between items-center py-[26px]">
+    <nav className="fixed w-screen bg-background shadow-sm">
+      <SectionContainer className="flex flex-row justify-between items-center py-[26px] sm:py-[26px] md:py-[26px] lg:py-[26px] xl:py-[26px] 2xl:py-[26px]">
         <Image
           alt="Brand Logo"
           className="w-[253px] h-[44px]"
@@ -42,6 +42,6 @@ export function Navigation(): JSX.Element {
           </DrawerContent>
         </Drawer>
       </SectionContainer>
-    </div>
+    </nav>
   );
 }
