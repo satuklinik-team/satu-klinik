@@ -12,7 +12,7 @@ export function Navigation(): JSX.Element {
       <SectionContainer className="flex flex-row justify-between items-center py-[26px] sm:py-[26px] md:py-[26px] lg:py-[26px] xl:py-[26px] 2xl:py-[26px]">
         <Image
           alt="Brand Logo"
-          className="w-[253px] h-[44px]"
+          className="w-[200px] sm:w-[253px] md:w-[253px] lg:w-[253px] xl:w-[253px] 2xl:w-[253px] h-[34.7px] sm:h-[44px] md:h-[44px] lg:h-[44px] xl:h-[44px] 2xl:h-[44px]"
           height={44}
           src="/brand-logo.png"
           width={253}
