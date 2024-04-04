@@ -3,7 +3,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import CreatoDisplay from "next/font/local";
 
-import { cn } from "@/lib/utils";
+import { Navigation } from "@/components/layout/navigation";
 
 const creatoDisplay = CreatoDisplay({
   src: [
@@ -27,7 +27,8 @@ export default function RootLayout({
 }>): React.JSX.Element {
   return (
     <html lang="en">
-      <body className={cn(creatoDisplay.className, "overflow-x-hidden")}>
+      <body className={creatoDisplay.className}>
+        <Navigation />
         {children}
       </body>
     </html>
