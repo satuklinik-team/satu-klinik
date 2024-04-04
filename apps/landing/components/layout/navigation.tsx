@@ -1,18 +1,7 @@
 import { Menu } from "lucide-react";
 import Image from "next/image";
 
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerOverlay,
-  DrawerPortal,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/components/ui/drawer";
+import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
 import { SectionContainer } from "@/features/home/components/shared/section-container";
 
 import { Button } from "../ui/button";
@@ -39,12 +28,18 @@ export function Navigation(): JSX.Element {
         </Button>
 
         <Drawer direction="right">
-          <DrawerTrigger>
-            <Button className="block xl:hidden 2xl:hidden" variant="ghost">
-              <Menu className="stroke-foreground" size={28} />
-            </Button>
+          <DrawerTrigger className="block xl:hidden 2xl:hidden">
+            <Menu className="stroke-foreground" size={28} />
           </DrawerTrigger>
-          <DrawerContent className="h-full bg-background" />
+          <DrawerContent className="w-screen max-w-[480px] h-full bg-background p-12 rounded-none">
+            <div className="flex flex-col gap-8 mb-10 font-bold">
+              <p className="cursor-pointer">Integrasi Aplikasi</p>
+              <p className="cursor-pointer">Harga</p>
+              <p className="cursor-pointer">Pertanyaan Umum</p>
+              <p className="cursor-pointer">Tentang Kami</p>
+            </div>
+            <Button className="text-black font-bold">Jadwalkan Demo</Button>
+          </DrawerContent>
         </Drawer>
       </SectionContainer>
     </div>
