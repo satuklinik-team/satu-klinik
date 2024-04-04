@@ -18,7 +18,7 @@ export function Hero(): JSX.Element {
           Pengelolaan klinik menjadi lebih mudah dan lancar. SatuKlinik hadir
           untuk menyederhanakan setiap aspek operasional klinik Anda.
         </p>
-        <Button className="px-6 py-md h-min text-black text-2xl font-bold mb-[44px] shadow-[0_-2px_2px_0px_rgba(0, 0, 0, 0.25)_inset]">
+        <Button className="px-6 py-md h-min text-black text-2xl font-bold mb-11 shadow-[0_-2px_2px_0px_rgba(0, 0, 0, 0.25)_inset]">
           Jadwalkan Demo
         </Button>
         <Image
