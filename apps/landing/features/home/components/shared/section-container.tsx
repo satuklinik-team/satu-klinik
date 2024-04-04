@@ -12,7 +12,7 @@ export function SectionContainer({
   return (
     <div
       className={cn(
-        "mx-auto max-w-[96rem] px-[40px] sm:px-[80px] md:px-[120px] lg:px-[160px] xl:px-[200px] 2xl:px-[200px] py-[40px] sm:py-[80px] md:py-[80px] lg:py-[80px] xl:py-[100px] 2xl:py-[100px]",
+        "mx-auto max-w-[96rem] px-lg sm:px-2xl md:px-4xl lg:px-5xl xl:px-6xl 2xl:px-6xl py-lg sm:py-2xl md:py-2xl lg:py-2xl xl:py-3xl 2xl:py-3xl",
         className,
       )}
       {...rest}
