@@ -57,7 +57,7 @@ export function DataSecurity(): JSX.Element {
         </div>
         <Image
           alt="Brand Logo"
-          className="absolute right-0 bottom-0 opacity-40"
+          className="absolute right-0 bottom-0 opacity-40 w-[120px] sm:w-[160px] md:w-[180px] lg:w-[180px] xl:w-[263.13px] 2xl:w-[263.13px] h-[120px] sm:h-[160px] md:h-[180px] lg:h-[180px] xl:h-[263.45px] 2xl:h-[263.45px]"
           height={263.45}
           src="/brand-logo-2.png"
           width={265.13}

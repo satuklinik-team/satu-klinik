@@ -14,7 +14,7 @@ export function DigitalMarketing(): JSX.Element {
         <Badge className="text-secondary bg-background font-extrabold px-3 py-2 rounded-none hover:bg-background">
           DIGITAL MARKETING
         </Badge>
-        <h2 className="text-background text-4xl sm:text-5xl md:text-5xl lg:text-5xl xl:text-[60px] 2xl:text-[60px] font-extrabold my-5">
+        <h2 className="text-background text-4xl sm:text-5xl md:text-5xl lg:text-5xl xl:text-[60px] 2xl:text-[60px] font-extrabold my-md">
           Kami Bantu Digital Marketing
         </h2>
         <div className="flex flex-col sm:flex-col md:flex-col lg:flex-col xl:flex-row 2xl:flex-row justify-between gap-8 sm:gap-12 md:gap-16 lg:gap-16 xl:gap-36 2xl:gap-36">

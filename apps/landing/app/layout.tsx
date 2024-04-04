@@ -17,7 +17,7 @@ const creatoDisplay = CreatoDisplay({
 });
 
 export const metadata: Metadata = {
-  title: "Satu Klinik",
+  title: "Satu Klinik | Klinik Resmi Satu Sehat. Tanpa Ribet.",
   description: "Klinik Resmi Satu Sehat. Tanpa Ribet.",
 };
 
