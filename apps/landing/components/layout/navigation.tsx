@@ -1,5 +1,6 @@
 import { Menu } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
 import { SectionContainer } from "@/features/home/components/shared/section-container";
@@ -17,28 +18,50 @@ export function Navigation(): JSX.Element {
           src="/brand-logo.png"
           width={253}
         />
-        <div className="flex-row items-center gap-10 font-bold hidden xl:flex 2xl:flex">
-          <p className="cursor-pointer">Integrasi Aplikasi</p>
-          <p className="cursor-pointer">Harga</p>
-          <p className="cursor-pointer">Pertanyaan Umum</p>
-          <p className="cursor-pointer">Tentang Kami</p>
-        </div>
-        <Button className="text-black font-bold hidden xl:block 2xl:block">
-          Jadwalkan Demo
-        </Button>
+        <ul className="flex-row items-center gap-10 font-bold hidden xl:flex 2xl:flex">
+          <li className="cursor-pointer">
+            <Link href="">Integrasi Aplikasi</Link>
+          </li>
+          <li className="cursor-pointer">
+            <Link href="">Harga</Link>
+          </li>
+          <li className="cursor-pointer">
+            <Link href="">Pertanyaan Umum</Link>
+          </li>
+          <li className="cursor-pointer">
+            <Link href="">Tentang Kami</Link>
+          </li>
+        </ul>
+        <Link href="">
+          <Button className="text-black font-bold hidden xl:block 2xl:block">
+            Jadwalkan Demo
+          </Button>
+        </Link>
 
         <Drawer direction="right">
           <DrawerTrigger className="block xl:hidden 2xl:hidden">
             <Menu className="stroke-foreground" size={28} />
           </DrawerTrigger>
-          <DrawerContent className="w-screen max-w-[480px] h-full bg-background p-12 rounded-none">
-            <div className="flex flex-col gap-8 mb-10 font-bold">
-              <p className="cursor-pointer">Integrasi Aplikasi</p>
-              <p className="cursor-pointer">Harga</p>
-              <p className="cursor-pointer">Pertanyaan Umum</p>
-              <p className="cursor-pointer">Tentang Kami</p>
-            </div>
-            <Button className="text-black font-bold">Jadwalkan Demo</Button>
+          <DrawerContent className="w-screen max-w-[480px] h-full bg-background p-xl rounded-none">
+            <ul className="flex flex-col gap-8 mb-lg font-bold">
+              <li className="cursor-pointer">
+                <Link href="">Integrasi Aplikasi</Link>
+              </li>
+              <li className="cursor-pointer">
+                <Link href="">Harga</Link>
+              </li>
+              <li className="cursor-pointer">
+                <Link href="">Pertanyaan Umum</Link>
+              </li>
+              <li className="cursor-pointer">
+                <Link href="">Tentang Kami</Link>
+              </li>
+            </ul>
+            <Link className="w-full" href="">
+              <Button className="w-full text-black font-bold">
+                Jadwalkan Demo
+              </Button>
+            </Link>
           </DrawerContent>
         </Drawer>
       </SectionContainer>
