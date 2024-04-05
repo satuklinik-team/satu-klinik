@@ -32,14 +32,14 @@ export function FeatureBenefitItem({
     <div className={cn("flex flex-col gap-2", className)} {...rest}>
       <div className="flex flex-row items-center gap-4">
         {leftIcon}
-        <p
+        <h4
           className={cn(
             "text-secondary text-2xl sm:text-3xl md:text-3xl lg:text-3xl xl:text-type-heading4 2xl:text-type-heading4 font-bold",
             classNames?.title,
           )}
         >
           {title}
-        </p>
+        </h4>
       </div>
       <p
         className={cn(
