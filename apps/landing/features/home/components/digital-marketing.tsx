@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 
 import { CheckBadgeIcon } from "@/components/icons/check-badge";
@@ -14,7 +16,7 @@ export function DigitalMarketing(): JSX.Element {
         <Badge className="text-secondary bg-background font-extrabold px-3 py-2 rounded-none hover:bg-background">
           DIGITAL MARKETING
         </Badge>
-        <h2 className="text-background text-4xl sm:text-5xl md:text-5xl lg:text-5xl xl:text-[60px] 2xl:text-[60px] font-extrabold my-md">
+        <h2 className="text-background text-4xl sm:text-5xl md:text-5xl lg:text-5xl xl:text-6xl 2xl:text-6xl font-extrabold my-md">
           Kami Bantu Digital Marketing
         </h2>
         <div className="flex flex-col sm:flex-col md:flex-col lg:flex-col xl:flex-row 2xl:flex-row justify-between gap-8 sm:gap-12 md:gap-16 lg:gap-16 xl:gap-36 2xl:gap-36">
@@ -56,7 +58,7 @@ export function DigitalMarketing(): JSX.Element {
             />
             <Image
               alt="Circle Map"
-              className="absolute hidden sm:block md:block lg:block xl:block 2xl:block right-[10%] sm:right-[10%] md:right-[10%] lg:right-[10%] xl:right-[10%] 2xl:right-[10%] -bottom-[24px] sm:-bottom-[48px] md:-bottom-[40px] lg:-bottom-[80px] xl:-bottom-[80px] 2xl:-bottom-[80px]"
+              className="absolute hidden sm:block md:block lg:block xl:block 2xl:block right-1/10 -bottom-6 sm:-bottom-12 md:-bottom-10 lg:-bottom-20 xl:-bottom-20 2xl:-bottom-20"
               height={300.38}
               src="/home/circle-map.png"
               width={300.79}
