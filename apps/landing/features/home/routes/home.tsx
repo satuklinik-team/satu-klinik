@@ -6,6 +6,7 @@ import { DataSecurity } from "../components/data-security";
 import { DigitalMarketing } from "../components/digital-marketing";
 import { Digitalization } from "../components/digitalization";
 import { Hero } from "../components/hero";
+import { OperationalReadiness } from "../components/operational-readiness";
 import { Standardization } from "../components/standardization";
 
 export function Home(): JSX.Element {
@@ -18,6 +19,7 @@ export function Home(): JSX.Element {
       <DigitalMarketing />
       <AppFeatures />
       <DataSecurity />
+      <OperationalReadiness />
     </>
   );
 }
