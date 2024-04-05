@@ -67,6 +67,7 @@ const config = {
         },
       },
       spacing: {
+        "1/10": "10%",
         sm: "0.5rem",
         md: "1.25rem",
         "6.5": "1.625rem",
