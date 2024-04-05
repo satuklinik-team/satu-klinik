@@ -1,3 +1,5 @@
+"use client";
+
 import { ClinicIssues } from "../components/clinic-issues";
 import { DigitalMarketing } from "../components/digital-marketing";
 import { Digitalization } from "../components/digitalization";
