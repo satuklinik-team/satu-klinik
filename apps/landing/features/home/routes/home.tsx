@@ -2,6 +2,7 @@
 
 import { AppFeatures } from "../components/app-features";
 import { ClinicIssues } from "../components/clinic-issues";
+import { DataSecurity } from "../components/data-security";
 import { DigitalMarketing } from "../components/digital-marketing";
 import { Digitalization } from "../components/digitalization";
 import { Hero } from "../components/hero";
@@ -16,6 +17,7 @@ export function Home(): JSX.Element {
       <Standardization />
       <DigitalMarketing />
       <AppFeatures />
+      <DataSecurity />
     </>
   );
 }
