@@ -68,6 +68,7 @@ const config = {
       spacing: {
         sm: "0.5rem",
         md: "1.25rem",
+        "6.5": "1.625rem",
         lg: "2.5rem",
         xl: "3rem",
         "2xl": "5rem",
