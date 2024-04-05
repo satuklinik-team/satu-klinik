@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 
 import { CheckBadgeIcon } from "@/components/icons/check-badge";
@@ -22,9 +24,9 @@ export function Digitalization(): JSX.Element {
               <div className="flex flex-row gap-4" key={item.title}>
                 <CheckBadgeIcon className="fill-secondary" size={40} />
                 <div className="flex flex-col gap-2">
-                  <p className="text-secondary text-type-heading4 font-bold">
+                  <h4 className="text-secondary text-type-heading4 font-bold">
                     {item.title}
-                  </p>
+                  </h4>
                   <p className="text-secondary text-xl max-w-[598px]">
                     {item.description}
                   </p>
