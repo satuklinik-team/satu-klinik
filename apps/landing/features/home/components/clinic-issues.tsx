@@ -12,9 +12,9 @@ export function ClinicIssues(): JSX.Element {
           {clinicIssues.map((item) => (
             <div key={item.title}>
               <div className="w-10 h-3 bg-primary rounded-md" />
-              <p className="font-bold text-type-heading4 text-background mb-sm mt-md">
+              <h4 className="font-bold text-type-heading4 text-background mb-sm mt-md">
                 {item.title}
-              </p>
+              </h4>
               <p className="text-xl	text-background">{item.description}</p>
             </div>
           ))}
