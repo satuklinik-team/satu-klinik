@@ -1,0 +1,25 @@
+version: '3.4'
+services:
+  db-satuklinik:
+    container_name: postgres-satuklinik
+    image: postgres
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=${PG_USER}
+      - POSTGRES_PASSWORD=${PG_PASSWORD}
+      - POSTGRES_DB=${PG_DB_NAME}
+    healthcheck:
+      test: 'pg_isready -U "$$PG_USER" -d "$$PG_DB_NAME"'
+      interval: 10s
+      timeout: 2s
+      retries: 10
+    volumes:
+      - ${DATABASE_VOLUME}:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    networks:
+      local:
+
+networks:
+  local:
+    driver: bridge
