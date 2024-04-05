@@ -20,3 +20,21 @@ export const clinicIssues = [
       "Klinik seringkali kesulitan menjangkau target pasar karena keterbatasan dalam strategi promosi dan pemasaran.",
   },
 ];
+
+export const features = [
+  {
+    title: "Digitalisasi Rekam Medis Pasien",
+    description:
+      "Rekam medis pasien tersedia dalam genggaman Anda di SatuKlinik, memungkinkan akses yang cepat dan aman kapan pun diperlukan.",
+  },
+  {
+    title: "Terhubung dengan QRIS & Kelola Stok*",
+    description:
+      "SatuKlinik terhubung langsung dengan sistem pembayaran QRIS, memastikan pengelolaan stok yang efisien dan transaksi yang lancar.",
+  },
+  {
+    title: "Pendaftaran & Antrian yang Mudah",
+    description:
+      "Pasien dapat mendaftar dan mendapatkan nomor antrian secara online, menghemat waktu dan meningkatkan pengalaman layanan.",
+  },
+];

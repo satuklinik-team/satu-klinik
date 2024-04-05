@@ -1,3 +1,5 @@
+"use client";
+
 import { Menu } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -9,8 +11,8 @@ import { Button } from "../ui/button";
 
 export function Navigation(): JSX.Element {
   return (
-    <nav className="fixed w-screen bg-background shadow-sm">
-      <SectionContainer className="flex flex-row justify-between items-center py-[26px] sm:py-[26px] md:py-[26px] lg:py-[26px] xl:py-[26px] 2xl:py-[26px]">
+    <nav className="fixed w-screen bg-background shadow-sm z-50">
+      <SectionContainer className="flex flex-row justify-between items-center py-6.5 sm:py-6.5 md:py-6.5 lg:py-6.5 xl:py-6.5 2xl:py-6.5">
         <Image
           alt="Brand Logo"
           className="w-[200px] sm:w-[253px] md:w-[253px] lg:w-[253px] xl:w-[253px] 2xl:w-[253px] h-[34.7px] sm:h-11 md:h-11 lg:h-11 xl:h-11 2xl:h-11"
