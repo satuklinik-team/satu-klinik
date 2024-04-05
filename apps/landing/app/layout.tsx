@@ -3,6 +3,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import CreatoDisplay from "next/font/local";
 
+import { Footer } from "@/components/layout/footer";
 import { Navigation } from "@/components/layout/navigation";
 
 const creatoDisplay = CreatoDisplay({
@@ -30,6 +31,7 @@ export default function RootLayout({
       <body className={creatoDisplay.className}>
         <Navigation />
         {children}
+        <Footer />
       </body>
     </html>
   );
