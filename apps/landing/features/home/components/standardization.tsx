@@ -12,7 +12,7 @@ export function Standardization(): JSX.Element {
         <Badge className="text-background bg-foreground font-extrabold px-3 py-2 rounded-none hover:bg-secondary">
           STANDARISASI & INTEGRASI
         </Badge>
-        <h2 className="text-foreground text-4xl sm:text-5xl md:text-5xl lg:text-5xl xl:text-[60px] 2xl:text-[60px] font-extrabold mb-xl mt-md">
+        <h2 className="text-foreground text-4xl sm:text-5xl md:text-5xl lg:text-5xl xl:text-6xl 2xl:text-6xl font-extrabold mb-xl mt-md">
           Jadi Bagian RME Satu Sehat Tanpa Ribet
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2 gap-10">
