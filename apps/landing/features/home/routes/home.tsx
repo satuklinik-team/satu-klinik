@@ -1,5 +1,11 @@
+import { ClinicIssues } from "../components/clinic-issues";
 import { Hero } from "../components/hero";
 
 export function Home(): JSX.Element {
-  return <Hero />;
+  return (
+    <>
+      <Hero />
+      <ClinicIssues />
+    </>
+  );
 }
