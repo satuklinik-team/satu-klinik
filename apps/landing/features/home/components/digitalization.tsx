@@ -2,11 +2,11 @@
 
 import Image from "next/image";
 
-import { CheckBadgeIcon } from "@/components/icons/check-badge";
 import { Badge } from "@/components/ui/badge";
 
-import { features } from "../utils";
+import { digitalizations } from "../utils";
 import { SectionContainer } from "./shared/section-container";
+import { FeatureBenefitItem } from "./ui/feature-benefit-item";
 
 export function Digitalization(): JSX.Element {
   return (
@@ -15,23 +15,17 @@ export function Digitalization(): JSX.Element {
         <Badge className="text-background bg-secondary font-extrabold px-3 py-2 rounded-none hover:bg-secondary">
           DIGITALISASI KLINIK
         </Badge>
-        <h2 className="text-secondary text-5xl sm:text-5xl md:text-5xl lg:text-5xl xl:text-6xl 2xl:text-6xl font-extrabold mb-12 mt-5">
+        <h2 className="text-secondary text-4xl sm:text-5xl md:text-5xl lg:text-5xl xl:text-6xl 2xl:text-6xl font-extrabold mb-xl mt-md">
           Pelayanan menjadi lebih mudah
         </h2>
         <div className="mb-[320px] sm:mb-[450px] md:mb-[480px] lg:mb-[640px] xl:mb-0 2xl:mb-0">
           <div className="flex flex-col gap-10">
-            {features.map((item) => (
-              <div className="flex flex-row gap-4" key={item.title}>
-                <CheckBadgeIcon className="fill-secondary" size={40} />
-                <div className="flex flex-col gap-2">
-                  <h4 className="text-secondary text-type-heading4 font-bold">
-                    {item.title}
-                  </h4>
-                  <p className="text-secondary text-xl max-w-[598px]">
-                    {item.description}
-                  </p>
-                </div>
-              </div>
+            {digitalizations.map((item) => (
+              <FeatureBenefitItem
+                description={item.description}
+                key={item.title}
+                title={item.title}
+              />
             ))}
           </div>
           <Image
