@@ -1,5 +1,6 @@
 "use client";
 
+import { AppFeatures } from "../components/app-features";
 import { ClinicIssues } from "../components/clinic-issues";
 import { DigitalMarketing } from "../components/digital-marketing";
 import { Digitalization } from "../components/digitalization";
@@ -14,6 +15,7 @@ export function Home(): JSX.Element {
       <Digitalization />
       <Standardization />
       <DigitalMarketing />
+      <AppFeatures />
     </>
   );
 }
