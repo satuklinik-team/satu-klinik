@@ -3,6 +3,7 @@
 import { AppFeatures } from "../components/app-features";
 import { ClinicIssues } from "../components/clinic-issues";
 import { DataSecurity } from "../components/data-security";
+import { DemoCta } from "../components/demo-cta";
 import { DigitalMarketing } from "../components/digital-marketing";
 import { Digitalization } from "../components/digitalization";
 import { Hero } from "../components/hero";
@@ -20,6 +21,7 @@ export function Home(): JSX.Element {
       <AppFeatures />
       <DataSecurity />
       <OperationalReadiness />
+      <DemoCta />
     </>
   );
 }
