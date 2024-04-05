@@ -1,3 +1,5 @@
+"use client";
+
 import { CheckBadgeIcon } from "@/components/icons/check-badge";
 import { Badge } from "@/components/ui/badge";
 

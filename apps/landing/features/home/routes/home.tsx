@@ -1,3 +1,5 @@
+"use client";
+
 import { ClinicIssues } from "../components/clinic-issues";
 import { Digitalization } from "../components/digitalization";
 import { Hero } from "../components/hero";
