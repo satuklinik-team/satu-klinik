@@ -9,7 +9,7 @@ import { FeatureBenefitItem } from "./ui/feature-benefit-item";
 
 export function Standardization(): JSX.Element {
   return (
-    <div className="w-screen bg-[#EEE8CF]">
+    <div className="w-screen bg-accent-background">
       <SectionContainer className="relative">
         <Badge className="text-background bg-foreground font-extrabold px-3 py-2 rounded-none hover:bg-secondary">
           STANDARISASI & INTEGRASI
@@ -29,7 +29,7 @@ export function Standardization(): JSX.Element {
               leftIcon={
                 <CheckBadgeIcon
                   className="fill-foreground shrink-0"
-                  classNames={{ tick: "fill-[#EEE8CF]" }}
+                  classNames={{ tick: "fill-accent-background" }}
                   size={40}
                 />
               }
