@@ -1,3 +1,5 @@
+"use client";
+
 import { AppFeatures } from "../components/app-features";
 import { ClinicIssues } from "../components/clinic-issues";
 import { DataSecurity } from "../components/data-security";

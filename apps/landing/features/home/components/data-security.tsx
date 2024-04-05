@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 
 import { CheckBadgeIcon } from "@/components/icons/check-badge";
@@ -14,7 +16,7 @@ export function DataSecurity(): JSX.Element {
         <Badge className="text-primary bg-secondary font-extrabold px-3 py-2 rounded-none hover:bg-secondary">
           KEAMANAN DATA
         </Badge>
-        <h2 className="text-secondary text-4xl sm:text-5xl md:text-5xl lg:text-5xl xl:text-[60px] 2xl:text-[60px] font-extrabold mt-5 mb-5 sm:mb-5 md:mb-5 lg:mb-12 xl:mb-12 2xl:mb-12">
+        <h2 className="text-secondary text-4xl sm:text-5xl md:text-5xl lg:text-5xl xl:text-6xl 2xl:text-6xl font-extrabold mt-5 mb-5 sm:mb-5 md:mb-5 lg:mb-12 xl:mb-12 2xl:mb-12">
           Perlindungan Data yang Komprehensif
         </h2>
         <div className="flex flex-col sm:flex-col md:flex-col lg:flex-col xl:flex-row 2xl:flex-row justify-between items-start sm:items-start md:items-start xl:items-center 2xl:items-center gap-8 sm:gap-12 md:gap-16 lg:gap-16 xl:gap-24 2xl:gap-24">
@@ -57,7 +59,7 @@ export function DataSecurity(): JSX.Element {
         </div>
         <Image
           alt="Brand Logo"
-          className="absolute right-0 bottom-0 opacity-40 w-[120px] sm:w-[160px] md:w-[180px] lg:w-[180px] xl:w-[263.13px] 2xl:w-[263.13px] h-[120px] sm:h-[160px] md:h-[180px] lg:h-[180px] xl:h-[263.45px] 2xl:h-[263.45px]"
+          className="absolute right-0 bottom-0 opacity-40 w-[120px] sm:w-40 md:w-[180px] lg:w-[180px] xl:w-[263.13px] 2xl:w-[263.13px] h-[120px] sm:h-40 md:h-[180px] lg:h-[180px] xl:h-[263.45px] 2xl:h-[263.45px]"
           height={263.45}
           src="/brand-logo-2.png"
           width={265.13}
