@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 
@@ -18,9 +19,11 @@ export function DemoCta(): JSX.Element {
             Daftar sekarang dan dapatkan akun Anda, atau jadwalkan demo bersama
             tim kami.
           </p>
-          <Button className="px-6 py-5 h-min w-min text-black text-2xl font-bold mb-11 shadow-[0_-2px_2px_0px_rgba(0, 0, 0, 0.25)_inset]">
-            Jadwalkan Demo
-          </Button>
+          <Link href="">
+            <Button className="px-6 py-5 h-min w-min text-black text-2xl font-bold mb-11 shadow-[0_-2px_2px_0px_rgba(0, 0, 0, 0.25)_inset]">
+              Jadwalkan Demo
+            </Button>
+          </Link>
         </div>
 
         <div className="h-fit">
