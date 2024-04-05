@@ -1,3 +1,5 @@
+"use client";
+
 import { CheckBadgeIcon } from "@/components/icons/check-badge";
 import { cn } from "@/lib/utils";
 import { HTMLAttributes } from "react";
@@ -32,7 +34,7 @@ export function FeatureBenefitItem({
         {leftIcon}
         <p
           className={cn(
-            "text-secondary text-2xl sm:text-3xl md:text-3xl lg:text-3xl xl:text-[32px] 2xl:text-[32px] font-bold",
+            "text-secondary text-2xl sm:text-3xl md:text-3xl lg:text-3xl xl:text-type-heading4 2xl:text-type-heading4 font-bold",
             classNames?.title,
           )}
         >
@@ -41,7 +43,7 @@ export function FeatureBenefitItem({
       </div>
       <p
         className={cn(
-          "text-secondary text-xl max-w-[598px] ps-[56px]",
+          "text-secondary text-xl max-w-[598px] ps-14",
           classNames?.description,
         )}
       >
