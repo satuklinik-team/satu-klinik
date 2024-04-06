@@ -5,7 +5,7 @@ import { Response } from 'express';
 import { JwtPayload } from './types';
 import { LoginDto, RegisterDto } from './dto';
 
-@Controller({ path: 'auth' })
+@Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
@@ -50,8 +50,6 @@ export class AuthController {
       expiresIn: data.token.accessTokenExpiresIn,
     });
   }
-
-  //
 
   @Post('logout')
   @Public()
