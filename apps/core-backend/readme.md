@@ -34,3 +34,9 @@ From feature branch, you should open PR into `development`, after that your code
 - Title: refactor: create clinics improve logic
 - Description:
   ...
+
+silly note:
+
+- `chore` -> `:cactus:`
+- `feat` -> `:cake:`
+- `fix` -> `:wrench:`
