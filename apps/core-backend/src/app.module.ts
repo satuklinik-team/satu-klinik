@@ -9,6 +9,10 @@ import { CryptoModule } from './crypto/crypto.module';
 import { APP_GUARD } from '@nestjs/core';
 import { AccessTokenGuard } from './auth/guards';
 import { UsersModule } from './users/users.module';
+import { SatusehatModule } from './satusehat/satusehat.module';
+import { SatusehatOrganizationModule } from './satusehat-organization/satusehat-organization.module';
+import { ClinicsModule } from './clinics/clinics.module';
+import { SatusehatOauthModule } from './satusehat-oauth/satusehat-oauth.module';
 
 @Module({
   imports: [
@@ -19,6 +23,10 @@ import { UsersModule } from './users/users.module';
     TokenModule,
     CryptoModule,
     UsersModule,
+    SatusehatModule,
+    SatusehatOrganizationModule,
+    ClinicsModule,
+    SatusehatOauthModule,
   ],
   controllers: [],
   providers: [{ provide: APP_GUARD, useClass: AccessTokenGuard }],
