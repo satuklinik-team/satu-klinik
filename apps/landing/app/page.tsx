@@ -1,3 +1,5 @@
-export default function Home(): React.JSX.Element {
-  return <main>Satu Klinik Landing</main>;
+import { Home } from "@/features/home/routes/home";
+
+export default function HomePage(): React.JSX.Element {
+  return <Home />;
 }
