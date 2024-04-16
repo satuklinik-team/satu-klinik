@@ -1,7 +1,9 @@
 import Image from "next/image";
 
 import { Button } from "@/components/ui/button";
+import { redirectToWhatsapp } from "@/utils";
 
+import { BOOK_DEMO_WA_TEXT } from "../utils";
 import { SectionContainer } from "./shared/section-container";
 
 export function Hero(): JSX.Element {
@@ -18,7 +20,12 @@ export function Hero(): JSX.Element {
           Pengelolaan klinik menjadi lebih mudah dan lancar. SatuKlinik hadir
           untuk menyederhanakan setiap aspek operasional klinik Anda.
         </p>
-        <Button className="px-6 py-md h-min text-black text-2xl font-bold mb-11 shadow-[0_-2px_2px_0px_rgba(0, 0, 0, 0.25)_inset]">
+        <Button
+          className="px-6 py-md h-min text-black text-2xl font-bold mb-11 shadow-[0_-2px_2px_0px_rgba(0, 0, 0, 0.25)_inset]"
+          onClick={() => {
+            redirectToWhatsapp(BOOK_DEMO_WA_TEXT);
+          }}
+        >
           Jadwalkan Demo
         </Button>
         <Image

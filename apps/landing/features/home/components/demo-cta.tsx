@@ -4,7 +4,9 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
+import { redirectToWhatsapp } from "@/utils";
 
+import { BOOK_DEMO_WA_TEXT } from "../utils";
 import { SectionContainer } from "./shared/section-container";
 
 export function DemoCta(): JSX.Element {
@@ -20,7 +22,12 @@ export function DemoCta(): JSX.Element {
             tim kami.
           </p>
           <Link href="">
-            <Button className="px-6 py-5 h-min w-min text-black text-2xl font-bold mb-11 shadow-[0_-2px_2px_0px_rgba(0, 0, 0, 0.25)_inset]">
+            <Button
+              className="px-6 py-5 h-min w-min text-black text-2xl font-bold mb-11 shadow-[0_-2px_2px_0px_rgba(0, 0, 0, 0.25)_inset]"
+              onClick={() => {
+                redirectToWhatsapp(BOOK_DEMO_WA_TEXT);
+              }}
+            >
               Jadwalkan Demo
             </Button>
           </Link>
