@@ -14,7 +14,7 @@ export class AuthController {
   async register(@Body() dto: RegisterDto, @Res() res: Response) {
     const data = await this.authService.register(dto);
 
-    return this._addTokens(data, res);
+    return this._setTokens(data, res);
   }
 
   @Post('login')
@@ -22,7 +22,7 @@ export class AuthController {
   async login(@Body() dto: LoginDto, @Res() res: Response) {
     const data = await this.authService.login(dto);
 
-    return this._addTokens(data, res);
+    return this._setTokens(data, res);
   }
 
   @Post('logout')
@@ -39,7 +39,7 @@ export class AuthController {
     return tokenData;
   }
 
-  private async _addTokens(data, res: Response) {
+  private async _setTokens(data, res: Response) {
     res.cookie('__accessToken', data.token.accessToken, {
       maxAge: data.token.accessTokenExpiresIn * 1000,
       httpOnly: true,
