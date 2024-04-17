@@ -9,4 +9,5 @@ export interface LeftBarGroup {
 export interface LeftBarItem {
   icon: LucideIcon;
   text: string;
+  path: string;
 }

@@ -2,6 +2,7 @@
 
 import { Ellipsis } from "lucide-react";
 import Image from "next/image";
+import { useParams, usePathname } from "next/navigation";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -15,6 +16,11 @@ import { LeftBarTitle } from "../ui/left-bar-title";
 
 export function LeftBar(): JSX.Element {
   const { isLeftBarOpen } = useClinicLayoutStore();
+
+  const pathname = usePathname();
+  const { clinicId } = useParams();
+
+  const reducedPathname = pathname.replace(`clinic/${clinicId as string}`, "");
 
   return (
     <div className="flex flex-col justify-between h-screen border-r">
@@ -36,15 +42,24 @@ export function LeftBar(): JSX.Element {
             key={group.id}
           >
             <LeftBarTitle isOpen={isLeftBarOpen}>{group.category}</LeftBarTitle>
-            {group.items.map((item) => (
-              <LeftBarItem
-                icon={item.icon}
-                isActive={false}
-                isOpen={isLeftBarOpen}
-                key={item.text}
-                text={item.text}
-              />
-            ))}
+            {group.items.map((item) => {
+              let isActive;
+
+              if (item.path !== "/")
+                isActive = reducedPathname.includes(item.path);
+
+              if (item.path === "/") isActive = item.path === reducedPathname;
+
+              return (
+                <LeftBarItem
+                  isActive={isActive}
+                  isOpen={isLeftBarOpen}
+                  key={item.text}
+                  {...item}
+                  path={`${pathname}${item.path}`}
+                />
+              );
+            })}
           </LeftBarGroup>
         ))}
       </div>
