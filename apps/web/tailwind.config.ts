@@ -1,11 +1,12 @@
-/** @type {import('tailwindcss').Config} */
-module.exports = {
+import type { Config } from "tailwindcss";
+
+const config = {
   darkMode: ["class"],
   content: [
     "./pages/**/*.{ts,tsx}",
+    "./features/**/*.{ts,tsx}",
     "./components/**/*.{ts,tsx}",
     "./app/**/*.{ts,tsx}",
-    "./src/**/*.{ts,tsx}",
   ],
   prefix: "",
   theme: {
@@ -17,6 +18,18 @@ module.exports = {
       },
     },
     extend: {
+      fontSize: {
+        "type-display": ["4rem", "4.5rem"],
+        "type-heading1": ["3.5rem", "4rem"],
+        "type-heading2": ["3rem", "3.5rem"],
+        "type-heading3": ["2.5rem", "3rem"],
+        "type-heading4": ["2rem", "2.5rem"],
+        "type-heading5": ["1.5rem", "2rem"],
+        "type-heading6": ["1.25rem", "1.75rem"],
+        "type-paragraph": ["1rem", "1.5rem"],
+        "type-label": ["0.875rem", "1.375rem"],
+        "type-tiny": ["0.75rem", "1.25rem"],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -42,6 +55,7 @@ module.exports = {
         accent: {
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
+          background: "hsl(var(--accent-background))",
         },
         popover: {
           DEFAULT: "hsl(var(--popover))",
@@ -51,6 +65,19 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+      },
+      spacing: {
+        "1/10": "10%",
+        sm: "0.5rem",
+        md: "1.25rem",
+        "6.5": "1.625rem",
+        lg: "2.5rem",
+        xl: "3rem",
+        "2xl": "5rem",
+        "3xl": "6.25rem",
+        "4xl": "7.5rem",
+        "5xl": "10rem",
+        "6xl": "12.5rem",
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -74,4 +101,6 @@ module.exports = {
     },
   },
   plugins: [require("tailwindcss-animate")],
-};
+} satisfies Config;
+
+export default config;
