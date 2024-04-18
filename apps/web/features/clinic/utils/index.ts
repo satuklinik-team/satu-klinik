@@ -10,7 +10,7 @@ import {
   Users,
 } from "lucide-react";
 
-import type { LeftBarGroup } from "../types";
+import type { LeftBarGroup, LeftBarItem } from "../types";
 
 export const leftBarGroups: LeftBarGroup[] = [
   {
@@ -50,5 +50,18 @@ export const leftBarGroups: LeftBarGroup[] = [
       { icon: Settings, text: "Umum", path: "/setting" },
       { icon: Users, text: "Pengguna", path: "/users" },
     ],
+  },
+];
+
+export const clinicDashboardServices: LeftBarItem[] = [
+  {
+    icon: CirclePlus,
+    text: "Pendaftaran Pasien",
+    path: "/patient",
+  },
+  {
+    icon: Store,
+    text: "Apotek - Tugas",
+    path: "/pharmacy",
   },
 ];
