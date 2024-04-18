@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreatePatientDto } from './create-patient.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class PatientService {
@@ -11,7 +12,7 @@ export class PatientService {
 
     const data = await this.prismaService.patient.create({
       data: {
-        norm: 'dummyMRId',
+        norm: await this.generateMRID(),
         nik: dto.nik || '-',
         fullname: dto.fullname,
         parentname: dto.parentname || '-',
@@ -25,7 +26,7 @@ export class PatientService {
         mr: {
           create: {
             doctor: '',
-            norm: 'dummyMRId',
+            norm: await this.generateMRID(),
             visitAt: today,
             visitLabel: today.toLocaleDateString(),
             vitalSign: {
@@ -83,5 +84,32 @@ export class PatientService {
     });
 
     return data;
+  }
+
+  async generateMRID() {
+    const date = new Date();
+    const yearString = date.getFullYear().toString();
+    const monthString = (date.getMonth() + 1).toString().padStart(2, '0');
+    const nextvalQuery = await this.prismaService.patient.aggregate({
+      where: {
+        norm: {
+          contains: `${yearString}.${monthString}`,
+        },
+      },
+      _max: {
+        norm: true,
+      },
+    });
+
+    let nextval = 0;
+    if (nextvalQuery._max.norm !== null) {
+      const buff = nextvalQuery._max.norm?.substring(8);
+      nextval = Number.parseInt(buff);
+    }
+    nextval = nextval + 1;
+    const rm = `${yearString}.${monthString}.${nextval
+      .toString()
+      .padStart(5, '0')}`;
+    return rm;
   }
 }
