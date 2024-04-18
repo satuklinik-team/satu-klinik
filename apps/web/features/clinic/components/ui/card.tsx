@@ -6,6 +6,10 @@ interface ClinicCardProps
   extends Omit<HTMLAttributes<HTMLDivElement>, "title"> {
   borderPosition?: "left" | "top" | "right" | "bottom";
   title?: string | JSX.Element;
+  classNames?: {
+    header?: string;
+    content?: string;
+  };
 }
 
 export function ClinicCard({
@@ -13,6 +17,7 @@ export function ClinicCard({
   title,
   children,
   className,
+  classNames,
   ...rest
 }: ClinicCardProps): JSX.Element {
   return (
@@ -28,13 +33,18 @@ export function ClinicCard({
       )}
       {...rest}
     >
-      <CardHeader className="px-4 pt-3 pb-0">
+      <CardHeader className={cn("px-4 pt-3 pb-0", classNames?.header)}>
         {typeof title === "object" && title}
         {typeof title === "string" && (
           <CardTitle className="text-sm font-semibold">{title}</CardTitle>
         )}
       </CardHeader>
-      <CardContent className="flex-1 px-4 py-3 text-2xl font-medium">
+      <CardContent
+        className={cn(
+          "flex-1 px-4 py-3 text-2xl font-medium",
+          classNames?.content
+        )}
+      >
         {children}
       </CardContent>
     </Card>
