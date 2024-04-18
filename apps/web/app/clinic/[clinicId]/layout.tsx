@@ -11,7 +11,9 @@ export default function ClinicLayout({
       <LeftBar />
       <div className="flex-1 flex flex-col">
         <TopBar />
-        {children}
+        <div className="flex-1 overflow-auto">
+          <div className="h-full px-4 py-6">{children}</div>
+        </div>
       </div>
     </div>
   );
