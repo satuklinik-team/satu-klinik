@@ -5,7 +5,7 @@ import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
 export function NotificationPanel(): JSX.Element {
   return (
     <Drawer direction="right">
-      <DrawerTrigger>
+      <DrawerTrigger className="p-1 hover:bg-muted-foreground/10 rounded-md">
         <Bell className="text-foreground" size={20} />
       </DrawerTrigger>
       <DrawerContent className="w-screen max-w-xs h-full bg-white rounded-none">

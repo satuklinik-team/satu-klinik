@@ -13,9 +13,11 @@ export function TopBar(): JSX.Element {
   return (
     <div className="flex flex-row items-center justify-between w-full h-16 px-6 py-5 border-b">
       <Button className="p-1 h-fit" onClick={onToggleLeftBar} variant="ghost">
-        {isLeftBarOpen ? (
+        {isLeftBarOpen && (
           <PanelLeftClose className="text-foreground" size={20} />
-        ) : (
+        )}
+
+        {!isLeftBarOpen && (
           <PanelLeftOpen className="text-foreground" size={20} />
         )}
       </Button>

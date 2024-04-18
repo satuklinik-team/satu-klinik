@@ -23,13 +23,24 @@ export function LeftBar(): JSX.Element {
   return (
     <div className="flex flex-col justify-between h-screen border-r">
       <div className="flex flex-row items-center w-full h-16 px-5 py-5 border-b">
-        <Image
-          alt="Brand Logo"
-          className="w-8 h-8"
-          height={44}
-          src="/brand-logo-2.png"
-          width={253}
-        />
+        {!isLeftBarOpen && (
+          <Image
+            alt="Brand Logo"
+            className="w-8 h-8"
+            height={44}
+            src="/brand-logo-2.png"
+            width={253}
+          />
+        )}
+
+        {isLeftBarOpen && (
+          <Image
+            alt="Brand Logo"
+            height={32}
+            src="/brand-logo.png"
+            width={172}
+          />
+        )}
       </div>
 
       <div className="flex-1 overflow-x-auto">
