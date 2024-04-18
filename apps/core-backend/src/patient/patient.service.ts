@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CreatePatientDto } from './create-patient.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class PatientService {
@@ -84,6 +83,40 @@ export class PatientService {
     });
 
     return data;
+  }
+
+  async findAllPatient() {
+    const patients = await this.prismaService.patient.findMany();
+
+    const latestVitalSigns = await Promise.all(
+      patients.map(async (patient) => {
+        const latestMedicalRecord =
+          await this.prismaService.patient_medical_records.findFirst({
+            where: { patientId: patient.id },
+            orderBy: { visitAt: 'desc' },
+          });
+
+        if (!latestMedicalRecord) {
+          return null;
+        }
+
+        const latestVitalSign =
+          await this.prismaService.patient_vital_sign.findFirst({
+            where: { patient_medical_recordsId: latestMedicalRecord.id },
+            orderBy: { visitAt: 'desc' },
+          });
+
+        return {
+          id: patient.id,
+          norm: patient.norm,
+          address: patient.address,
+          blood: patient.blood,
+          latestVitalSign,
+        };
+      }),
+    );
+
+    return latestVitalSigns;
   }
 
   async generateMRID() {

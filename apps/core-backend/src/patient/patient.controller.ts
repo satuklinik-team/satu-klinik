@@ -29,4 +29,10 @@ export class PatientController {
   async findPatientsBySearch(@Query('search') search: string) {
     return this.patientService.findPatientsBySearch(search);
   }
+
+  @Get('all')
+  @Public()
+  async findAllPatient() {
+    return this.patientService.findAllPatient();
+  }
 }
