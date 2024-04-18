@@ -1,6 +1,6 @@
 import { IsInt, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
-export class CreateMRDto {
+export class CreateVitalSignDto {
   @IsString()
   @IsOptional()
   patientId?: string;

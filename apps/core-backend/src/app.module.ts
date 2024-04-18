@@ -13,8 +13,8 @@ import { SatusehatModule } from './satusehat/satusehat.module';
 import { SatusehatOrganizationModule } from './satusehat-organization/satusehat-organization.module';
 import { ClinicsModule } from './clinics/clinics.module';
 import { SatusehatOauthModule } from './satusehat-oauth/satusehat-oauth.module';
-import { PatientModule } from './patient/patient.module';
-import { PatientVitalSignModule } from './patient-vital-sign/patient-vital-sign.module';
+import { PatientModule } from './patients/patients.module';
+import { PatientVitalSignModule } from './patients-vital-sign/patients-vital-sign.module';
 
 @Module({
   imports: [

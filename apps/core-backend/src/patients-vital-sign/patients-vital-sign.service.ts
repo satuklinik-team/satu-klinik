@@ -1,16 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { CreateMRDto } from 'src/patient/create-mr.dto';
-import { PatientService } from 'src/patient/patient.service';
+import { CreateVitalSignDto } from 'src/patients-vital-sign/dto/create-vital-sign.dto';
+import { PatientsService } from 'src/patients/patients.service';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
-export class PatientVitalSignService {
+export class PatientsVitalSignService {
   constructor(
     private readonly prismaService: PrismaService,
-    private readonly patientService: PatientService,
+    private readonly patientService: PatientsService,
   ) {}
 
-  async create(dto: CreateMRDto) {
+  async create(dto: CreateVitalSignDto) {
     const today = new Date();
 
     const data = await this.prismaService.patient_medical_records.create({

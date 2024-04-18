@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { CreatePatientDto } from './create-patient.dto';
+import { CreatePatientDto } from './dto/create-patient.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
-export class PatientService {
+export class PatientsService {
   constructor(private readonly prismaService: PrismaService) {}
 
   async create(dto: CreatePatientDto) {
@@ -49,27 +50,9 @@ export class PatientService {
     return data;
   }
 
-  async findPatientsBySearch(prefix: string) {
+  async findAll(dto: Prisma.PatientFindManyArgs['select'], search: string) {
     const data = await this.prismaService.patient.findMany({
-      where: {
-        OR: [
-          {
-            fullname: {
-              startsWith: prefix,
-            },
-          },
-          {
-            norm: {
-              startsWith: prefix,
-            },
-          },
-          {
-            address: {
-              startsWith: prefix,
-            },
-          },
-        ],
-      },
+      where: this._findAllFactory(search),
       select: {
         norm: true,
         nik: true,
@@ -79,44 +62,11 @@ export class PatientService {
         birthAt: true,
         phone: true,
         address: true,
+        ...dto,
       },
     });
 
     return data;
-  }
-
-  async findAllPatient() {
-    const patients = await this.prismaService.patient.findMany();
-
-    const latestVitalSigns = await Promise.all(
-      patients.map(async (patient) => {
-        const latestMedicalRecord =
-          await this.prismaService.patient_medical_records.findFirst({
-            where: { patientId: patient.id },
-            orderBy: { visitAt: 'desc' },
-          });
-
-        if (!latestMedicalRecord) {
-          return null;
-        }
-
-        const latestVitalSign =
-          await this.prismaService.patient_vital_sign.findFirst({
-            where: { patient_medical_recordsId: latestMedicalRecord.id },
-            orderBy: { visitAt: 'desc' },
-          });
-
-        return {
-          id: patient.id,
-          norm: patient.norm,
-          address: patient.address,
-          blood: patient.blood,
-          latestVitalSign,
-        };
-      }),
-    );
-
-    return latestVitalSigns;
   }
 
   async generateMRID() {
@@ -144,5 +94,30 @@ export class PatientService {
       .toString()
       .padStart(5, '0')}`;
     return rm;
+  }
+
+  private _findAllFactory(search: string): Prisma.PatientFindManyArgs['where'] {
+    if (!search) {
+      return {};
+    }
+    return {
+      OR: [
+        {
+          fullname: {
+            startsWith: search,
+          },
+        },
+        {
+          norm: {
+            startsWith: search,
+          },
+        },
+        {
+          address: {
+            startsWith: search,
+          },
+        },
+      ],
+    };
   }
 }
