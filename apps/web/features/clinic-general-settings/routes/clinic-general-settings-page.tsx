@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+// import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ClinicCard } from "@/features/clinic/components/ui/card";
 
@@ -27,11 +27,11 @@ export function ClinicGeneralSettingsPage(): JSX.Element {
         <Tabs defaultValue="general">
           <TabsList className="flex flex-row justify-start gap-1">
             <TabsTrigger value="general">General</TabsTrigger>
-            <TabsTrigger value="department">Department</TabsTrigger>
+            {/* <TabsTrigger value="department">Department</TabsTrigger> */}
             <TabsTrigger value="integration">Integration</TabsTrigger>
           </TabsList>
           <TabsContent value="general"></TabsContent>
-          <TabsContent
+          {/* <TabsContent
             className="flex flex-col gap-4 px-4 py-2"
             value="department"
           >
@@ -44,7 +44,7 @@ export function ClinicGeneralSettingsPage(): JSX.Element {
             <Button className="bg-orange-500 hover:bg-orange-500">
               Atur Ulang
             </Button>
-          </TabsContent>
+          </TabsContent> */}
           <TabsContent value="integration"></TabsContent>
         </Tabs>
       </ClinicCard>
