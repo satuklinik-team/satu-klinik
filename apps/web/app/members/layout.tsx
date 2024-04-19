@@ -10,7 +10,7 @@ export default function MembersLayout({
   return (
     <div className="flex flex-col w-screen h-screen">
       <MembersNavigation />
-      <Container className="pb-2 pt-0 sm:pt-0 md:pt-0 lg:pt-0 xl:pt-0 2xl:pt-0 mt-28">
+      <Container className="pb-16 pt-0 sm:pt-0 md:pt-0 lg:pt-0 xl:pt-0 2xl:pt-0 mt-28">
         {children}
       </Container>
       <MembersFooter />
