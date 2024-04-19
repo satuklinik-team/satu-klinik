@@ -9,15 +9,26 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 
-import { useClinicLayoutStore } from "../../stores/use-clinic-layout-store";
+import { useClinicLayoutStore } from "../../features/clinic/stores/use-clinic-layout-store";
 
-export function UserButton(): JSX.Element {
+interface UserButtonProps {
+  classNames?: {
+    container?: string;
+  };
+}
+
+export function UserButton({ classNames }: UserButtonProps): JSX.Element {
   const { isLeftBarOpen } = useClinicLayoutStore();
 
   return (
     <Popover>
       <PopoverTrigger asChild className="cursor-pointer">
-        <div className="flex flex-row items-center gap-3 w-full px-5 py-2.5 border-t hover:bg-muted-foreground/10 transition">
+        <div
+          className={cn(
+            "flex flex-row items-center gap-3 w-full px-5 py-2.5 border-t hover:bg-muted-foreground/10 transition",
+            classNames?.container
+          )}
+        >
           <Avatar className="w-8 h-8">
             <AvatarImage alt="@shadcn" src="https://github.com/shadcn.png" />
             <AvatarFallback>CN</AvatarFallback>

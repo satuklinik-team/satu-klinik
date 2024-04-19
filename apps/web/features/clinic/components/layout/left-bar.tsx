@@ -5,12 +5,12 @@ import { useParams, usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils";
 
+import { UserButton } from "../../../../components/layout/user-button";
 import { useClinicLayoutStore } from "../../stores/use-clinic-layout-store";
 import { leftBarGroups } from "../../utils";
 import { LeftBarGroup } from "../ui/left-bar-group";
 import { LeftBarItem } from "../ui/left-bar-item";
 import { LeftBarTitle } from "../ui/left-bar-title";
-import { UserButton } from "./user-button";
 
 export function LeftBar(): JSX.Element {
   const { isLeftBarOpen } = useClinicLayoutStore();
