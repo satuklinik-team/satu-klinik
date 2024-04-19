@@ -22,7 +22,7 @@ export function MembersNavigation(): JSX.Element {
             width={253}
           />
 
-          <div className="flex flex-row items-center gap-2">
+          <div className="flex-row items-center gap-2 hidden sm:flex md:flex lg:flex xl:flex 2xl:flex">
             <p className="text-sm">Welcome, Nona Perma</p>
             <Badge className="text-xs px-2.5 py-1 bg-border" variant="outline">
               Owner
