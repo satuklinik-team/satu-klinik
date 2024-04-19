@@ -2,7 +2,7 @@
 
 // import ReactApexChart from "react-apexcharts";
 import { ClinicCard } from "@/features/clinic/components/ui/card";
-import { ClinicServicesCard } from "@/features/clinic/components/ui/services-card";
+// import { ClinicServicesCard } from "@/features/clinic/components/ui/services-card";
 
 export function ClinicDashboardPage(): JSX.Element {
   return (
@@ -110,7 +110,7 @@ export function ClinicDashboardPage(): JSX.Element {
         /> */}
       </ClinicCard>
 
-      <ClinicServicesCard />
+      {/* <ClinicServicesCard /> */}
 
       <div className="flex flex-col sm:flex-col md:flex-row lg:flex-row xl:flex-row 2xl:flex-row gap-4">
         <ClinicCard
