@@ -34,7 +34,7 @@ export function ClinicItemsPage(): JSX.Element {
       </div>
 
       <div className="flex flex-row justify-between items-center mb-2">
-        <div className="hidden sm:hidden md:flex lg:flex xl:flex 2xl:flex flex-row items-center gap-2">
+        <div className="hidden sm:hidden md:flex lg:flex xl:flex 2xl:flex flex-row items-center flex-wrap gap-2">
           <Badge>All</Badge>
           <Badge variant="outline">Main Service</Badge>
           <Badge variant="outline">Medicine</Badge>
