@@ -72,8 +72,8 @@ export function LeftBarItem({
                 <Badge
                   variant="destructive"
                   className={cn(
-                    "absolute top-1.5 right-3 w-2 h-2 p-0 rounded-full",
-                    isOpen && "hidden"
+                    "absolute top-1.5 right-3 w-2 h-2 p-0 rounded-full hidden",
+                    !isOpen && "hidden sm:block"
                   )}
                 />
               </div>
