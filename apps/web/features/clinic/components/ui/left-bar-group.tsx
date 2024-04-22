@@ -15,7 +15,8 @@ export function LeftBarGroup({
     <div
       className={cn(
         "flex flex-col gap-1 w-full py-2.5",
-        !isOpen && "border-t",
+        !isOpen &&
+          "border-t-0 sm:border-t md:border-t lg:border-t xl:border-t 2xl:border-t",
         className
       )}
       {...rest}

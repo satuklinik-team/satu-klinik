@@ -37,7 +37,9 @@ export function ClinicCard({
       <CardHeader className={cn("px-4 pt-3 pb-0", classNames?.header)}>
         {typeof title === "object" && title}
         {typeof title === "string" && (
-          <CardTitle className="text-sm font-semibold">{title}</CardTitle>
+          <CardTitle className="text-sm sm:text-sm md:text-sm lg:text-base xl:text-lg 2xl:text-lg font-semibold">
+            {title}
+          </CardTitle>
         )}
       </CardHeader>
       <CardContent

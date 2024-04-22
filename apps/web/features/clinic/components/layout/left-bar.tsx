@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useParams, usePathname } from "next/navigation";
+import type { HTMLAttributes } from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -12,7 +13,9 @@ import { LeftBarGroup } from "../ui/left-bar-group";
 import { LeftBarItem } from "../ui/left-bar-item";
 import { LeftBarTitle } from "../ui/left-bar-title";
 
-export function LeftBar(): JSX.Element {
+type LeftBarProps = HTMLAttributes<HTMLDivElement>;
+
+export function LeftBar({ className, ...rest }: LeftBarProps): JSX.Element {
   const { isLeftBarOpen } = useClinicLayoutStore();
 
   const pathname = usePathname();
@@ -21,7 +24,13 @@ export function LeftBar(): JSX.Element {
   const reducedPathname = pathname.replace(`clinic/${clinicId as string}`, "");
 
   return (
-    <div className="flex flex-col justify-between h-screen border-r">
+    <div
+      className={cn(
+        "flex flex-col justify-between h-screen border-r",
+        className
+      )}
+      {...rest}
+    >
       <div className="flex flex-row items-center w-full h-16 px-5 py-5 border-b">
         {!isLeftBarOpen && (
           <Image

@@ -29,6 +29,14 @@ export function ClinicNewPatientPage(): JSX.Element {
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
+
+      <div className="mb-6 flex flex-col gap-2">
+        <h1 className="text-2xl sm:text-3xl md:text-3xl lg:text-4xl xl:text-4xl 2xl:text-4xl font-semibold">
+          Add New Patient
+        </h1>
+        <p className="text-muted-foreground">detail patient information</p>
+      </div>
+
       <ClinicCard title="Add New Patient" />
     </div>
   );
