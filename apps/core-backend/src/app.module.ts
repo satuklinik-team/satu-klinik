@@ -13,8 +13,8 @@ import { SatusehatModule } from './satusehat/satusehat.module';
 import { SatusehatOrganizationModule } from './satusehat-organization/satusehat-organization.module';
 import { ClinicsModule } from './clinics/clinics.module';
 import { SatusehatOauthModule } from './satusehat-oauth/satusehat-oauth.module';
-import { PatientModule } from './patients/patients.module';
-import { PatientVitalSignModule } from './patients-vital-sign/patients-vital-sign.module';
+import { PatientsModule } from './patients/patients.module';
+import { PatientsVitalSignModule } from './patients-vital-sign/patients-vital-sign.module';
 
 @Module({
   imports: [
@@ -29,8 +29,8 @@ import { PatientVitalSignModule } from './patients-vital-sign/patients-vital-sig
     SatusehatOrganizationModule,
     ClinicsModule,
     SatusehatOauthModule,
-    PatientModule,
-    PatientVitalSignModule,
+    PatientsModule,
+    PatientsVitalSignModule,
   ],
   controllers: [],
   providers: [{ provide: APP_GUARD, useClass: AccessTokenGuard }],
