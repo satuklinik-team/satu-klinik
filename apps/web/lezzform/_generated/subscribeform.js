@@ -17,7 +17,7 @@ import {
 } from "@lezzform/react";
 import * as c from "react";
 import { jsx as e, jsxs as a } from "react/jsx-runtime";
-var P = r.object({
+var w = r.object({
     "input-1713864706509": r.string().optional(),
     "emailInput-1713864712957": r.string().email().optional(),
     "phoneNumberInput-1713864724181": r
@@ -48,31 +48,31 @@ var P = r.object({
     "textarea-1713866248190": r.string().optional(),
     "input-1713866308216": r.string().optional(),
   }),
-  C = "9IGjQtTYM8ebIRxhFL7O",
-  x = ({
+  z = "ru95841zLrgu1LgwVKRl",
+  E = ({
     onSubmit: t,
     onError: p,
-    onSuccess: z,
-    defaultValues: I,
-    onAction: R,
-    formProps: w,
+    onSuccess: C,
+    defaultValues: L,
+    onAction: P,
+    formProps: R,
   }) => {
     let b = c.useRef();
     c.useEffect(() => {
       t && (b.current = t);
     }, [t]);
-    let L = c.useCallback(async (n, o) => {
+    let I = c.useCallback(async (n, o) => {
       if (b.current) return b.current(n, o);
     }, []);
     return e(
       d,
       {
-        id: C,
-        defaultValues: I,
-        onSubmit: L,
+        id: z,
+        defaultValues: L,
+        onSubmit: I,
         onError: p,
-        onSuccess: z,
-        zodSchema: P,
+        onSuccess: C,
+        zodSchema: w,
         mode: "onSubmit",
         children: (n) =>
           a(d.Container, {
@@ -285,7 +285,7 @@ var P = r.object({
                     ],
                   }),
               }),
-              e(v, { styles: { root: {} }, size: 13 }),
+              e(v, { styles: { root: {} }, size: 16 }),
               e(B, {
                 type: "submit",
                 className: "w-full",
@@ -297,7 +297,7 @@ var P = r.object({
             ],
           }),
       },
-      C
+      z
     );
   };
-export { x as Form };
+export { E as Form };
