@@ -1,21 +1,23 @@
 import { z as r } from "zod";
 import {
-  Lezzform as g,
+  Lezzform as d,
   FormField as m,
   FormItem as l,
-  FormLabel as u,
-  FormControl as s,
+  FormLabel as s,
+  FormControl as u,
   FormMessage as i,
-  Input as h,
-  EmailInput as b,
-  PhoneNumberInput as C,
+  Input as F,
+  EmailInput as h,
+  PhoneNumberInput as g,
   PasswordInput as S,
-  TextArea as B,
-  Button as d,
+  Divider as k,
+  TextArea as y,
+  Spacer as v,
+  Button as B,
 } from "@lezzform/react";
-import * as p from "react";
-import { jsx as o, jsxs as a } from "react/jsx-runtime";
-var v = r.object({
+import * as c from "react";
+import { jsx as e, jsxs as a } from "react/jsx-runtime";
+var P = r.object({
     "input-1713864706509": r.string().optional(),
     "emailInput-1713864712957": r.string().email().optional(),
     "phoneNumberInput-1713864724181": r
@@ -46,245 +48,256 @@ var v = r.object({
     "textarea-1713866248190": r.string().optional(),
     "input-1713866308216": r.string().optional(),
   }),
-  z = "EYDrE7LWvZhJHZjnbYL5",
-  K = ({
+  C = "9IGjQtTYM8ebIRxhFL7O",
+  x = ({
     onSubmit: t,
-    onError: c,
-    onSuccess: L,
+    onError: p,
+    onSuccess: z,
     defaultValues: I,
-    onAction: y,
-    formProps: P,
+    onAction: R,
+    formProps: w,
   }) => {
-    let F = p.useRef();
-    p.useEffect(() => {
-      t && (F.current = t);
+    let b = c.useRef();
+    c.useEffect(() => {
+      t && (b.current = t);
     }, [t]);
-    let k = p.useCallback(async (e, n) => {
-      if (F.current) return F.current(e, n);
+    let L = c.useCallback(async (n, o) => {
+      if (b.current) return b.current(n, o);
     }, []);
-    return o(
-      g,
+    return e(
+      d,
       {
-        id: z,
+        id: C,
         defaultValues: I,
-        onSubmit: k,
-        onError: c,
-        onSuccess: L,
-        zodSchema: v,
+        onSubmit: L,
+        onError: p,
+        onSuccess: z,
+        zodSchema: P,
         mode: "onSubmit",
-        children: (e) =>
-          a(g.Container, {
+        children: (n) =>
+          a(d.Container, {
             children: [
-              o(m, {
-                control: e.control,
+              e(m, {
+                control: n.control,
                 name: "input-1713864706509",
-                render: ({ field: n }) =>
+                render: ({ field: o }) =>
                   a(l, {
                     children: [
-                      o(u, { children: "Nama Lengkap" }),
-                      o(s, {
-                        children: o(h, {
+                      e(s, { children: "Nama Lengkap" }),
+                      e(u, {
+                        children: e(F, {
                           label: "Nama Lengkap",
-                          name: n.name,
-                          value: n.value ?? "",
-                          onBlur: n.onBlur,
-                          onChange: n.onChange,
+                          name: o.name,
+                          value: o.value ?? "",
+                          onBlur: o.onBlur,
+                          onChange: o.onChange,
                           placeholder: "Nama Lengkap",
+                          disabled: o.disabled,
                           styles: { root: {} },
                         }),
                       }),
-                      o(i, {}),
+                      e(i, {}),
                     ],
                   }),
               }),
-              o(m, {
-                control: e.control,
+              e(m, {
+                control: n.control,
                 name: "emailInput-1713864712957",
-                render: ({ field: n }) =>
+                render: ({ field: o }) =>
                   a(l, {
                     children: [
-                      o(u, { children: "Email" }),
-                      o(s, {
-                        children: o(b, {
+                      e(s, { children: "Email" }),
+                      e(u, {
+                        children: e(h, {
                           label: "Email",
-                          name: n.name,
-                          value: n.value ?? "",
-                          onBlur: n.onBlur,
-                          onChange: n.onChange,
+                          name: o.name,
+                          value: o.value ?? "",
+                          onBlur: o.onBlur,
+                          onChange: o.onChange,
                           placeholder: "Email",
+                          disabled: o.disabled,
                           styles: { root: {} },
                         }),
                       }),
-                      o(i, {}),
+                      e(i, {}),
                     ],
                   }),
               }),
-              o(m, {
-                control: e.control,
+              e(m, {
+                control: n.control,
                 name: "phoneNumberInput-1713864724181",
-                render: ({ field: n }) =>
+                render: ({ field: o }) =>
                   a(l, {
                     children: [
-                      o(u, { children: "Password" }),
-                      o(s, {
-                        children: o(C, {
+                      e(s, { children: "Password" }),
+                      e(u, {
+                        children: e(g, {
                           label: "Password",
-                          name: n.name,
-                          value: n.value ?? "",
-                          onBlur: n.onBlur,
-                          onChange: n.onChange,
+                          name: o.name,
+                          value: o.value ?? "",
+                          onBlur: o.onBlur,
+                          onChange: o.onChange,
+                          disabled: o.disabled,
                           placeholder: "Password",
                           styles: { root: {} },
                         }),
                       }),
-                      o(i, {}),
+                      e(i, {}),
                     ],
                   }),
               }),
-              o(m, {
-                control: e.control,
+              e(m, {
+                control: n.control,
                 name: "passwordInput-1713865937493",
-                render: ({ field: n }) =>
+                render: ({ field: o }) =>
                   a(l, {
                     children: [
-                      o(u, { children: "Konfirmasi Password" }),
-                      o(s, {
-                        children: o(S, {
+                      e(s, { children: "Konfirmasi Password" }),
+                      e(u, {
+                        children: e(S, {
                           label: "Konfirmasi Password",
-                          name: n.name,
-                          value: n.value ?? "",
-                          onBlur: n.onBlur,
-                          onChange: n.onChange,
+                          name: o.name,
+                          value: o.value ?? "",
+                          onBlur: o.onBlur,
+                          onChange: o.onChange,
+                          disabled: o.disabled,
                           placeholder: "Konfirmasi Password",
-                          styles: { root: { marginBottom: 24 } },
+                          styles: { root: {} },
                         }),
                       }),
-                      o(i, {}),
+                      e(i, {}),
                     ],
                   }),
               }),
-              o(m, {
-                control: e.control,
+              e(k.Solid, { styles: { root: {} }, size: 1, color: "#c7c7c7" }),
+              e(m, {
+                control: n.control,
                 name: "input-1713866125346",
-                render: ({ field: n }) =>
+                render: ({ field: o }) =>
                   a(l, {
                     children: [
-                      o(u, { children: "Nama Klinik" }),
-                      o(s, {
-                        children: o(h, {
+                      e(s, { children: "Nama Klinik" }),
+                      e(u, {
+                        children: e(F, {
                           label: "Nama Klinik",
-                          name: n.name,
-                          value: n.value ?? "",
-                          onBlur: n.onBlur,
-                          onChange: n.onChange,
+                          name: o.name,
+                          value: o.value ?? "",
+                          onBlur: o.onBlur,
+                          onChange: o.onChange,
                           placeholder: "Nama Klinik",
+                          disabled: o.disabled,
                           styles: { root: {} },
                         }),
                       }),
-                      o(i, {}),
+                      e(i, {}),
                     ],
                   }),
               }),
-              o(m, {
-                control: e.control,
+              e(m, {
+                control: n.control,
                 name: "emailInput-1713866155379",
-                render: ({ field: n }) =>
+                render: ({ field: o }) =>
                   a(l, {
                     children: [
-                      o(u, { children: "Email Klinik" }),
-                      o(s, {
-                        children: o(b, {
+                      e(s, { children: "Email Klinik" }),
+                      e(u, {
+                        children: e(h, {
                           label: "Email Klinik",
-                          name: n.name,
-                          value: n.value ?? "",
-                          onBlur: n.onBlur,
-                          onChange: n.onChange,
+                          name: o.name,
+                          value: o.value ?? "",
+                          onBlur: o.onBlur,
+                          onChange: o.onChange,
                           placeholder: "Email Klinik",
+                          disabled: o.disabled,
                           styles: { root: {} },
                         }),
                       }),
-                      o(i, {}),
+                      e(i, {}),
                     ],
                   }),
               }),
-              o(m, {
-                control: e.control,
+              e(m, {
+                control: n.control,
                 name: "phoneNumberInput-1713866194859",
-                render: ({ field: n }) =>
+                render: ({ field: o }) =>
                   a(l, {
                     children: [
-                      o(u, { children: "No Telp. Klinik" }),
-                      o(s, {
-                        children: o(C, {
+                      e(s, { children: "No Telp. Klinik" }),
+                      e(u, {
+                        children: e(g, {
                           label: "No Telp. Klinik",
-                          name: n.name,
-                          value: n.value ?? "",
-                          onBlur: n.onBlur,
-                          onChange: n.onChange,
+                          name: o.name,
+                          value: o.value ?? "",
+                          onBlur: o.onBlur,
+                          onChange: o.onChange,
+                          disabled: o.disabled,
                           placeholder: "No Telp. Klinik",
                           styles: { root: {} },
                         }),
                       }),
-                      o(i, {}),
+                      e(i, {}),
                     ],
                   }),
               }),
-              o(m, {
-                control: e.control,
+              e(m, {
+                control: n.control,
                 name: "textarea-1713866248190",
-                render: ({ field: n }) =>
+                render: ({ field: o }) =>
                   a(l, {
                     children: [
-                      o(u, { children: "Alamat" }),
-                      o(s, {
-                        children: o(B, {
+                      e(s, { children: "Alamat" }),
+                      e(u, {
+                        children: e(y, {
                           label: "Alamat",
-                          name: n.name,
-                          value: n.value ?? "",
-                          onBlur: n.onBlur,
-                          onChange: n.onChange,
+                          name: o.name,
+                          value: o.value ?? "",
+                          onBlur: o.onBlur,
+                          onChange: o.onChange,
+                          disabled: o.disabled,
                           placeholder: "Alamat",
                           styles: { root: {} },
                         }),
                       }),
-                      o(i, {}),
+                      e(i, {}),
                     ],
                   }),
               }),
-              o(m, {
-                control: e.control,
+              e(m, {
+                control: n.control,
                 name: "input-1713866308216",
-                render: ({ field: n }) =>
+                render: ({ field: o }) =>
                   a(l, {
                     children: [
-                      o(u, { children: "Kode Fasyankes" }),
-                      o(s, {
-                        children: o(h, {
+                      e(s, { children: "Kode Fasyankes" }),
+                      e(u, {
+                        children: e(F, {
                           label: "Kode Fasyankes",
-                          name: n.name,
-                          value: n.value ?? "",
-                          onBlur: n.onBlur,
-                          onChange: n.onChange,
+                          name: o.name,
+                          value: o.value ?? "",
+                          onBlur: o.onBlur,
+                          onChange: o.onChange,
                           placeholder: "Kode Fasyankes",
-                          styles: { root: { marginBottom: 48 } },
+                          disabled: o.disabled,
+                          styles: { root: {} },
                         }),
                       }),
-                      o(i, {}),
+                      e(i, {}),
                     ],
                   }),
               }),
-              o(d, {
+              e(v, { styles: { root: {} }, size: 13 }),
+              e(B, {
                 type: "submit",
                 className: "w-full",
-                disabled: e.formState.isSubmitting,
-                isLoading: e.formState.isSubmitting,
+                disabled: n.formState.isSubmitting,
+                isLoading: n.formState.isSubmitting,
                 styles: { root: { backgroundColor: "#2E584F" } },
                 children: "Buat Akun",
               }),
             ],
           }),
       },
-      z
+      C
     );
   };
-export { K as Form };
+export { x as Form };

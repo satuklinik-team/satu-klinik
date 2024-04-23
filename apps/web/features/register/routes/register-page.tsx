@@ -9,7 +9,7 @@ export function RegisterPage(): JSX.Element {
       description="Enter your details to create your account."
       title="Register"
     >
-      <RegisterForm />
+      <RegisterForm onSubmit={(data) => console.log({ data })} />
     </AuthFormWrapper>
   );
 }
