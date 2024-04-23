@@ -2,6 +2,7 @@
 
 import { Input } from "@/components/ui/input";
 import { ClinicCard } from "@/features/clinic/components/ui/card";
+import { Form as AddPatientForm } from "@/lezzform/_generated/addpatientform";
 
 export function ClinicRegisterPatientPage(): JSX.Element {
   return (
@@ -23,7 +24,9 @@ export function ClinicRegisterPatientPage(): JSX.Element {
             borderPosition="top"
             className="border-sky-500"
             title="Daftar Pasien"
-          />
+          >
+            <AddPatientForm />
+          </ClinicCard>
         </div>
         <ClinicCard
           borderPosition="top"

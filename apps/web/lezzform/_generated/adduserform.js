@@ -9,16 +9,16 @@ import {
   Input as d,
   EmailInput as v,
   TextArea as y,
-  Dropdown as I,
+  Dropdown as k,
   PasswordInput as h,
-  Spacer as k,
-  TwoColumn as R,
+  Spacer as R,
+  TwoColumn as I,
   Button as z,
 } from "@lezzform/react";
-import { UserRound as P, Mail as A } from "lucide-react";
+import { UserRound as A, Mail as B } from "lucide-react";
 import * as c from "react";
 import { jsx as e, jsxs as r } from "react/jsx-runtime";
-var B = a.object({
+var P = a.object({
     name: a.string().optional(),
     "emailInput-1713871204480": a.string().email().optional(),
     "input-1713871261634": a.string().optional(),
@@ -27,12 +27,12 @@ var B = a.object({
     "passwordInput-1713871400734": a.string().optional(),
     "passwordInput-1713871418205": a.string().optional(),
   }),
-  C = "qplPZRDUMFuBvIIAmEpm",
-  D = ({
+  C = "7985HgGER9ABwFxzTuk4",
+  O = ({
     onSubmit: i,
     onError: g,
-    onSuccess: S,
-    defaultValues: w,
+    onSuccess: w,
+    defaultValues: S,
     onAction: p,
     formProps: E,
   }) => {
@@ -47,11 +47,11 @@ var B = a.object({
       F,
       {
         id: C,
-        defaultValues: w,
+        defaultValues: S,
         onSubmit: L,
         onError: g,
-        onSuccess: S,
-        zodSchema: B,
+        onSuccess: w,
+        zodSchema: P,
         mode: "onSubmit",
         children: (n) =>
           r(F.Container, {
@@ -74,7 +74,7 @@ var B = a.object({
                           disabled: o.disabled,
                           styles: { root: {} },
                           prefixAdornment: {
-                            icon: e(P, { size: 18, color: "#8a8a8a" }),
+                            icon: e(A, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
@@ -100,7 +100,7 @@ var B = a.object({
                           disabled: o.disabled,
                           styles: { root: {} },
                           prefixAdornment: {
-                            icon: e(A, { size: 18, color: "#8a8a8a" }),
+                            icon: e(B, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
@@ -162,7 +162,7 @@ var B = a.object({
                     children: [
                       e(m, { children: "Role" }),
                       e(s, {
-                        children: e(I.List, {
+                        children: e(k.List, {
                           label: "Role",
                           name: o.name,
                           value: o.value,
@@ -228,8 +228,8 @@ var B = a.object({
                     ],
                   }),
               }),
-              e(k, { styles: { root: {} }, size: 16 }),
-              r(R, {
+              e(R, { styles: { root: {} }, size: 16 }),
+              r(I, {
                 styles: { root: {} },
                 children: [
                   e(z, {
@@ -260,4 +260,4 @@ var B = a.object({
       C
     );
   };
-export { D as Form };
+export { O as Form };
