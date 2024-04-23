@@ -3,6 +3,8 @@
 // import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ClinicCard } from "@/features/clinic/components/ui/card";
+import { Form as GeneralForm } from "@/lezzform/_generated/generalform";
+import { Form as IntegrationForm } from "@/lezzform/_generated/integrationform";
 
 export function ClinicGeneralSettingsPage(): JSX.Element {
   return (
@@ -32,7 +34,9 @@ export function ClinicGeneralSettingsPage(): JSX.Element {
             {/* <TabsTrigger value="department">Department</TabsTrigger> */}
             <TabsTrigger value="integration">Integration</TabsTrigger>
           </TabsList>
-          <TabsContent value="general"></TabsContent>
+          <TabsContent value="general">
+            <GeneralForm />
+          </TabsContent>
           {/* <TabsContent
             className="flex flex-col gap-4 px-4 py-2"
             value="department"
@@ -47,7 +51,9 @@ export function ClinicGeneralSettingsPage(): JSX.Element {
               Atur Ulang
             </Button>
           </TabsContent> */}
-          <TabsContent value="integration"></TabsContent>
+          <TabsContent value="integration">
+            <IntegrationForm />
+          </TabsContent>
         </Tabs>
       </ClinicCard>
     </div>
