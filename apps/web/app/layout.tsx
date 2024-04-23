@@ -1,11 +1,10 @@
 import "./globals.css";
+import "@lezzform/react/style.css";
 
 import type { Metadata } from "next";
 import CreatoDisplay from "next/font/local";
 
 import { cn } from "@/lib/utils";
-
-import Providers from "./providers";
 
 const creatoDisplay = CreatoDisplay({
   src: [
@@ -28,11 +27,9 @@ export default function RootLayout({
 }): JSX.Element {
   return (
     <html lang="en">
-      <Providers>
-        <body className={cn(creatoDisplay.className, "bg-white")}>
-          {children}
-        </body>
-      </Providers>
+      <body className={cn(creatoDisplay.className, "bg-white")}>
+        {children}
+      </body>
     </html>
   );
 }
