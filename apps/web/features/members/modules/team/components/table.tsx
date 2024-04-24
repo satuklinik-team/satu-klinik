@@ -21,7 +21,7 @@ export function MembersTeamsTable(): JSX.Element {
             key: "clinic",
             name: "Clinic",
             renderCell: (row) => (
-              <Cell className="flex flex-row items-center gap-3">
+              <Cell className="gap-3">
                 <div className="flex items-center justify-center w-14 h-14 shrink-0 rounded-full border-2">
                   <Hospital size={28} />
                 </div>
@@ -39,7 +39,7 @@ export function MembersTeamsTable(): JSX.Element {
             key: "statistics",
             name: "Statistics",
             renderCell: (row) => (
-              <Cell className="flex flex-row items-center gap-4">
+              <Cell>
                 <div className="flex flex-col items-center gap-1">
                   <p className="text-center text-xs">Total Records</p>
                   <p className="text-lg font-semibold text-center text-green-600">
@@ -81,7 +81,7 @@ export function MembersTeamsTable(): JSX.Element {
             key: "actions",
             name: "",
             renderCell: (row) => (
-              <Cell className="flex flex-row items-center gap-2">
+              <Cell className="gap-2">
                 <Button
                   className="h-min p-2"
                   onClick={() => {
@@ -89,7 +89,7 @@ export function MembersTeamsTable(): JSX.Element {
                   }}
                   variant="ghost"
                 >
-                  <MessageCircle className="text-green-500" />
+                  <MessageCircle className="text-green-500" size={20} />
                 </Button>
                 <Button
                   className="h-min p-2"
@@ -98,7 +98,7 @@ export function MembersTeamsTable(): JSX.Element {
                   }}
                   variant="ghost"
                 >
-                  <LogIn className="text-primary" />
+                  <LogIn className="text-primary" size={20} />
                 </Button>
               </Cell>
             ),

@@ -1,7 +1,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-import { MemberSection } from "../components/shared/section";
 import { MemberBilling } from "../modules/billing/components/billing";
+import { MembersInvoicesTable } from "../modules/invoice/components/table";
 import { MembersTeamsTable } from "../modules/team/components/table";
 
 export function MembersPage(): JSX.Element {
@@ -27,7 +27,7 @@ export function MembersPage(): JSX.Element {
           <MemberBilling />
         </TabsContent>
         <TabsContent value="invoices">
-          <MemberSection />
+          <MembersInvoicesTable />
         </TabsContent>
       </Tabs>
     </div>
