@@ -2,6 +2,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { MemberSection } from "../components/shared/section";
 import { MemberBilling } from "../modules/billing/components/billing";
+import { MembersTeamsTable } from "../modules/team/components/table";
 
 export function MembersPage(): JSX.Element {
   return (
@@ -20,7 +21,7 @@ export function MembersPage(): JSX.Element {
           <TabsTrigger value="invoices">Invoices</TabsTrigger>
         </TabsList>
         <TabsContent value="team">
-          <MemberSection />
+          <MembersTeamsTable />
         </TabsContent>
         <TabsContent value="billing">
           <MemberBilling />
