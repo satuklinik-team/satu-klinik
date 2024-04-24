@@ -1,21 +1,21 @@
 import { z as a } from "zod";
 import {
-  Lezzform as F,
+  Lezzform as d,
   FormField as t,
   FormItem as l,
   FormLabel as m,
   FormControl as s,
   FormMessage as u,
-  Input as d,
+  Input as F,
   EmailInput as v,
   TextArea as y,
   Dropdown as k,
   PasswordInput as h,
   Spacer as I,
-  TwoColumn as R,
+  TwoColumn as P,
   Button as z,
 } from "@lezzform/react";
-import { UserRound as P, Mail as A } from "lucide-react";
+import { UserRound as R, Mail as A } from "lucide-react";
 import * as c from "react";
 import { jsx as e, jsxs as r } from "react/jsx-runtime";
 var B = a.object({
@@ -27,8 +27,8 @@ var B = a.object({
     "passwordInput-1713871400734": a.string().optional(),
     "passwordInput-1713871418205": a.string().optional(),
   }),
-  C = "zWEJ2JEi30cWYZqEjtOw",
-  T = ({
+  C = "TGhm9wEzP2assjJWu8dr",
+  O = ({
     onSubmit: i,
     onError: g,
     onSuccess: w,
@@ -44,7 +44,7 @@ var B = a.object({
       if (b.current) return b.current(n, o);
     }, []);
     return e(
-      F,
+      d,
       {
         id: C,
         defaultValues: S,
@@ -54,7 +54,7 @@ var B = a.object({
         zodSchema: B,
         mode: "onSubmit",
         children: (n) =>
-          r(F.Container, {
+          r(d.Container, {
             children: [
               e(t, {
                 control: n.control,
@@ -64,7 +64,7 @@ var B = a.object({
                     children: [
                       e(m, { children: "Nama Lengkap" }),
                       e(s, {
-                        children: e(d, {
+                        children: e(F, {
                           label: "Nama Lengkap",
                           name: o.name,
                           value: o.value ?? "",
@@ -74,7 +74,7 @@ var B = a.object({
                           disabled: o.disabled,
                           styles: { root: {} },
                           prefixAdornment: {
-                            icon: e(P, { size: 18, color: "#000000" }),
+                            icon: e(R, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
@@ -116,7 +116,7 @@ var B = a.object({
                     children: [
                       e(m, { children: "Nomor Telepon" }),
                       e(s, {
-                        children: e(d, {
+                        children: e(F, {
                           label: "Nomor Telepon",
                           name: o.name,
                           value: o.value ?? "",
@@ -229,7 +229,7 @@ var B = a.object({
                   }),
               }),
               e(I, { styles: { root: {} }, size: 16 }),
-              r(R, {
+              r(P, {
                 styles: { root: {} },
                 children: [
                   e(z, {
@@ -257,7 +257,7 @@ var B = a.object({
             ],
           }),
       },
-      C
+      C,
     );
   };
-export { T as Form };
+export { O as Form };

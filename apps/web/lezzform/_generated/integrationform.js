@@ -1,31 +1,31 @@
 import { z as a } from "zod";
 import {
-  Lezzform as h,
+  Lezzform as S,
   FormField as t,
   FormItem as s,
   FormLabel as l,
   FormControl as u,
   FormMessage as c,
   Input as F,
-  PasswordInput as f,
+  PasswordInput as L,
   Button as C,
 } from "@lezzform/react";
 import * as n from "react";
 import { jsx as r, jsxs as m } from "react/jsx-runtime";
-var L = a.object({
+var f = a.object({
     name: a.string().optional(),
     "name-oSh": a.string().optional(),
     "name-oSh-5Su": a.string().optional(),
     "passwordInput-1713880776428": a.string().optional(),
   }),
-  S = "093kfmmRQTKa0nGZbTkZ",
-  R = ({
+  h = "NpSkWUy4XDm18yx8Lca3",
+  I = ({
     onSubmit: i,
-    onError: b,
-    onSuccess: z,
+    onError: z,
+    onSuccess: b,
     defaultValues: d,
-    onAction: k,
-    formProps: w,
+    onAction: y,
+    formProps: k,
   }) => {
     let p = n.useRef();
     n.useEffect(() => {
@@ -35,17 +35,17 @@ var L = a.object({
       if (p.current) return p.current(e, o);
     }, []);
     return r(
-      h,
+      S,
       {
-        id: S,
+        id: h,
         defaultValues: d,
         onSubmit: g,
-        onError: b,
-        onSuccess: z,
-        zodSchema: L,
+        onError: z,
+        onSuccess: b,
+        zodSchema: f,
         mode: "onSubmit",
         children: (e) =>
-          m(h.Container, {
+          m(S.Container, {
             children: [
               r(t, {
                 control: e.control,
@@ -124,7 +124,7 @@ var L = a.object({
                     children: [
                       r(l, { children: "Password" }),
                       r(u, {
-                        children: r(f, {
+                        children: r(L, {
                           label: "Password",
                           name: o.name,
                           value: o.value ?? "",
@@ -150,7 +150,7 @@ var L = a.object({
             ],
           }),
       },
-      S,
+      h,
     );
   };
-export { R as Form };
+export { I as Form };

@@ -1,6 +1,6 @@
 import { z as a } from "zod";
 import {
-  Lezzform as h,
+  Lezzform as F,
   FormField as t,
   FormItem as l,
   FormLabel as m,
@@ -10,19 +10,19 @@ import {
   Dropdown as g,
   DatePicker as k,
   PhoneNumberInput as N,
-  TextArea as A,
-  TwoColumn as I,
+  TextArea as I,
+  TwoColumn as R,
   Button as C,
 } from "@lezzform/react";
 import {
   CreditCard as z,
-  User as R,
-  Calendar as B,
-  Phone as P,
+  User as B,
+  Calendar as P,
+  Phone as A,
 } from "lucide-react";
 import * as i from "react";
 import { jsx as o, jsxs as r } from "react/jsx-runtime";
-var x = a.object({
+var w = a.object({
     "input-1713924229907": a.string().optional(),
     "input-1713924232759": a.string().optional(),
     "input-1713924236229": a.string().optional(),
@@ -37,19 +37,19 @@ var x = a.object({
         (c) =>
           !c ||
           /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/.test(c),
-        { message: "Invalid phone number format" }
+        { message: "Invalid phone number format" },
       )
       .optional(),
     "textarea-1713924663412": a.string().optional(),
   }),
-  v = "Aclg6kYDtxoOAxndzqD9",
+  v = "gkChi270oYhdqT0WHW7d",
   K = ({
     onSubmit: c,
-    onError: F,
+    onError: h,
     onSuccess: y,
     defaultValues: L,
     onAction: b,
-    formProps: w,
+    formProps: x,
   }) => {
     let p = i.useRef();
     i.useEffect(() => {
@@ -59,17 +59,17 @@ var x = a.object({
       if (p.current) return p.current(n, e);
     }, []);
     return o(
-      h,
+      F,
       {
         id: v,
         defaultValues: L,
         onSubmit: S,
-        onError: F,
+        onError: h,
         onSuccess: y,
-        zodSchema: x,
+        zodSchema: w,
         mode: "onSubmit",
         children: (n) =>
-          r(h.Container, {
+          r(F.Container, {
             children: [
               o(t, {
                 control: n.control,
@@ -141,7 +141,7 @@ var x = a.object({
                           disabled: e.disabled,
                           styles: { root: {} },
                           prefixAdornment: {
-                            icon: o(R, { size: 18, color: "#000000" }),
+                            icon: o(B, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
@@ -220,7 +220,7 @@ var x = a.object({
                           styles: { root: {} },
                           disabled: e.disabled,
                           prefixAdornment: {
-                            icon: o(B, { size: 18, color: "#000000" }),
+                            icon: o(P, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
@@ -246,7 +246,7 @@ var x = a.object({
                           placeholder: "Nomor Telepon",
                           styles: { root: {} },
                           prefixAdornment: {
-                            icon: o(P, { size: 18, color: "#000000" }),
+                            icon: o(A, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
@@ -262,7 +262,7 @@ var x = a.object({
                     children: [
                       o(m, { children: "Alamat" }),
                       o(s, {
-                        children: o(A, {
+                        children: o(I, {
                           label: "Alamat",
                           name: e.name,
                           value: e.value ?? "",
@@ -277,7 +277,7 @@ var x = a.object({
                     ],
                   }),
               }),
-              r(I, {
+              r(R, {
                 styles: { root: {} },
                 children: [
                   o(C, {
@@ -305,7 +305,7 @@ var x = a.object({
             ],
           }),
       },
-      v
+      v,
     );
   };
 export { K as Form };

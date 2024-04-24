@@ -7,8 +7,8 @@ import {
   FormControl as u,
   FormMessage as i,
   Input as p,
-  PhoneNumberInput as I,
-  NumberInput as S,
+  PhoneNumberInput as S,
+  NumberInput as I,
   Button as L,
 } from "@lezzform/react";
 import {
@@ -37,7 +37,7 @@ var k = n.object({
     "input-1713880241782": n.string().optional(),
     "numberInput-1713880284230": n.coerce.number().optional(),
   }),
-  d = "9ezLauYtcI8FGXbYz6Vb",
+  d = "CG8az2pJBlpb6WG8Rujd",
   x = ({
     onSubmit: t,
     onError: F,
@@ -155,7 +155,7 @@ var k = n.object({
                     children: [
                       e(s, { children: "Nomor Telepon" }),
                       e(u, {
-                        children: e(I, {
+                        children: e(S, {
                           label: "Nomor Telepon",
                           name: o.name,
                           value: o.value ?? "",
@@ -204,7 +204,7 @@ var k = n.object({
                     children: [
                       e(s, { children: "Harga Dasar" }),
                       e(u, {
-                        children: e(S, {
+                        children: e(I, {
                           label: "Harga Dasar",
                           name: o.name,
                           value: o.value ?? 0,

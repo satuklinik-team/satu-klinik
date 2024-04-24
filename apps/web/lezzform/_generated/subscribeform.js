@@ -9,15 +9,15 @@ import {
   Input as F,
   EmailInput as h,
   PhoneNumberInput as g,
-  PasswordInput as S,
-  Divider as k,
+  PasswordInput as k,
+  Divider as L,
   TextArea as y,
-  Spacer as v,
-  Button as B,
+  Spacer as B,
+  Button as v,
 } from "@lezzform/react";
 import * as c from "react";
 import { jsx as e, jsxs as a } from "react/jsx-runtime";
-var P = r.object({
+var w = r.object({
     "input-1713864706509": r.string().optional(),
     "emailInput-1713864712957": r.string().email().optional(),
     "phoneNumberInput-1713864724181": r
@@ -28,7 +28,7 @@ var P = r.object({
         (t) =>
           !t ||
           /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/.test(t),
-        { message: "Invalid phone number format" }
+        { message: "Invalid phone number format" },
       )
       .optional(),
     "passwordInput-1713865937493": r.string().optional(),
@@ -42,37 +42,37 @@ var P = r.object({
         (t) =>
           !t ||
           /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/.test(t),
-        { message: "Invalid phone number format" }
+        { message: "Invalid phone number format" },
       )
       .optional(),
     "textarea-1713866248190": r.string().optional(),
     "input-1713866308216": r.string().optional(),
   }),
-  C = "Zqna2YLhyNfCWXhLOd42",
-  E = ({
+  z = "91YAHROwc7zIBH2BMcIe",
+  A = ({
     onSubmit: t,
     onError: p,
-    onSuccess: z,
-    defaultValues: L,
-    onAction: w,
-    formProps: N,
+    onSuccess: C,
+    defaultValues: I,
+    onAction: P,
+    formProps: R,
   }) => {
     let b = c.useRef();
     c.useEffect(() => {
       t && (b.current = t);
     }, [t]);
-    let I = c.useCallback(async (n, o) => {
+    let S = c.useCallback(async (n, o) => {
       if (b.current) return b.current(n, o);
     }, []);
     return e(
       d,
       {
-        id: C,
-        defaultValues: L,
-        onSubmit: I,
+        id: z,
+        defaultValues: I,
+        onSubmit: S,
         onError: p,
-        onSuccess: z,
-        zodSchema: P,
+        onSuccess: C,
+        zodSchema: w,
         mode: "onSubmit",
         children: (n) =>
           a(d.Container, {
@@ -154,7 +154,7 @@ var P = r.object({
                     children: [
                       e(s, { children: "Konfirmasi Password" }),
                       e(u, {
-                        children: e(S, {
+                        children: e(k, {
                           label: "Konfirmasi Password",
                           name: o.name,
                           value: o.value ?? "",
@@ -169,7 +169,7 @@ var P = r.object({
                     ],
                   }),
               }),
-              e(k.Solid, { styles: { root: {} }, size: 1, color: "#c7c7c7" }),
+              e(L.Solid, { styles: { root: {} }, size: 1, color: "#c7c7c7" }),
               e(m, {
                 control: n.control,
                 name: "input-1713866125346",
@@ -285,8 +285,8 @@ var P = r.object({
                     ],
                   }),
               }),
-              e(v, { styles: { root: {} }, size: 16 }),
-              e(B, {
+              e(B, { styles: { root: {} }, size: 16 }),
+              e(v, {
                 type: "submit",
                 className: "w-full",
                 disabled: n.formState.isSubmitting,
@@ -297,7 +297,7 @@ var P = r.object({
             ],
           }),
       },
-      C
+      z,
     );
   };
-export { E as Form };
+export { A as Form };

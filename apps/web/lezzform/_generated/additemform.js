@@ -1,6 +1,6 @@
 import { z as t } from "zod";
 import {
-  Lezzform as C,
+  Lezzform as z,
   FormField as a,
   FormItem as m,
   FormLabel as l,
@@ -8,15 +8,15 @@ import {
   FormMessage as c,
   Attachment as L,
   Dropdown as I,
-  Input as R,
+  Input as P,
   NumberInput as h,
-  TwoColumn as P,
-  Button as z,
+  TwoColumn as w,
+  Button as C,
 } from "@lezzform/react";
-import { ChevronDown as k } from "lucide-react";
+import { ChevronDown as R } from "lucide-react";
 import * as s from "react";
 import { jsx as e, jsxs as r } from "react/jsx-runtime";
-var w = t.object({
+var k = t.object({
     "attachment-1713877181989": t.string().optional(),
     "singleSelect-1713877151261": t.string().optional(),
     "input-1713876922462": t.string().optional(),
@@ -24,10 +24,10 @@ var w = t.object({
     "numberInput-1713876818843": t.coerce.number().optional(),
     "numberInput-1713876836868": t.coerce.number().optional(),
   }),
-  d = "ZCN52UR6Hn0xhSpDbRV6",
-  f = ({
+  g = "eenwuufNCyG5gSH6zfG1",
+  A = ({
     onSubmit: i,
-    onError: g,
+    onError: d,
     onSuccess: S,
     defaultValues: y,
     onAction: b,
@@ -41,17 +41,17 @@ var w = t.object({
       if (p.current) return p.current(n, o);
     }, []);
     return e(
-      C,
+      z,
       {
-        id: d,
+        id: g,
         defaultValues: y,
         onSubmit: v,
-        onError: g,
+        onError: d,
         onSuccess: S,
-        zodSchema: w,
+        zodSchema: k,
         mode: "onSubmit",
         children: (n) =>
-          r(C.Container, {
+          r(z.Container, {
             children: [
               e(a, {
                 control: n.control,
@@ -106,7 +106,7 @@ var w = t.object({
                           disabled: o.disabled,
                           styles: { root: {} },
                           suffixAdornment: {
-                            icon: e(k, { size: 18, color: "#000000" }),
+                            icon: e(R, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
@@ -122,7 +122,7 @@ var w = t.object({
                     children: [
                       e(l, { children: "Title" }),
                       e(u, {
-                        children: e(R, {
+                        children: e(P, {
                           label: "Title",
                           name: o.name,
                           value: o.value ?? "",
@@ -206,10 +206,10 @@ var w = t.object({
                     ],
                   }),
               }),
-              r(P, {
+              r(w, {
                 styles: { root: {} },
                 children: [
-                  e(z, {
+                  e(C, {
                     type: "button",
                     className: "w-full",
                     onClick: () => {
@@ -219,7 +219,7 @@ var w = t.object({
                     styles: { root: { backgroundColor: "#2E584F" } },
                     children: "Submit",
                   }),
-                  e(z, {
+                  e(C, {
                     type: "button",
                     className: "w-full",
                     onClick: () => {
@@ -234,7 +234,7 @@ var w = t.object({
             ],
           }),
       },
-      d,
+      g,
     );
   };
-export { f as Form };
+export { A as Form };
