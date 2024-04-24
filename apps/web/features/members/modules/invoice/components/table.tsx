@@ -5,7 +5,12 @@ import { Download } from "lucide-react";
 import { BaseTable } from "@/components/shared/table/base-table";
 import { Cell } from "@/components/shared/table/cell";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { MemberSection } from "@/features/members/components/shared/section";
 import type { InvoiceEntity } from "@/services/invoice/types/entity";
 
@@ -16,7 +21,7 @@ export function MembersInvoicesTable(): JSX.Element {
         columns={[
           {
             key: "invoiceNumber",
-            name: "Invoice Number",
+            name: "Nomor Invoice",
             renderCell: (row) => (
               <Cell>
                 <p>{row.invoiceNumber}</p>
@@ -25,7 +30,7 @@ export function MembersInvoicesTable(): JSX.Element {
           },
           {
             key: "amount",
-            name: "Amount",
+            name: "Jumlah",
             renderCell: (row) => (
               <Cell>
                 <p className="font-semibold">{row.amount}</p>
@@ -43,7 +48,7 @@ export function MembersInvoicesTable(): JSX.Element {
           },
           {
             key: "date",
-            name: "Date",
+            name: "Tanggal",
             renderCell: (row) => (
               <Cell>
                 <p>{row.updatedAt}</p>
@@ -55,9 +60,14 @@ export function MembersInvoicesTable(): JSX.Element {
             name: "",
             renderCell: () => (
               <Cell>
-                <Button className="h-min p-2" variant="ghost">
-                  <Download size={18} />
-                </Button>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger className="h-min p-2 rounded-lg">
+                      <Download size={18} />
+                    </TooltipTrigger>
+                    <TooltipContent>Unduh Invoice</TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               </Cell>
             ),
           },
