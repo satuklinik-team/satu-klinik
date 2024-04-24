@@ -12,7 +12,7 @@ export class PatientsService {
 
     const data = await this.prismaService.patient.create({
       data: {
-        norm: await this.generateMRID(),
+        norm: await this.generateMedicalRecordNorm(),
         nik: dto.nik,
         fullname: dto.fullname,
         parentname: dto.parentname || '-',
@@ -23,28 +23,6 @@ export class PatientsService {
         blood: dto.blood,
         birthAt: `${dto.birthAt}T00:00:00.000Z`,
         createdAt: now,
-        mr: {
-          create: {
-            doctor: '',
-            norm: await this.generateMRID(),
-            visitAt: now,
-            visitLabel: now.toLocaleDateString(),
-            vitalSign: {
-              create: {
-                height: dto.height,
-                weight: dto.weight,
-                allergic: dto.allergic,
-                systole: dto.systole,
-                diastole: dto.diastole,
-                pulse: dto.pulse,
-                respiration: dto.respiration,
-                temperature: dto.temperature,
-                pain: dto.pain,
-                visitAt: now,
-              },
-            },
-          },
-        },
       },
     });
 
@@ -70,7 +48,7 @@ export class PatientsService {
     return data;
   }
 
-  async generateMRID() {
+  async generateMedicalRecordNorm() {
     const date = new Date();
     const yearString = date.getFullYear().toString();
     const monthString = (date.getMonth() + 1).toString().padStart(2, '0');
