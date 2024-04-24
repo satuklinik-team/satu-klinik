@@ -1,39 +1,43 @@
-import { IsInt, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsInt, IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateVitalSignDto {
   @IsString()
-  @IsOptional()
-  patientId?: string;
+  @IsNotEmpty()
+  patientId: string;
 
   @IsInt()
-  @IsOptional()
-  temperature?: number;
+  @IsNotEmpty()
+  temperature: number;
 
   @IsString()
-  @IsOptional()
-  allergic?: string;
+  @IsNotEmpty()
+  allergic: string;
 
   @IsInt()
-  @IsOptional()
-  systole?: number;
+  @IsNotEmpty()
+  systole: number;
 
   @IsInt()
-  @IsOptional()
-  diastole?: number;
+  @IsNotEmpty()
+  diastole: number;
 
   @IsInt()
-  @IsOptional()
-  height?: number;
+  @IsNotEmpty()
+  height: number;
 
   @IsInt()
-  @IsOptional()
-  weight?: number;
+  @IsNotEmpty()
+  weight: number;
 
   @IsInt()
-  @IsOptional()
-  respiration?: number;
+  @IsNotEmpty()
+  respiration: number;
 
   @IsInt()
   @IsNotEmpty()
   pulse: number;
+
+  @IsString()
+  @IsNotEmpty()
+  pain: string;
 }
