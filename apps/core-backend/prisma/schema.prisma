@@ -33,7 +33,7 @@ model Patient {
 }
 
 model Patient_medical_records {
-  id           String                 @id
+  id           String                 @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   norm         String
   visitAt      DateTime               @default(now())
   visitLabel   String?
@@ -62,10 +62,10 @@ model Patient_vital_sign {
   sugar                     Decimal?                 @default(0)
   cholesterol               Decimal?                 @default(0)
   pain                      String?
-  allergic                  String?
+  allergic                  String?                  @default("n/a")
   visitAt                   DateTime?                @default(now())
   deletedAt                 DateTime?
-  patient_medical_recordsId String?
+  patient_medical_recordsId String?                  @db.Uuid
   Patient_medical_records   Patient_medical_records? @relation(fields: [patient_medical_recordsId], references: [id])
 }
 
@@ -78,7 +78,7 @@ model Patient_assessment {
   diagnose                  String                           @default("none")
   icd10                     String                           @default("-")
   deletedAt                 DateTime?
-  patient_medical_recordsId String?
+  patient_medical_recordsId String?                          @db.Uuid
   Patient_medical_records   Patient_medical_records?         @relation(fields: [patient_medical_recordsId], references: [id])
   anathomy                  Patient_assessment_on_anathomy[]
 }
@@ -101,7 +101,7 @@ model Patient_prescription {
   interval                  String?
   quantity                  Decimal
   deletedAt                 DateTime?
-  patient_medical_recordsId String?
+  patient_medical_recordsId String?                  @db.Uuid
   Patient_medical_records   Patient_medical_records? @relation(fields: [patient_medical_recordsId], references: [id])
 }
 
