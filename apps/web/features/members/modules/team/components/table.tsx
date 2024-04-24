@@ -1,25 +1,28 @@
 "use client";
 
 import { Hospital, LogIn, MessageCircle } from "lucide-react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 import { BaseTable } from "@/components/shared/table/base-table";
 import { Cell } from "@/components/shared/table/cell";
-import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { MemberSection } from "@/features/members/components/shared/section";
 import type { ClinicEntity } from "@/services/clinic/types/entity";
 import { redirectToWhatsapp } from "@/utils";
 
 export function MembersTeamsTable(): JSX.Element {
-  const router = useRouter();
-
   return (
     <MemberSection>
       <BaseTable<ClinicEntity>
         columns={[
           {
             key: "clinic",
-            name: "Clinic",
+            name: "Klinik",
             renderCell: (row) => (
               <Cell className="gap-3">
                 <div className="flex items-center justify-center w-14 h-14 shrink-0 rounded-full border-2">
@@ -37,7 +40,7 @@ export function MembersTeamsTable(): JSX.Element {
           },
           {
             key: "statistics",
-            name: "Statistics",
+            name: "Statistik",
             renderCell: (row) => (
               <Cell>
                 <div className="flex flex-col items-center gap-1">
@@ -82,24 +85,27 @@ export function MembersTeamsTable(): JSX.Element {
             name: "",
             renderCell: (row) => (
               <Cell className="gap-2">
-                <Button
-                  className="h-min p-2"
-                  onClick={() => {
-                    redirectToWhatsapp(row.phoneNumber);
-                  }}
-                  variant="ghost"
-                >
-                  <MessageCircle className="text-green-500" size={20} />
-                </Button>
-                <Button
-                  className="h-min p-2"
-                  onClick={() => {
-                    router.push(`/clinic/${row.id}`);
-                  }}
-                  variant="ghost"
-                >
-                  <LogIn className="text-primary" size={20} />
-                </Button>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger
+                      className="h-min p-2"
+                      onClick={() => {
+                        redirectToWhatsapp(row.phoneNumber);
+                      }}
+                    >
+                      <MessageCircle className="text-green-500" size={20} />
+                    </TooltipTrigger>
+                    <TooltipContent>Kontak WA</TooltipContent>
+                  </Tooltip>
+                  <Tooltip>
+                    <Link href={`/clinic/${row.id}`}>
+                      <TooltipTrigger className="h-min p-2">
+                        <LogIn className="text-primary" size={20} />
+                      </TooltipTrigger>
+                    </Link>
+                    <TooltipContent>Masuk Klinik</TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               </Cell>
             ),
           },
