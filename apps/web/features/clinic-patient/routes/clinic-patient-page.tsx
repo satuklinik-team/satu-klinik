@@ -13,6 +13,8 @@ import {
 } from "@/components/ui/tooltip";
 import { ClinicCard } from "@/features/clinic/components/ui/card";
 
+import { ClinicPatientTable } from "../components/table";
+
 export function ClinicPatientPage(): JSX.Element {
   const pathname = usePathname();
 
@@ -26,7 +28,7 @@ export function ClinicPatientPage(): JSX.Element {
       </div>
 
       <ClinicCard>
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 mb-4">
           <div className="flex flex-row gap-2">
             <TooltipProvider>
               <Tooltip>
@@ -51,6 +53,7 @@ export function ClinicPatientPage(): JSX.Element {
             placeholder="Cari berdasarkan nama, nomor rekam medis, atau tempat tinggal"
           />
         </div>
+        <ClinicPatientTable />
       </ClinicCard>
     </div>
   );
