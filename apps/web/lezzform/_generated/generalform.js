@@ -15,11 +15,11 @@ import {
   Briefcase as y,
   CreditCard as B,
   Building as R,
-  Phone as k,
+  Phone as f,
 } from "lucide-react";
 import * as c from "react";
 import { jsx as e, jsxs as a } from "react/jsx-runtime";
-var f = n.object({
+var k = n.object({
     "input-1713880139587": n.string().optional(),
     "input-1713880141267": n.string().optional(),
     "input-1713880143659": n.string().optional(),
@@ -31,20 +31,20 @@ var f = n.object({
         (t) =>
           !t ||
           /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/.test(t),
-        { message: "Invalid phone number format" }
+        { message: "Invalid phone number format" },
       )
       .optional(),
     "input-1713880241782": n.string().optional(),
     "numberInput-1713880284230": n.coerce.number().optional(),
   }),
-  d = "MEvpiI9J9NjeucsY6ekW",
+  d = "9ezLauYtcI8FGXbYz6Vb",
   x = ({
     onSubmit: t,
     onError: F,
-    onSuccess: g,
-    defaultValues: z,
-    onAction: v,
-    formProps: N,
+    onSuccess: z,
+    defaultValues: g,
+    onAction: P,
+    formProps: v,
   }) => {
     let b = c.useRef();
     c.useEffect(() => {
@@ -57,11 +57,11 @@ var f = n.object({
       h,
       {
         id: d,
-        defaultValues: z,
+        defaultValues: g,
         onSubmit: C,
         onError: F,
-        onSuccess: g,
-        zodSchema: f,
+        onSuccess: z,
+        zodSchema: k,
         mode: "onSubmit",
         children: (r) =>
           a(h.Container, {
@@ -165,7 +165,7 @@ var f = n.object({
                           placeholder: "Nomor Telepon",
                           styles: { root: {} },
                           prefixAdornment: {
-                            icon: e(k, { size: 18, color: "#000000" }),
+                            icon: e(f, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
@@ -230,7 +230,7 @@ var f = n.object({
             ],
           }),
       },
-      d
+      d,
     );
   };
 export { x as Form };

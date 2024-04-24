@@ -7,25 +7,25 @@ import {
   FormControl as u,
   FormMessage as c,
   Input as F,
-  PasswordInput as C,
-  Button as L,
+  PasswordInput as f,
+  Button as C,
 } from "@lezzform/react";
 import * as n from "react";
 import { jsx as r, jsxs as m } from "react/jsx-runtime";
-var f = a.object({
+var L = a.object({
     name: a.string().optional(),
     "name-oSh": a.string().optional(),
     "name-oSh-5Su": a.string().optional(),
     "passwordInput-1713880776428": a.string().optional(),
   }),
-  S = "rKWOZvqXp8xxrbDnIse9",
-  k = ({
+  S = "093kfmmRQTKa0nGZbTkZ",
+  R = ({
     onSubmit: i,
     onError: b,
     onSuccess: z,
     defaultValues: d,
-    onAction: w,
-    formProps: y,
+    onAction: k,
+    formProps: w,
   }) => {
     let p = n.useRef();
     n.useEffect(() => {
@@ -42,7 +42,7 @@ var f = a.object({
         onSubmit: g,
         onError: b,
         onSuccess: z,
-        zodSchema: f,
+        zodSchema: L,
         mode: "onSubmit",
         children: (e) =>
           m(h.Container, {
@@ -124,7 +124,7 @@ var f = a.object({
                     children: [
                       r(l, { children: "Password" }),
                       r(u, {
-                        children: r(C, {
+                        children: r(f, {
                           label: "Password",
                           name: o.name,
                           value: o.value ?? "",
@@ -139,7 +139,7 @@ var f = a.object({
                     ],
                   }),
               }),
-              r(L, {
+              r(C, {
                 type: "submit",
                 className: "w-full",
                 disabled: e.formState.isSubmitting,
@@ -150,7 +150,7 @@ var f = a.object({
             ],
           }),
       },
-      S
+      S,
     );
   };
-export { k as Form };
+export { R as Form };
