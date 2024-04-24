@@ -10,7 +10,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { ClinicCard } from "@/features/clinic/components/ui/card";
-import { Form as AddPatientForm } from "@/lezzform/_generated/addpatientform";
+import { Form as AddPatientForm } from "@/lezzform/_generated/addpatientwithoutvitalform";
 
 export function ClinicNewPatientPage(): JSX.Element {
   const pathname = usePathname();

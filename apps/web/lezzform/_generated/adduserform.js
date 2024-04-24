@@ -11,14 +11,14 @@ import {
   TextArea as y,
   Dropdown as k,
   PasswordInput as h,
-  Spacer as R,
-  TwoColumn as I,
+  Spacer as I,
+  TwoColumn as R,
   Button as z,
 } from "@lezzform/react";
-import { UserRound as A, Mail as B } from "lucide-react";
+import { UserRound as P, Mail as A } from "lucide-react";
 import * as c from "react";
 import { jsx as e, jsxs as r } from "react/jsx-runtime";
-var P = a.object({
+var B = a.object({
     name: a.string().optional(),
     "emailInput-1713871204480": a.string().email().optional(),
     "input-1713871261634": a.string().optional(),
@@ -27,8 +27,8 @@ var P = a.object({
     "passwordInput-1713871400734": a.string().optional(),
     "passwordInput-1713871418205": a.string().optional(),
   }),
-  C = "7985HgGER9ABwFxzTuk4",
-  O = ({
+  C = "zWEJ2JEi30cWYZqEjtOw",
+  T = ({
     onSubmit: i,
     onError: g,
     onSuccess: w,
@@ -51,7 +51,7 @@ var P = a.object({
         onSubmit: L,
         onError: g,
         onSuccess: w,
-        zodSchema: P,
+        zodSchema: B,
         mode: "onSubmit",
         children: (n) =>
           r(F.Container, {
@@ -74,7 +74,7 @@ var P = a.object({
                           disabled: o.disabled,
                           styles: { root: {} },
                           prefixAdornment: {
-                            icon: e(A, { size: 18, color: "#000000" }),
+                            icon: e(P, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
@@ -100,7 +100,7 @@ var P = a.object({
                           disabled: o.disabled,
                           styles: { root: {} },
                           prefixAdornment: {
-                            icon: e(B, { size: 18, color: "#000000" }),
+                            icon: e(A, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
@@ -228,8 +228,8 @@ var P = a.object({
                     ],
                   }),
               }),
-              e(R, { styles: { root: {} }, size: 16 }),
-              r(I, {
+              e(I, { styles: { root: {} }, size: 16 }),
+              r(R, {
                 styles: { root: {} },
                 children: [
                   e(z, {
@@ -260,4 +260,4 @@ var P = a.object({
       C
     );
   };
-export { O as Form };
+export { T as Form };

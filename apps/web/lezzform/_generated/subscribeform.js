@@ -17,7 +17,7 @@ import {
 } from "@lezzform/react";
 import * as c from "react";
 import { jsx as e, jsxs as a } from "react/jsx-runtime";
-var w = r.object({
+var P = r.object({
     "input-1713864706509": r.string().optional(),
     "emailInput-1713864712957": r.string().email().optional(),
     "phoneNumberInput-1713864724181": r
@@ -48,14 +48,14 @@ var w = r.object({
     "textarea-1713866248190": r.string().optional(),
     "input-1713866308216": r.string().optional(),
   }),
-  z = "ru95841zLrgu1LgwVKRl",
+  C = "Zqna2YLhyNfCWXhLOd42",
   E = ({
     onSubmit: t,
     onError: p,
-    onSuccess: C,
+    onSuccess: z,
     defaultValues: L,
-    onAction: P,
-    formProps: R,
+    onAction: w,
+    formProps: N,
   }) => {
     let b = c.useRef();
     c.useEffect(() => {
@@ -67,12 +67,12 @@ var w = r.object({
     return e(
       d,
       {
-        id: z,
+        id: C,
         defaultValues: L,
         onSubmit: I,
         onError: p,
-        onSuccess: C,
-        zodSchema: w,
+        onSuccess: z,
+        zodSchema: P,
         mode: "onSubmit",
         children: (n) =>
           a(d.Container, {
@@ -297,7 +297,7 @@ var w = r.object({
             ],
           }),
       },
-      z
+      C
     );
   };
 export { E as Form };

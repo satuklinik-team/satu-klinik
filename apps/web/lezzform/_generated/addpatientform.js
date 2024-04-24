@@ -11,16 +11,16 @@ import {
   DatePicker as k,
   PhoneNumberInput as R,
   TextArea as y,
-  Divider as x,
+  Divider as A,
   TwoColumn as d,
-  ThreeColumn as A,
+  ThreeColumn as T,
   Button as I,
   NumberInput as c,
 } from "@lezzform/react";
 import {
   CreditCard as B,
   User as P,
-  Calendar as T,
+  Calendar as x,
   Phone as w,
 } from "lucide-react";
 import * as p from "react";
@@ -54,14 +54,14 @@ var D = a.object({
     "numberInput-1713874973962": a.coerce.number().optional(),
     "textarea-1713874840335": a.string().optional(),
   }),
-  z = "c9rJ7EiPbNFVGCBfluxY",
-  J = ({
+  z = "Tx8JiVz5qQa6FhmQ0bt1",
+  V = ({
     onSubmit: b,
     onError: g,
     onSuccess: L,
     defaultValues: S,
     onAction: i,
-    formProps: E,
+    formProps: K,
   }) => {
     let F = p.useRef();
     p.useEffect(() => {
@@ -232,7 +232,7 @@ var D = a.object({
                           styles: { root: {} },
                           disabled: o.disabled,
                           prefixAdornment: {
-                            icon: e(T, { size: 18, color: "#000000" }),
+                            icon: e(x, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
@@ -289,7 +289,7 @@ var D = a.object({
                     ],
                   }),
               }),
-              e(x.Solid, { styles: { root: {} }, size: 2, color: "#E8E8E8" }),
+              e(A.Solid, { styles: { root: {} }, size: 2, color: "#E8E8E8" }),
               n(d, {
                 styles: { root: {} },
                 children: [
@@ -415,7 +415,7 @@ var D = a.object({
                   }),
                 ],
               }),
-              n(A, {
+              n(T, {
                 styles: { root: {} },
                 children: [
                   e(l, {
@@ -522,9 +522,7 @@ var D = a.object({
                       i?.["button-1713872929774"] &&
                         i?.["button-1713872929774"](r);
                     },
-                    styles: {
-                      root: { flex: 1, backgroundColor: "rgb(239, 68, 68)" },
-                    },
+                    styles: { root: { backgroundColor: "rgb(239, 68, 68)" } },
                     children: "Batalkan",
                   }),
                   e(I, {
@@ -534,7 +532,7 @@ var D = a.object({
                       i?.["button-1713872927911"] &&
                         i?.["button-1713872927911"](r);
                     },
-                    styles: { root: { flex: 1, backgroundColor: "#2E584F" } },
+                    styles: { root: { backgroundColor: "#2E584F" } },
                     children: "Daftar",
                   }),
                 ],
@@ -545,4 +543,4 @@ var D = a.object({
       z
     );
   };
-export { J as Form };
+export { V as Form };
