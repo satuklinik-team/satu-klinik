@@ -33,7 +33,9 @@ export function MembersInvoicesTable(): JSX.Element {
             name: "Jumlah",
             renderCell: (row) => (
               <Cell>
-                <p className="font-semibold">{row.amount}</p>
+                <p className="font-semibold">
+                  Rp {row.amount.toLocaleString()}
+                </p>
               </Cell>
             ),
           },
