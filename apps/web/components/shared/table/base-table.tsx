@@ -57,7 +57,7 @@ export function BaseTable<T extends object>({
           cell: ({ row }) => {
             return Cell(row.original);
           },
-        }
+        },
       );
     }) as ColumnDef<T>[];
 
@@ -89,6 +89,11 @@ export function BaseTable<T extends object>({
       onPaginationChange: (paginationState) => paginationState,
     });
 
+  const firstRecordIndex = activePageIndex * (pagination?.limit ?? 0) + 1;
+
+  const lastRecordIndex =
+    activePageIndex * (pagination?.limit ?? 0) + (pagination?.limit ?? 0);
+
   return (
     <div>
       <div className="flex flex-col w-full">
@@ -110,7 +115,7 @@ export function BaseTable<T extends object>({
                         {Boolean(!header.isPlaceholder) &&
                           flexRender(
                             header.column.columnDef.header,
-                            header.getContext()
+                            header.getContext(),
                           )}
                       </TableHead>
                     ))}
@@ -129,7 +134,7 @@ export function BaseTable<T extends object>({
                         >
                           {flexRender(
                             cell.column.columnDef.cell,
-                            cell.getContext()
+                            cell.getContext(),
                           )}
                         </TableCell>
                       ))}
@@ -142,15 +147,22 @@ export function BaseTable<T extends object>({
         </div>
       </div>
 
-      {pagination ? (
-        <Pagination
-          isCanNextPage={getCanNextPage()}
-          isCanPreviousPage={getCanPreviousPage()}
-          onChange={onChangePage}
-          pageCount={totalPage}
-          pageIndex={activePageIndex}
-        />
-      ) : null}
+      {Boolean(pagination) && (
+        <div className="flex flex-row items-center justify-between">
+          <p className="text-sm shrink-0">
+            Showing <span className="font-semibold">{firstRecordIndex}</span> -{" "}
+            <span className="font-semibold"> {lastRecordIndex}</span> from{" "}
+            <span className="font-semibold">{totalRows}</span> data
+          </p>
+          <Pagination
+            isCanNextPage={getCanNextPage()}
+            isCanPreviousPage={getCanPreviousPage()}
+            onChange={onChangePage}
+            pageCount={totalPage}
+            pageIndex={activePageIndex}
+          />
+        </div>
+      )}
     </div>
   );
 }
