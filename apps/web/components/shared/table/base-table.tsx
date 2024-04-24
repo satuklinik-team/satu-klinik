@@ -1,10 +1,6 @@
 "use client";
 
-import type {
-  ColumnDef,
-  PaginationState,
-  SortingState,
-} from "@tanstack/react-table";
+import type { ColumnDef, SortingState } from "@tanstack/react-table";
 import {
   createColumnHelper,
   flexRender,
@@ -22,22 +18,26 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import type { Column } from "@/types";
+import { usePagination } from "@/hooks/use-pagination";
+import type { Column, Pagination as PaginationType } from "@/types";
 
 import { HeaderCell } from "./header-cell";
 import { LoadingRows } from "./loading-rows";
+import { Pagination } from "./pagination";
 
 interface BaseTableProps {
   isLoading?: boolean;
   columns: Column[];
   rows: Record<string, unknown>[];
-  pagination?: PaginationState;
+  totalRows?: number;
+  pagination?: PaginationType;
 }
 
 export function BaseTable({
   isLoading = false,
   columns: rawColumns,
   rows,
+  totalRows = 0,
   pagination,
 }: BaseTableProps): JSX.Element {
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -59,6 +59,12 @@ export function BaseTable({
     return currentColumns;
   }, [columnHelper, rawColumns]);
 
+  const { activePageIndex, onChangePage, totalPage } = usePagination({
+    skip: pagination?.skip ?? 0,
+    limit: pagination?.limit ?? 50,
+    totalRows,
+  });
+
   const { getHeaderGroups, getRowModel, getCanPreviousPage, getCanNextPage } =
     useReactTable({
       columns,
@@ -71,8 +77,8 @@ export function BaseTable({
       state: {
         sorting,
         pagination: {
-          pageIndex: pagination?.pageIndex || 0,
-          pageSize: pagination?.pageSize || 50,
+          pageIndex: activePageIndex || 0,
+          pageSize: pagination?.limit || 50,
         },
       },
       onPaginationChange: (paginationState) => paginationState,
@@ -85,7 +91,7 @@ export function BaseTable({
           {Boolean(isLoading) && (
             <LoadingRows
               totalColumn={columns.length}
-              totalRow={pagination?.pageSize}
+              totalRow={pagination?.limit}
             />
           )}
 
@@ -133,15 +139,16 @@ export function BaseTable({
           )}
         </div>
       </div>
-      {/* {pagination && (
+
+      {pagination ? (
         <Pagination
           isCanNextPage={getCanNextPage()}
           isCanPreviousPage={getCanPreviousPage()}
+          onChange={onChangePage}
           pageCount={totalPage}
           pageIndex={activePageIndex}
-          onChange={onChangePage}
         />
-      )} */}
+      ) : null}
     </div>
   );
 }

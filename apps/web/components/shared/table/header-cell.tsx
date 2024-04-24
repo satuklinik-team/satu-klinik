@@ -19,12 +19,16 @@ export function HeaderCell({
 }: HeaderCellProps): JSX.Element {
   const sort = headerColumn.getIsSorted();
 
+  const cellClassName = cn(
+    "flex items-center text-foreground bg-mmuted-foreground cursor-default",
+    className
+  );
+
+  if (!name) return <Cell className={cellClassName} {...rest} />;
+
   return (
     <Cell
-      className={cn(
-        "flex items-center text-foreground bg-mmuted-foreground cursor-default",
-        className
-      )}
+      className={cellClassName}
       onClick={() => {
         headerColumn.toggleSorting(undefined, true);
       }}
