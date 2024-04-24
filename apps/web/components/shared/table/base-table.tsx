@@ -25,36 +25,41 @@ import { HeaderCell } from "./header-cell";
 import { LoadingRows } from "./loading-rows";
 import { Pagination } from "./pagination";
 
-interface BaseTableProps {
+interface BaseTableProps<T extends object> {
   isLoading?: boolean;
-  columns: Column[];
-  rows: Record<string, unknown>[];
+  columns: Column<T>[];
+  rows: T[];
   totalRows?: number;
   pagination?: PaginationType;
 }
 
-export function BaseTable({
+export function BaseTable<T extends object>({
   isLoading = false,
   columns: rawColumns,
   rows,
   totalRows = 0,
   pagination,
-}: BaseTableProps): JSX.Element {
+}: BaseTableProps<T>): JSX.Element {
   const [sorting, setSorting] = useState<SortingState>([]);
 
-  const columnHelper = createColumnHelper<Record<string, unknown>>();
+  const columnHelper = createColumnHelper<T>();
 
   const columns = useMemo(() => {
     const currentColumns = rawColumns.map((column) => {
       const Cell = column.renderCell;
 
-      return columnHelper.accessor((row) => row[column.key], {
-        id: column.key,
-        header: ({ column: headerColumn }) =>
-          HeaderCell({ headerColumn, name: column.name }),
-        cell: Cell,
-      });
-    }) as ColumnDef<Record<string, unknown>>[];
+      return columnHelper.accessor(
+        (row) => (row as Record<string, unknown>)[column.key],
+        {
+          id: column.key,
+          header: ({ column: headerColumn }) =>
+            HeaderCell({ headerColumn, name: column.name }),
+          cell: ({ row }) => {
+            return Cell(row.original);
+          },
+        }
+      );
+    }) as ColumnDef<T>[];
 
     return currentColumns;
   }, [columnHelper, rawColumns]);
@@ -101,10 +106,7 @@ export function BaseTable({
                 {getHeaderGroups().map((headerGroup) => (
                   <TableRow key={headerGroup.id}>
                     {headerGroup.headers.map((header) => (
-                      <TableHead
-                        className="h-10 p-0 border cursor-pointer"
-                        key={header.id}
-                      >
+                      <TableHead className="h-10 p-0 border" key={header.id}>
                         {Boolean(!header.isPlaceholder) &&
                           flexRender(
                             header.column.columnDef.header,
@@ -122,7 +124,7 @@ export function BaseTable({
                     <TableRow key={row.id}>
                       {row.getVisibleCells().map((cell) => (
                         <TableCell
-                          className="max-w-40 h-10 p-0 border"
+                          className="max-w-40 min-h-10 h-min p-0 border"
                           key={cell.id}
                         >
                           {flexRender(
