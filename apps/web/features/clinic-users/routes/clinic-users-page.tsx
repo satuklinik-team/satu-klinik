@@ -11,6 +11,8 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
+import { ClinicUsersTable } from "../components/table";
+
 export function ClinicUsersPage(): JSX.Element {
   const pathname = usePathname();
 
@@ -33,6 +35,8 @@ export function ClinicUsersPage(): JSX.Element {
           <TooltipContent>Tambah User Baru</TooltipContent>
         </Tooltip>
       </TooltipProvider>
+
+      <ClinicUsersTable />
     </div>
   );
 }
