@@ -9,6 +9,7 @@ import {
   UserNotFoundException,
 } from 'src/exceptions';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { ClinicsService } from 'src/clinics/clinics.service';
 
 @Injectable()
 export class AuthService {
@@ -16,16 +17,13 @@ export class AuthService {
     private tokenService: TokenService,
     private userService: UsersService,
     private cryptoService: CryptoService,
+    private clinicsService: ClinicsService,
     private prismaService: PrismaService,
   ) {}
 
   async register(dto: RegisterDto) {
-    const user = await this.userService.create({
-      email: dto.email,
-      name: dto.name,
-      password: dto.password,
-      address: dto.address,
-    });
+    const clinic = await this.clinicsService.create(dto);
+    const user = await this.userService.create(dto, clinic.id);
     const token = await this.tokenService.getAuthToken({ sub: user.id });
 
     return { user: exclude(user, ['password']), token };

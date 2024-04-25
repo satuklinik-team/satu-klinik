@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { CryptoService } from 'src/crypto/crypto.service';
 import { EmailUsedException } from 'src/exceptions';
 import { CountUsersDto } from './dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { RegisterDto } from 'src/auth/dto';
+import { Role } from '@prisma/client';
 
 @Injectable()
 export class UsersService {
@@ -13,18 +14,17 @@ export class UsersService {
     private prismaService: PrismaService,
   ) {}
 
-  async create(dto: CreateUserDto) {
+  async create(dto: RegisterDto, clinicId: string) {
     if (await this._isEmailUsed(dto.email)) throw new EmailUsedException();
 
     const password = await this._getHashedPassword(dto.password);
     const data = await this.prismaService.users.create({
       data: {
+        fullname: dto.fullname,
         email: dto.email,
-        fullname: dto.name,
-        password,
-        address: dto.address,
-        roles: 'ROLE_USER',
-        phone: '62',
+        password: password,
+        roles: Role.OWNER,
+        clinicsId: clinicId,
       },
     });
 
