@@ -312,17 +312,17 @@ model Payments {
 }
 
 model Accounts {
-  id            String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  usersId       String?     @db.Uuid
+  id            String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  usersId       String?      @db.Uuid
   taxId         String?
-  isSuperAdmin  Boolean     @default(true)
-  isActive      Boolean     @default(false)
-  verification  String      @default("na")
-  createdAt     DateTime?   @default(now()) @db.Timestamptz(6)
+  isSuperAdmin  Boolean      @default(true)
+  isActive      Boolean      @default(false)
+  verification  String       @default("na")
+  createdAt     DateTime?    @default(now()) @db.Timestamptz(6)
   deletedAt     DateTime?
-  membershipsId String
-  subscription  Memberships @relation(fields: [membershipsId], references: [id])
-  profile       Users?      @relation(fields: [usersId], references: [id])
+  membershipsId String?
+  subscription  Memberships? @relation(fields: [membershipsId], references: [id])
+  profile       Users?       @relation(fields: [usersId], references: [id])
   payments      Payments[]
   Clinics       Clinics[]
 }

@@ -10,20 +10,25 @@ import {
 } from 'src/exceptions';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { ClinicsService } from 'src/clinics/clinics.service';
+import { AccountsService } from 'src/accounts/accounts.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private tokenService: TokenService,
-    private userService: UsersService,
+    private usersService: UsersService,
     private cryptoService: CryptoService,
     private clinicsService: ClinicsService,
     private prismaService: PrismaService,
+    private accountsService: AccountsService,
   ) {}
 
   async register(dto: RegisterDto) {
-    const clinic = await this.clinicsService.create(dto);
-    const user = await this.userService.create(dto, clinic.id);
+    let user = await this.usersService.create(dto);
+    const account = await this.accountsService.create(user.id);
+    const clinic = await this.clinicsService.create(dto, account.id);
+    user = await this.usersService.changeClinicId(user.id, clinic.id);
+
     const token = await this.tokenService.getAuthToken({ sub: user.id });
 
     return { user: exclude(user, ['password']), token };
@@ -56,7 +61,7 @@ export class AuthService {
   }
 
   private async _isUserNotFound(email: string) {
-    const userCount = await this.userService.count({ where: { email } });
+    const userCount = await this.usersService.count({ where: { email } });
     return !userCount;
   }
 

@@ -14,13 +14,14 @@ export class ClinicsService {
     private readonly satuSehatOrganizationService: SatusehatOrganizationService,
   ) {}
 
-  async create(dto: RegisterDto) {
+  async create(dto: RegisterDto, accountsId: string) {
     const data = await this.prismaService.clinics.create({
       data: {
         name: dto.clinicName,
         email: dto.clinicEmail,
         address: dto.clinicAddress,
         phone: dto.clinicPhone,
+        accountsId,
       },
     });
 

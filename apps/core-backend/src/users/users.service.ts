@@ -14,7 +14,7 @@ export class UsersService {
     private prismaService: PrismaService,
   ) {}
 
-  async create(dto: RegisterDto, clinicId: string) {
+  async create(dto: RegisterDto) {
     if (await this._isEmailUsed(dto.email)) throw new EmailUsedException();
 
     const password = await this._getHashedPassword(dto.password);
@@ -24,7 +24,19 @@ export class UsersService {
         email: dto.email,
         password: password,
         roles: Role.OWNER,
-        clinicsId: clinicId,
+      },
+    });
+
+    return data;
+  }
+
+  async changeClinicId(usersId: string, clinicsId: string) {
+    const data = await this.prismaService.users.update({
+      where: {
+        id: usersId,
+      },
+      data: {
+        clinicsId,
       },
     });
 
