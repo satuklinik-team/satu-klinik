@@ -2,9 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { UpdateClinicDto } from './dto/update-clinic.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { SatusehatOrganizationService } from 'src/satusehat-organization/satusehat-organization.service';
-import { RegisterDto } from 'src/auth/dto';
 import { CreateClinicDto } from './dto/create-clinic.dto';
 import { ServiceContext } from 'src/utils/types';
+import { GetClinicsByAccountsId } from './dto/get-clinics-by-accounts-id.dto';
 
 @Injectable()
 export class ClinicsService {
@@ -22,6 +22,44 @@ export class ClinicsService {
         address: dto.clinicAddress,
         phone: dto.clinicPhone,
         accountsId: dto.accountsId,
+      },
+    });
+
+    return data;
+  }
+
+  async getClinicsByUsersId(dto: GetClinicsByAccountsId) {
+    const accounts = await this.prismaService.accounts.findFirst({
+      where: {
+        usersId: dto.usersId,
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    const skip = (dto.page - 1) * dto.pageSize;
+    const take = dto.pageSize;
+    const data = await this.prismaService.clinics.findMany({
+      where: {
+        accountsId: accounts.id,
+      },
+      skip,
+      take,
+      select: {
+        name: true,
+        address: true,
+        phone: true,
+        email: true,
+        _count: {
+          select: {
+            Pharmacy_Task: true,
+            users: true,
+            Patient: true,
+            Category: true,
+            Poli: true,
+          },
+        },
       },
     });
 
