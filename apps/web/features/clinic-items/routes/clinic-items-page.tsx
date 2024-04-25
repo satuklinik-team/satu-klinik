@@ -21,6 +21,8 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
+import { ClinicItemCard } from "../components/shared/card";
+
 export function ClinicItemsPage(): JSX.Element {
   const pathname = usePathname();
 
@@ -33,7 +35,7 @@ export function ClinicItemsPage(): JSX.Element {
         <p className="text-muted-foreground">Manage inventories</p>
       </div>
 
-      <div className="flex flex-row justify-between items-center mb-2">
+      <div className="flex flex-row justify-between items-center mb-6">
         <div className="hidden sm:hidden md:flex lg:flex xl:flex 2xl:flex flex-row items-center flex-wrap gap-2">
           <Badge>All</Badge>
           <Badge variant="outline">Main Service</Badge>
@@ -68,6 +70,63 @@ export function ClinicItemsPage(): JSX.Element {
             <TooltipContent>Tambah Item Baru</TooltipContent>
           </Tooltip>
         </TooltipProvider>
+      </div>
+
+      <div className="grid 2xl:grid-cols-5 xl:grid-cols-5 lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-4">
+        <ClinicItemCard
+          category=""
+          discount={50}
+          id="1"
+          imageUrl=""
+          price={100000}
+          quantity={4}
+          title="My Item 1"
+        />
+        <ClinicItemCard
+          category=""
+          discount={20}
+          id="2"
+          imageUrl=""
+          price={200000}
+          quantity={4}
+          title="My Item 2"
+        />
+        <ClinicItemCard
+          category=""
+          discount={40}
+          id="3"
+          imageUrl=""
+          price={1000000}
+          quantity={4}
+          title="My Item 3"
+        />
+        <ClinicItemCard
+          category=""
+          discount={10}
+          id="4"
+          imageUrl=""
+          price={200000}
+          quantity={4}
+          title="My Item 4"
+        />
+        <ClinicItemCard
+          category=""
+          discount={70}
+          id="5"
+          imageUrl=""
+          price={150000}
+          quantity={4}
+          title="My Item 5"
+        />
+        <ClinicItemCard
+          category=""
+          discount={50}
+          id="6"
+          imageUrl=""
+          price={100000}
+          quantity={4}
+          title="My Item 6"
+        />
       </div>
     </div>
   );
