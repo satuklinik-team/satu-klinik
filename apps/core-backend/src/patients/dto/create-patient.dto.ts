@@ -8,8 +8,8 @@ import {
 
 export class CreatePatientDto {
   @IsString()
-  @IsOptional()
-  nik?: string;
+  @IsNotEmpty()
+  nik: string;
 
   @IsString()
   @IsNotEmpty()
@@ -32,46 +32,14 @@ export class CreatePatientDto {
   age?: number;
 
   @IsString()
-  @IsOptional()
-  sex?: string;
+  @IsNotEmpty()
+  sex: string;
 
   @IsString()
-  @IsOptional()
-  blood?: string;
+  @IsNotEmpty()
+  blood: string;
 
   @IsDateString()
-  @IsOptional()
-  birthAt?: string;
-
-  @IsInt()
-  @IsOptional()
-  temperature?: number;
-
-  @IsString()
-  @IsOptional()
-  allergic?: string;
-
-  @IsInt()
-  @IsOptional()
-  systole?: number;
-
-  @IsInt()
-  @IsOptional()
-  diastole?: number;
-
-  @IsInt()
-  @IsOptional()
-  height?: number;
-
-  @IsInt()
-  @IsOptional()
-  weight?: number;
-
-  @IsInt()
-  @IsOptional()
-  respiration?: number;
-
-  @IsInt()
   @IsNotEmpty()
-  pulse: number;
+  birthAt: string;
 }
