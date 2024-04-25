@@ -1,6 +1,8 @@
 "use client";
 
 import { ClinicCard } from "@/features/clinic/components/ui/card";
+
+import { ClinicDoctorTable } from "../components/table";
 // import { ClinicServicesCard } from "@/features/clinic/components/ui/services-card";
 
 export function ClinicDoctorPage(): JSX.Element {
@@ -39,7 +41,7 @@ export function ClinicDoctorPage(): JSX.Element {
         </ClinicCard>
       </div>
 
-      {/* <ClinicServicesCard /> */}
+      <ClinicDoctorTable />
     </div>
   );
 }
