@@ -6,6 +6,8 @@ import { CountUsersDto } from './dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { RegisterDto } from 'src/auth/dto';
 import { Role } from '@prisma/client';
+import { ChangeClinicIdDto } from './dto/change-clinic-id.dto';
+import { ServiceContext } from 'src/utils/types';
 
 @Injectable()
 export class UsersService {
@@ -14,11 +16,12 @@ export class UsersService {
     private prismaService: PrismaService,
   ) {}
 
-  async create(dto: RegisterDto) {
+  async create(dto: RegisterDto, context?: ServiceContext) {
     if (await this._isEmailUsed(dto.email)) throw new EmailUsedException();
 
     const password = await this._getHashedPassword(dto.password);
-    const data = await this.prismaService.users.create({
+    const prisma = this._initPrisma(context.tx);
+    const data = await prisma.users.create({
       data: {
         fullname: dto.fullname,
         email: dto.email,
@@ -30,13 +33,14 @@ export class UsersService {
     return data;
   }
 
-  async changeClinicId(usersId: string, clinicsId: string) {
-    const data = await this.prismaService.users.update({
+  async changeClinicId(dto: ChangeClinicIdDto, context?: ServiceContext) {
+    const prisma = this._initPrisma(context.tx);
+    const data = await prisma.users.update({
       where: {
-        id: usersId,
+        id: dto.usersId,
       },
       data: {
-        clinicsId,
+        clinicsId: dto.clinicsId,
       },
     });
 
@@ -75,5 +79,12 @@ export class UsersService {
   private async _getHashedPassword(password: string) {
     const hashedPassword = await this.cryptoService.hash(password);
     return hashedPassword;
+  }
+
+  private _initPrisma(tx?: ServiceContext['tx']) {
+    if (tx) {
+      return tx;
+    }
+    return this.prismaService;
   }
 }
