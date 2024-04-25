@@ -3,30 +3,30 @@ import type { LezzformReturn, LezzformProps } from "@lezzform/react";
 import * as React from "react";
 declare const zodFormSchema: z.ZodObject<
   {
-    "attachment-1713877181989": z.ZodOptional<z.ZodString>;
-    "singleSelect-1713877151261": z.ZodOptional<z.ZodString>;
-    "input-1713876922462": z.ZodOptional<z.ZodString>;
-    "numberInput-1713876810979": z.ZodOptional<z.ZodNumber>;
-    "numberInput-1713876818843": z.ZodOptional<z.ZodNumber>;
-    "numberInput-1713876836868": z.ZodOptional<z.ZodNumber>;
+    "attachment-1713877181989": z.ZodString;
+    category: z.ZodString;
+    title: z.ZodString;
+    price: z.ZodOptional<z.ZodNumber>;
+    quantity: z.ZodNumber;
+    discount: z.ZodOptional<z.ZodNumber>;
   },
   "strip",
   z.ZodTypeAny,
   {
+    title?: string;
+    category?: string;
     "attachment-1713877181989"?: string;
-    "singleSelect-1713877151261"?: string;
-    "input-1713876922462"?: string;
-    "numberInput-1713876810979"?: number;
-    "numberInput-1713876818843"?: number;
-    "numberInput-1713876836868"?: number;
+    price?: number;
+    quantity?: number;
+    discount?: number;
   },
   {
+    title?: string;
+    category?: string;
     "attachment-1713877181989"?: string;
-    "singleSelect-1713877151261"?: string;
-    "input-1713876922462"?: string;
-    "numberInput-1713876810979"?: number;
-    "numberInput-1713876818843"?: number;
-    "numberInput-1713876836868"?: number;
+    price?: number;
+    quantity?: number;
+    discount?: number;
   }
 >;
 export type FormSchema = z.infer<typeof zodFormSchema>;

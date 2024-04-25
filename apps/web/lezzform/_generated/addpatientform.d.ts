@@ -4,64 +4,62 @@ import * as React from "react";
 declare const zodFormSchema: z.ZodObject<
   {
     name: z.ZodOptional<z.ZodString>;
-    "input-1713872945718": z.ZodOptional<z.ZodString>;
-    "input-1713873050433": z.ZodOptional<z.ZodString>;
-    "singleSelect-1713873093059": z.ZodOptional<z.ZodString>;
-    "singleSelect-1713873093059-92I": z.ZodOptional<z.ZodString>;
-    "datepicker-1713873339995": z.ZodOptional<z.ZodDate>;
-    "phoneNumberInput-1713873372826": z.ZodOptional<
-      z.ZodEffects<z.ZodString, string, string>
-    >;
-    "textarea-1713873590984": z.ZodOptional<z.ZodString>;
-    "numberInput-1713874892095": z.ZodOptional<z.ZodNumber>;
-    "numberInput-1713874894502": z.ZodOptional<z.ZodNumber>;
-    "input-1713874751309": z.ZodOptional<z.ZodString>;
-    "numberInput-1713874946578": z.ZodOptional<z.ZodNumber>;
-    "numberInput-1713874949328": z.ZodOptional<z.ZodNumber>;
-    "numberInput-1713874970522": z.ZodOptional<z.ZodNumber>;
-    "numberInput-1713874972041": z.ZodOptional<z.ZodNumber>;
-    "numberInput-1713874973962": z.ZodOptional<z.ZodNumber>;
-    "textarea-1713874840335": z.ZodOptional<z.ZodString>;
+    nik: z.ZodString;
+    fullname: z.ZodString;
+    sex: z.ZodString;
+    blood: z.ZodString;
+    birthAt: z.ZodDate;
+    phone: z.ZodEffects<z.ZodString, string, string>;
+    address: z.ZodString;
+    height: z.ZodNumber;
+    weight: z.ZodNumber;
+    allergic: z.ZodString;
+    systole: z.ZodNumber;
+    diastole: z.ZodNumber;
+    pulse: z.ZodNumber;
+    respiration: z.ZodNumber;
+    temperature: z.ZodNumber;
+    pain: z.ZodString;
   },
   "strip",
   z.ZodTypeAny,
   {
+    height?: number;
+    address?: string;
     name?: string;
-    "input-1713872945718"?: string;
-    "input-1713873050433"?: string;
-    "singleSelect-1713873093059"?: string;
-    "singleSelect-1713873093059-92I"?: string;
-    "datepicker-1713873339995"?: Date;
-    "phoneNumberInput-1713873372826"?: string;
-    "textarea-1713873590984"?: string;
-    "numberInput-1713874892095"?: number;
-    "numberInput-1713874894502"?: number;
-    "input-1713874751309"?: string;
-    "numberInput-1713874946578"?: number;
-    "numberInput-1713874949328"?: number;
-    "numberInput-1713874970522"?: number;
-    "numberInput-1713874972041"?: number;
-    "numberInput-1713874973962"?: number;
-    "textarea-1713874840335"?: string;
+    weight?: number;
+    nik?: string;
+    fullname?: string;
+    sex?: string;
+    blood?: string;
+    birthAt?: Date;
+    phone?: string;
+    allergic?: string;
+    systole?: number;
+    diastole?: number;
+    pulse?: number;
+    respiration?: number;
+    temperature?: number;
+    pain?: string;
   },
   {
+    height?: number;
+    address?: string;
     name?: string;
-    "input-1713872945718"?: string;
-    "input-1713873050433"?: string;
-    "singleSelect-1713873093059"?: string;
-    "singleSelect-1713873093059-92I"?: string;
-    "datepicker-1713873339995"?: Date;
-    "phoneNumberInput-1713873372826"?: string;
-    "textarea-1713873590984"?: string;
-    "numberInput-1713874892095"?: number;
-    "numberInput-1713874894502"?: number;
-    "input-1713874751309"?: string;
-    "numberInput-1713874946578"?: number;
-    "numberInput-1713874949328"?: number;
-    "numberInput-1713874970522"?: number;
-    "numberInput-1713874972041"?: number;
-    "numberInput-1713874973962"?: number;
-    "textarea-1713874840335"?: string;
+    weight?: number;
+    nik?: string;
+    fullname?: string;
+    sex?: string;
+    blood?: string;
+    birthAt?: Date;
+    phone?: string;
+    allergic?: string;
+    systole?: number;
+    diastole?: number;
+    pulse?: number;
+    respiration?: number;
+    temperature?: number;
+    pain?: string;
   }
 >;
 export type FormSchema = z.infer<typeof zodFormSchema>;

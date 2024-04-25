@@ -1,68 +1,68 @@
 import { z as a } from "zod";
 import {
-  Lezzform as d,
+  Lezzform as p,
   FormField as t,
   FormItem as l,
   FormLabel as m,
   FormControl as s,
   FormMessage as u,
   Input as F,
-  EmailInput as v,
-  TextArea as y,
-  Dropdown as k,
+  EmailInput as S,
+  TextArea as v,
+  Dropdown as y,
   PasswordInput as h,
-  Spacer as I,
-  TwoColumn as P,
+  Spacer as P,
+  TwoColumn as k,
   Button as z,
 } from "@lezzform/react";
-import { UserRound as R, Mail as A } from "lucide-react";
-import * as c from "react";
-import { jsx as e, jsxs as r } from "react/jsx-runtime";
-var B = a.object({
-    name: a.string().optional(),
-    "emailInput-1713871204480": a.string().email().optional(),
-    "input-1713871261634": a.string().optional(),
-    "textarea-1713871376397": a.string().optional(),
-    "singleSelect-1713871528625": a.string().optional(),
-    "passwordInput-1713871400734": a.string().optional(),
-    "passwordInput-1713871418205": a.string().optional(),
+import { UserRound as B, Mail as A } from "lucide-react";
+import * as i from "react";
+import { jsx as e, jsxs as n } from "react/jsx-runtime";
+var q = a.object({
+    fullName: a.string(),
+    email: a.string().email(),
+    phone: a.string(),
+    address: a.string(),
+    role: a.string(),
+    password: a.string().max(14).min(6),
+    confirmPassword: a.string().max(14).min(6),
   }),
-  C = "TGhm9wEzP2assjJWu8dr",
-  O = ({
-    onSubmit: i,
-    onError: g,
-    onSuccess: w,
-    defaultValues: S,
-    onAction: p,
-    formProps: E,
+  C = "PM87BKIdT5FLyclQZHWU",
+  x = ({
+    onSubmit: d,
+    onError: R,
+    onSuccess: g,
+    defaultValues: L,
+    onAction: c,
+    formProps: I,
   }) => {
-    let b = c.useRef();
-    c.useEffect(() => {
-      i && (b.current = i);
-    }, [i]);
-    let L = c.useCallback(async (n, o) => {
-      if (b.current) return b.current(n, o);
+    let b = i.useRef();
+    i.useEffect(() => {
+      d && (b.current = d);
+    }, [d]);
+    let w = i.useCallback(async (r, o) => {
+      if (b.current) return b.current(r, o);
     }, []);
     return e(
-      d,
+      p,
       {
         id: C,
-        defaultValues: S,
-        onSubmit: L,
-        onError: g,
-        onSuccess: w,
-        zodSchema: B,
+        defaultValues: L,
+        onSubmit: w,
+        onError: R,
+        onSuccess: g,
+        zodSchema: q,
         mode: "onSubmit",
-        children: (n) =>
-          r(d.Container, {
+        children: (r) =>
+          n(p.Container, {
             children: [
               e(t, {
-                control: n.control,
-                name: "name",
+                control: r.control,
+                name: "fullName",
                 render: ({ field: o }) =>
-                  r(l, {
+                  n(l, {
                     children: [
-                      e(m, { children: "Nama Lengkap" }),
+                      e(m, { isRequired: !0, children: "Nama Lengkap" }),
                       e(s, {
                         children: e(F, {
                           label: "Nama Lengkap",
@@ -72,9 +72,10 @@ var B = a.object({
                           onChange: o.onChange,
                           placeholder: "Nama Lengkap",
                           disabled: o.disabled,
+                          isRequired: !0,
                           styles: { root: {} },
                           prefixAdornment: {
-                            icon: e(R, { size: 18, color: "#000000" }),
+                            icon: e(B, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
@@ -83,14 +84,14 @@ var B = a.object({
                   }),
               }),
               e(t, {
-                control: n.control,
-                name: "emailInput-1713871204480",
+                control: r.control,
+                name: "email",
                 render: ({ field: o }) =>
-                  r(l, {
+                  n(l, {
                     children: [
-                      e(m, { children: "Email" }),
+                      e(m, { isRequired: !0, children: "Email" }),
                       e(s, {
-                        children: e(v, {
+                        children: e(S, {
                           label: "Email",
                           name: o.name,
                           value: o.value ?? "",
@@ -98,6 +99,7 @@ var B = a.object({
                           onChange: o.onChange,
                           placeholder: "Email",
                           disabled: o.disabled,
+                          isRequired: !0,
                           styles: { root: {} },
                           prefixAdornment: {
                             icon: e(A, { size: 18, color: "#000000" }),
@@ -109,12 +111,12 @@ var B = a.object({
                   }),
               }),
               e(t, {
-                control: n.control,
-                name: "input-1713871261634",
+                control: r.control,
+                name: "phone",
                 render: ({ field: o }) =>
-                  r(l, {
+                  n(l, {
                     children: [
-                      e(m, { children: "Nomor Telepon" }),
+                      e(m, { isRequired: !0, children: "Nomor Telepon" }),
                       e(s, {
                         children: e(F, {
                           label: "Nomor Telepon",
@@ -124,6 +126,7 @@ var B = a.object({
                           onChange: o.onChange,
                           placeholder: "Nomor Telepon",
                           disabled: o.disabled,
+                          isRequired: !0,
                           styles: { root: {} },
                         }),
                       }),
@@ -132,14 +135,14 @@ var B = a.object({
                   }),
               }),
               e(t, {
-                control: n.control,
-                name: "textarea-1713871376397",
+                control: r.control,
+                name: "address",
                 render: ({ field: o }) =>
-                  r(l, {
+                  n(l, {
                     children: [
-                      e(m, { children: "Alamat" }),
+                      e(m, { isRequired: !0, children: "Alamat" }),
                       e(s, {
-                        children: e(y, {
+                        children: e(v, {
                           label: "Alamat",
                           name: o.name,
                           value: o.value ?? "",
@@ -147,6 +150,7 @@ var B = a.object({
                           onChange: o.onChange,
                           disabled: o.disabled,
                           placeholder: "Alamat",
+                          isRequired: !0,
                           styles: { root: {} },
                         }),
                       }),
@@ -155,14 +159,14 @@ var B = a.object({
                   }),
               }),
               e(t, {
-                control: n.control,
-                name: "singleSelect-1713871528625",
+                control: r.control,
+                name: "role",
                 render: ({ field: o }) =>
-                  r(l, {
+                  n(l, {
                     children: [
-                      e(m, { children: "Role" }),
+                      e(m, { isRequired: !0, children: "Role" }),
                       e(s, {
-                        children: e(k.List, {
+                        children: e(y.List, {
                           label: "Role",
                           name: o.name,
                           value: o.value,
@@ -174,6 +178,7 @@ var B = a.object({
                             { label: "Apoteker", value: "Apoteker" },
                             { label: "Asisten", value: "Assistant" },
                           ],
+                          isRequired: !0,
                           disabled: o.disabled,
                           styles: { root: {} },
                         }),
@@ -183,12 +188,12 @@ var B = a.object({
                   }),
               }),
               e(t, {
-                control: n.control,
-                name: "passwordInput-1713871400734",
+                control: r.control,
+                name: "password",
                 render: ({ field: o }) =>
-                  r(l, {
+                  n(l, {
                     children: [
-                      e(m, { children: "Password" }),
+                      e(m, { isRequired: !0, children: "Password" }),
                       e(s, {
                         children: e(h, {
                           label: "Password",
@@ -198,6 +203,7 @@ var B = a.object({
                           onChange: o.onChange,
                           disabled: o.disabled,
                           placeholder: "Password",
+                          isRequired: !0,
                           styles: { root: {} },
                         }),
                       }),
@@ -206,12 +212,12 @@ var B = a.object({
                   }),
               }),
               e(t, {
-                control: n.control,
-                name: "passwordInput-1713871418205",
+                control: r.control,
+                name: "confirmPassword",
                 render: ({ field: o }) =>
-                  r(l, {
+                  n(l, {
                     children: [
-                      e(m, { children: "Konfirmasi Password" }),
+                      e(m, { isRequired: !0, children: "Konfirmasi Password" }),
                       e(s, {
                         children: e(h, {
                           label: "Konfirmasi Password",
@@ -221,6 +227,7 @@ var B = a.object({
                           onChange: o.onChange,
                           disabled: o.disabled,
                           placeholder: "Konfirmasi Password",
+                          isRequired: !0,
                           styles: { root: {} },
                         }),
                       }),
@@ -228,16 +235,16 @@ var B = a.object({
                     ],
                   }),
               }),
-              e(I, { styles: { root: {} }, size: 16 }),
-              r(P, {
+              e(P, { styles: { root: {} }, size: 16 }),
+              n(k, {
                 styles: { root: {} },
                 children: [
                   e(z, {
                     type: "button",
                     className: "w-full",
                     onClick: () => {
-                      p?.["button-1713871145398"] &&
-                        p?.["button-1713871145398"](n);
+                      c?.["button-1713871145398"] &&
+                        c?.["button-1713871145398"](r);
                     },
                     styles: { root: { backgroundColor: "#2E584F" } },
                     children: "Submit",
@@ -246,8 +253,8 @@ var B = a.object({
                     type: "button",
                     className: "w-full",
                     onClick: () => {
-                      p?.["button-1713871147318"] &&
-                        p?.["button-1713871147318"](n);
+                      c?.["button-1713871147318"] &&
+                        c?.["button-1713871147318"](r);
                     },
                     styles: { root: { backgroundColor: "rgb(239, 68, 68)" } },
                     children: "Reset",
@@ -260,4 +267,4 @@ var B = a.object({
       C,
     );
   };
-export { O as Form };
+export { x as Form };

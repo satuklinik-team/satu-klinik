@@ -3,38 +3,36 @@ import type { LezzformReturn, LezzformProps } from "@lezzform/react";
 import * as React from "react";
 declare const zodFormSchema: z.ZodObject<
   {
-    "input-1713924229907": z.ZodOptional<z.ZodString>;
-    "input-1713924232759": z.ZodOptional<z.ZodString>;
-    "input-1713924236229": z.ZodOptional<z.ZodString>;
-    "singleSelect-1713924285420": z.ZodOptional<z.ZodString>;
-    "singleSelect-1713924373568": z.ZodOptional<z.ZodString>;
-    "datepicker-1713924594975": z.ZodOptional<z.ZodDate>;
-    "phoneNumberInput-1713924635725": z.ZodOptional<
-      z.ZodEffects<z.ZodString, string, string>
-    >;
-    "textarea-1713924663412": z.ZodOptional<z.ZodString>;
+    medicalNumber: z.ZodOptional<z.ZodString>;
+    nik: z.ZodString;
+    fullname: z.ZodString;
+    sex: z.ZodString;
+    blood: z.ZodString;
+    birthAt: z.ZodDate;
+    phone: z.ZodEffects<z.ZodString, string, string>;
+    address: z.ZodString;
   },
   "strip",
   z.ZodTypeAny,
   {
-    "input-1713924229907"?: string;
-    "input-1713924232759"?: string;
-    "input-1713924236229"?: string;
-    "singleSelect-1713924285420"?: string;
-    "singleSelect-1713924373568"?: string;
-    "datepicker-1713924594975"?: Date;
-    "phoneNumberInput-1713924635725"?: string;
-    "textarea-1713924663412"?: string;
+    address?: string;
+    medicalNumber?: string;
+    nik?: string;
+    fullname?: string;
+    sex?: string;
+    blood?: string;
+    birthAt?: Date;
+    phone?: string;
   },
   {
-    "input-1713924229907"?: string;
-    "input-1713924232759"?: string;
-    "input-1713924236229"?: string;
-    "singleSelect-1713924285420"?: string;
-    "singleSelect-1713924373568"?: string;
-    "datepicker-1713924594975"?: Date;
-    "phoneNumberInput-1713924635725"?: string;
-    "textarea-1713924663412"?: string;
+    address?: string;
+    medicalNumber?: string;
+    nik?: string;
+    fullname?: string;
+    sex?: string;
+    blood?: string;
+    birthAt?: Date;
+    phone?: string;
   }
 >;
 export type FormSchema = z.infer<typeof zodFormSchema>;
