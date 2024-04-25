@@ -11,26 +11,36 @@ export class PatientsVitalSignService {
   ) {}
 
   async create(dto: CreateVitalSignDto) {
-    const today = new Date();
+    const now = new Date();
+
+    const patient = await this.prismaService.patient.findFirst({
+      where: {
+        id: dto.patientId,
+      },
+      select: {
+        norm: true,
+      },
+    });
 
     const data = await this.prismaService.patient_medical_records.create({
       data: {
         patientId: dto.patientId,
         doctor: '',
-        norm: await this.patientService.generateMRID(),
-        visitAt: today,
-        visitLabel: today.toLocaleDateString(),
+        norm: patient.norm,
+        visitAt: now,
+        visitLabel: now.toLocaleDateString(),
         vitalSign: {
           create: {
-            height: dto.height || 0,
-            weight: dto.weight || 0,
-            allergic: dto.allergic || 'n/a',
-            systole: dto.systole || 0,
-            diastole: dto.diastole || 0,
+            height: dto.height,
+            weight: dto.weight,
+            allergic: dto.allergic,
+            systole: dto.systole,
+            diastole: dto.diastole,
             pulse: dto.pulse,
-            respiration: dto.respiration || 0,
-            temperature: dto.temperature || 0,
-            visitAt: today,
+            respiration: dto.respiration,
+            temperature: dto.temperature,
+            pain: dto.pain,
+            visitAt: now,
           },
         },
       },

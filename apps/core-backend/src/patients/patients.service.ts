@@ -8,42 +8,21 @@ export class PatientsService {
   constructor(private readonly prismaService: PrismaService) {}
 
   async create(dto: CreatePatientDto) {
-    const today = new Date();
+    const now = new Date();
 
     const data = await this.prismaService.patient.create({
       data: {
-        norm: await this.generateMRID(),
-        nik: dto.nik || '-',
+        norm: await this.generateMedicalRecordNorm(),
+        nik: dto.nik,
         fullname: dto.fullname,
         parentname: dto.parentname || '-',
         address: dto.address,
         phone: dto.phone,
-        age: dto.age || 0,
-        sex: dto.sex || 'L',
-        blood: dto.blood || '-',
-        birthAt: dto.birthAt ? `${dto.birthAt}T00:00:00.000Z` : today,
-        createdAt: today,
-        mr: {
-          create: {
-            doctor: '',
-            norm: await this.generateMRID(),
-            visitAt: today,
-            visitLabel: today.toLocaleDateString(),
-            vitalSign: {
-              create: {
-                height: dto.height || 0,
-                weight: dto.weight || 0,
-                allergic: dto.allergic || 'n/a',
-                systole: dto.systole || 0,
-                diastole: dto.diastole || 0,
-                pulse: dto.pulse,
-                respiration: dto.respiration || 0,
-                temperature: dto.temperature || 0,
-                visitAt: today,
-              },
-            },
-          },
-        },
+        age: dto.age,
+        sex: dto.sex,
+        blood: dto.blood,
+        birthAt: `${dto.birthAt}T00:00:00.000Z`,
+        createdAt: now,
       },
     });
 
@@ -69,7 +48,7 @@ export class PatientsService {
     return data;
   }
 
-  async generateMRID() {
+  async generateMedicalRecordNorm() {
     const date = new Date();
     const yearString = date.getFullYear().toString();
     const monthString = (date.getMonth() + 1).toString().padStart(2, '0');
