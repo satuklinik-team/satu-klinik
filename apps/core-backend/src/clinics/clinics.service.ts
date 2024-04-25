@@ -1,11 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { CreateClinicDto } from './dto/create-clinic.dto';
 import { UpdateClinicDto } from './dto/update-clinic.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { v4 as uuidv4 } from 'uuid';
 import { SatusehatOrganizationService } from 'src/satusehat-organization/satusehat-organization.service';
 import { RegisterDto } from 'src/auth/dto';
-import { Role } from '@prisma/client';
 
 @Injectable()
 export class ClinicsService {

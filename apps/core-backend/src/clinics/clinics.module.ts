@@ -7,5 +7,6 @@ import { SatusehatOrganizationModule } from 'src/satusehat-organization/satuseha
   controllers: [ClinicsController],
   providers: [ClinicsService],
   imports: [SatusehatOrganizationModule],
+  exports: [ClinicsService],
 })
 export class ClinicsModule {}
