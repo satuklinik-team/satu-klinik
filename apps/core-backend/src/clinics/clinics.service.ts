@@ -3,6 +3,8 @@ import { UpdateClinicDto } from './dto/update-clinic.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { SatusehatOrganizationService } from 'src/satusehat-organization/satusehat-organization.service';
 import { RegisterDto } from 'src/auth/dto';
+import { CreateClinicDto } from './dto/create-clinic.dto';
+import { ServiceContext } from 'src/utils/types';
 
 @Injectable()
 export class ClinicsService {
@@ -11,14 +13,15 @@ export class ClinicsService {
     private readonly satuSehatOrganizationService: SatusehatOrganizationService,
   ) {}
 
-  async create(dto: RegisterDto, accountsId: string) {
-    const data = await this.prismaService.clinics.create({
+  async create(dto: CreateClinicDto, context?: ServiceContext) {
+    const prisma = this._initPrisma(context.tx);
+    const data = await prisma.clinics.create({
       data: {
         name: dto.clinicName,
         email: dto.clinicEmail,
         address: dto.clinicAddress,
         phone: dto.clinicPhone,
-        accountsId,
+        accountsId: dto.accountsId,
       },
     });
 
@@ -39,5 +42,12 @@ export class ClinicsService {
 
   remove(id: string) {
     return `This action removes a #${id} clinic`;
+  }
+
+  private _initPrisma(tx?: ServiceContext['tx']) {
+    if (tx) {
+      return tx;
+    }
+    return this.prismaService;
   }
 }

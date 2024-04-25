@@ -24,10 +24,29 @@ export class AuthService {
   ) {}
 
   async register(dto: RegisterDto) {
-    let user = await this.usersService.create(dto);
-    const account = await this.accountsService.create({ usersId: user.id });
-    const clinic = await this.clinicsService.create(dto, account.id);
-    user = await this.usersService.changeClinicId(user.id, clinic.id);
+    const user = await this.prismaService.$transaction(async (tx) => {
+      let user = await this.usersService.create(dto, { tx });
+      const account = await this.accountsService.create(
+        { usersId: user.id },
+        { tx },
+      );
+      const clinic = await this.clinicsService.create(
+        {
+          ...dto,
+          accountsId: account.id,
+        },
+        { tx },
+      );
+      user = await this.usersService.changeClinicId(
+        {
+          usersId: user.id,
+          clinicsId: clinic.id,
+        },
+        { tx },
+      );
+
+      return user;
+    });
 
     const token = await this.tokenService.getAuthToken({ sub: user.id });
 
