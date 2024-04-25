@@ -25,7 +25,7 @@ export class AuthService {
 
   async register(dto: RegisterDto) {
     let user = await this.usersService.create(dto);
-    const account = await this.accountsService.create(user.id);
+    const account = await this.accountsService.create({ usersId: user.id });
     const clinic = await this.clinicsService.create(dto, account.id);
     user = await this.usersService.changeClinicId(user.id, clinic.id);
 
