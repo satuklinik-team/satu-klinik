@@ -2,6 +2,7 @@
 
 // import ReactApexChart from "react-apexcharts";
 import { ClinicCard } from "@/features/clinic/components/ui/card";
+import { QueueCard } from "@/features/clinic-patient/components/shared/queue-card";
 
 import { ClinicDashboardUsersTable } from "../components/table";
 // import { ClinicServicesCard } from "@/features/clinic/components/ui/services-card";
@@ -119,9 +120,19 @@ export function ClinicDashboardPage(): JSX.Element {
       <div className="flex flex-col sm:flex-col md:flex-row lg:flex-row xl:flex-row 2xl:flex-row gap-4">
         <ClinicCard
           borderPosition="left"
-          className="flex-1 border-sky-500"
+          className="flex-1 flex flex-col gap-2 border-sky-500"
           title="Antrian"
-        />
+        >
+          <QueueCard
+            patient={{
+              name: "Darren Christian",
+              medicalRecordNumber: "2024.04.00012",
+              address: "Keputih Tegal Timur",
+            }}
+            queue="A-4"
+            status="Panggilan"
+          />
+        </ClinicCard>
         <ClinicCard
           borderPosition="left"
           className="flex-1 border-sky-500"

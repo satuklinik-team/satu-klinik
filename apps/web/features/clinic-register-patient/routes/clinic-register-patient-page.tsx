@@ -2,6 +2,7 @@
 
 import { Input } from "@/components/ui/input";
 import { ClinicCard } from "@/features/clinic/components/ui/card";
+import { QueueCard } from "@/features/clinic-patient/components/shared/queue-card";
 import { Form as AddPatientForm } from "@/lezzform/_generated/addpatientform";
 
 export function ClinicRegisterPatientPage(): JSX.Element {
@@ -32,7 +33,17 @@ export function ClinicRegisterPatientPage(): JSX.Element {
           borderPosition="top"
           className="border-green-500 w-full h-full max-w-none sm:max-w-none md:max-w-none lg:max-w-md xl:max-w-md 2xl:max-w-md"
           title="Antrian Sekarang"
-        />
+        >
+          <QueueCard
+            patient={{
+              name: "Darren Christian",
+              medicalRecordNumber: "2024.04.00012",
+              address: "Keputih Tegal Timur",
+            }}
+            queue="A-4"
+            status="Panggilan"
+          />
+        </ClinicCard>
       </div>
     </div>
   );
