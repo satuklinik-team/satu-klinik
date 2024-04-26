@@ -8,8 +8,6 @@ export class PatientsService {
   constructor(private readonly prismaService: PrismaService) {}
 
   async create(dto: CreatePatientDto) {
-    const now = new Date();
-
     const data = await this.prismaService.patient.create({
       data: {
         norm: await this.generateMedicalRecordNorm(),
@@ -22,7 +20,7 @@ export class PatientsService {
         sex: dto.sex,
         blood: dto.blood,
         birthAt: `${dto.birthAt}T00:00:00.000Z`,
-        createdAt: now,
+        clinicsId: dto.clinicsId,
       },
     });
 
