@@ -1,9 +1,15 @@
-import { IsInt, IsNotEmpty, IsString } from 'class-validator';
+import {
+  IsInt,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  IsUUID,
+} from 'class-validator';
 
 export class CreateVitalSignDto {
   @IsString()
-  @IsNotEmpty()
-  patientId: string;
+  @IsOptional()
+  patientId?: string;
 
   @IsInt()
   @IsNotEmpty()
@@ -40,4 +46,12 @@ export class CreateVitalSignDto {
   @IsString()
   @IsNotEmpty()
   pain: string;
+
+  @IsUUID()
+  @IsNotEmpty()
+  clinicsId: string;
+
+  @IsString()
+  @IsOptional()
+  usersId?: string;
 }
