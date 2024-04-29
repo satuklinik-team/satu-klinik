@@ -2,6 +2,8 @@
 
 // import ReactApexChart from "react-apexcharts";
 import { ClinicCard } from "@/features/clinic/components/ui/card";
+
+import { ClinicDashboardUsersTable } from "../components/table";
 // import { ClinicServicesCard } from "@/features/clinic/components/ui/services-card";
 
 export function ClinicDashboardPage(): JSX.Element {
@@ -124,7 +126,9 @@ export function ClinicDashboardPage(): JSX.Element {
           borderPosition="left"
           className="flex-1 border-sky-500"
           title="Staff"
-        />
+        >
+          <ClinicDashboardUsersTable />
+        </ClinicCard>
       </div>
     </div>
   );
