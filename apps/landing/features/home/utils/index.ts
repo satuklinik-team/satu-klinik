@@ -107,3 +107,5 @@ export const dataSecurityBenefits = [
       "Kami memberikan informasi tentang posisi server kami, memberikan kepercayaan tambahan pada keamanan data Anda.",
   },
 ];
+
+export const BOOK_DEMO_WA_TEXT = "Permisi min, saya ingin jadwalkan demo donk!";
