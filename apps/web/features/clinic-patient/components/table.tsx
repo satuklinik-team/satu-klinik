@@ -1,5 +1,6 @@
 import {
-  EllipsisVertical,
+  Edit,
+  Eye,
   HeartPulse,
   MessageCircle,
   Stethoscope,
@@ -111,13 +112,23 @@ export function ClinicPatientTable(): JSX.Element {
                 </Tooltip>
                 <Tooltip>
                   <Link
-                    href={`/clinic/${clinicId as string}/mr/${row.medicalRecordNumber}`}
+                    href={`/clinic/${clinicId as string}/patient/${row.medicalRecordNumber}`}
                   >
                     <TooltipTrigger className="h-min p-2">
-                      <EllipsisVertical size={20} />
+                      <Eye size={20} />
                     </TooltipTrigger>
                   </Link>
                   <TooltipContent>Lihat Detail</TooltipContent>
+                </Tooltip>
+                <Tooltip>
+                  <Link
+                    href={`/clinic/${clinicId as string}/patient/${row.medicalRecordNumber}/edit`}
+                  >
+                    <TooltipTrigger className="h-min p-2">
+                      <Edit size={20} />
+                    </TooltipTrigger>
+                  </Link>
+                  <TooltipContent>Edit Pasien</TooltipContent>
                 </Tooltip>
                 <Tooltip>
                   <TooltipTrigger className="h-min p-2">
