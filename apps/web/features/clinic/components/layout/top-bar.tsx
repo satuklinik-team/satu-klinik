@@ -4,8 +4,8 @@ import { PanelLeftClose, PanelLeftOpen } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
+import { NotificationPanel } from "../../../../components/layout/notification-panel";
 import { useClinicLayoutStore } from "../../stores/use-clinic-layout-store";
-import { NotificationPanel } from "./notification-panel";
 
 export function TopBar(): JSX.Element {
   const { isLeftBarOpen, onToggleLeftBar } = useClinicLayoutStore();
