@@ -62,9 +62,7 @@ export function LeftBarItem({
             </Link>
           </TooltipTrigger>
         </div>
-        <TooltipContent
-          className={cn("text-xs text-white bg-foreground", isOpen && "hidden")}
-        >
+        <TooltipContent className={cn(isOpen && "hidden")}>
           {text}
         </TooltipContent>
       </Tooltip>

@@ -4,8 +4,8 @@ import { HTMLAttributes } from "react";
 
 interface ClinicCardProps
   extends Omit<HTMLAttributes<HTMLDivElement>, "title"> {
-  borderPosition: "left" | "top" | "right" | "bottom";
-  title: string | JSX.Element;
+  borderPosition?: "left" | "top" | "right" | "bottom";
+  title?: string | JSX.Element;
 }
 
 export function ClinicCard({
