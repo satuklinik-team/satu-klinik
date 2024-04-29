@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { CreateClinicDto } from './dto/create-clinic.dto';
 import { UpdateClinicDto } from './dto/update-clinic.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { v4 as uuidv4 } from 'uuid';
 import { SatusehatOrganizationService } from 'src/satusehat-organization/satusehat-organization.service';
+import { RegisterDto } from 'src/auth/dto';
+import { CreateClinicDto } from './dto/create-clinic.dto';
+import { ServiceContext } from 'src/utils/types';
 
 @Injectable()
 export class ClinicsService {
@@ -12,29 +13,16 @@ export class ClinicsService {
     private readonly satuSehatOrganizationService: SatusehatOrganizationService,
   ) {}
 
-  async create(dto: CreateClinicDto) {
-    const { data } = await this.prismaService.$transaction(async (tx) => {
-      const createClinic = await tx.clinics.create({
-        data: {
-          id: uuidv4(),
-          address: dto.address,
-          name: dto.name,
-          phone: dto.phone,
-        },
-      });
-
-      await this.satuSehatOrganizationService.create({
-        address: dto.addressDetail,
-        name: dto.name,
-        type: 'dept',
-        telecom: {
-          email: dto.email,
-          phone: dto.phone,
-          url: dto.url,
-        },
-      });
-
-      return { data: createClinic };
+  async create(dto: CreateClinicDto, context?: ServiceContext) {
+    const prisma = this._initPrisma(context.tx);
+    const data = await prisma.clinics.create({
+      data: {
+        name: dto.clinicName,
+        email: dto.clinicEmail,
+        address: dto.clinicAddress,
+        phone: dto.clinicPhone,
+        accountsId: dto.accountsId,
+      },
     });
 
     return data;
@@ -54,5 +42,12 @@ export class ClinicsService {
 
   remove(id: string) {
     return `This action removes a #${id} clinic`;
+  }
+
+  private _initPrisma(tx?: ServiceContext['tx']) {
+    if (tx) {
+      return tx;
+    }
+    return this.prismaService;
   }
 }
