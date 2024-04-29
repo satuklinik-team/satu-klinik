@@ -10,15 +10,10 @@ export class RefreshTokenJwtStrategy extends PassportStrategy(
   Strategy,
   'jwt-refresh-token',
 ) {
-  constructor(private readonly configService: ConfigService) {
+  constructor(configService: ConfigService) {
     super({
       jwtFromRequest: (req: Request) => {
-        let token = null;
-        if (req.cookies['__refreshToken']) {
-          token = req.cookies['__refreshToken'];
-        }
-
-        return token;
+        return req.cookies['__refreshToken'];
       },
       secretOrKey: configService.get('secrets.refresh_token'),
     });
