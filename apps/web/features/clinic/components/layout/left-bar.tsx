@@ -65,7 +65,7 @@ export function LeftBar(): JSX.Element {
                   isOpen={isLeftBarOpen}
                   key={item.text}
                   {...item}
-                  path={`${pathname}${item.path}`}
+                  path={`/clinic/${clinicId as string}${item.path}`}
                 />
               );
             })}
