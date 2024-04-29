@@ -22,7 +22,7 @@ export class ClinicsController {
     return this.clinicsService.findAll();
   }
 
-  @Get('by_user')
+  @Get('')
   getClinicsByUsersId(
     @Query('page') page = '1',
     @Query('pageSize') pageSize = '10',
