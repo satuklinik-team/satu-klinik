@@ -19,16 +19,14 @@ export class ClinicsController {
 
   @Get()
   findAll(
-    @Query('page') page = '1',
-    @Query('pageSize') pageSize = '50',
+    @Query('skip') skip = 0,
+    @Query('limit') limit = 50,
     @TokenData() tokenData: JwtPayload,
   ) {
-    const pageNum = parseInt(page, 10);
-    const pageSizeNum = parseInt(pageSize, 10);
     return this.clinicsService.findAll({
       usersId: tokenData.sub,
-      page: pageNum,
-      pageSize: pageSizeNum,
+      skip,
+      limit,
     });
   }
 

@@ -38,14 +38,12 @@ export class ClinicsService {
       },
     });
 
-    const skip = (dto.page - 1) * dto.pageSize;
-    const take = dto.pageSize;
     const data = await this.prismaService.clinics.findMany({
       where: {
         accountsId: accounts.id,
       },
-      skip,
-      take,
+      skip: dto.skip,
+      take: dto.limit,
       select: {
         name: true,
         address: true,
