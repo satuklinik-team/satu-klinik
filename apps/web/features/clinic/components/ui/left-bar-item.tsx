@@ -8,6 +8,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { Badge } from "@/components/ui/badge";
 
 interface LeftBarItemProps
   extends HTMLAttributes<HTMLDivElement>,
@@ -36,7 +37,7 @@ export function LeftBarItem({
             <Link href={path}>
               <div
                 className={cn(
-                  "flex flex-row justify-center items-center gap-3 px-2.5 py-2.5 cursor-pointer rounded-lg hover:bg-muted-foreground/10 transition",
+                  "relative flex flex-row justify-center items-center gap-3 px-2.5 py-2.5 cursor-pointer rounded-lg hover:bg-muted-foreground/10 transition",
                   isActive && "bg-primary/10"
                 )}
                 {...rest}
@@ -48,16 +49,33 @@ export function LeftBarItem({
                   )}
                   size={20}
                 />
-                {isOpen && (
-                  <p
-                    className={cn(
-                      "flex-1 text-sm text-foreground/90",
-                      isActive && "text-primary"
-                    )}
-                  >
-                    {text}
-                  </p>
-                )}
+                <p
+                  className={cn(
+                    "flex-1 text-sm text-foreground/90",
+                    isActive && "text-primary",
+                    !isOpen &&
+                      "block sm:hidden md:hidden lg:hidden xl:hidden 2xl:hidden"
+                  )}
+                >
+                  {text}
+                </p>
+                <Badge
+                  variant="destructive"
+                  className={cn(
+                    "text-xs font-normal flex justify-center items-center w-5 h-5 p-0 rounded-full",
+                    !isOpen &&
+                      "flex sm:hidden md:hidden lg:hidden xl:hidden 2xl:hidden"
+                  )}
+                >
+                  2
+                </Badge>
+                <Badge
+                  variant="destructive"
+                  className={cn(
+                    "absolute top-1.5 right-3 w-2 h-2 p-0 rounded-full hidden",
+                    !isOpen && "hidden sm:block"
+                  )}
+                />
               </div>
             </Link>
           </TooltipTrigger>

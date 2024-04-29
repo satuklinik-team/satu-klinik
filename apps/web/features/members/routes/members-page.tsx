@@ -6,7 +6,9 @@ import { MemberBilling } from "../modules/billing/components/billing";
 export function MembersPage(): JSX.Element {
   return (
     <div>
-      <h1 className="text-4xl font-semibold ml-2 my-2">Account</h1>
+      <h1 className="text-2xl sm:text-3xl md:text-3xl lg:text-4xl xl:text-4xl 2xl:text-4xl font-semibold ml-2 my-2">
+        Account
+      </h1>
       <p className="text-muted-foreground ml-2 mb-4">
         manage your account and business setting
       </p>

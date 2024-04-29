@@ -36,7 +36,7 @@ export function UserButton({ classNames }: UserButtonProps): JSX.Element {
           <div
             className={cn(
               "flex flex-col transition",
-              !isLeftBarOpen && "hidden"
+              !isLeftBarOpen && "flex sm:hidden"
             )}
           >
             <p className="text-sm">Nona Perma</p>

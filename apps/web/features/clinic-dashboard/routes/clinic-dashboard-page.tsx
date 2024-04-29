@@ -8,7 +8,9 @@ export function ClinicDashboardPage(): JSX.Element {
   return (
     <div className="h-full">
       <div className="mb-6 flex flex-col gap-2">
-        <h1 className="text-4xl font-semibold">Dashbor</h1>
+        <h1 className="text-2xl sm:text-3xl md:text-3xl lg:text-4xl xl:text-4xl 2xl:text-4xl font-semibold">
+          Dashbor
+        </h1>
         <p className="text-muted-foreground">
           Selamat datang di dasbor Klinik Demo Husada
         </p>
@@ -51,7 +53,7 @@ export function ClinicDashboardPage(): JSX.Element {
       <ClinicCard
         borderPosition="left"
         className="my-4 border-sky-500"
-        title={<h3 className="text-lg font-semibold">Overview</h3>}
+        title="Overview"
       >
         {/* <ReactApexChart
           height="25rem"

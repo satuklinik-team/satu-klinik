@@ -8,7 +8,7 @@ export default function ClinicLayout({
 }): JSX.Element {
   return (
     <div className="flex flex-row w-screen h-screen">
-      <LeftBar />
+      <LeftBar className="hidden sm:flex md:flex lg:flex xl:flex 2xl:flex" />
       <div className="flex-1 flex flex-col">
         <TopBar />
         <div className="flex-1 overflow-auto">

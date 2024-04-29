@@ -16,7 +16,7 @@ export function LeftBarTitle({
       className={cn(
         "text-xs text-muted-foreground px-5 uppercase",
         className,
-        !isOpen && "hidden"
+        !isOpen && "block sm:hidden md:hidden lg:hidden xl:hidden 2xl:hidden"
       )}
       {...rest}
     >
