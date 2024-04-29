@@ -3,43 +3,39 @@ import type { LezzformReturn, LezzformProps } from "@lezzform/react";
 import * as React from "react";
 declare const zodFormSchema: z.ZodObject<
   {
-    "input-1713864706509": z.ZodOptional<z.ZodString>;
-    "emailInput-1713864712957": z.ZodOptional<z.ZodString>;
-    "phoneNumberInput-1713864724181": z.ZodOptional<
-      z.ZodEffects<z.ZodString, string, string>
-    >;
-    "passwordInput-1713865937493": z.ZodOptional<z.ZodString>;
-    "input-1713866125346": z.ZodOptional<z.ZodString>;
-    "emailInput-1713866155379": z.ZodOptional<z.ZodString>;
-    "phoneNumberInput-1713866194859": z.ZodOptional<
-      z.ZodEffects<z.ZodString, string, string>
-    >;
-    "textarea-1713866248190": z.ZodOptional<z.ZodString>;
-    "input-1713866308216": z.ZodOptional<z.ZodString>;
+    fullName: z.ZodString;
+    email: z.ZodString;
+    password: z.ZodEffects<z.ZodString, string, string>;
+    confirmPassword: z.ZodString;
+    "input-1713866125346": z.ZodString;
+    clinicEmail: z.ZodString;
+    clinicPhone: z.ZodEffects<z.ZodString, string, string>;
+    clinicAddress: z.ZodString;
+    clinicCode: z.ZodString;
   },
   "strip",
   z.ZodTypeAny,
   {
-    "input-1713864706509"?: string;
-    "emailInput-1713864712957"?: string;
-    "phoneNumberInput-1713864724181"?: string;
-    "passwordInput-1713865937493"?: string;
+    email?: string;
+    password?: string;
+    fullName?: string;
+    confirmPassword?: string;
     "input-1713866125346"?: string;
-    "emailInput-1713866155379"?: string;
-    "phoneNumberInput-1713866194859"?: string;
-    "textarea-1713866248190"?: string;
-    "input-1713866308216"?: string;
+    clinicEmail?: string;
+    clinicPhone?: string;
+    clinicAddress?: string;
+    clinicCode?: string;
   },
   {
-    "input-1713864706509"?: string;
-    "emailInput-1713864712957"?: string;
-    "phoneNumberInput-1713864724181"?: string;
-    "passwordInput-1713865937493"?: string;
+    email?: string;
+    password?: string;
+    fullName?: string;
+    confirmPassword?: string;
     "input-1713866125346"?: string;
-    "emailInput-1713866155379"?: string;
-    "phoneNumberInput-1713866194859"?: string;
-    "textarea-1713866248190"?: string;
-    "input-1713866308216"?: string;
+    clinicEmail?: string;
+    clinicPhone?: string;
+    clinicAddress?: string;
+    clinicCode?: string;
   }
 >;
 export type FormSchema = z.infer<typeof zodFormSchema>;

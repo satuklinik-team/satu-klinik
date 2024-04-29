@@ -1,61 +1,61 @@
 import { z as a } from "zod";
 import {
-  Lezzform as S,
+  Lezzform as p,
   FormField as t,
   FormItem as s,
-  FormLabel as l,
-  FormControl as u,
+  FormLabel as u,
+  FormControl as l,
   FormMessage as c,
   Input as F,
-  PasswordInput as L,
-  Button as C,
+  PasswordInput as g,
+  Button as L,
 } from "@lezzform/react";
 import * as n from "react";
-import { jsx as r, jsxs as m } from "react/jsx-runtime";
-var f = a.object({
-    name: a.string().optional(),
-    "name-oSh": a.string().optional(),
-    "name-oSh-5Su": a.string().optional(),
-    "passwordInput-1713880776428": a.string().optional(),
+import { jsx as e, jsxs as m } from "react/jsx-runtime";
+var C = a.object({
+    id: a.string(),
+    token: a.string(),
+    username: a.string(),
+    password: a.string(),
   }),
-  h = "NpSkWUy4XDm18yx8Lca3",
-  I = ({
+  z = "44Li4v6P6PVkndKwTXmB",
+  y = ({
     onSubmit: i,
-    onError: z,
-    onSuccess: b,
-    defaultValues: d,
-    onAction: y,
+    onError: b,
+    onSuccess: h,
+    defaultValues: S,
+    onAction: f,
     formProps: k,
   }) => {
-    let p = n.useRef();
+    let d = n.useRef();
     n.useEffect(() => {
-      i && (p.current = i);
+      i && (d.current = i);
     }, [i]);
-    let g = n.useCallback(async (e, o) => {
-      if (p.current) return p.current(e, o);
+    let R = n.useCallback(async (r, o) => {
+      if (d.current) return d.current(r, o);
     }, []);
-    return r(
-      S,
+    return e(
+      p,
       {
-        id: h,
-        defaultValues: d,
-        onSubmit: g,
-        onError: z,
-        onSuccess: b,
-        zodSchema: f,
+        id: z,
+        defaultValues: S,
+        onSubmit: R,
+        onError: b,
+        onSuccess: h,
+        zodSchema: C,
         mode: "onSubmit",
-        children: (e) =>
-          m(S.Container, {
+        children: (r) =>
+          m(p.Container, {
             children: [
-              r(t, {
-                control: e.control,
-                name: "name",
+              e(t, {
+                control: r.control,
+                name: "id",
                 render: ({ field: o }) =>
                   m(s, {
                     children: [
-                      r(l, { children: "ID" }),
-                      r(u, {
-                        children: r(F, {
+                      e(u, { isRequired: !0, children: "ID" }),
+                      e(l, {
+                        children: e(F, {
                           label: "ID",
                           name: o.name,
                           value: o.value ?? "",
@@ -63,22 +63,23 @@ var f = a.object({
                           onChange: o.onChange,
                           placeholder: "ID",
                           disabled: o.disabled,
+                          isRequired: !0,
                           styles: { root: {} },
                         }),
                       }),
-                      r(c, {}),
+                      e(c, {}),
                     ],
                   }),
               }),
-              r(t, {
-                control: e.control,
-                name: "name-oSh",
+              e(t, {
+                control: r.control,
+                name: "token",
                 render: ({ field: o }) =>
                   m(s, {
                     children: [
-                      r(l, { children: "Token" }),
-                      r(u, {
-                        children: r(F, {
+                      e(u, { isRequired: !0, children: "Token" }),
+                      e(l, {
+                        children: e(F, {
                           label: "Token",
                           name: o.name,
                           value: o.value ?? "",
@@ -86,22 +87,23 @@ var f = a.object({
                           onChange: o.onChange,
                           placeholder: "Token",
                           disabled: o.disabled,
+                          isRequired: !0,
                           styles: { root: {} },
                         }),
                       }),
-                      r(c, {}),
+                      e(c, {}),
                     ],
                   }),
               }),
-              r(t, {
-                control: e.control,
-                name: "name-oSh-5Su",
+              e(t, {
+                control: r.control,
+                name: "username",
                 render: ({ field: o }) =>
                   m(s, {
                     children: [
-                      r(l, { children: "Username" }),
-                      r(u, {
-                        children: r(F, {
+                      e(u, { isRequired: !0, children: "Username" }),
+                      e(l, {
+                        children: e(F, {
                           label: "Username",
                           name: o.name,
                           value: o.value ?? "",
@@ -109,22 +111,23 @@ var f = a.object({
                           onChange: o.onChange,
                           placeholder: "Username",
                           disabled: o.disabled,
+                          isRequired: !0,
                           styles: { root: {} },
                         }),
                       }),
-                      r(c, {}),
+                      e(c, {}),
                     ],
                   }),
               }),
-              r(t, {
-                control: e.control,
-                name: "passwordInput-1713880776428",
+              e(t, {
+                control: r.control,
+                name: "password",
                 render: ({ field: o }) =>
                   m(s, {
                     children: [
-                      r(l, { children: "Password" }),
-                      r(u, {
-                        children: r(L, {
+                      e(u, { isRequired: !0, children: "Password" }),
+                      e(l, {
+                        children: e(g, {
                           label: "Password",
                           name: o.name,
                           value: o.value ?? "",
@@ -132,25 +135,26 @@ var f = a.object({
                           onChange: o.onChange,
                           disabled: o.disabled,
                           placeholder: "Password",
+                          isRequired: !0,
                           styles: { root: { marginBottom: 16 } },
                         }),
                       }),
-                      r(c, {}),
+                      e(c, {}),
                     ],
                   }),
               }),
-              r(C, {
+              e(L, {
                 type: "submit",
                 className: "w-full",
-                disabled: e.formState.isSubmitting,
-                isLoading: e.formState.isSubmitting,
+                disabled: r.formState.isSubmitting,
+                isLoading: r.formState.isSubmitting,
                 styles: { root: { backgroundColor: "#2E584F" } },
                 children: "Simpan",
               }),
             ],
           }),
       },
-      h,
+      z,
     );
   };
-export { I as Form };
+export { y as Form };

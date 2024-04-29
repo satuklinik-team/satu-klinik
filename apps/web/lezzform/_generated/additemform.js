@@ -1,72 +1,72 @@
 import { z as t } from "zod";
 import {
-  Lezzform as z,
+  Lezzform as h,
   FormField as a,
   FormItem as m,
   FormLabel as l,
   FormControl as u,
   FormMessage as c,
-  Attachment as L,
-  Dropdown as I,
+  Attachment as v,
+  Dropdown as L,
   Input as P,
-  NumberInput as h,
-  TwoColumn as w,
-  Button as C,
+  NumberInput as d,
+  TwoColumn as k,
+  Button as z,
 } from "@lezzform/react";
-import { ChevronDown as R } from "lucide-react";
+import { ChevronDown as w } from "lucide-react";
 import * as s from "react";
-import { jsx as e, jsxs as r } from "react/jsx-runtime";
-var k = t.object({
-    "attachment-1713877181989": t.string().optional(),
-    "singleSelect-1713877151261": t.string().optional(),
-    "input-1713876922462": t.string().optional(),
-    "numberInput-1713876810979": t.coerce.number().optional(),
-    "numberInput-1713876818843": t.coerce.number().optional(),
-    "numberInput-1713876836868": t.coerce.number().optional(),
+import { jsx as e, jsxs as n } from "react/jsx-runtime";
+var B = t.object({
+    "attachment-1713877181989": t.string(),
+    category: t.string(),
+    title: t.string(),
+    price: t.coerce.number().optional(),
+    quantity: t.coerce.number(),
+    discount: t.coerce.number().optional(),
   }),
-  g = "eenwuufNCyG5gSH6zfG1",
-  A = ({
-    onSubmit: i,
-    onError: d,
-    onSuccess: S,
-    defaultValues: y,
-    onAction: b,
-    formProps: B,
+  C = "xzg3E72du34mLYyyz7eK",
+  f = ({
+    onSubmit: b,
+    onError: y,
+    onSuccess: g,
+    defaultValues: S,
+    onAction: i,
+    formProps: q,
   }) => {
     let p = s.useRef();
     s.useEffect(() => {
-      i && (p.current = i);
-    }, [i]);
-    let v = s.useCallback(async (n, o) => {
-      if (p.current) return p.current(n, o);
+      b && (p.current = b);
+    }, [b]);
+    let R = s.useCallback(async (r, o) => {
+      if (p.current) return p.current(r, o);
     }, []);
     return e(
-      z,
+      h,
       {
-        id: g,
-        defaultValues: y,
-        onSubmit: v,
-        onError: d,
-        onSuccess: S,
-        zodSchema: k,
+        id: C,
+        defaultValues: S,
+        onSubmit: R,
+        onError: y,
+        onSuccess: g,
+        zodSchema: B,
         mode: "onSubmit",
-        children: (n) =>
-          r(z.Container, {
+        children: (r) =>
+          n(h.Container, {
             children: [
               e(a, {
-                control: n.control,
+                control: r.control,
                 name: "attachment-1713877181989",
                 render: ({ field: o }) =>
-                  r(m, {
+                  n(m, {
                     children: [
-                      e(l, { children: "Main Picture" }),
+                      e(l, { isRequired: !0, children: "Main Picture" }),
                       e(u, {
-                        children: e(L, {
+                        children: e(v, {
                           label: "Main Picture",
                           name: o.name,
                           value: o.value,
                           onChange: (F) => {
-                            o.onChange(F), n.clearErrors(o.name);
+                            o.onChange(F), r.clearErrors(o.name);
                           },
                           disabled: o.disabled,
                           placeholder: "",
@@ -74,10 +74,11 @@ var k = t.object({
                           maxSize: 2048,
                           headers: [],
                           onError: (F) => {
-                            n.setError(o.name, { message: F });
+                            r.setError(o.name, { message: F });
                           },
                           path: { value: "" },
                           url: "",
+                          isRequired: !0,
                           styles: { root: {} },
                         }),
                       }),
@@ -86,14 +87,14 @@ var k = t.object({
                   }),
               }),
               e(a, {
-                control: n.control,
-                name: "singleSelect-1713877151261",
+                control: r.control,
+                name: "category",
                 render: ({ field: o }) =>
-                  r(m, {
+                  n(m, {
                     children: [
-                      e(l, { children: "Category" }),
+                      e(l, { isRequired: !0, children: "Category" }),
                       e(u, {
-                        children: e(I, {
+                        children: e(L, {
                           label: "Category",
                           name: o.name,
                           value: o.value,
@@ -103,10 +104,11 @@ var k = t.object({
                             { label: "Option 2", value: "option2" },
                             { label: "Option 3", value: "option3" },
                           ],
+                          isRequired: !0,
                           disabled: o.disabled,
                           styles: { root: {} },
                           suffixAdornment: {
-                            icon: e(R, { size: 18, color: "#000000" }),
+                            icon: e(w, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
@@ -115,12 +117,12 @@ var k = t.object({
                   }),
               }),
               e(a, {
-                control: n.control,
-                name: "input-1713876922462",
+                control: r.control,
+                name: "title",
                 render: ({ field: o }) =>
-                  r(m, {
+                  n(m, {
                     children: [
-                      e(l, { children: "Title" }),
+                      e(l, { isRequired: !0, children: "Title" }),
                       e(u, {
                         children: e(P, {
                           label: "Title",
@@ -130,6 +132,7 @@ var k = t.object({
                           onChange: o.onChange,
                           placeholder: "Title",
                           disabled: o.disabled,
+                          isRequired: !0,
                           styles: { root: {} },
                         }),
                       }),
@@ -138,14 +141,14 @@ var k = t.object({
                   }),
               }),
               e(a, {
-                control: n.control,
-                name: "numberInput-1713876810979",
+                control: r.control,
+                name: "price",
                 render: ({ field: o }) =>
-                  r(m, {
+                  n(m, {
                     children: [
                       e(l, { children: "Price" }),
                       e(u, {
-                        children: e(h, {
+                        children: e(d, {
                           label: "Price",
                           name: o.name,
                           value: o.value ?? 0,
@@ -161,14 +164,14 @@ var k = t.object({
                   }),
               }),
               e(a, {
-                control: n.control,
-                name: "numberInput-1713876818843",
+                control: r.control,
+                name: "quantity",
                 render: ({ field: o }) =>
-                  r(m, {
+                  n(m, {
                     children: [
-                      e(l, { children: "Quantity" }),
+                      e(l, { isRequired: !0, children: "Quantity" }),
                       e(u, {
-                        children: e(h, {
+                        children: e(d, {
                           label: "Quantity",
                           name: o.name,
                           value: o.value ?? 0,
@@ -176,6 +179,7 @@ var k = t.object({
                           onChange: o.onChange,
                           disabled: o.disabled,
                           placeholder: "Quantity",
+                          isRequired: !0,
                           styles: { root: {} },
                         }),
                       }),
@@ -184,14 +188,14 @@ var k = t.object({
                   }),
               }),
               e(a, {
-                control: n.control,
-                name: "numberInput-1713876836868",
+                control: r.control,
+                name: "discount",
                 render: ({ field: o }) =>
-                  r(m, {
+                  n(m, {
                     children: [
                       e(l, { children: "Discount" }),
                       e(u, {
-                        children: e(h, {
+                        children: e(d, {
                           label: "Discount",
                           name: o.name,
                           value: o.value ?? 0,
@@ -206,25 +210,25 @@ var k = t.object({
                     ],
                   }),
               }),
-              r(w, {
+              n(k, {
                 styles: { root: {} },
                 children: [
-                  e(C, {
+                  e(z, {
                     type: "button",
                     className: "w-full",
                     onClick: () => {
-                      b?.["button-1713876963119"] &&
-                        b?.["button-1713876963119"](n);
+                      i?.["button-1713876963119"] &&
+                        i?.["button-1713876963119"](r);
                     },
                     styles: { root: { backgroundColor: "#2E584F" } },
                     children: "Submit",
                   }),
-                  e(C, {
+                  e(z, {
                     type: "button",
                     className: "w-full",
                     onClick: () => {
-                      b?.["button-1713876964678"] &&
-                        b?.["button-1713876964678"](n);
+                      i?.["button-1713876964678"] &&
+                        i?.["button-1713876964678"](r);
                     },
                     styles: { root: { backgroundColor: "rgb(239, 68, 68)" } },
                     children: "Reset",
@@ -234,7 +238,7 @@ var k = t.object({
             ],
           }),
       },
-      g,
+      C,
     );
   };
-export { A as Form };
+export { f as Form };

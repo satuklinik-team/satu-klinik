@@ -3,32 +3,30 @@ import type { LezzformReturn, LezzformProps } from "@lezzform/react";
 import * as React from "react";
 declare const zodFormSchema: z.ZodObject<
   {
-    "input-1713880139587": z.ZodOptional<z.ZodString>;
-    "input-1713880141267": z.ZodOptional<z.ZodString>;
-    "input-1713880143659": z.ZodOptional<z.ZodString>;
-    "phoneNumberInput-1713880247470": z.ZodOptional<
-      z.ZodEffects<z.ZodString, string, string>
-    >;
-    "input-1713880241782": z.ZodOptional<z.ZodString>;
-    "numberInput-1713880284230": z.ZodOptional<z.ZodNumber>;
+    licenseNumber: z.ZodString;
+    clinicId: z.ZodString;
+    clinicName: z.ZodString;
+    phone: z.ZodEffects<z.ZodString, string, string>;
+    address: z.ZodString;
+    price: z.ZodNumber;
   },
   "strip",
   z.ZodTypeAny,
   {
-    "input-1713880139587"?: string;
-    "input-1713880141267"?: string;
-    "input-1713880143659"?: string;
-    "phoneNumberInput-1713880247470"?: string;
-    "input-1713880241782"?: string;
-    "numberInput-1713880284230"?: number;
+    address?: string;
+    licenseNumber?: string;
+    clinicId?: string;
+    clinicName?: string;
+    phone?: string;
+    price?: number;
   },
   {
-    "input-1713880139587"?: string;
-    "input-1713880141267"?: string;
-    "input-1713880143659"?: string;
-    "phoneNumberInput-1713880247470"?: string;
-    "input-1713880241782"?: string;
-    "numberInput-1713880284230"?: number;
+    address?: string;
+    licenseNumber?: string;
+    clinicId?: string;
+    clinicName?: string;
+    phone?: string;
+    price?: number;
   }
 >;
 export type FormSchema = z.infer<typeof zodFormSchema>;

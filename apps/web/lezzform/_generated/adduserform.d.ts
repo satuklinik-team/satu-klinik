@@ -3,33 +3,33 @@ import type { LezzformReturn, LezzformProps } from "@lezzform/react";
 import * as React from "react";
 declare const zodFormSchema: z.ZodObject<
   {
-    name: z.ZodOptional<z.ZodString>;
-    "emailInput-1713871204480": z.ZodOptional<z.ZodString>;
-    "input-1713871261634": z.ZodOptional<z.ZodString>;
-    "textarea-1713871376397": z.ZodOptional<z.ZodString>;
-    "singleSelect-1713871528625": z.ZodOptional<z.ZodString>;
-    "passwordInput-1713871400734": z.ZodOptional<z.ZodString>;
-    "passwordInput-1713871418205": z.ZodOptional<z.ZodString>;
+    fullName: z.ZodString;
+    email: z.ZodString;
+    phone: z.ZodString;
+    address: z.ZodString;
+    role: z.ZodString;
+    password: z.ZodString;
+    confirmPassword: z.ZodString;
   },
   "strip",
   z.ZodTypeAny,
   {
-    name?: string;
-    "emailInput-1713871204480"?: string;
-    "input-1713871261634"?: string;
-    "textarea-1713871376397"?: string;
-    "singleSelect-1713871528625"?: string;
-    "passwordInput-1713871400734"?: string;
-    "passwordInput-1713871418205"?: string;
+    address?: string;
+    role?: string;
+    email?: string;
+    password?: string;
+    fullName?: string;
+    phone?: string;
+    confirmPassword?: string;
   },
   {
-    name?: string;
-    "emailInput-1713871204480"?: string;
-    "input-1713871261634"?: string;
-    "textarea-1713871376397"?: string;
-    "singleSelect-1713871528625"?: string;
-    "passwordInput-1713871400734"?: string;
-    "passwordInput-1713871418205"?: string;
+    address?: string;
+    role?: string;
+    email?: string;
+    password?: string;
+    fullName?: string;
+    phone?: string;
+    confirmPassword?: string;
   }
 >;
 export type FormSchema = z.infer<typeof zodFormSchema>;

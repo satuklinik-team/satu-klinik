@@ -1,225 +1,231 @@
 import { z as n } from "zod";
 import {
-  Lezzform as h,
-  FormField as m,
-  FormItem as l,
-  FormLabel as s,
-  FormControl as u,
-  FormMessage as i,
-  Input as p,
-  PhoneNumberInput as S,
-  NumberInput as I,
+  Lezzform as p,
+  FormField as t,
+  FormItem as s,
+  FormLabel as l,
+  FormControl as i,
+  FormMessage as c,
+  Input as d,
+  PhoneNumberInput as C,
+  NumberInput as S,
   Button as L,
 } from "@lezzform/react";
 import {
-  Briefcase as y,
-  CreditCard as B,
-  Building as R,
-  Phone as f,
+  Briefcase as I,
+  CreditCard as y,
+  Building as B,
+  Phone as N,
 } from "lucide-react";
-import * as c from "react";
-import { jsx as e, jsxs as a } from "react/jsx-runtime";
-var k = n.object({
-    "input-1713880139587": n.string().optional(),
-    "input-1713880141267": n.string().optional(),
-    "input-1713880143659": n.string().optional(),
-    "phoneNumberInput-1713880247470": n
+import * as u from "react";
+import { jsx as o, jsxs as a } from "react/jsx-runtime";
+var v = n.object({
+    licenseNumber: n.string(),
+    clinicId: n.string(),
+    clinicName: n.string(),
+    phone: n
       .string()
       .max(14)
       .min(10)
       .refine(
-        (t) =>
-          !t ||
-          /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/.test(t),
+        (m) =>
+          !m ||
+          /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/.test(m),
         { message: "Invalid phone number format" },
-      )
-      .optional(),
-    "input-1713880241782": n.string().optional(),
-    "numberInput-1713880284230": n.coerce.number().optional(),
+      ),
+    address: n.string(),
+    price: n.coerce.number(),
   }),
-  d = "CG8az2pJBlpb6WG8Rujd",
-  x = ({
-    onSubmit: t,
+  h = "AcDGv9IzNL5PecLyjWEv",
+  q = ({
+    onSubmit: m,
     onError: F,
     onSuccess: z,
     defaultValues: g,
     onAction: P,
-    formProps: v,
+    formProps: f,
   }) => {
-    let b = c.useRef();
-    c.useEffect(() => {
-      t && (b.current = t);
-    }, [t]);
-    let C = c.useCallback(async (r, o) => {
-      if (b.current) return b.current(r, o);
+    let b = u.useRef();
+    u.useEffect(() => {
+      m && (b.current = m);
+    }, [m]);
+    let R = u.useCallback(async (r, e) => {
+      if (b.current) return b.current(r, e);
     }, []);
-    return e(
-      h,
+    return o(
+      p,
       {
-        id: d,
+        id: h,
         defaultValues: g,
-        onSubmit: C,
+        onSubmit: R,
         onError: F,
         onSuccess: z,
-        zodSchema: k,
+        zodSchema: v,
         mode: "onSubmit",
         children: (r) =>
-          a(h.Container, {
+          a(p.Container, {
             children: [
-              e(m, {
+              o(t, {
                 control: r.control,
-                name: "input-1713880139587",
-                render: ({ field: o }) =>
-                  a(l, {
+                name: "licenseNumber",
+                render: ({ field: e }) =>
+                  a(s, {
                     children: [
-                      e(s, {
+                      o(l, {
+                        isRequired: !0,
                         children: "ID Permit / ID Registrasi / Nomor Lisensi",
                       }),
-                      e(u, {
-                        children: e(p, {
+                      o(i, {
+                        children: o(d, {
                           label: "ID Permit  / ID Registrasi / Nomor Lisensi",
-                          name: o.name,
-                          value: o.value ?? "",
-                          onBlur: o.onBlur,
-                          onChange: o.onChange,
+                          name: e.name,
+                          value: e.value ?? "",
+                          onBlur: e.onBlur,
+                          onChange: e.onChange,
                           placeholder:
                             "ID Permit  / ID Registrasi / Nomor Lisensi",
-                          disabled: o.disabled,
+                          disabled: e.disabled,
+                          isRequired: !0,
                           styles: { root: {} },
                           prefixAdornment: {
-                            icon: e(y, { size: 18, color: "#000000" }),
+                            icon: o(I, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
-                      e(i, {}),
+                      o(c, {}),
                     ],
                   }),
               }),
-              e(m, {
+              o(t, {
                 control: r.control,
-                name: "input-1713880141267",
-                render: ({ field: o }) =>
-                  a(l, {
+                name: "clinicId",
+                render: ({ field: e }) =>
+                  a(s, {
                     children: [
-                      e(s, { children: "Fasyankes ID" }),
-                      e(u, {
-                        children: e(p, {
+                      o(l, { isRequired: !0, children: "Fasyankes ID" }),
+                      o(i, {
+                        children: o(d, {
                           label: "Fasyankes ID",
-                          name: o.name,
-                          value: o.value ?? "",
-                          onBlur: o.onBlur,
-                          onChange: o.onChange,
+                          name: e.name,
+                          value: e.value ?? "",
+                          onBlur: e.onBlur,
+                          onChange: e.onChange,
                           placeholder: "Fasyankes ID",
-                          disabled: o.disabled,
+                          disabled: e.disabled,
+                          isRequired: !0,
                           styles: { root: {} },
                           prefixAdornment: {
-                            icon: e(B, { size: 18, color: "#000000" }),
+                            icon: o(y, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
-                      e(i, {}),
+                      o(c, {}),
                     ],
                   }),
               }),
-              e(m, {
+              o(t, {
                 control: r.control,
-                name: "input-1713880143659",
-                render: ({ field: o }) =>
-                  a(l, {
+                name: "clinicName",
+                render: ({ field: e }) =>
+                  a(s, {
                     children: [
-                      e(s, { children: "Nama Klinik" }),
-                      e(u, {
-                        children: e(p, {
+                      o(l, { isRequired: !0, children: "Nama Klinik" }),
+                      o(i, {
+                        children: o(d, {
                           label: "Nama Klinik",
-                          name: o.name,
-                          value: o.value ?? "",
-                          onBlur: o.onBlur,
-                          onChange: o.onChange,
+                          name: e.name,
+                          value: e.value ?? "",
+                          onBlur: e.onBlur,
+                          onChange: e.onChange,
                           placeholder: "Nama Klinik",
-                          disabled: o.disabled,
+                          disabled: e.disabled,
+                          isRequired: !0,
                           styles: { root: {} },
                           prefixAdornment: {
-                            icon: e(R, { size: 18, color: "#000000" }),
+                            icon: o(B, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
-                      e(i, {}),
+                      o(c, {}),
                     ],
                   }),
               }),
-              e(m, {
+              o(t, {
                 control: r.control,
-                name: "phoneNumberInput-1713880247470",
-                render: ({ field: o }) =>
-                  a(l, {
+                name: "phone",
+                render: ({ field: e }) =>
+                  a(s, {
                     children: [
-                      e(s, { children: "Nomor Telepon" }),
-                      e(u, {
-                        children: e(S, {
+                      o(l, { isRequired: !0, children: "Nomor Telepon" }),
+                      o(i, {
+                        children: o(C, {
                           label: "Nomor Telepon",
-                          name: o.name,
-                          value: o.value ?? "",
-                          onBlur: o.onBlur,
-                          onChange: o.onChange,
-                          disabled: o.disabled,
+                          name: e.name,
+                          value: e.value ?? "",
+                          onBlur: e.onBlur,
+                          onChange: e.onChange,
+                          disabled: e.disabled,
                           placeholder: "Nomor Telepon",
+                          isRequired: !0,
                           styles: { root: {} },
                           prefixAdornment: {
-                            icon: e(f, { size: 18, color: "#000000" }),
+                            icon: o(N, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
-                      e(i, {}),
+                      o(c, {}),
                     ],
                   }),
               }),
-              e(m, {
+              o(t, {
                 control: r.control,
-                name: "input-1713880241782",
-                render: ({ field: o }) =>
-                  a(l, {
+                name: "address",
+                render: ({ field: e }) =>
+                  a(s, {
                     children: [
-                      e(s, { children: "Alamat" }),
-                      e(u, {
-                        children: e(p, {
+                      o(l, { isRequired: !0, children: "Alamat" }),
+                      o(i, {
+                        children: o(d, {
                           label: "Alamat",
-                          name: o.name,
-                          value: o.value ?? "",
-                          onBlur: o.onBlur,
-                          onChange: o.onChange,
+                          name: e.name,
+                          value: e.value ?? "",
+                          onBlur: e.onBlur,
+                          onChange: e.onChange,
                           placeholder: "Alamat",
-                          disabled: o.disabled,
+                          disabled: e.disabled,
+                          isRequired: !0,
                           styles: { root: {} },
                         }),
                       }),
-                      e(i, {}),
+                      o(c, {}),
                     ],
                   }),
               }),
-              e(m, {
+              o(t, {
                 control: r.control,
-                name: "numberInput-1713880284230",
-                render: ({ field: o }) =>
-                  a(l, {
+                name: "price",
+                render: ({ field: e }) =>
+                  a(s, {
                     children: [
-                      e(s, { children: "Harga Dasar" }),
-                      e(u, {
-                        children: e(I, {
+                      o(l, { isRequired: !0, children: "Harga Dasar" }),
+                      o(i, {
+                        children: o(S, {
                           label: "Harga Dasar",
-                          name: o.name,
-                          value: o.value ?? 0,
-                          onBlur: o.onBlur,
-                          onChange: o.onChange,
-                          disabled: o.disabled,
+                          name: e.name,
+                          value: e.value ?? 0,
+                          onBlur: e.onBlur,
+                          onChange: e.onChange,
+                          disabled: e.disabled,
                           placeholder: "Harga Dasar",
+                          isRequired: !0,
                           styles: { root: { marginBottom: 16 } },
                         }),
                       }),
-                      e(i, {}),
+                      o(c, {}),
                     ],
                   }),
               }),
-              e(L, {
+              o(L, {
                 type: "submit",
                 className: "w-full",
                 disabled: r.formState.isSubmitting,
@@ -230,7 +236,7 @@ var k = n.object({
             ],
           }),
       },
-      d,
+      h,
     );
   };
-export { x as Form };
+export { q as Form };
