@@ -1,17 +1,10 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-
 // import ReactApexChart from "react-apexcharts";
-import { Button } from "@/components/ui/button";
 import { ClinicCard } from "@/features/clinic/components/ui/card";
-
-import { clinicDashboardServices } from "../utils";
+import { ClinicServicesCard } from "@/features/clinic/components/ui/services-card";
 
 export function ClinicDashboardPage(): JSX.Element {
-  const pathname = usePathname();
-
   return (
     <div className="h-full">
       <div className="mb-6 flex flex-col gap-2">
@@ -117,29 +110,7 @@ export function ClinicDashboardPage(): JSX.Element {
         /> */}
       </ClinicCard>
 
-      <ClinicCard
-        borderPosition="left"
-        className="my-4 border-sky-500"
-        title="Services"
-      >
-        <div className="flex flex-row flex-wrap gap-4">
-          {clinicDashboardServices.map((item) => {
-            const Icon = item.icon;
-
-            return (
-              <Link href={`${pathname}${item.path}`} key={item.text}>
-                <Button
-                  className="flex flex-col items-center gap-1 h-fit text-primary hover:text-primary border border-primary"
-                  variant="ghost"
-                >
-                  <Icon className="text-primary" size={20} />
-                  {item.text}
-                </Button>
-              </Link>
-            );
-          })}
-        </div>
-      </ClinicCard>
+      <ClinicServicesCard />
 
       <div className="flex flex-col sm:flex-col md:flex-row lg:flex-row xl:flex-row 2xl:flex-row gap-4">
         <ClinicCard
