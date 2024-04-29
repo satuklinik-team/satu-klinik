@@ -9,23 +9,45 @@ import {
   UserNotFoundException,
 } from 'src/exceptions';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { ClinicsService } from 'src/clinics/clinics.service';
+import { AccountsService } from 'src/accounts/accounts.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private tokenService: TokenService,
-    private userService: UsersService,
+    private usersService: UsersService,
     private cryptoService: CryptoService,
+    private clinicsService: ClinicsService,
     private prismaService: PrismaService,
+    private accountsService: AccountsService,
   ) {}
 
   async register(dto: RegisterDto) {
-    const user = await this.userService.create({
-      email: dto.email,
-      name: dto.name,
-      password: dto.password,
-      address: dto.address,
+    const user = await this.prismaService.$transaction(async (tx) => {
+      let user = await this.usersService.create(dto, { tx });
+      const account = await this.accountsService.create(
+        { usersId: user.id },
+        { tx },
+      );
+      const clinic = await this.clinicsService.create(
+        {
+          ...dto,
+          accountsId: account.id,
+        },
+        { tx },
+      );
+      user = await this.usersService.changeClinicId(
+        {
+          usersId: user.id,
+          clinicsId: clinic.id,
+        },
+        { tx },
+      );
+
+      return user;
     });
+
     const token = await this.tokenService.getAuthToken({ sub: user.id });
 
     return { user: exclude(user, ['password']), token };
@@ -58,7 +80,7 @@ export class AuthService {
   }
 
   private async _isUserNotFound(email: string) {
-    const userCount = await this.userService.count({ where: { email } });
+    const userCount = await this.usersService.count({ where: { email } });
     return !userCount;
   }
 

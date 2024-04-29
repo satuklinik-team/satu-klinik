@@ -7,7 +7,7 @@ import Link from "next/link";
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
 import { SectionContainer } from "@/features/home/components/shared/section-container";
 import { BOOK_DEMO_WA_TEXT } from "@/features/home/utils";
-import { redirectToWhatsapp } from "@/utils";
+import { getWhatsappUrl } from "@/utils";
 
 import { Button } from "../ui/button";
 
@@ -36,13 +36,8 @@ export function Navigation(): JSX.Element {
             <Link href="">Tentang Kami</Link>
           </li>
         </ul>
-        <Link href="">
-          <Button
-            className="text-black font-bold hidden xl:block 2xl:block"
-            onClick={() => {
-              redirectToWhatsapp(BOOK_DEMO_WA_TEXT);
-            }}
-          >
+        <Link href={getWhatsappUrl(BOOK_DEMO_WA_TEXT)}>
+          <Button className="text-black font-bold hidden xl:block 2xl:block">
             Jadwalkan Demo
           </Button>
         </Link>
@@ -66,13 +61,8 @@ export function Navigation(): JSX.Element {
                 <Link href="">Tentang Kami</Link>
               </li>
             </ul>
-            <Link className="w-full" href="">
-              <Button
-                className="w-full text-black font-bold"
-                onClick={() => {
-                  redirectToWhatsapp(BOOK_DEMO_WA_TEXT);
-                }}
-              >
+            <Link className="w-full" href={getWhatsappUrl(BOOK_DEMO_WA_TEXT)}>
+              <Button className="w-full text-black font-bold">
                 Jadwalkan Demo
               </Button>
             </Link>
