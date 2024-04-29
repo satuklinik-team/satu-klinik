@@ -21,7 +21,7 @@ export function HeaderCell<T extends object>({
 
   const cellClassName = cn(
     "flex items-center text-foreground font-semibold cursor-default",
-    className
+    className,
   );
 
   if (!name) return <Cell className={cellClassName} {...rest} />;

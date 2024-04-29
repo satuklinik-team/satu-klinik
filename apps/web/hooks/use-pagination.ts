@@ -16,7 +16,7 @@ export function usePagination({ skip, limit, totalRows }: UsePaginationProps) {
     (value: number) => {
       setCurrentSkip(value * limit);
     },
-    [limit]
+    [limit],
   );
 
   return {

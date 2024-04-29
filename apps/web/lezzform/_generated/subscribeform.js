@@ -9,11 +9,11 @@ import {
   Input as F,
   EmailInput as h,
   PhoneNumberInput as g,
-  PasswordInput as S,
-  Divider as k,
+  PasswordInput as k,
+  Divider as L,
   TextArea as y,
-  Spacer as v,
-  Button as B,
+  Spacer as B,
+  Button as v,
 } from "@lezzform/react";
 import * as c from "react";
 import { jsx as e, jsxs as a } from "react/jsx-runtime";
@@ -28,7 +28,7 @@ var w = r.object({
         (t) =>
           !t ||
           /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/.test(t),
-        { message: "Invalid phone number format" }
+        { message: "Invalid phone number format" },
       )
       .optional(),
     "passwordInput-1713865937493": r.string().optional(),
@@ -42,18 +42,18 @@ var w = r.object({
         (t) =>
           !t ||
           /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/.test(t),
-        { message: "Invalid phone number format" }
+        { message: "Invalid phone number format" },
       )
       .optional(),
     "textarea-1713866248190": r.string().optional(),
     "input-1713866308216": r.string().optional(),
   }),
-  z = "ru95841zLrgu1LgwVKRl",
-  E = ({
+  z = "91YAHROwc7zIBH2BMcIe",
+  A = ({
     onSubmit: t,
     onError: p,
     onSuccess: C,
-    defaultValues: L,
+    defaultValues: I,
     onAction: P,
     formProps: R,
   }) => {
@@ -61,15 +61,15 @@ var w = r.object({
     c.useEffect(() => {
       t && (b.current = t);
     }, [t]);
-    let I = c.useCallback(async (n, o) => {
+    let S = c.useCallback(async (n, o) => {
       if (b.current) return b.current(n, o);
     }, []);
     return e(
       d,
       {
         id: z,
-        defaultValues: L,
-        onSubmit: I,
+        defaultValues: I,
+        onSubmit: S,
         onError: p,
         onSuccess: C,
         zodSchema: w,
@@ -154,7 +154,7 @@ var w = r.object({
                     children: [
                       e(s, { children: "Konfirmasi Password" }),
                       e(u, {
-                        children: e(S, {
+                        children: e(k, {
                           label: "Konfirmasi Password",
                           name: o.name,
                           value: o.value ?? "",
@@ -169,7 +169,7 @@ var w = r.object({
                     ],
                   }),
               }),
-              e(k.Solid, { styles: { root: {} }, size: 1, color: "#c7c7c7" }),
+              e(L.Solid, { styles: { root: {} }, size: 1, color: "#c7c7c7" }),
               e(m, {
                 control: n.control,
                 name: "input-1713866125346",
@@ -285,8 +285,8 @@ var w = r.object({
                     ],
                   }),
               }),
-              e(v, { styles: { root: {} }, size: 16 }),
-              e(B, {
+              e(B, { styles: { root: {} }, size: 16 }),
+              e(v, {
                 type: "submit",
                 className: "w-full",
                 disabled: n.formState.isSubmitting,
@@ -297,7 +297,7 @@ var w = r.object({
             ],
           }),
       },
-      z
+      z,
     );
   };
-export { E as Form };
+export { A as Form };
