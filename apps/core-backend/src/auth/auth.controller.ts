@@ -14,20 +14,7 @@ export class AuthController {
   async register(@Body() dto: RegisterDto, @Res() res: Response) {
     const data = await this.authService.register(dto);
 
-    res.cookie('__accessToken', data.token.accessToken, {
-      maxAge: data.token.accessTokenExpiresIn * 1000,
-      httpOnly: true,
-    });
-    res.cookie('__refreshToken', data.token.refreshToken, {
-      maxAge: data.token.refreshTokenExpiresIn * 1000,
-      httpOnly: true,
-    });
-
-    return res.json({
-      user: data.user,
-      token: data.token.accessToken,
-      expiresIn: data.token.accessTokenExpiresIn,
-    });
+    return this._setTokens(data, res);
   }
 
   @Post('login')
@@ -35,20 +22,7 @@ export class AuthController {
   async login(@Body() dto: LoginDto, @Res() res: Response) {
     const data = await this.authService.login(dto);
 
-    res.cookie('__accessToken', data.token.accessToken, {
-      maxAge: data.token.accessTokenExpiresIn * 1000,
-      httpOnly: true,
-    });
-    res.cookie('__refreshToken', data.token.refreshToken, {
-      maxAge: data.token.refreshTokenExpiresIn * 1000,
-      httpOnly: true,
-    });
-
-    return res.json({
-      user: data.user,
-      token: data.token.accessToken,
-      expiresIn: data.token.accessTokenExpiresIn,
-    });
+    return this._setTokens(data, res);
   }
 
   @Post('logout')
@@ -63,5 +37,22 @@ export class AuthController {
   @Get('verify')
   async verify(@TokenData() tokenData: JwtPayload) {
     return tokenData;
+  }
+
+  private async _setTokens(data, res: Response) {
+    res.cookie('__accessToken', data.token.accessToken, {
+      maxAge: data.token.accessTokenExpiresIn * 1000,
+      httpOnly: true,
+    });
+    res.cookie('__refreshToken', data.token.refreshToken, {
+      maxAge: data.token.refreshTokenExpiresIn * 1000,
+      httpOnly: true,
+    });
+
+    return res.json({
+      user: data.user,
+      token: data.token.accessToken,
+      expiresIn: data.token.accessTokenExpiresIn,
+    });
   }
 }
