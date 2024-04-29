@@ -1,4 +1,5 @@
 import "./globals.css";
+import "@lezzform/react/style.css";
 
 import type { Metadata } from "next";
 import CreatoDisplay from "next/font/local";
