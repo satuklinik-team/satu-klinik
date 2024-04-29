@@ -10,6 +10,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { ClinicCard } from "@/features/clinic/components/ui/card";
+import { Form as AddUserForm } from "@/lezzform/_generated/adduserform";
 
 export function ClinicNewUserPage(): JSX.Element {
   const pathname = usePathname();
@@ -41,7 +42,9 @@ export function ClinicNewUserPage(): JSX.Element {
         borderPosition="top"
         className="border-sky-500"
         title="Add New User"
-      />
+      >
+        <AddUserForm />
+      </ClinicCard>
     </div>
   );
 }

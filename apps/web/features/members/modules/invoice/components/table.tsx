@@ -42,7 +42,7 @@ export function MembersInvoicesTable(): JSX.Element {
             name: "Status",
             renderCell: (row) => (
               <Cell>
-                <Badge className="text-sm cursor-pointer">{row.status}</Badge>
+                <Badge className="text-sm cursor-default">{row.status}</Badge>
               </Cell>
             ),
           },

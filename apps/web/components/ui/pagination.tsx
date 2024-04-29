@@ -52,7 +52,8 @@ const PaginationButton = ({
         variant: isActive ? "outline" : "ghost",
         size,
       }),
-      className
+      isActive && "bg-primary/20",
+      className,
     )}
     {...props}
   />
