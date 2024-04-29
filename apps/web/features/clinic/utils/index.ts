@@ -3,6 +3,7 @@ import {
   Bookmark,
   CirclePlus,
   Home,
+  Pill,
   Settings,
   Stethoscope,
   Store,
@@ -31,7 +32,10 @@ export const leftBarGroups: LeftBarGroup[] = [
   {
     id: "3",
     category: "Apotek",
-    items: [{ icon: Store, text: "Tugas", path: "/pharmacy" }],
+    items: [
+      { icon: Store, text: "Tugas", path: "/pharmacy" },
+      { icon: Pill, text: "Inventori", path: "/items" },
+    ],
   },
   {
     id: "4",

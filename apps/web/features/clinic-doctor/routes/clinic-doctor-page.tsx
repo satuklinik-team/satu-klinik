@@ -1,7 +1,7 @@
 "use client";
 
 import { ClinicCard } from "@/features/clinic/components/ui/card";
-import { ClinicServicesCard } from "@/features/clinic/components/ui/services-card";
+// import { ClinicServicesCard } from "@/features/clinic/components/ui/services-card";
 
 export function ClinicDoctorPage(): JSX.Element {
   return (
@@ -37,7 +37,7 @@ export function ClinicDoctorPage(): JSX.Element {
         </ClinicCard>
       </div>
 
-      <ClinicServicesCard />
+      {/* <ClinicServicesCard /> */}
     </div>
   );
 }

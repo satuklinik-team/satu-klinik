@@ -29,7 +29,8 @@ export function ClinicCard({
         borderPosition === "top" && "border-t-4",
         borderPosition === "right" && "border-r-4",
         borderPosition === "bottom" && "border-b-4",
-        className
+        className,
+        "border-gray-400"
       )}
       {...rest}
     >
