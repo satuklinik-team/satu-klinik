@@ -6,6 +6,8 @@ import CreatoDisplay from "next/font/local";
 
 import { cn } from "@/lib/utils";
 
+import Providers from "./providers";
+
 const creatoDisplay = CreatoDisplay({
   src: [
     { path: "../public/fonts/CreatoDisplay-Thin.otf", weight: "100" },
@@ -26,10 +28,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }): JSX.Element {
   return (
-    <html lang="en">
-      <body className={cn(creatoDisplay.className, "bg-white")}>
-        {children}
-      </body>
-    </html>
+    <Providers>
+      <html lang="en">
+        <body className={cn(creatoDisplay.className, "bg-white")}>
+          {children}
+        </body>
+      </html>
+    </Providers>
   );
 }

@@ -4,10 +4,7 @@ import Cookies from "js-cookie";
 const token = Cookies.get("accessToken");
 
 export const api = axios.create({
-  baseURL:
-    typeof window === "undefined"
-      ? process.env.NEXT_PUBLIC_BACKEND_URL
-      : "/api",
+  baseURL: process.env.NEXT_PUBLIC_BACKEND_URL,
   headers: {
     Authorization: token && `Bearer ${token}`,
   },

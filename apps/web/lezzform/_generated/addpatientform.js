@@ -11,9 +11,9 @@ import {
   DatePicker as I,
   PhoneNumberInput as k,
   TextArea as y,
-  Divider as N,
+  Divider as A,
   TwoColumn as g,
-  ThreeColumn as A,
+  ThreeColumn as N,
   Button as v,
   NumberInput as i,
 } from "@lezzform/react";
@@ -53,8 +53,8 @@ var x = a.object({
     temperature: a.coerce.number(),
     pain: a.string(),
   }),
-  z = "6OZ6CeMfQxysST1kOfnI",
-  G = ({
+  z = "grhSdmsdA7rlGT0ed0Ex",
+  M = ({
     onSubmit: c,
     onError: C,
     onSuccess: L,
@@ -296,7 +296,7 @@ var x = a.object({
                     ],
                   }),
               }),
-              o(N.Solid, { styles: { root: {} }, size: 2, color: "#E8E8E8" }),
+              o(A.Solid, { styles: { root: {} }, size: 2, color: "#E8E8E8" }),
               r(g, {
                 styles: { root: {} },
                 children: [
@@ -427,7 +427,7 @@ var x = a.object({
                   }),
                 ],
               }),
-              r(A, {
+              r(N, {
                 styles: { root: {} },
                 children: [
                   o(l, {
@@ -559,4 +559,4 @@ var x = a.object({
       z
     );
   };
-export { G as Form };
+export { M as Form };

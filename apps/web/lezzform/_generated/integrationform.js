@@ -1,6 +1,6 @@
 import { z as a } from "zod";
 import {
-  Lezzform as p,
+  Lezzform as z,
   FormField as t,
   FormItem as s,
   FormLabel as u,
@@ -8,17 +8,17 @@ import {
   FormMessage as c,
   Input as F,
   PasswordInput as g,
-  Button as L,
+  Button as C,
 } from "@lezzform/react";
 import * as n from "react";
 import { jsx as e, jsxs as m } from "react/jsx-runtime";
-var C = a.object({
+var L = a.object({
     id: a.string(),
     token: a.string(),
     username: a.string(),
     password: a.string(),
   }),
-  z = "44Li4v6P6PVkndKwTXmB",
+  p = "JNYc6zFWgSnv6PqoHR6B",
   y = ({
     onSubmit: i,
     onError: b,
@@ -35,17 +35,17 @@ var C = a.object({
       if (d.current) return d.current(r, o);
     }, []);
     return e(
-      p,
+      z,
       {
-        id: z,
+        id: p,
         defaultValues: S,
         onSubmit: R,
         onError: b,
         onSuccess: h,
-        zodSchema: C,
+        zodSchema: L,
         mode: "onSubmit",
         children: (r) =>
-          m(p.Container, {
+          m(z.Container, {
             children: [
               e(t, {
                 control: r.control,
@@ -143,7 +143,7 @@ var C = a.object({
                     ],
                   }),
               }),
-              e(L, {
+              e(C, {
                 type: "submit",
                 className: "w-full",
                 disabled: r.formState.isSubmitting,
@@ -154,7 +154,7 @@ var C = a.object({
             ],
           }),
       },
-      z
+      p
     );
   };
 export { y as Form };

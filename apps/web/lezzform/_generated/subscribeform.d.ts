@@ -3,11 +3,11 @@ import type { LezzformReturn, LezzformProps } from "@lezzform/react";
 import * as React from "react";
 declare const zodFormSchema: z.ZodObject<
   {
-    fullName: z.ZodString;
+    fullname: z.ZodString;
     email: z.ZodString;
     password: z.ZodEffects<z.ZodString, string, string>;
     confirmPassword: z.ZodString;
-    "input-1713866125346": z.ZodString;
+    clinicName: z.ZodString;
     clinicEmail: z.ZodString;
     clinicPhone: z.ZodEffects<z.ZodString, string, string>;
     clinicAddress: z.ZodString;
@@ -18,9 +18,9 @@ declare const zodFormSchema: z.ZodObject<
   {
     email?: string;
     password?: string;
-    fullName?: string;
+    fullname?: string;
     confirmPassword?: string;
-    "input-1713866125346"?: string;
+    clinicName?: string;
     clinicEmail?: string;
     clinicPhone?: string;
     clinicAddress?: string;
@@ -29,9 +29,9 @@ declare const zodFormSchema: z.ZodObject<
   {
     email?: string;
     password?: string;
-    fullName?: string;
+    fullname?: string;
     confirmPassword?: string;
-    "input-1713866125346"?: string;
+    clinicName?: string;
     clinicEmail?: string;
     clinicPhone?: string;
     clinicAddress?: string;

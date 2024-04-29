@@ -6,7 +6,7 @@ import {
   FormLabel as s,
   FormControl as i,
   FormMessage as u,
-  Input as b,
+  Input as F,
   EmailInput as p,
   PhoneNumberInput as g,
   PasswordInput as k,
@@ -18,7 +18,7 @@ import {
 import * as c from "react";
 import { jsx as o, jsxs as a } from "react/jsx-runtime";
 var P = n.object({
-    fullName: n.string(),
+    fullname: n.string(),
     email: n.string().email(),
     password: n
       .string()
@@ -31,7 +31,7 @@ var P = n.object({
         { message: "Invalid phone number format" }
       ),
     confirmPassword: n.string().max(14).min(6),
-    "input-1713866125346": n.string(),
+    clinicName: n.string(),
     clinicEmail: n.string().email(),
     clinicPhone: n
       .string()
@@ -46,30 +46,30 @@ var P = n.object({
     clinicAddress: n.string(),
     clinicCode: n.string(),
   }),
-  C = "y9joMA0SN0WuJHV8aGko",
-  N = ({
+  R = "IAD7M5bNRrEKi0sqbqDp",
+  E = ({
     onSubmit: m,
     onError: d,
-    onSuccess: R,
+    onSuccess: C,
     defaultValues: z,
     onAction: q,
     formProps: w,
   }) => {
-    let F = c.useRef();
+    let b = c.useRef();
     c.useEffect(() => {
-      m && (F.current = m);
+      m && (b.current = m);
     }, [m]);
     let S = c.useCallback(async (r, e) => {
-      if (F.current) return F.current(r, e);
+      if (b.current) return b.current(r, e);
     }, []);
     return o(
       h,
       {
-        id: C,
+        id: R,
         defaultValues: z,
         onSubmit: S,
         onError: d,
-        onSuccess: R,
+        onSuccess: C,
         zodSchema: P,
         mode: "onSubmit",
         children: (r) =>
@@ -77,13 +77,13 @@ var P = n.object({
             children: [
               o(l, {
                 control: r.control,
-                name: "fullName",
+                name: "fullname",
                 render: ({ field: e }) =>
                   a(t, {
                     children: [
                       o(s, { isRequired: !0, children: "Nama Lengkap" }),
                       o(i, {
-                        children: o(b, {
+                        children: o(F, {
                           label: "Nama Lengkap",
                           name: e.name,
                           value: e.value ?? "",
@@ -174,13 +174,13 @@ var P = n.object({
               o(L.Solid, { styles: { root: {} }, size: 1, color: "#c7c7c7" }),
               o(l, {
                 control: r.control,
-                name: "input-1713866125346",
+                name: "clinicName",
                 render: ({ field: e }) =>
                   a(t, {
                     children: [
                       o(s, { isRequired: !0, children: "Nama Klinik" }),
                       o(i, {
-                        children: o(b, {
+                        children: o(F, {
                           label: "Nama Klinik",
                           name: e.name,
                           value: e.value ?? "",
@@ -276,7 +276,7 @@ var P = n.object({
                     children: [
                       o(s, { isRequired: !0, children: "Kode Fasyankes" }),
                       o(i, {
-                        children: o(b, {
+                        children: o(F, {
                           label: "Kode Fasyankes",
                           name: e.name,
                           value: e.value ?? "",
@@ -304,7 +304,7 @@ var P = n.object({
             ],
           }),
       },
-      C
+      R
     );
   };
-export { N as Form };
+export { E as Form };

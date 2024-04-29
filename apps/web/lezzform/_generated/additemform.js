@@ -1,6 +1,6 @@
 import { z as t } from "zod";
 import {
-  Lezzform as h,
+  Lezzform as d,
   FormField as a,
   FormItem as m,
   FormLabel as l,
@@ -9,7 +9,7 @@ import {
   Attachment as v,
   Dropdown as L,
   Input as P,
-  NumberInput as d,
+  NumberInput as h,
   TwoColumn as k,
   Button as z,
 } from "@lezzform/react";
@@ -24,12 +24,12 @@ var B = t.object({
     quantity: t.coerce.number(),
     discount: t.coerce.number().optional(),
   }),
-  C = "xzg3E72du34mLYyyz7eK",
+  C = "2XXJbYQvGRusJPBRntqx",
   f = ({
     onSubmit: b,
-    onError: y,
-    onSuccess: g,
-    defaultValues: S,
+    onError: g,
+    onSuccess: y,
+    defaultValues: R,
     onAction: i,
     formProps: q,
   }) => {
@@ -37,21 +37,21 @@ var B = t.object({
     s.useEffect(() => {
       b && (p.current = b);
     }, [b]);
-    let R = s.useCallback(async (r, o) => {
+    let S = s.useCallback(async (r, o) => {
       if (p.current) return p.current(r, o);
     }, []);
     return e(
-      h,
+      d,
       {
         id: C,
-        defaultValues: S,
-        onSubmit: R,
-        onError: y,
-        onSuccess: g,
+        defaultValues: R,
+        onSubmit: S,
+        onError: g,
+        onSuccess: y,
         zodSchema: B,
         mode: "onSubmit",
         children: (r) =>
-          n(h.Container, {
+          n(d.Container, {
             children: [
               e(a, {
                 control: r.control,
@@ -148,7 +148,7 @@ var B = t.object({
                     children: [
                       e(l, { children: "Price" }),
                       e(u, {
-                        children: e(d, {
+                        children: e(h, {
                           label: "Price",
                           name: o.name,
                           value: o.value ?? 0,
@@ -171,7 +171,7 @@ var B = t.object({
                     children: [
                       e(l, { isRequired: !0, children: "Quantity" }),
                       e(u, {
-                        children: e(d, {
+                        children: e(h, {
                           label: "Quantity",
                           name: o.name,
                           value: o.value ?? 0,
@@ -195,7 +195,7 @@ var B = t.object({
                     children: [
                       e(l, { children: "Discount" }),
                       e(u, {
-                        children: e(d, {
+                        children: e(h, {
                           label: "Discount",
                           name: o.name,
                           value: o.value ?? 0,
