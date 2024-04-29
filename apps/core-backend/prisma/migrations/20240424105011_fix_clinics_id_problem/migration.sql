@@ -1,4 +1,7 @@
 -- CreateEnum
+CREATE TYPE "Role" AS ENUM ('OWNER', 'ADMIN', 'SUPERADMIN', 'DOCTOR');
+
+-- CreateEnum
 CREATE TYPE "transactions_status" AS ENUM ('PENDING_PAYMENT', 'PAID', 'CANCELED');
 
 -- CreateEnum
@@ -33,7 +36,7 @@ CREATE TABLE "Patient" (
     "birthAt" TIMESTAMP(3),
     "createdAt" TIMESTAMPTZ(6) DEFAULT CURRENT_TIMESTAMP,
     "deletedAt" TIMESTAMP(3),
-    "clinicsId" TEXT,
+    "clinicsId" UUID,
     "parentId" UUID,
 
     CONSTRAINT "Patient_pkey" PRIMARY KEY ("id")
@@ -68,7 +71,7 @@ CREATE TABLE "Patient_vital_sign" (
     "sugar" DECIMAL(65,30) DEFAULT 0,
     "cholesterol" DECIMAL(65,30) DEFAULT 0,
     "pain" TEXT,
-    "allergic" TEXT,
+    "allergic" TEXT DEFAULT 'n/a',
     "visitAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
     "deletedAt" TIMESTAMP(3),
     "patient_medical_recordsId" UUID,
@@ -138,7 +141,7 @@ CREATE TABLE "Pharmacy_Task" (
     "pharmacist" TEXT,
     "createdAt" TIMESTAMPTZ(6) DEFAULT CURRENT_TIMESTAMP,
     "deletedAt" TIMESTAMP(3),
-    "clinicsId" TEXT,
+    "clinicsId" UUID,
 
     CONSTRAINT "Pharmacy_Task_pkey" PRIMARY KEY ("id")
 );
@@ -154,7 +157,7 @@ CREATE TABLE "Poli" (
     "isActive" BOOLEAN DEFAULT false,
     "createdAt" TIMESTAMPTZ(6) DEFAULT CURRENT_TIMESTAMP,
     "deletedAt" TIMESTAMP(3),
-    "clinicsId" TEXT,
+    "clinicsId" UUID,
 
     CONSTRAINT "Poli_pkey" PRIMARY KEY ("id")
 );
@@ -192,11 +195,11 @@ CREATE TABLE "Queue_history" (
 -- CreateTable
 CREATE TABLE "Users" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
-    "roles" TEXT NOT NULL DEFAULT 'ROLE_USER',
+    "roles" "Role" NOT NULL,
     "email" TEXT NOT NULL,
     "fullname" TEXT NOT NULL,
-    "address" TEXT NOT NULL,
-    "phone" TEXT NOT NULL,
+    "address" TEXT,
+    "phone" TEXT,
     "photo" TEXT DEFAULT '/images/user.png',
     "password" TEXT NOT NULL,
     "isActive" BOOLEAN DEFAULT false,
@@ -204,7 +207,7 @@ CREATE TABLE "Users" (
     "email_verification_token" TEXT,
     "reset_password_token" TEXT,
     "createdAt" TIMESTAMPTZ(6) DEFAULT CURRENT_TIMESTAMP,
-    "clinicsId" TEXT,
+    "clinicsId" UUID,
 
     CONSTRAINT "Users_pkey" PRIMARY KEY ("id")
 );
@@ -233,7 +236,7 @@ CREATE TABLE "Notifications" (
     "description" TEXT,
     "sourceType" TEXT,
     "source" TEXT,
-    "clinicsId" TEXT,
+    "clinicsId" UUID,
 
     CONSTRAINT "Notifications_pkey" PRIMARY KEY ("id")
 );
@@ -245,15 +248,16 @@ CREATE TABLE "Setting" (
     "type" TEXT NOT NULL,
     "value" TEXT,
     "headerId" TEXT,
-    "clinicsId" TEXT,
+    "clinicsId" UUID,
 
     CONSTRAINT "Setting_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Clinics" (
-    "id" TEXT NOT NULL,
+    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "name" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
     "type" "CLINICTYPE" NOT NULL DEFAULT 'PRIMARY',
     "specialist" "CLINICSPECIALIST" NOT NULL DEFAULT 'OTHER',
     "address" TEXT NOT NULL,
@@ -275,7 +279,7 @@ CREATE TABLE "regularHours" (
     "openTime" TEXT NOT NULL DEFAULT '09:00',
     "closeTime" TEXT NOT NULL DEFAULT '17:00',
     "createdAt" TIMESTAMPTZ(6) DEFAULT CURRENT_TIMESTAMP,
-    "clinicsId" TEXT,
+    "clinicsId" UUID,
 
     CONSTRAINT "regularHours_pkey" PRIMARY KEY ("id")
 );
@@ -417,7 +421,7 @@ CREATE TABLE "ProductCategories" (
     "title" TEXT NOT NULL,
     "isActive" BOOLEAN DEFAULT true,
     "createdAt" TIMESTAMPTZ(6) DEFAULT CURRENT_TIMESTAMP,
-    "clinicsId" TEXT NOT NULL,
+    "clinicsId" UUID NOT NULL,
 
     CONSTRAINT "ProductCategories_pkey" PRIMARY KEY ("id")
 );
@@ -452,7 +456,7 @@ CREATE TABLE "Suppliers" (
     "email" TEXT,
     "address" TEXT NOT NULL,
     "description" TEXT,
-    "clinicsId" TEXT,
+    "clinicsId" UUID,
     "createdAt" TIMESTAMPTZ(6) DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Suppliers_pkey" PRIMARY KEY ("id")

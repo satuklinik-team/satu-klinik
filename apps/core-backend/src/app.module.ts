@@ -15,6 +15,7 @@ import { ClinicsModule } from './clinics/clinics.module';
 import { SatusehatOauthModule } from './satusehat-oauth/satusehat-oauth.module';
 import { PatientsModule } from './patients/patients.module';
 import { PatientsVitalSignModule } from './patients-vital-sign/patients-vital-sign.module';
+import { AccountsModule } from './accounts/accounts.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { PatientsVitalSignModule } from './patients-vital-sign/patients-vital-si
     SatusehatOauthModule,
     PatientsModule,
     PatientsVitalSignModule,
+    AccountsModule,
   ],
   controllers: [],
   providers: [{ provide: APP_GUARD, useClass: AccessTokenGuard }],
