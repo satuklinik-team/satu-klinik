@@ -1,10 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { CryptoService } from 'src/crypto/crypto.service';
 import { EmailUsedException } from 'src/exceptions';
 import { CountUsersDto } from './dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { RegisterDto } from 'src/auth/dto';
+import { Role } from '@prisma/client';
+import { ChangeClinicIdDto } from './dto/change-clinic-id.dto';
+import { ServiceContext } from 'src/utils/types';
 
 @Injectable()
 export class UsersService {
@@ -13,18 +16,31 @@ export class UsersService {
     private prismaService: PrismaService,
   ) {}
 
-  async create(dto: CreateUserDto) {
+  async create(dto: RegisterDto, context?: ServiceContext) {
     if (await this._isEmailUsed(dto.email)) throw new EmailUsedException();
 
     const password = await this._getHashedPassword(dto.password);
-    const data = await this.prismaService.users.create({
+    const prisma = this._initPrisma(context.tx);
+    const data = await prisma.users.create({
       data: {
+        fullname: dto.fullname,
         email: dto.email,
-        fullname: dto.name,
-        password,
-        address: dto.address,
-        roles: 'ROLE_USER',
-        phone: '62',
+        password: password,
+        roles: Role.OWNER,
+      },
+    });
+
+    return data;
+  }
+
+  async changeClinicId(dto: ChangeClinicIdDto, context?: ServiceContext) {
+    const prisma = this._initPrisma(context.tx);
+    const data = await prisma.users.update({
+      where: {
+        id: dto.usersId,
+      },
+      data: {
+        clinicsId: dto.clinicsId,
       },
     });
 
@@ -63,5 +79,12 @@ export class UsersService {
   private async _getHashedPassword(password: string) {
     const hashedPassword = await this.cryptoService.hash(password);
     return hashedPassword;
+  }
+
+  private _initPrisma(tx?: ServiceContext['tx']) {
+    if (tx) {
+      return tx;
+    }
+    return this.prismaService;
   }
 }
