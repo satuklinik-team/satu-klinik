@@ -1,17 +1,23 @@
 -- CreateEnum
-CREATE TYPE "transactions_status" AS ENUM ('PENDING_PAYMENT', 'PAID', 'CANCELED') ;
+CREATE TYPE "Role" AS ENUM ('OWNER', 'ADMIN', 'SUPERADMIN', 'DOCTOR');
 
 -- CreateEnum
-CREATE TYPE "TASK_STATUS" AS ENUM ('TODO', 'INPROGRESS', 'PENDING', 'CANCELED', 'REMOVED') ;
+CREATE TYPE "transactions_status" AS ENUM ('PENDING_PAYMENT', 'PAID', 'CANCELED');
 
 -- CreateEnum
-CREATE TYPE "CLINICSPECIALIST" AS ENUM ('DENTAL', 'INTERNAL', 'OTHER') ;
+CREATE TYPE "TASK_STATUS" AS ENUM ('TODO', 'INPROGRESS', 'PENDING', 'CANCELED', 'REMOVED');
 
 -- CreateEnum
-CREATE TYPE "CLINICTYPE" AS ENUM ('PRIMARY', 'SPECIALIST', 'MULTI', 'PET') ;
+CREATE TYPE "CLINICSPECIALIST" AS ENUM ('DENTAL', 'INTERNAL', 'OTHER');
 
 -- CreateEnum
-CREATE TYPE "INTERVALUNIT" AS ENUM ('MONTH', 'YEAR') ;
+CREATE TYPE "CLINICTYPE" AS ENUM ('PRIMARY', 'SPECIALIST', 'MULTI', 'PET');
+
+-- CreateEnum
+CREATE TYPE "DAYS_TYPE" AS ENUM ('sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturda');
+
+-- CreateEnum
+CREATE TYPE "INTERVALUNIT" AS ENUM ('MONTH', 'YEAR');
 
 -- CreateTable
 CREATE TABLE "Patient" (
@@ -23,14 +29,14 @@ CREATE TABLE "Patient" (
     "address" TEXT NOT NULL,
     "phone" TEXT,
     "email" TEXT,
-    "age" INTEGER,
+    "age" INTEGER DEFAULT 0,
     "sex" TEXT NOT NULL DEFAULT 'L',
     "type" TEXT DEFAULT 'human',
-    "blood" TEXT,
+    "blood" TEXT DEFAULT '-',
     "birthAt" TIMESTAMP(3),
     "createdAt" TIMESTAMPTZ(6) DEFAULT CURRENT_TIMESTAMP,
     "deletedAt" TIMESTAMP(3),
-    "clinicsId" TEXT,
+    "clinicsId" UUID,
     "parentId" UUID,
 
     CONSTRAINT "Patient_pkey" PRIMARY KEY ("id")
@@ -38,9 +44,9 @@ CREATE TABLE "Patient" (
 
 -- CreateTable
 CREATE TABLE "Patient_medical_records" (
-    "id" TEXT NOT NULL,
+    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "norm" TEXT NOT NULL,
-    "visitAt" TIMESTAMP(3) NOT NULL,
+    "visitAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "visitLabel" TEXT,
     "queue" TEXT,
     "doctor" TEXT NOT NULL,
@@ -54,21 +60,21 @@ CREATE TABLE "Patient_medical_records" (
 -- CreateTable
 CREATE TABLE "Patient_vital_sign" (
     "id" SERIAL NOT NULL,
-    "height" DECIMAL(65,30),
-    "weight" DECIMAL(65,30),
-    "temperature" DECIMAL(65,30) NOT NULL,
-    "systole" INTEGER,
-    "diastole" INTEGER,
-    "pulse" INTEGER,
-    "respiration" INTEGER,
-    "saturation" INTEGER,
-    "sugar" DECIMAL(65,30),
-    "cholesterol" DECIMAL(65,30),
+    "height" DECIMAL(65,30) DEFAULT 0,
+    "weight" DECIMAL(65,30) DEFAULT 0,
+    "temperature" DECIMAL(65,30) NOT NULL DEFAULT 0,
+    "systole" INTEGER DEFAULT 0,
+    "diastole" INTEGER DEFAULT 0,
+    "pulse" INTEGER DEFAULT 0,
+    "respiration" INTEGER DEFAULT 0,
+    "saturation" INTEGER DEFAULT 0,
+    "sugar" DECIMAL(65,30) DEFAULT 0,
+    "cholesterol" DECIMAL(65,30) DEFAULT 0,
     "pain" TEXT,
-    "allergic" TEXT,
-    "visitAt" TIMESTAMP(3),
+    "allergic" TEXT DEFAULT 'n/a',
+    "visitAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
     "deletedAt" TIMESTAMP(3),
-    "patient_medical_recordsId" TEXT,
+    "patient_medical_recordsId" UUID,
 
     CONSTRAINT "Patient_vital_sign_pkey" PRIMARY KEY ("id")
 );
@@ -81,8 +87,9 @@ CREATE TABLE "Patient_assessment" (
     "assessment" TEXT NOT NULL DEFAULT 'none',
     "plan" TEXT NOT NULL DEFAULT 'none',
     "diagnose" TEXT NOT NULL DEFAULT 'none',
+    "icd10" TEXT NOT NULL DEFAULT '-',
     "deletedAt" TIMESTAMP(3),
-    "patient_medical_recordsId" TEXT,
+    "patient_medical_recordsId" UUID,
 
     CONSTRAINT "Patient_assessment_pkey" PRIMARY KEY ("id")
 );
@@ -100,7 +107,7 @@ CREATE TABLE "Patient_assessment_on_anathomy" (
 -- CreateTable
 CREATE TABLE "Patient_prescription" (
     "id" SERIAL NOT NULL,
-    "createdAt" TIMESTAMP(3),
+    "createdAt" TIMESTAMPTZ(6) DEFAULT CURRENT_TIMESTAMP,
     "medicine" TEXT NOT NULL,
     "type" TEXT,
     "usage" TEXT,
@@ -108,7 +115,7 @@ CREATE TABLE "Patient_prescription" (
     "interval" TEXT,
     "quantity" DECIMAL(65,30) NOT NULL,
     "deletedAt" TIMESTAMP(3),
-    "patient_medical_recordsId" TEXT,
+    "patient_medical_recordsId" UUID,
 
     CONSTRAINT "Patient_prescription_pkey" PRIMARY KEY ("id")
 );
@@ -134,7 +141,7 @@ CREATE TABLE "Pharmacy_Task" (
     "pharmacist" TEXT,
     "createdAt" TIMESTAMPTZ(6) DEFAULT CURRENT_TIMESTAMP,
     "deletedAt" TIMESTAMP(3),
-    "clinicsId" TEXT,
+    "clinicsId" UUID,
 
     CONSTRAINT "Pharmacy_Task_pkey" PRIMARY KEY ("id")
 );
@@ -150,7 +157,7 @@ CREATE TABLE "Poli" (
     "isActive" BOOLEAN DEFAULT false,
     "createdAt" TIMESTAMPTZ(6) DEFAULT CURRENT_TIMESTAMP,
     "deletedAt" TIMESTAMP(3),
-    "clinicsId" TEXT,
+    "clinicsId" UUID,
 
     CONSTRAINT "Poli_pkey" PRIMARY KEY ("id")
 );
@@ -188,11 +195,11 @@ CREATE TABLE "Queue_history" (
 -- CreateTable
 CREATE TABLE "Users" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
-    "roles" TEXT NOT NULL DEFAULT 'ROLE_USER',
+    "roles" "Role" NOT NULL,
     "email" TEXT NOT NULL,
     "fullname" TEXT NOT NULL,
-    "address" TEXT NOT NULL,
-    "phone" TEXT NOT NULL,
+    "address" TEXT,
+    "phone" TEXT,
     "photo" TEXT DEFAULT '/images/user.png',
     "password" TEXT NOT NULL,
     "isActive" BOOLEAN DEFAULT false,
@@ -200,7 +207,7 @@ CREATE TABLE "Users" (
     "email_verification_token" TEXT,
     "reset_password_token" TEXT,
     "createdAt" TIMESTAMPTZ(6) DEFAULT CURRENT_TIMESTAMP,
-    "clinicsId" TEXT,
+    "clinicsId" UUID,
 
     CONSTRAINT "Users_pkey" PRIMARY KEY ("id")
 );
@@ -229,7 +236,7 @@ CREATE TABLE "Notifications" (
     "description" TEXT,
     "sourceType" TEXT,
     "source" TEXT,
-    "clinicsId" TEXT,
+    "clinicsId" UUID,
 
     CONSTRAINT "Notifications_pkey" PRIMARY KEY ("id")
 );
@@ -241,15 +248,16 @@ CREATE TABLE "Setting" (
     "type" TEXT NOT NULL,
     "value" TEXT,
     "headerId" TEXT,
-    "clinicsId" TEXT,
+    "clinicsId" UUID,
 
     CONSTRAINT "Setting_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Clinics" (
-    "id" TEXT NOT NULL,
+    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "name" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
     "type" "CLINICTYPE" NOT NULL DEFAULT 'PRIMARY',
     "specialist" "CLINICSPECIALIST" NOT NULL DEFAULT 'OTHER',
     "address" TEXT NOT NULL,
@@ -264,13 +272,28 @@ CREATE TABLE "Clinics" (
 );
 
 -- CreateTable
+CREATE TABLE "regularHours" (
+    "id" SERIAL NOT NULL,
+    "openDay" "DAYS_TYPE" NOT NULL,
+    "closeDay" "DAYS_TYPE" NOT NULL,
+    "openTime" TEXT NOT NULL DEFAULT '09:00',
+    "closeTime" TEXT NOT NULL DEFAULT '17:00',
+    "createdAt" TIMESTAMPTZ(6) DEFAULT CURRENT_TIMESTAMP,
+    "clinicsId" UUID,
+
+    CONSTRAINT "regularHours_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "Memberships" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
-    "price" BIGINT NOT NULL,
+    "price" BIGINT NOT NULL DEFAULT 0,
     "currency" TEXT NOT NULL DEFAULT 'IDR',
-    "activeTo" TIMESTAMP(3) DEFAULT NOW() + interval '1 year',
-    "days" INTEGER NOT NULL,
+    "activeTo" TIMESTAMP(3) DEFAULT (now() + '1 year'::interval),
+    "days" INTEGER NOT NULL DEFAULT 30,
+    "afterDiscount" INTEGER DEFAULT 0,
+    "discount" INTEGER DEFAULT 0,
 
     CONSTRAINT "Memberships_pkey" PRIMARY KEY ("id")
 );
@@ -290,7 +313,7 @@ CREATE TABLE "SubscriptionSchedule" (
     "interval" INTEGER NOT NULL DEFAULT 1,
     "interval_unit" TEXT NOT NULL DEFAULT 'month',
     "max_interval" INTEGER NOT NULL DEFAULT 12,
-    "start_time" TIMESTAMP(3) NOT NULL DEFAULT NOW() + interval '1 day',
+    "start_time" TIMESTAMP(3) NOT NULL DEFAULT (now() + '1 day'::interval),
     "retry_interval" INTEGER NOT NULL DEFAULT 1,
     "retry_interval_unit" TEXT NOT NULL DEFAULT 'day',
     "retry_max_interval" INTEGER NOT NULL DEFAULT 3,
@@ -372,6 +395,7 @@ CREATE TABLE "Orders" (
     "total" INTEGER DEFAULT 0,
     "createdAt" TIMESTAMPTZ(6) DEFAULT CURRENT_TIMESTAMP,
     "clinicId" UUID,
+    "deletedAt" TIMESTAMPTZ(6),
 
     CONSTRAINT "Orders_pkey" PRIMARY KEY ("id")
 );
@@ -397,7 +421,7 @@ CREATE TABLE "ProductCategories" (
     "title" TEXT NOT NULL,
     "isActive" BOOLEAN DEFAULT true,
     "createdAt" TIMESTAMPTZ(6) DEFAULT CURRENT_TIMESTAMP,
-    "clinicsId" TEXT NOT NULL,
+    "clinicsId" UUID NOT NULL,
 
     CONSTRAINT "ProductCategories_pkey" PRIMARY KEY ("id")
 );
@@ -432,10 +456,28 @@ CREATE TABLE "Suppliers" (
     "email" TEXT,
     "address" TEXT NOT NULL,
     "description" TEXT,
-    "clinicsId" TEXT,
+    "clinicsId" UUID,
     "createdAt" TIMESTAMPTZ(6) DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Suppliers_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "ICD10" (
+    "code" TEXT NOT NULL,
+    "strt" TEXT NOT NULL,
+    "sab" TEXT NOT NULL,
+
+    CONSTRAINT "ICD10_pkey" PRIMARY KEY ("code")
+);
+
+-- CreateTable
+CREATE TABLE "ICD10CM" (
+    "code" TEXT NOT NULL,
+    "str" TEXT NOT NULL,
+    "sab" TEXT NOT NULL,
+
+    CONSTRAINT "ICD10CM_pkey" PRIMARY KEY ("code")
 );
 
 -- CreateIndex
@@ -448,10 +490,10 @@ ALTER TABLE "Patient" ADD CONSTRAINT "Patient_clinicsId_fkey" FOREIGN KEY ("clin
 ALTER TABLE "Patient" ADD CONSTRAINT "Patient_parentId_fkey" FOREIGN KEY ("parentId") REFERENCES "Patient"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Patient_medical_records" ADD CONSTRAINT "Patient_medical_records_poliId_fkey" FOREIGN KEY ("poliId") REFERENCES "Poli"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Patient_medical_records" ADD CONSTRAINT "Patient_medical_records_patientId_fkey" FOREIGN KEY ("patientId") REFERENCES "Patient"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Patient_medical_records" ADD CONSTRAINT "Patient_medical_records_patientId_fkey" FOREIGN KEY ("patientId") REFERENCES "Patient"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Patient_medical_records" ADD CONSTRAINT "Patient_medical_records_poliId_fkey" FOREIGN KEY ("poliId") REFERENCES "Poli"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Patient_vital_sign" ADD CONSTRAINT "Patient_vital_sign_patient_medical_recordsId_fkey" FOREIGN KEY ("patient_medical_recordsId") REFERENCES "Patient_medical_records"("id") ON DELETE SET NULL ON UPDATE CASCADE;
@@ -490,13 +532,16 @@ ALTER TABLE "Setting" ADD CONSTRAINT "Setting_clinicsId_fkey" FOREIGN KEY ("clin
 ALTER TABLE "Clinics" ADD CONSTRAINT "Clinics_accountsMemberId_fkey" FOREIGN KEY ("accountsMemberId") REFERENCES "AccountsMember"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "regularHours" ADD CONSTRAINT "regularHours_clinicsId_fkey" FOREIGN KEY ("clinicsId") REFERENCES "Clinics"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "Payments" ADD CONSTRAINT "Payments_accountsId_fkey" FOREIGN KEY ("accountsId") REFERENCES "Accounts"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Accounts" ADD CONSTRAINT "Accounts_usersId_fkey" FOREIGN KEY ("usersId") REFERENCES "Users"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Accounts" ADD CONSTRAINT "Accounts_membershipsId_fkey" FOREIGN KEY ("membershipsId") REFERENCES "Memberships"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Accounts" ADD CONSTRAINT "Accounts_membershipsId_fkey" FOREIGN KEY ("membershipsId") REFERENCES "Memberships"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Accounts" ADD CONSTRAINT "Accounts_usersId_fkey" FOREIGN KEY ("usersId") REFERENCES "Users"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "AccountsMember" ADD CONSTRAINT "AccountsMember_accountsId_fkey" FOREIGN KEY ("accountsId") REFERENCES "Accounts"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

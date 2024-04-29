@@ -10,23 +10,17 @@ export class AccessTokenJwtStrategy extends PassportStrategy(
   Strategy,
   'jwt-access-token',
 ) {
-  constructor(private readonly configService: ConfigService) {
+  constructor(configService: ConfigService) {
     super({
       jwtFromRequest: (req: Request) => {
-        let token = null;
-
-        if (req.cookies['__accessToken']) {
-          token = req.cookies['__accessToken'];
-        }
-
-        return token;
+        return req.cookies['__accessToken'];
       },
       secretOrKey: configService.get('secrets.access_token'),
       passReqToCallback: true,
     });
   }
 
-  async validate(req: Request, payload: JwtPayload) {
+  async validate(_: Request, payload: JwtPayload) {
     return payload;
   }
 }
