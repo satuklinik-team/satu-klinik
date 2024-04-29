@@ -18,19 +18,14 @@ export class ClinicsController {
   constructor(private readonly clinicsService: ClinicsService) {}
 
   @Get()
-  findAll() {
-    return this.clinicsService.findAll();
-  }
-
-  @Get('')
-  getClinicsByUsersId(
+  findAll(
     @Query('page') page = '1',
-    @Query('pageSize') pageSize = '10',
+    @Query('pageSize') pageSize = '50',
     @TokenData() tokenData: JwtPayload,
   ) {
     const pageNum = parseInt(page, 10);
     const pageSizeNum = parseInt(pageSize, 10);
-    return this.clinicsService.getClinicsByUsersId({
+    return this.clinicsService.findAll({
       usersId: tokenData.sub,
       page: pageNum,
       pageSize: pageSizeNum,

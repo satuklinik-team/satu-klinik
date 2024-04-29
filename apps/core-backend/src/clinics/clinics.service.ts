@@ -28,7 +28,7 @@ export class ClinicsService {
     return data;
   }
 
-  async getClinicsByUsersId(dto: GetClinicsByAccountsId) {
+  async findAll(dto: GetClinicsByAccountsId) {
     const accounts = await this.prismaService.accounts.findFirst({
       where: {
         usersId: dto.usersId,
@@ -64,10 +64,6 @@ export class ClinicsService {
     });
 
     return data;
-  }
-
-  findAll() {
-    return `This action returns all clinics`;
   }
 
   findOne(id: string) {
