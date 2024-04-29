@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
-import { redirectToWhatsapp } from "@/utils";
+import { getWhatsappUrl } from "@/utils";
 
 import { BOOK_DEMO_WA_TEXT } from "../utils";
 import { SectionContainer } from "./shared/section-container";
@@ -21,13 +21,8 @@ export function DemoCta(): JSX.Element {
             Daftar sekarang dan dapatkan akun Anda, atau jadwalkan demo bersama
             tim kami.
           </p>
-          <Link href="">
-            <Button
-              className="px-6 py-5 h-min w-min text-black text-2xl font-bold mb-11 shadow-[0_-2px_2px_0px_rgba(0, 0, 0, 0.25)_inset]"
-              onClick={() => {
-                redirectToWhatsapp(BOOK_DEMO_WA_TEXT);
-              }}
-            >
+          <Link href={getWhatsappUrl(BOOK_DEMO_WA_TEXT)}>
+            <Button className="px-6 py-5 h-min w-min text-black text-2xl font-bold mb-11 shadow-[0_-2px_2px_0px_rgba(0, 0, 0, 0.25)_inset]">
               Jadwalkan Demo
             </Button>
           </Link>
