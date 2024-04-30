@@ -5,6 +5,8 @@ import { SatusehatOrganizationService } from 'src/satusehat-organization/satuseh
 import { CreateClinicDto } from './dto/create-clinic.dto';
 import { ServiceContext } from 'src/utils/types';
 import { GetClinicsByAccountsId } from './dto/get-clinics-by-accounts-id.dto';
+import { JsonObject } from '@prisma/client/runtime/library';
+import { json } from 'stream/consumers';
 
 @Injectable()
 export class ClinicsService {
@@ -61,13 +63,17 @@ export class ClinicsService {
       },
     });
 
-    const totalClinics = await this.prismaService.clinics.count({
-      where: {
-        accountsId: accounts.id,
-      },
-    });
+    if (dto.count) {
+      const totalClinics = await this.prismaService.clinics.count({
+        where: {
+          accountsId: accounts.id,
+        },
+      });
 
-    return { ...data, totalClinics };
+      return { data, totalClinics };
+    }
+
+    return { data };
   }
 
   findOne(id: string) {
