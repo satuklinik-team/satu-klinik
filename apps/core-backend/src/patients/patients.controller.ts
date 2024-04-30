@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { PatientsService } from './patients.service';
 import { CreatePatientDto } from './dto/create-patient.dto';
 import { QueryPayload } from 'src/utils';
@@ -19,5 +27,10 @@ export class PatientsController {
     @Query('search') search: string,
   ) {
     return this.patientService.findAll(dto, search);
+  }
+
+  @Delete(':id')
+  async delete(@Param('id') id: string) {
+    return this.patientService.delete(id);
   }
 }

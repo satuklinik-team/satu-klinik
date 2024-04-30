@@ -48,6 +48,16 @@ export class PatientsService {
     return data;
   }
 
+  async delete(id: string) {
+    const data = await this.prismaService.patient.delete({
+      where: {
+        id,
+      },
+    });
+
+    return data;
+  }
+
   async generateMedicalRecordNorm() {
     const date = new Date();
     const yearString = date.getFullYear().toString();
