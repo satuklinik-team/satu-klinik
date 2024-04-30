@@ -5,8 +5,8 @@ import {
   Patch,
   Param,
   Delete,
-  Res,
   Query,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { ClinicsService } from './clinics.service';
 import { UpdateClinicDto } from './dto/update-clinic.dto';
@@ -18,22 +18,15 @@ export class ClinicsController {
   constructor(private readonly clinicsService: ClinicsService) {}
 
   @Get()
-  findAll() {
-    return this.clinicsService.findAll();
-  }
-
-  @Get('by_user')
-  getClinicsByUsersId(
-    @Query('page') page = '1',
-    @Query('pageSize') pageSize = '10',
+  findAll(
+    @Query('skip', ParseIntPipe) skip = 0,
+    @Query('limit', ParseIntPipe) limit = 50,
     @TokenData() tokenData: JwtPayload,
   ) {
-    const pageNum = parseInt(page, 10);
-    const pageSizeNum = parseInt(pageSize, 10);
-    return this.clinicsService.getClinicsByUsersId({
+    return this.clinicsService.findAll({
       usersId: tokenData.sub,
-      page: pageNum,
-      pageSize: pageSizeNum,
+      skip,
+      limit,
     });
   }
 
