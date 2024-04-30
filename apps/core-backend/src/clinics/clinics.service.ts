@@ -47,6 +47,7 @@ export class ClinicsService {
       skip: dto.skip,
       take: dto.limit,
       select: {
+        id: true,
         name: true,
         address: true,
         phone: true,
