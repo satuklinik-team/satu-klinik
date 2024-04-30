@@ -10,13 +10,13 @@ import {
   Dropdown as C,
   DatePicker as S,
   PhoneNumberInput as k,
-  TextArea as N,
-  TwoColumn as A,
+  TextArea as A,
+  TwoColumn as B,
   Button as g,
 } from "@lezzform/react";
 import {
   CreditCard as z,
-  User as B,
+  User as N,
   Calendar as P,
   Phone as q,
 } from "lucide-react";
@@ -41,14 +41,14 @@ var I = a.object({
       ),
     address: a.string(),
   }),
-  R = "j6KlysopMNeU21qETtox",
-  K = ({
+  R = "1loJy746nod6zlDhqQVc",
+  O = ({
     onSubmit: i,
     onError: F,
     onSuccess: y,
     defaultValues: v,
     onAction: d,
-    formProps: x,
+    formProps: f,
   }) => {
     let b = c.useRef();
     c.useEffect(() => {
@@ -143,7 +143,7 @@ var I = a.object({
                           isRequired: !0,
                           styles: { root: {} },
                           prefixAdornment: {
-                            icon: e(B, { size: 18, color: "#000000" }),
+                            icon: e(N, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
@@ -268,7 +268,7 @@ var I = a.object({
                     children: [
                       e(m, { isRequired: !0, children: "Alamat" }),
                       e(s, {
-                        children: e(N, {
+                        children: e(A, {
                           label: "Alamat",
                           name: o.name,
                           value: o.value ?? "",
@@ -284,7 +284,7 @@ var I = a.object({
                     ],
                   }),
               }),
-              n(A, {
+              n(B, {
                 styles: { root: {} },
                 children: [
                   e(g, {
@@ -315,4 +315,4 @@ var I = a.object({
       R
     );
   };
-export { K as Form };
+export { O as Form };

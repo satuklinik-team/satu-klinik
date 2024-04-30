@@ -1,4 +1,6 @@
 import { Ellipsis, LogOut } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useCallback } from "react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -8,8 +10,10 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
+import { useAuthLogout } from "@/services/auth/hooks/use-auth-logout";
 
 import { useClinicLayoutStore } from "../../features/clinic/stores/use-clinic-layout-store";
+import { useToast } from "../ui/use-toast";
 
 interface UserButtonProps {
   classNames?: {
@@ -19,6 +23,15 @@ interface UserButtonProps {
 
 export function UserButton({ classNames }: UserButtonProps): JSX.Element {
   const { isLeftBarOpen } = useClinicLayoutStore();
+  const router = useRouter();
+  const { mutateAsync } = useAuthLogout();
+  const { toast } = useToast();
+
+  const onLogout = useCallback(async () => {
+    await mutateAsync();
+    toast({ title: "Berhasil logout!", variant: "success" });
+    router.replace("/auth/register");
+  }, [mutateAsync, router, toast]);
 
   return (
     <Popover>
@@ -56,10 +69,14 @@ export function UserButton({ classNames }: UserButtonProps): JSX.Element {
           <p className="text-sm">Nona Perma - Owner</p>
           <p className="text-muted-foreground text-xs">nonaperma@gmail.com</p>
         </div>
-        <div className="flex items-center gap-2 px-4 py-2 cursor-pointer hover:bg-muted-foreground/10 transition">
+        <Button
+          className="w-full flex justify-start items-center gap-2 px-4 py-2 cursor-pointer hover:bg-muted-foreground/10 transition rounded-none"
+          onClick={onLogout}
+          variant="ghost"
+        >
           <LogOut className="text-red-500" size={16} />
           <p className="text-red-500 text-sm">Logout</p>
-        </div>
+        </Button>
       </PopoverContent>
     </Popover>
   );

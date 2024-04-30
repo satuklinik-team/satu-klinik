@@ -6,7 +6,7 @@ import {
   FormLabel as s,
   FormControl as i,
   FormMessage as u,
-  Input as F,
+  Input as b,
   EmailInput as p,
   PhoneNumberInput as g,
   PasswordInput as k,
@@ -46,7 +46,7 @@ var P = n.object({
     clinicAddress: n.string(),
     clinicCode: n.string(),
   }),
-  R = "IAD7M5bNRrEKi0sqbqDp",
+  R = "YWIJQzBs9fvMZVhnRx2t",
   E = ({
     onSubmit: m,
     onError: d,
@@ -55,12 +55,12 @@ var P = n.object({
     onAction: q,
     formProps: w,
   }) => {
-    let b = c.useRef();
+    let F = c.useRef();
     c.useEffect(() => {
-      m && (b.current = m);
+      m && (F.current = m);
     }, [m]);
     let S = c.useCallback(async (r, e) => {
-      if (b.current) return b.current(r, e);
+      if (F.current) return F.current(r, e);
     }, []);
     return o(
       h,
@@ -83,7 +83,7 @@ var P = n.object({
                     children: [
                       o(s, { isRequired: !0, children: "Nama Lengkap" }),
                       o(i, {
-                        children: o(F, {
+                        children: o(b, {
                           label: "Nama Lengkap",
                           name: e.name,
                           value: e.value ?? "",
@@ -180,7 +180,7 @@ var P = n.object({
                     children: [
                       o(s, { isRequired: !0, children: "Nama Klinik" }),
                       o(i, {
-                        children: o(F, {
+                        children: o(b, {
                           label: "Nama Klinik",
                           name: e.name,
                           value: e.value ?? "",
@@ -276,7 +276,7 @@ var P = n.object({
                     children: [
                       o(s, { isRequired: !0, children: "Kode Fasyankes" }),
                       o(i, {
-                        children: o(F, {
+                        children: o(b, {
                           label: "Kode Fasyankes",
                           name: e.name,
                           value: e.value ?? "",

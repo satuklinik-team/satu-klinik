@@ -4,6 +4,7 @@ import "@lezzform/react/style.css";
 import type { Metadata } from "next";
 import CreatoDisplay from "next/font/local";
 
+import { Toaster } from "@/components/ui/toaster";
 import { cn } from "@/lib/utils";
 
 import Providers from "./providers";
@@ -32,6 +33,7 @@ export default function RootLayout({
       <html lang="en">
         <body className={cn(creatoDisplay.className, "bg-white")}>
           {children}
+          <Toaster />
         </body>
       </html>
     </Providers>

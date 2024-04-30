@@ -7,24 +7,24 @@ import {
   FormControl as l,
   FormMessage as c,
   Input as F,
-  PasswordInput as g,
-  Button as C,
+  PasswordInput as f,
+  Button as g,
 } from "@lezzform/react";
 import * as n from "react";
 import { jsx as e, jsxs as m } from "react/jsx-runtime";
-var L = a.object({
+var C = a.object({
     id: a.string(),
     token: a.string(),
     username: a.string(),
     password: a.string(),
   }),
-  p = "JNYc6zFWgSnv6PqoHR6B",
-  y = ({
+  p = "ezseqTZazOEtswXuZkff",
+  P = ({
     onSubmit: i,
     onError: b,
     onSuccess: h,
     defaultValues: S,
-    onAction: f,
+    onAction: L,
     formProps: k,
   }) => {
     let d = n.useRef();
@@ -42,7 +42,7 @@ var L = a.object({
         onSubmit: R,
         onError: b,
         onSuccess: h,
-        zodSchema: L,
+        zodSchema: C,
         mode: "onSubmit",
         children: (r) =>
           m(z.Container, {
@@ -127,7 +127,7 @@ var L = a.object({
                     children: [
                       e(u, { isRequired: !0, children: "Password" }),
                       e(l, {
-                        children: e(g, {
+                        children: e(f, {
                           label: "Password",
                           name: o.name,
                           value: o.value ?? "",
@@ -143,7 +143,7 @@ var L = a.object({
                     ],
                   }),
               }),
-              e(C, {
+              e(g, {
                 type: "submit",
                 className: "w-full",
                 disabled: r.formState.isSubmitting,
@@ -157,4 +157,4 @@ var L = a.object({
       p
     );
   };
-export { y as Form };
+export { P as Form };

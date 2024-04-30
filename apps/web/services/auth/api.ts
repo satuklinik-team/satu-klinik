@@ -27,6 +27,8 @@ class AuthApi {
   async logout(): Promise<AuthEntity> {
     const { data } = await this.api.post<AuthEntity>("/auth/logout");
 
+    Cookies.remove("accessToken");
+
     return data;
   }
 }

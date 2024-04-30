@@ -7,19 +7,19 @@ import {
   FormControl as i,
   FormMessage as u,
   Input as d,
-  PhoneNumberInput as S,
-  NumberInput as C,
+  PhoneNumberInput as C,
+  NumberInput as S,
   Button as I,
 } from "@lezzform/react";
 import {
   Briefcase as L,
   CreditCard as y,
-  Building as f,
-  Phone as B,
+  Building as B,
+  Phone as N,
 } from "lucide-react";
 import * as c from "react";
 import { jsx as o, jsxs as a } from "react/jsx-runtime";
-var N = n.object({
+var k = n.object({
     licenseNumber: n.string(),
     clinicId: n.string(),
     clinicName: n.string(),
@@ -36,14 +36,14 @@ var N = n.object({
     address: n.string(),
     price: n.coerce.number(),
   }),
-  h = "xqPZU5tWhvAffnzW9eSn",
+  h = "9OAtEK03GN0tkOgaBQUu",
   D = ({
     onSubmit: m,
     onError: F,
-    onSuccess: z,
-    defaultValues: g,
-    onAction: P,
-    formProps: k,
+    onSuccess: g,
+    defaultValues: z,
+    onAction: f,
+    formProps: P,
   }) => {
     let b = c.useRef();
     c.useEffect(() => {
@@ -56,11 +56,11 @@ var N = n.object({
       p,
       {
         id: h,
-        defaultValues: g,
+        defaultValues: z,
         onSubmit: R,
         onError: F,
-        onSuccess: z,
-        zodSchema: N,
+        onSuccess: g,
+        zodSchema: k,
         mode: "onSubmit",
         children: (r) =>
           a(p.Container, {
@@ -142,7 +142,7 @@ var N = n.object({
                           isRequired: !0,
                           styles: { root: {} },
                           prefixAdornment: {
-                            icon: o(f, { size: 18, color: "#000000" }),
+                            icon: o(B, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
@@ -158,7 +158,7 @@ var N = n.object({
                     children: [
                       o(l, { isRequired: !0, children: "Nomor Telepon" }),
                       o(i, {
-                        children: o(S, {
+                        children: o(C, {
                           label: "Nomor Telepon",
                           name: e.name,
                           value: e.value ?? "",
@@ -169,7 +169,7 @@ var N = n.object({
                           isRequired: !0,
                           styles: { root: {} },
                           prefixAdornment: {
-                            icon: o(B, { size: 18, color: "#000000" }),
+                            icon: o(N, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
@@ -209,7 +209,7 @@ var N = n.object({
                     children: [
                       o(l, { isRequired: !0, children: "Harga Dasar" }),
                       o(i, {
-                        children: o(C, {
+                        children: o(S, {
                           label: "Harga Dasar",
                           name: e.name,
                           value: e.value ?? 0,
