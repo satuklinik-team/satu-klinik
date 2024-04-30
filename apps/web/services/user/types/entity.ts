@@ -1,8 +1,8 @@
 export interface UserEntity {
   id: string;
-  fullName: string;
+  fullname: string;
   email: string;
-  phoneNumber: string;
+  phone: string;
   role: string;
   status: string;
 }

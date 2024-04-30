@@ -26,7 +26,7 @@ export function ClinicDashboardUsersTable(): JSX.Element {
                 <p>AD</p>
               </div>
               <div>
-                <p className="font-bold">{row.fullName}</p>
+                <p className="font-bold">{row.fullname}</p>
                 <p className="font-normal text-muted-foreground">{row.email}</p>
               </div>
             </Cell>
@@ -42,7 +42,7 @@ export function ClinicDashboardUsersTable(): JSX.Element {
                   <TooltipTrigger
                     className="h-min p-2"
                     onClick={() => {
-                      redirectToWhatsapp(row.phoneNumber);
+                      redirectToWhatsapp(row.phone);
                     }}
                   >
                     <MessageCircle className="text-green-500" size={20} />
@@ -61,9 +61,9 @@ export function ClinicDashboardUsersTable(): JSX.Element {
       rows={[
         {
           id: "123121ee",
-          fullName: "Admin Demo",
+          fullname: "Admin Demo",
           email: "admin@demo.id",
-          phoneNumber: "082228883006",
+          phone: "082228883006",
           role: "Admin",
           status: "Active",
         },
