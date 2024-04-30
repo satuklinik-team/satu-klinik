@@ -61,7 +61,13 @@ export class ClinicsService {
       },
     });
 
-    return data;
+    const totalClinics = await this.prismaService.clinics.count({
+      where: {
+        accountsId: accounts.id,
+      },
+    });
+
+    return { ...data, totalClinics };
   }
 
   findOne(id: string) {
