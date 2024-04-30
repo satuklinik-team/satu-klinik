@@ -7,9 +7,9 @@ export class GetClinicsByAccountsId {
 
   @IsNumber()
   @IsNotEmpty()
-  page: number;
+  skip: number;
 
   @IsNumber()
   @IsNotEmpty()
-  pageSize: number;
+  limit: number;
 }
