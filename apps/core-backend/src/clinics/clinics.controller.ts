@@ -28,7 +28,7 @@ export class ClinicsController {
     @TokenData() tokenData: JwtPayload,
     @Res() res: Response,
   ) {
-    const { data, totalClinics } = await this.clinicsService.findAll({
+    const { data, total } = await this.clinicsService.findAll({
       usersId: tokenData.sub,
       skip,
       limit,
@@ -36,7 +36,7 @@ export class ClinicsController {
     });
 
     if (count) {
-      res.header('x-data-count', totalClinics.toString());
+      res.header('x-data-count', total.toString());
     }
 
     return res.json(data);
