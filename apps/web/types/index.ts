@@ -1,3 +1,5 @@
+import type { Column as LezztableColumn } from "@lezztable-demo/types";
+
 export interface Column<T extends object> {
   key: string;
   name: string;
@@ -7,4 +9,9 @@ export interface Column<T extends object> {
 export interface Pagination {
   skip: number;
   limit: number;
+}
+
+export interface FormatterCellProps {
+  row: unknown;
+  column: LezztableColumn;
 }

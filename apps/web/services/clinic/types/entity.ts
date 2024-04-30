@@ -1,13 +1,14 @@
 export interface ClinicEntity {
   id: string;
   name: string;
-  city: string;
-  phoneNumber: string;
+  email: string;
+  address: string;
+  phone: string;
   _count: {
-    totalRecords: number;
-    totalUsers: number;
-    totalPatient: number;
-    totalDepartment: number;
-    totalCategory: number;
+    Poli: number;
+    users: number;
+    Patient: number;
+    Category: number;
+    Pharmacy_Task: number;
   };
 }
