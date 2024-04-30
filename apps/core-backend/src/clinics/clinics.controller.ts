@@ -5,8 +5,8 @@ import {
   Patch,
   Param,
   Delete,
-  Res,
   Query,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { ClinicsService } from './clinics.service';
 import { UpdateClinicDto } from './dto/update-clinic.dto';
@@ -19,8 +19,8 @@ export class ClinicsController {
 
   @Get()
   findAll(
-    @Query('skip') skip = 0,
-    @Query('limit') limit = 50,
+    @Query('skip', ParseIntPipe) skip = 0,
+    @Query('limit', ParseIntPipe) limit = 50,
     @TokenData() tokenData: JwtPayload,
   ) {
     return this.clinicsService.findAll({
