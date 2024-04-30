@@ -14,7 +14,7 @@ import { SatusehatOrganizationModule } from './satusehat-organization/satusehat-
 import { ClinicsModule } from './clinics/clinics.module';
 import { SatusehatOauthModule } from './satusehat-oauth/satusehat-oauth.module';
 import { PatientsModule } from './patients/patients.module';
-import { PatientsVitalSignModule } from './patients-vital-sign/patients-vital-sign.module';
+import { PatientsVitalSignsModule } from './patients-vital-signs/patients-vital-signs.module';
 import { AccountsModule } from './accounts/accounts.module';
 
 @Module({
@@ -31,7 +31,7 @@ import { AccountsModule } from './accounts/accounts.module';
     ClinicsModule,
     SatusehatOauthModule,
     PatientsModule,
-    PatientsVitalSignModule,
+    PatientsVitalSignsModule,
     AccountsModule,
   ],
   controllers: [],
