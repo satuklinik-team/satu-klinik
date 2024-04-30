@@ -2,9 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { UpdateClinicDto } from './dto/update-clinic.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { SatusehatOrganizationService } from 'src/satusehat-organization/satusehat-organization.service';
-import { RegisterDto } from 'src/auth/dto';
 import { CreateClinicDto } from './dto/create-clinic.dto';
 import { ServiceContext } from 'src/utils/types';
+import { GetClinicsByAccountsId } from './dto/get-clinics-by-accounts-id.dto';
+import { JsonObject } from '@prisma/client/runtime/library';
+import { json } from 'stream/consumers';
 
 @Injectable()
 export class ClinicsService {
@@ -28,8 +30,51 @@ export class ClinicsService {
     return data;
   }
 
-  findAll() {
-    return `This action returns all clinics`;
+  async findAll(dto: GetClinicsByAccountsId) {
+    const accounts = await this.prismaService.accounts.findFirst({
+      where: {
+        usersId: dto.usersId,
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    const data = await this.prismaService.clinics.findMany({
+      where: {
+        accountsId: accounts.id,
+      },
+      skip: dto.skip,
+      take: dto.limit,
+      select: {
+        id: true,
+        name: true,
+        address: true,
+        phone: true,
+        email: true,
+        _count: {
+          select: {
+            Pharmacy_Task: true,
+            users: true,
+            Patient: true,
+            Category: true,
+            Poli: true,
+          },
+        },
+      },
+    });
+
+    if (dto.count) {
+      const total = await this.prismaService.clinics.count({
+        where: {
+          accountsId: accounts.id,
+        },
+      });
+
+      return { data, total };
+    }
+
+    return { data };
   }
 
   findOne(id: string) {
