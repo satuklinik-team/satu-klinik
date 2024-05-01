@@ -2,8 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { CreatePatientDto } from './dto/create-patient.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Prisma } from '@prisma/client';
+import {
+  FindAllPatientTypes,
+  FindAllPatientsDto,
+} from './dto/find-all-patients-dto';
 import { CannotAccessClinicException } from 'src/exceptions/unauthorized/cannot-access-clinic';
-import { FindAllPatientsDto } from './dto/find-all-patients-dto';
 
 @Injectable()
 export class PatientsService {
@@ -33,8 +36,9 @@ export class PatientsService {
 
   async findAll(dto: FindAllPatientsDto) {
     const data = await this.prismaService.patient.findMany({
-      where: this._findAllFactory(dto.search, dto.clinicsId),
+      where: this._findAllFactory(dto),
       select: {
+        id: true,
         norm: true,
         nik: true,
         fullname: true,
@@ -43,17 +47,14 @@ export class PatientsService {
         birthAt: true,
         phone: true,
         address: true,
+        mr: {
+          orderBy: { visitAt: 'desc' },
+          take: 1,
+          select: { vitalSign: { take: 1 } },
+        },
       },
-    });
-
-    return data;
-  }
-
-  async delete(id: string) {
-    const data = await this.prismaService.patient.delete({
-      where: {
-        id,
-      },
+      skip: dto.skip,
+      take: dto.limit,
     });
 
     return data;
@@ -88,30 +89,38 @@ export class PatientsService {
   }
 
   private _findAllFactory(
-    search: string,
-    clinicsId: string,
+    dto: FindAllPatientsDto,
   ): Prisma.PatientFindManyArgs['where'] {
-    if (!search) {
+    if (!dto.search) {
+      if (dto.type == FindAllPatientTypes.ALL) {
+        return {};
+      }
+      const now = new Date();
+      const status = dto.type.at(0).toLowerCase() + '1';
+
       return {
-        clinicsId,
+        mr: {
+          some: {
+            AND: [{ status }, { visitLabel: now.toLocaleDateString() }],
+          },
+        },
       };
     }
     return {
-      clinicsId,
       OR: [
         {
           fullname: {
-            startsWith: search,
+            startsWith: dto.search,
           },
         },
         {
           norm: {
-            startsWith: search,
+            startsWith: dto.search,
           },
         },
         {
           address: {
-            startsWith: search,
+            startsWith: dto.search,
           },
         },
       ],
