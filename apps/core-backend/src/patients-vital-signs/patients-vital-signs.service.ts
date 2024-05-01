@@ -17,6 +17,7 @@ export class PatientsVitalSignsService {
       data: {
         patientId: dto.patientId,
         doctor: '',
+        visitAt: now,
         visitLabel: now.toLocaleDateString(),
         status: 'e1',
         vitalSign: {

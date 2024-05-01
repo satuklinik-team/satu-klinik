@@ -1,5 +1,5 @@
 import { Type } from 'class-transformer';
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class GetClinicsByAccountsId {
   @IsString()
@@ -9,10 +9,15 @@ export class GetClinicsByAccountsId {
   @IsNumber()
   @Type(() => Number)
   @IsNotEmpty()
-  skip: number;
+  skip = 0;
 
   @IsNumber()
   @Type(() => Number)
   @IsNotEmpty()
-  limit: number;
+  limit = 50;
+
+  @IsBoolean()
+  @Type(() => Boolean)
+  @IsNotEmpty()
+  count: boolean;
 }
