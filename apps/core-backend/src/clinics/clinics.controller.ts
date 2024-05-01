@@ -7,6 +7,7 @@ import {
   Delete,
   Res,
   Query,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { ClinicsService } from './clinics.service';
 import { UpdateClinicDto } from './dto/update-clinic.dto';
@@ -19,10 +20,11 @@ export class ClinicsController {
 
   @Get()
   findAll(
-    @Query('skip') skip = 0,
-    @Query('limit') limit = 50,
+    @Query('skip', ParseIntPipe) skip = 0,
+    @Query('limit', ParseIntPipe) limit = 50,
     @TokenData() tokenData: JwtPayload,
   ) {
+    console.log(typeof skip);
     return this.clinicsService.findAll({
       usersId: tokenData.sub,
       skip,
