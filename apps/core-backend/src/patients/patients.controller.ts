@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Post, Query } from '@nestjs/common';
-import { PatientsService } from './patients.service';
 import { CreatePatientDto } from './dto/create-patient.dto';
 import { FindAllPatientsDto } from './dto/find-all-patients-dto';
+import { PatientsService } from './patients.service';
 
 @Controller('patients')
 export class PatientsController {
