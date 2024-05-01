@@ -11,6 +11,8 @@ export class PatientsVitalSignsService {
   ) {}
 
   async create(dto: CreateVitalSignDto) {
+    await this.patientService.checkAuthorized(dto.usersId, dto.clinicsId);
+
     const now = new Date();
 
     const data = await this.prismaService.patient_medical_records.create({

@@ -12,4 +12,8 @@ export class GetClinicsByAccountsId {
   @IsNumber()
   @IsNotEmpty()
   limit: number;
+
+  @IsNumber()
+  @IsNotEmpty()
+  count: boolean;
 }
