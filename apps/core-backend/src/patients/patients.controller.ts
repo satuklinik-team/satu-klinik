@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { PatientsService } from './patients.service';
 import { CreatePatientDto } from './dto/create-patient.dto';
 import { QueryPayload, TokenData } from 'src/utils';
@@ -22,7 +30,12 @@ export class PatientsController {
   }
 
   @Get()
-  async findPatientsByClinicsId(@Query() dto: FindAllPatientsDto) {
-    return this.patientService.findPatientsByClinicsId(dto);
+  async findAll(@Query() dto: FindAllPatientsDto) {
+    return this.patientService.findAll(dto);
+  }
+
+  @Delete(':id')
+  async delete(@Param('id') id: string) {
+    return this.patientService.delete(id);
   }
 }

@@ -31,7 +31,7 @@ export class PatientsService {
     return data;
   }
 
-  async findPatientsByClinicsId(dto: FindAllPatientsDto) {
+  async findAll(dto: FindAllPatientsDto) {
     const data = await this.prismaService.patient.findMany({
       where: this._findAllFactory(dto.search, dto.clinicsId),
       select: {
@@ -43,7 +43,16 @@ export class PatientsService {
         birthAt: true,
         phone: true,
         address: true,
-        clinicsId: true,
+      },
+    });
+
+    return data;
+  }
+
+  async delete(id: string) {
+    const data = await this.prismaService.patient.delete({
+      where: {
+        id,
       },
     });
 
