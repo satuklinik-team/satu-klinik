@@ -6,17 +6,18 @@ import {
   FindAllPatientTypes,
   FindAllPatientsDto,
 } from './dto/find-all-patients-dto';
+import { CannotAccessClinicException } from 'src/exceptions/unauthorized/cannot-access-clinic';
 
 @Injectable()
 export class PatientsService {
   constructor(private readonly prismaService: PrismaService) {}
 
   async create(dto: CreatePatientDto) {
-    const now = new Date();
+    await this.checkAuthorized(dto.usersId, dto.clinicsId);
 
     const data = await this.prismaService.patient.create({
       data: {
-        norm: await this.generateMedicalRecordNorm(),
+        norm: await this.generateMedicalRecordNorm(dto.clinicsId),
         nik: dto.nik,
         fullname: dto.fullname,
         parentname: dto.parentname || '-',
@@ -26,7 +27,7 @@ export class PatientsService {
         sex: dto.sex,
         blood: dto.blood,
         birthAt: `${dto.birthAt}T00:00:00.000Z`,
-        createdAt: now,
+        clinicsId: dto.clinicsId,
       },
     });
 
@@ -59,12 +60,13 @@ export class PatientsService {
     return data;
   }
 
-  async generateMedicalRecordNorm() {
+  async generateMedicalRecordNorm(clinicsId: string) {
     const date = new Date();
     const yearString = date.getFullYear().toString();
     const monthString = (date.getMonth() + 1).toString().padStart(2, '0');
     const nextvalQuery = await this.prismaService.patient.aggregate({
       where: {
+        clinicsId,
         norm: {
           contains: `${yearString}.${monthString}`,
         },
@@ -123,5 +125,28 @@ export class PatientsService {
         },
       ],
     };
+  }
+
+  async checkAuthorized(usersId: string, clinicsId: string) {
+    const user = await this.prismaService.users.findFirst({
+      where: {
+        id: usersId,
+      },
+    });
+
+    if (clinicsId !== user.clinicsId) {
+      const clinic = await this.prismaService.clinics.findFirst({
+        where: {
+          id: clinicsId,
+        },
+        select: {
+          Accounts: true,
+        },
+      });
+
+      if (clinic.Accounts.usersId !== usersId) {
+        throw new CannotAccessClinicException();
+      }
+    }
   }
 }

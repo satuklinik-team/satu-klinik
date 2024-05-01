@@ -1,4 +1,10 @@
-import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
+import {
+  IsEnum,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export enum FindAllPatientTypes {
   ALL = 'ALL',
@@ -8,6 +14,10 @@ export enum FindAllPatientTypes {
 }
 
 export class FindAllPatientsDto {
+  @IsString()
+  @IsNotEmpty()
+  clinicsId: string;
+
   @IsString()
   @IsOptional()
   search?: string;
