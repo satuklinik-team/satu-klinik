@@ -4,6 +4,7 @@
 2. Go to `apps/core-backend` directory
 3. Run `docker-compose -f docker-compose-dev.yaml -p satuklinik up -d`
 4. Run `npx prisma migrate dev`
+5. Run `npx prisma db seed`
 
 # Run Project
 
