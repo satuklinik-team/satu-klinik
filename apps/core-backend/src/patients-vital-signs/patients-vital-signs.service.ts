@@ -15,15 +15,6 @@ export class PatientsVitalSignsService {
 
     const now = new Date();
 
-    const patient = await this.prismaService.patient.findFirst({
-      where: {
-        id: dto.patientId,
-      },
-      select: {
-        norm: true,
-      },
-    });
-
     const data = await this.prismaService.patient_medical_records.create({
       data: {
         patientId: dto.patientId,
