@@ -49,7 +49,7 @@ export class PatientsService {
         mr: {
           orderBy: { visitAt: 'desc' },
           take: 1,
-          select: { vitalSign: { take: 1 } },
+          select: { status: true, vitalSign: { take: 1 } },
         },
       },
       skip: dto.skip,
@@ -107,6 +107,11 @@ export class PatientsService {
     return {
       OR: [
         {
+          nik: {
+            startsWith: dto.search,
+          },
+        },
+        {
           fullname: {
             startsWith: dto.search,
           },
@@ -118,6 +123,11 @@ export class PatientsService {
         },
         {
           address: {
+            startsWith: dto.search,
+          },
+        },
+        {
+          phone: {
             startsWith: dto.search,
           },
         },

@@ -24,7 +24,6 @@ export class ClinicsController {
     @Query('limit', ParseIntPipe) limit = 50,
     @TokenData() tokenData: JwtPayload,
   ) {
-    console.log(typeof skip);
     return this.clinicsService.findAll({
       usersId: tokenData.sub,
       skip,
