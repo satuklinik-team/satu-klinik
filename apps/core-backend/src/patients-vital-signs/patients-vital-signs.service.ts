@@ -13,21 +13,10 @@ export class PatientsVitalSignsService {
   async create(dto: CreateVitalSignDto) {
     const now = new Date();
 
-    const patient = await this.prismaService.patient.findFirst({
-      where: {
-        id: dto.patientId,
-      },
-      select: {
-        norm: true,
-      },
-    });
-
     const data = await this.prismaService.patient_medical_records.create({
       data: {
         patientId: dto.patientId,
         doctor: '',
-        norm: patient.norm,
-        visitAt: now,
         visitLabel: now.toLocaleDateString(),
         vitalSign: {
           create: {
@@ -40,7 +29,6 @@ export class PatientsVitalSignsService {
             respiration: dto.respiration,
             temperature: dto.temperature,
             pain: dto.pain,
-            visitAt: now,
           },
         },
       },

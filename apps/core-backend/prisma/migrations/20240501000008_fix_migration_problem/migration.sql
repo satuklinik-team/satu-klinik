@@ -266,7 +266,7 @@ CREATE TABLE "Clinics" (
     "license" TEXT,
     "dueTo" TIMESTAMP(3),
     "photo" TEXT NOT NULL DEFAULT '/images/clinic.png',
-    "accountsMemberId" UUID,
+    "accountsId" UUID,
 
     CONSTRAINT "Clinics_pkey" PRIMARY KEY ("id")
 );
@@ -350,17 +350,9 @@ CREATE TABLE "Accounts" (
     "verification" TEXT NOT NULL DEFAULT 'na',
     "createdAt" TIMESTAMPTZ(6) DEFAULT CURRENT_TIMESTAMP,
     "deletedAt" TIMESTAMP(3),
-    "membershipsId" TEXT NOT NULL,
+    "membershipsId" TEXT,
 
     CONSTRAINT "Accounts_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "AccountsMember" (
-    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
-    "accountsId" UUID NOT NULL,
-
-    CONSTRAINT "AccountsMember_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -529,7 +521,7 @@ ALTER TABLE "Notifications" ADD CONSTRAINT "Notifications_clinicsId_fkey" FOREIG
 ALTER TABLE "Setting" ADD CONSTRAINT "Setting_clinicsId_fkey" FOREIGN KEY ("clinicsId") REFERENCES "Clinics"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Clinics" ADD CONSTRAINT "Clinics_accountsMemberId_fkey" FOREIGN KEY ("accountsMemberId") REFERENCES "AccountsMember"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Clinics" ADD CONSTRAINT "Clinics_accountsId_fkey" FOREIGN KEY ("accountsId") REFERENCES "Accounts"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "regularHours" ADD CONSTRAINT "regularHours_clinicsId_fkey" FOREIGN KEY ("clinicsId") REFERENCES "Clinics"("id") ON DELETE SET NULL ON UPDATE CASCADE;
@@ -538,13 +530,10 @@ ALTER TABLE "regularHours" ADD CONSTRAINT "regularHours_clinicsId_fkey" FOREIGN 
 ALTER TABLE "Payments" ADD CONSTRAINT "Payments_accountsId_fkey" FOREIGN KEY ("accountsId") REFERENCES "Accounts"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Accounts" ADD CONSTRAINT "Accounts_membershipsId_fkey" FOREIGN KEY ("membershipsId") REFERENCES "Memberships"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Accounts" ADD CONSTRAINT "Accounts_membershipsId_fkey" FOREIGN KEY ("membershipsId") REFERENCES "Memberships"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Accounts" ADD CONSTRAINT "Accounts_usersId_fkey" FOREIGN KEY ("usersId") REFERENCES "Users"("id") ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "AccountsMember" ADD CONSTRAINT "AccountsMember_accountsId_fkey" FOREIGN KEY ("accountsId") REFERENCES "Accounts"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "OrderItem" ADD CONSTRAINT "OrderItem_ordersId_fkey" FOREIGN KEY ("ordersId") REFERENCES "Orders"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

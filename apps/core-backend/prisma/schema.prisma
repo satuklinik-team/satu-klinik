@@ -34,7 +34,6 @@ model Patient {
 
 model Patient_medical_records {
   id           String                 @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  norm         String
   visitAt      DateTime               @default(now())
   visitLabel   String?
   queue        String?
@@ -63,7 +62,6 @@ model Patient_vital_sign {
   cholesterol               Decimal?                 @default(0)
   pain                      String?
   allergic                  String?                  @default("n/a")
-  visitAt                   DateTime?                @default(now())
   deletedAt                 DateTime?
   patient_medical_recordsId String?                  @db.Uuid
   Patient_medical_records   Patient_medical_records? @relation(fields: [patient_medical_recordsId], references: [id])
