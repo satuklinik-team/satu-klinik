@@ -31,9 +31,13 @@ export class Icd10Service {
         {
           code: {
             contains: dto.search,
+            mode: 'insensitive',
           },
+        },
+        {
           strt: {
             contains: dto.search,
+            mode: 'insensitive',
           },
         },
       ],
