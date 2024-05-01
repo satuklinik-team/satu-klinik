@@ -2,6 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { CreatePatientDto } from './dto/create-patient.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Prisma } from '@prisma/client';
+import {
+  FindAllPatientTypes,
+  FindAllPatientsDto,
+} from './dto/find-all-patients-dto';
 
 @Injectable()
 export class PatientsService {
@@ -29,10 +33,11 @@ export class PatientsService {
     return data;
   }
 
-  async findAll(dto: Prisma.PatientFindManyArgs['select'], search: string) {
+  async findAll(dto: FindAllPatientsDto) {
     const data = await this.prismaService.patient.findMany({
-      where: this._findAllFactory(search),
+      where: this._findAllFactory(dto),
       select: {
+        id: true,
         norm: true,
         nik: true,
         fullname: true,
@@ -41,8 +46,14 @@ export class PatientsService {
         birthAt: true,
         phone: true,
         address: true,
-        ...dto,
+        mr: {
+          orderBy: { visitAt: 'desc' },
+          take: 1,
+          select: { vitalSign: { take: 1 } },
+        },
       },
+      skip: dto.skip,
+      take: dto.limit,
     });
 
     return data;
@@ -75,25 +86,39 @@ export class PatientsService {
     return rm;
   }
 
-  private _findAllFactory(search: string): Prisma.PatientFindManyArgs['where'] {
-    if (!search) {
-      return {};
+  private _findAllFactory(
+    dto: FindAllPatientsDto,
+  ): Prisma.PatientFindManyArgs['where'] {
+    if (!dto.search) {
+      if (dto.type == FindAllPatientTypes.ALL) {
+        return {};
+      }
+      const now = new Date();
+      const status = dto.type.at(0).toLowerCase() + '1';
+
+      return {
+        mr: {
+          some: {
+            AND: [{ status }, { visitLabel: now.toLocaleDateString() }],
+          },
+        },
+      };
     }
     return {
       OR: [
         {
           fullname: {
-            startsWith: search,
+            startsWith: dto.search,
           },
         },
         {
           norm: {
-            startsWith: search,
+            startsWith: dto.search,
           },
         },
         {
           address: {
-            startsWith: search,
+            startsWith: dto.search,
           },
         },
       ],

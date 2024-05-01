@@ -1,8 +1,7 @@
 import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { PatientsService } from './patients.service';
 import { CreatePatientDto } from './dto/create-patient.dto';
-import { QueryPayload } from 'src/utils';
-import { Prisma } from '@prisma/client';
+import { FindAllPatientsDto } from './dto/find-all-patients-dto';
 
 @Controller('patients')
 export class PatientsController {
@@ -14,10 +13,7 @@ export class PatientsController {
   }
 
   @Get()
-  async findAll(
-    @QueryPayload() dto: Prisma.PatientFindManyArgs['select'],
-    @Query('search') search: string,
-  ) {
-    return this.patientService.findAll(dto, search);
+  async findAll(@Query() dto: FindAllPatientsDto) {
+    return this.patientService.findAll(dto);
   }
 }
