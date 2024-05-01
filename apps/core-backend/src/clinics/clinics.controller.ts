@@ -15,6 +15,7 @@ import { UpdateClinicDto } from './dto/update-clinic.dto';
 import { TokenData } from 'src/utils';
 import { JwtPayload } from 'src/auth/types';
 import { Response } from 'express';
+import { FindAllClinicsDto } from './dto/find-all-clinics-dto';
 
 @Controller('clinics')
 export class ClinicsController {
@@ -22,20 +23,16 @@ export class ClinicsController {
 
   @Get()
   async findAll(
-    @Query('skip', ParseIntPipe) skip = 0,
-    @Query('limit', ParseIntPipe) limit = 50,
-    @Query('count', ParseBoolPipe) count = false,
+    @Query() dto: FindAllClinicsDto,
     @TokenData() tokenData: JwtPayload,
     @Res() res: Response,
   ) {
     const { data, total } = await this.clinicsService.findAll({
       usersId: tokenData.sub,
-      skip,
-      limit,
-      count,
+      ...dto,
     });
 
-    if (count) {
+    if (dto.count) {
       res.header('x-data-count', total.toString());
     }
 
