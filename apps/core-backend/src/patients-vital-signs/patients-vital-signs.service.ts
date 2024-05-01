@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { CreateVitalSignDto } from 'src/patients-vital-sign/dto/create-vital-sign.dto';
+import { CreateVitalSignDto } from 'src/patients-vital-signs/dto/create-vital-sign.dto';
 import { PatientsService } from 'src/patients/patients.service';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
-export class PatientsVitalSignService {
+export class PatientsVitalSignsService {
   constructor(
     private readonly prismaService: PrismaService,
     private readonly patientService: PatientsService,
@@ -28,7 +28,6 @@ export class PatientsVitalSignService {
       data: {
         patientId: dto.patientId,
         doctor: '',
-        norm: patient.norm,
         visitLabel: now.toLocaleDateString(),
         vitalSign: {
           create: {

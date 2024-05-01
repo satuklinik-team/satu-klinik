@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { CreatePatientDto } from './dto/create-patient.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Prisma } from '@prisma/client';
-import { FindPatientsByClinicsIdDto } from './dto/find-patient-by-clinic-id-dto';
 import { CannotAccessClinicException } from 'src/exceptions/unauthorized/cannot-access-clinic';
+import { FindAllPatientsDto } from './dto/find-all-patients-dto';
 
 @Injectable()
 export class PatientsService {
@@ -31,12 +31,9 @@ export class PatientsService {
     return data;
   }
 
-  async findPatientsByClinicsId(
-    dto: Prisma.PatientFindManyArgs['select'],
-    searchQuery: FindPatientsByClinicsIdDto,
-  ) {
+  async findPatientsByClinicsId(dto: FindAllPatientsDto) {
     const data = await this.prismaService.patient.findMany({
-      where: this._findAllFactory(searchQuery.search, searchQuery.clinicsId),
+      where: this._findAllFactory(dto.search, dto.clinicsId),
       select: {
         norm: true,
         nik: true,
@@ -47,7 +44,6 @@ export class PatientsService {
         phone: true,
         address: true,
         clinicsId: true,
-        ...dto,
       },
     });
 
