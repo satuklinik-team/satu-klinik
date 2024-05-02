@@ -13,8 +13,6 @@ export class PatientsService {
   constructor(private readonly prismaService: PrismaService) {}
 
   async create(dto: CreatePatientDto) {
-    await this.checkAuthorized(dto.usersId, dto.clinicsId);
-
     const data = await this.prismaService.patient.create({
       data: {
         norm: await this.generateMedicalRecordNorm(dto.clinicsId),

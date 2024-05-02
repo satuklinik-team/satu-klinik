@@ -1,19 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { UpdateClinicDto } from './dto/update-clinic.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { SatusehatOrganizationService } from 'src/satusehat-organization/satusehat-organization.service';
 import { CreateClinicDto } from './dto/create-clinic.dto';
 import { ServiceContext } from 'src/utils/types';
-import { JsonObject } from '@prisma/client/runtime/library';
-import { json } from 'stream/consumers';
 import { FindAllClinicsDto } from './dto/find-all-clinics-dto';
 
 @Injectable()
 export class ClinicsService {
-  constructor(
-    private readonly prismaService: PrismaService,
-    private readonly satuSehatOrganizationService: SatusehatOrganizationService,
-  ) {}
+  constructor(private readonly prismaService: PrismaService) {}
 
   async create(dto: CreateClinicDto, context?: ServiceContext) {
     const prisma = this._initPrisma(context.tx);
@@ -75,18 +68,6 @@ export class ClinicsService {
     }
 
     return { data };
-  }
-
-  findOne(id: string) {
-    return `This action returns a #${id} clinic`;
-  }
-
-  update(id: string, dto: UpdateClinicDto) {
-    return `This action updates a #${id} clinic`;
-  }
-
-  remove(id: string) {
-    return `This action removes a #${id} clinic`;
   }
 
   private _initPrisma(tx?: ServiceContext['tx']) {

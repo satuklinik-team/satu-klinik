@@ -34,6 +34,11 @@ export class PatientsVitalSignsService {
           },
         },
       },
+      select: {
+        id: true,
+        status: true,
+        vitalSign: { orderBy: { id: 'desc' }, take: 1 },
+      },
     });
 
     return data;

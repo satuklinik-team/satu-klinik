@@ -44,7 +44,7 @@ export class CreatePatientDto {
   @IsNotEmpty()
   birthAt: string;
 
-  @IsUUID()
+  @IsString()
   @IsNotEmpty()
   clinicsId: string;
 
