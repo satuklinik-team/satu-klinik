@@ -47,15 +47,25 @@ export class PatientsService {
         birthAt: true,
         phone: true,
         address: true,
+        clinicsId: true,
         mr: {
           orderBy: { visitAt: 'desc' },
           take: 1,
-          select: { vitalSign: { take: 1 } },
+          select: {
+            status: true,
+            vitalSign: { orderBy: { id: 'desc' }, take: 1 },
+          },
         },
       },
       skip: dto.skip,
       take: dto.limit,
     });
+
+    return data;
+  }
+
+  async delete(id: string) {
+    const data = await this.prismaService.patient.delete({ where: { id } });
 
     return data;
   }
@@ -68,7 +78,7 @@ export class PatientsService {
       where: {
         clinicsId,
         norm: {
-          contains: `${yearString}.${monthString}`,
+          startsWith: `${yearString}.${monthString}`,
         },
       },
       _max: {
@@ -86,45 +96,6 @@ export class PatientsService {
       .toString()
       .padStart(5, '0')}`;
     return rm;
-  }
-
-  private _findAllFactory(
-    dto: FindAllPatientsDto,
-  ): Prisma.PatientFindManyArgs['where'] {
-    if (!dto.search) {
-      if (dto.type == FindAllPatientTypes.ALL) {
-        return {};
-      }
-      const now = new Date();
-      const status = dto.type.at(0).toLowerCase() + '1';
-
-      return {
-        mr: {
-          some: {
-            AND: [{ status }, { visitLabel: now.toLocaleDateString() }],
-          },
-        },
-      };
-    }
-    return {
-      OR: [
-        {
-          fullname: {
-            startsWith: dto.search,
-          },
-        },
-        {
-          norm: {
-            startsWith: dto.search,
-          },
-        },
-        {
-          address: {
-            startsWith: dto.search,
-          },
-        },
-      ],
-    };
   }
 
   async checkAuthorized(usersId: string, clinicsId: string) {
@@ -148,5 +119,57 @@ export class PatientsService {
         throw new CannotAccessClinicException();
       }
     }
+  }
+
+  private _findAllFactory(
+    dto: FindAllPatientsDto,
+  ): Prisma.PatientFindManyArgs['where'] {
+    if (!dto.search) {
+      if (dto.type == FindAllPatientTypes.ALL) {
+        return {};
+      }
+      const now = new Date();
+      const status = dto.type.at(0).toLowerCase() + '1';
+
+      return {
+        clinicsId: dto.clinicsId,
+        mr: {
+          some: {
+            status,
+            visitLabel: now.toLocaleDateString(),
+          },
+        },
+      };
+    }
+    return {
+      clinicsId: dto.clinicsId,
+      OR: [
+        {
+          nik: {
+            startsWith: dto.search,
+          },
+        },
+        {
+          fullname: {
+            startsWith: dto.search,
+          },
+        },
+        {
+          norm: {
+            startsWith: dto.search,
+          },
+        },
+        {
+          address: {
+            startsWith: dto.search,
+          },
+        },
+        {
+          phone: {
+            startsWith: dto.search,
+          },
+        },
+      ],
+    };
   }
 }

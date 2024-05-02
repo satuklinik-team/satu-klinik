@@ -4,9 +4,9 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { SatusehatOrganizationService } from 'src/satusehat-organization/satusehat-organization.service';
 import { CreateClinicDto } from './dto/create-clinic.dto';
 import { ServiceContext } from 'src/utils/types';
-import { GetClinicsByAccountsId } from './dto/get-clinics-by-accounts-id.dto';
 import { JsonObject } from '@prisma/client/runtime/library';
 import { json } from 'stream/consumers';
+import { FindAllClinicsDto } from './dto/find-all-clinics-dto';
 
 @Injectable()
 export class ClinicsService {
@@ -30,7 +30,7 @@ export class ClinicsService {
     return data;
   }
 
-  async findAll(dto: GetClinicsByAccountsId) {
+  async findAll(dto: FindAllClinicsDto) {
     const accounts = await this.prismaService.accounts.findFirst({
       where: {
         usersId: dto.usersId,

@@ -32,4 +32,9 @@ export class PatientsController {
   async findAll(@Query() dto: FindAllPatientsDto) {
     return this.patientService.findAll(dto);
   }
+
+  @Delete(':id')
+  async delete(@Param('id') id: string) {
+    return this.patientService.delete(id);
+  }
 }

@@ -1,21 +1,21 @@
 import { Module } from '@nestjs/common';
-import { Icd10Module } from './icd10/icd10.module';
-import { PrismaModule } from './prisma/prisma.module';
-import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
-import configuration from './config/configuration';
-import { TokenModule } from './token/token.module';
-import { CryptoModule } from './crypto/crypto.module';
 import { APP_GUARD } from '@nestjs/core';
-import { AccessTokenGuard } from './auth/guards';
-import { UsersModule } from './users/users.module';
-import { SatusehatModule } from './satusehat/satusehat.module';
-import { SatusehatOrganizationModule } from './satusehat-organization/satusehat-organization.module';
-import { ClinicsModule } from './clinics/clinics.module';
-import { SatusehatOauthModule } from './satusehat-oauth/satusehat-oauth.module';
-import { PatientsModule } from './patients/patients.module';
-import { PatientsVitalSignsModule } from './patients-vital-signs/patients-vital-signs.module';
 import { AccountsModule } from './accounts/accounts.module';
+import { AuthModule } from './auth/auth.module';
+import { AccessTokenGuard } from './auth/guards';
+import { ClinicsModule } from './clinics/clinics.module';
+import configuration from './config/configuration';
+import { CryptoModule } from './crypto/crypto.module';
+import { Icd10Module } from './icd10/icd10.module';
+import { PatientsVitalSignsModule } from './patients-vital-signs/patients-vital-signs.module';
+import { PatientsModule } from './patients/patients.module';
+import { PrismaModule } from './prisma/prisma.module';
+import { SatusehatOauthModule } from './satusehat-oauth/satusehat-oauth.module';
+import { SatusehatOrganizationModule } from './satusehat-organization/satusehat-organization.module';
+import { SatusehatModule } from './satusehat/satusehat.module';
+import { TokenModule } from './token/token.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [

@@ -1,3 +1,4 @@
+import { Type } from 'class-transformer';
 import {
   IsEnum,
   IsNotEmpty,
@@ -27,10 +28,12 @@ export class FindAllPatientsDto {
   type: FindAllPatientTypes = FindAllPatientTypes.ALL;
 
   @IsNumber()
+  @Type(() => Number)
   @IsOptional()
   skip = 0;
 
   @IsNumber()
+  @Type(() => Number)
   @IsOptional()
   limit = 50;
 }

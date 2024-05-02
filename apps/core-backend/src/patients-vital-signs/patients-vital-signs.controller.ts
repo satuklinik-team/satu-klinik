@@ -10,7 +10,9 @@ export class PatientsVitalSignsController {
 
   @Post(':id')
   createVitalSign(@Param('id') id: string, @Body() dto: CreateVitalSignDto) {
-    dto.patientId = id;
-    return this.patientVitalSignService.create(dto);
+    return this.patientVitalSignService.create({
+      patientId: id,
+      ...dto,
+    });
   }
 }
