@@ -17,6 +17,7 @@ import { SatusehatModule } from './satusehat/satusehat.module';
 import { TokenModule } from './token/token.module';
 import { UsersModule } from './users/users.module';
 import { PatientAssessmentModule } from './patient_assessment/patient_assessment.module';
+import { Icd9cmModule } from './icd9cm/icd9cm.module';
 
 @Module({
   imports: [
@@ -35,8 +36,8 @@ import { PatientAssessmentModule } from './patient_assessment/patient_assessment
     PatientsVitalSignsModule,
     AccountsModule,
     PatientAssessmentModule,
+    Icd9cmModule,
   ],
-  controllers: [],
   providers: [{ provide: APP_GUARD, useClass: AccessTokenGuard }],
 })
 export class AppModule {}
