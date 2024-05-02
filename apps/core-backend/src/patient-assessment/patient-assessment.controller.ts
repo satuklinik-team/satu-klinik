@@ -1,14 +1,6 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
-import { PatientAssessmentService } from './patient_assessment.service';
-import { CreatePatientAssessmentDto } from './dto/create-patient_assessment.dto';
+import { Controller, Post, Body } from '@nestjs/common';
+import { PatientAssessmentService } from './patient-assessment.service';
+import { CreatePatientAssessmentDto } from './dto/create-patient-assessment.dto';
 
 @Controller('patient-assessment')
 export class PatientAssessmentController {

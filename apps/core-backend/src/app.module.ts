@@ -16,7 +16,7 @@ import { SatusehatOrganizationModule } from './satusehat-organization/satusehat-
 import { SatusehatModule } from './satusehat/satusehat.module';
 import { TokenModule } from './token/token.module';
 import { UsersModule } from './users/users.module';
-import { PatientAssessmentModule } from './patient_assessment/patient_assessment.module';
+import { PatientAssessmentModule } from './patient-assessment/patient-assessment.module';
 import { Icd9cmModule } from './icd9cm/icd9cm.module';
 
 @Module({
