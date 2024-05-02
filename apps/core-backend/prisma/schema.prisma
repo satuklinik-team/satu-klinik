@@ -422,7 +422,7 @@ model ICD10 {
   sab  String
 }
 
-model ICD10CM {
+model ICD9CM {
   code String @id
   str  String
   sab  String

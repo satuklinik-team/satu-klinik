@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 
 async function seed() {
   try {
-    const sqlFiles = ['ICD10.sql', 'ICD10CM.sql'];
+    const sqlFiles = ['ICD10.sql', 'ICD9CM.sql'];
 
     for (const file of sqlFiles) {
       const sqlFilePath = path.join(__dirname, file);

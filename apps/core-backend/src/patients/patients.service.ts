@@ -36,27 +36,8 @@ export class PatientsService {
 
   async findAll(dto: FindAllPatientsDto) {
     const data = await this.prismaService.patient.findMany({
-      where: this._findAllFactory(dto),
-      select: {
-        id: true,
-        norm: true,
-        nik: true,
-        fullname: true,
-        sex: true,
-        blood: true,
-        birthAt: true,
-        phone: true,
-        address: true,
-        clinicsId: true,
-        mr: {
-          orderBy: { visitAt: 'desc' },
-          take: 1,
-          select: {
-            status: true,
-            vitalSign: { orderBy: { id: 'desc' }, take: 1 },
-          },
-        },
-      },
+      where: this._findAllWhereFactory(dto),
+      select: this._findAllSelectFactory(),
       skip: dto.skip,
       take: dto.limit,
     });
@@ -121,7 +102,7 @@ export class PatientsService {
     }
   }
 
-  private _findAllFactory(
+  private _findAllWhereFactory(
     dto: FindAllPatientsDto,
   ): Prisma.PatientFindManyArgs['where'] {
     if (!dto.search) {
@@ -170,6 +151,29 @@ export class PatientsService {
           },
         },
       ],
+    };
+  }
+
+  private _findAllSelectFactory(): Prisma.PatientFindManyArgs['select'] {
+    return {
+      id: true,
+      norm: true,
+      nik: true,
+      fullname: true,
+      sex: true,
+      blood: true,
+      birthAt: true,
+      phone: true,
+      address: true,
+      clinicsId: true,
+      mr: {
+        orderBy: { visitAt: 'desc' },
+        take: 1,
+        select: {
+          status: true,
+          vitalSign: { orderBy: { id: 'desc' }, take: 1 },
+        },
+      },
     };
   }
 }
