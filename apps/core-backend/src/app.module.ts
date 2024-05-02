@@ -16,6 +16,7 @@ import { SatusehatOrganizationModule } from './satusehat-organization/satusehat-
 import { SatusehatModule } from './satusehat/satusehat.module';
 import { TokenModule } from './token/token.module';
 import { UsersModule } from './users/users.module';
+import { PatientAssessmentModule } from './patient_assessment/patient_assessment.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { UsersModule } from './users/users.module';
     PatientsModule,
     PatientsVitalSignsModule,
     AccountsModule,
+    PatientAssessmentModule,
   ],
   controllers: [],
   providers: [{ provide: APP_GUARD, useClass: AccessTokenGuard }],

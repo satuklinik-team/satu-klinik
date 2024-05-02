@@ -170,6 +170,7 @@ export class PatientsService {
         orderBy: { visitAt: 'desc' },
         take: 1,
         select: {
+          id: true,
           status: true,
           vitalSign: { orderBy: { id: 'desc' }, take: 1 },
         },
