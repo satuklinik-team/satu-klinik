@@ -16,8 +16,8 @@ export class PatientAssessmentService {
           objective: dto.objective,
           assessment: dto.assessment,
           plan: dto.plan,
-          ...(dto.icd10Code && { icd10Code: dto.icd10Code }),
-          ...(dto.icd9CMCode && { icd9CMCode: dto.icd9CMCode }),
+          icd10Code: dto.icd10Code,
+          icd9CMCode: dto.icd9CMCode,
         },
       });
 
