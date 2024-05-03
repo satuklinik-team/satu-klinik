@@ -6,6 +6,7 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
+import { PaginationDto } from 'src/utils/classes';
 
 export enum FindAllPatientTypes {
   ALL = 'ALL',
@@ -14,7 +15,7 @@ export enum FindAllPatientTypes {
   PHARMACY = 'PHARMACY',
 }
 
-export class FindAllPatientsDto {
+export class FindAllPatientsDto extends PaginationDto {
   @IsString()
   @IsNotEmpty()
   clinicsId: string;
@@ -26,14 +27,4 @@ export class FindAllPatientsDto {
   @IsEnum(FindAllPatientTypes)
   @IsOptional()
   type: FindAllPatientTypes = FindAllPatientTypes.ALL;
-
-  @IsNumber()
-  @Type(() => Number)
-  @IsOptional()
-  skip = 0;
-
-  @IsNumber()
-  @Type(() => Number)
-  @IsOptional()
-  limit = 50;
 }

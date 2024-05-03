@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Post } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { CreateVitalSignDto } from './dto/create-vital-sign.dto';
 import { PatientsVitalSignsService } from './patients-vital-signs.service';
 import { TokenData } from 'src/utils';

@@ -1,18 +1,8 @@
-import { Type } from 'class-transformer';
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
+import { PaginationDto } from 'src/utils/classes';
 
-export class FindAllICD10Dto {
+export class FindAllICD10Dto extends PaginationDto {
   @IsString()
   @IsOptional()
   search?: string;
-
-  @IsNumber()
-  @Type(() => Number)
-  @IsOptional()
-  skip = 0;
-
-  @IsNumber()
-  @Type(() => Number)
-  @IsOptional()
-  limit = 50;
 }

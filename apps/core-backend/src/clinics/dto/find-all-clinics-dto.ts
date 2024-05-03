@@ -1,29 +1,8 @@
-import { Type } from 'class-transformer';
-import {
-  IsBoolean,
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-  IsString,
-} from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
+import { PaginationDto } from 'src/utils/classes';
 
-export class FindAllClinicsDto {
+export class FindAllClinicsDto extends PaginationDto {
   @IsString()
   @IsOptional()
   usersId?: string;
-
-  @IsNumber()
-  @Type(() => Number)
-  @IsNotEmpty()
-  skip = 0;
-
-  @IsNumber()
-  @Type(() => Number)
-  @IsNotEmpty()
-  limit = 50;
-
-  @IsBoolean()
-  @Type(() => Boolean)
-  @IsNotEmpty()
-  count = true;
 }

@@ -12,6 +12,7 @@ import { CreatePatientDto } from './dto/create-patient.dto';
 import { JwtPayload } from 'src/auth/types';
 import { FindAllPatientsDto } from './dto/find-all-patients-dto';
 import { TokenData } from 'src/utils';
+import { FindAllReturn } from 'src/utils/types';
 
 @Controller('patients')
 export class PatientsController {
@@ -29,7 +30,9 @@ export class PatientsController {
   }
 
   @Get()
-  async findAll(@Query() dto: FindAllPatientsDto) {
+  async findAll(
+    @Query() dto: FindAllPatientsDto,
+  ): Promise<FindAllReturn<object>> {
     return this.patientService.findAll(dto);
   }
 

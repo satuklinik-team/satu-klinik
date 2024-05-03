@@ -57,17 +57,16 @@ export class ClinicsService {
       },
     });
 
+    let count = null;
     if (dto.count) {
-      const total = await this.prismaService.clinics.count({
+      count = await this.prismaService.clinics.count({
         where: {
           accountsId: accounts.id,
         },
       });
-
-      return { data, total };
     }
 
-    return { data };
+    return { data, count };
   }
 
   private _initPrisma(tx?: ServiceContext['tx']) {

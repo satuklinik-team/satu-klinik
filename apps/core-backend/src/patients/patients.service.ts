@@ -40,7 +40,14 @@ export class PatientsService {
       take: dto.limit,
     });
 
-    return data;
+    let count = null;
+    if (dto.count) {
+      count = await this.prismaService.patient.count({
+        where: this._findAllWhereFactory(dto),
+      });
+    }
+
+    return { data, count };
   }
 
   async delete(id: string) {

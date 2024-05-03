@@ -17,7 +17,14 @@ export class Icd9cmService {
       take: dto.limit,
     });
 
-    return data;
+    let count = null;
+    if (dto.count) {
+      count = await this.prismaService.iCD9CM.count({
+        where: this._findAllFactory(dto),
+      });
+    }
+
+    return { data, count };
   }
 
   private _findAllFactory(

@@ -75,6 +75,17 @@ export class PatientAssessmentService {
       take: dto.limit,
     });
 
-    return data;
+    let count = null;
+    if (dto.count) {
+      count = await this.prismaService.patient_assessment.count({
+        where: {
+          Patient_medical_records: {
+            patientId: dto.patientId,
+          },
+        },
+      });
+    }
+
+    return { data, count };
   }
 }
