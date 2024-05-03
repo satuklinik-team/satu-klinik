@@ -74,7 +74,10 @@ model Patient_assessment {
   assessment                String                           @default("none")
   plan                      String                           @default("none")
   diagnose                  String                           @default("none")
-  icd10                     String                           @default("-")
+  icd10Code                 String?
+  icd10                     ICD10?                           @relation(fields: [icd10Code], references: [code])
+  icd9CMCode                String?
+  icd9CM                    ICD9CM?                          @relation(fields: [icd9CMCode], references: [code])
   deletedAt                 DateTime?
   patient_medical_recordsId String?                          @db.Uuid
   Patient_medical_records   Patient_medical_records?         @relation(fields: [patient_medical_recordsId], references: [id])
@@ -417,15 +420,17 @@ model Suppliers {
 }
 
 model ICD10 {
-  code String @id
-  strt String
-  sab  String
+  code               String               @id
+  strt               String
+  sab                String
+  Patient_assessment Patient_assessment[]
 }
 
-model ICD10CM {
-  code String @id
-  str  String
-  sab  String
+model ICD9CM {
+  code               String               @id
+  str                String
+  sab                String
+  Patient_assessment Patient_assessment[]
 }
 
 enum transactions_status {

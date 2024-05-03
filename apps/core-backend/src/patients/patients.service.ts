@@ -13,8 +13,6 @@ export class PatientsService {
   constructor(private readonly prismaService: PrismaService) {}
 
   async create(dto: CreatePatientDto) {
-    await this.checkAuthorized(dto.usersId, dto.clinicsId);
-
     const data = await this.prismaService.patient.create({
       data: {
         norm: await this.generateMedicalRecordNorm(dto.clinicsId),
@@ -36,32 +34,20 @@ export class PatientsService {
 
   async findAll(dto: FindAllPatientsDto) {
     const data = await this.prismaService.patient.findMany({
-      where: this._findAllFactory(dto),
-      select: {
-        id: true,
-        norm: true,
-        nik: true,
-        fullname: true,
-        sex: true,
-        blood: true,
-        birthAt: true,
-        phone: true,
-        address: true,
-        clinicsId: true,
-        mr: {
-          orderBy: { visitAt: 'desc' },
-          take: 1,
-          select: {
-            status: true,
-            vitalSign: { orderBy: { id: 'desc' }, take: 1 },
-          },
-        },
-      },
+      where: this._findAllWhereFactory(dto),
+      select: this._findAllSelectFactory(),
       skip: dto.skip,
       take: dto.limit,
     });
 
-    return data;
+    let count = null;
+    if (dto.count) {
+      count = await this.prismaService.patient.count({
+        where: this._findAllWhereFactory(dto),
+      });
+    }
+
+    return { data, count };
   }
 
   async delete(id: string) {
@@ -121,7 +107,7 @@ export class PatientsService {
     }
   }
 
-  private _findAllFactory(
+  private _findAllWhereFactory(
     dto: FindAllPatientsDto,
   ): Prisma.PatientFindManyArgs['where'] {
     if (!dto.search) {
@@ -170,6 +156,30 @@ export class PatientsService {
           },
         },
       ],
+    };
+  }
+
+  private _findAllSelectFactory(): Prisma.PatientFindManyArgs['select'] {
+    return {
+      id: true,
+      norm: true,
+      nik: true,
+      fullname: true,
+      sex: true,
+      blood: true,
+      birthAt: true,
+      phone: true,
+      address: true,
+      clinicsId: true,
+      mr: {
+        orderBy: { visitAt: 'desc' },
+        take: 1,
+        select: {
+          id: true,
+          status: true,
+          vitalSign: { orderBy: { id: 'desc' }, take: 1 },
+        },
+      },
     };
   }
 }

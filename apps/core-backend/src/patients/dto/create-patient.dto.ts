@@ -4,7 +4,6 @@ import {
   IsNotEmpty,
   IsOptional,
   IsString,
-  IsUUID,
 } from 'class-validator';
 
 export class CreatePatientDto {
@@ -44,7 +43,7 @@ export class CreatePatientDto {
   @IsNotEmpty()
   birthAt: string;
 
-  @IsUUID()
+  @IsString()
   @IsNotEmpty()
   clinicsId: string;
 

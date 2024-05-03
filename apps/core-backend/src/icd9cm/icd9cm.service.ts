@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { FindAllICD10Dto } from './dto/find-all-icd10-dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { FindAllICD9CMDto } from './dto/find-all-icd9cm-dto';
 import { Prisma } from '@prisma/client';
 
 @Injectable()
-export class Icd10Service {
+export class Icd9cmService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async findAll(dto: FindAllICD10Dto) {
-    const data = await this.prismaService.iCD10.findMany({
+  async findAll(dto: FindAllICD9CMDto) {
+    const data = await this.prismaService.iCD9CM.findMany({
       where: this._findAllFactory(dto),
       orderBy: {
         code: 'asc',
@@ -19,7 +19,7 @@ export class Icd10Service {
 
     let count = null;
     if (dto.count) {
-      count = await this.prismaService.iCD10.count({
+      count = await this.prismaService.iCD9CM.count({
         where: this._findAllFactory(dto),
       });
     }
@@ -28,8 +28,8 @@ export class Icd10Service {
   }
 
   private _findAllFactory(
-    dto: FindAllICD10Dto,
-  ): Prisma.ICD10FindManyArgs['where'] {
+    dto: FindAllICD9CMDto,
+  ): Prisma.ICD9CMFindFirstArgs['where'] {
     if (!dto.search) {
       return {};
     }
@@ -42,7 +42,7 @@ export class Icd10Service {
           },
         },
         {
-          strt: {
+          str: {
             contains: dto.search,
             mode: 'insensitive',
           },

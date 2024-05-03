@@ -1,4 +1,4 @@
-INSERT INTO "ICD10CM"(code,str,sab)
+INSERT INTO "ICD9CM"(code,str,sab)
 values
 ('00', 'Procedures and interventions, Not Elsewhere Classified', 'ICD9CM_2010'),
 ('00.0', 'Therapeutic ultrasound', 'ICD9CM_2010'),

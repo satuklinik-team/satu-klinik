@@ -8,8 +8,8 @@ import {
 
 export class CreateVitalSignDto {
   @IsString()
-  @IsOptional()
-  patientId?: string;
+  @IsNotEmpty()
+  patientId: string;
 
   @IsInt()
   @IsNotEmpty()
@@ -46,10 +46,6 @@ export class CreateVitalSignDto {
   @IsString()
   @IsNotEmpty()
   pain: string;
-
-  @IsUUID()
-  @IsNotEmpty()
-  clinicsId: string;
 
   @IsString()
   @IsOptional()
