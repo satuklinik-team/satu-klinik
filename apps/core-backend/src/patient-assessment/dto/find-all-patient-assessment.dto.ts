@@ -1,16 +1,10 @@
 import { Type } from 'class-transformer';
-import {
-  IsBoolean,
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-  IsString,
-} from 'class-validator';
+import { IsString, IsNotEmpty, IsNumber, IsBoolean } from 'class-validator';
 
-export class FindAllClinicsDto {
+export class FindAllPatientAssessmentDto {
   @IsString()
-  @IsOptional()
-  usersId?: string;
+  @IsNotEmpty()
+  patientId: string;
 
   @IsNumber()
   @Type(() => Number)

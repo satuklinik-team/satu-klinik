@@ -10,14 +10,12 @@ export class PatientsVitalSignsController {
     private readonly patientVitalSignService: PatientsVitalSignsService,
   ) {}
 
-  @Post(':id')
+  @Post()
   createVitalSign(
-    @Param('id') patientId: string,
     @Body() dto: CreateVitalSignDto,
     @TokenData() tokenData: JwtPayload,
   ) {
     return this.patientVitalSignService.create({
-      patientId,
       usersId: tokenData.sub,
       ...dto,
     });
