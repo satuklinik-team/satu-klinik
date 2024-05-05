@@ -13,6 +13,25 @@ export class PatientAssessmentService {
 
   async create(dto: CreatePatientAssessmentDto) {
     const data = await this.prismaService.$transaction(async (tx) => {
+      const patientMR =
+        await this.prismaService.patient_medical_records.findFirst({
+          where: { id: dto.mrid },
+          select: {
+            Patient: {
+              select: {
+                id: true,
+                norm: true,
+                clinicsId: true,
+              },
+            },
+          },
+        });
+
+      await this.patientsService.canModifyPatient(
+        patientMR.Patient.id,
+        dto.tokenData.clinicsId,
+      );
+
       const assessment = tx.patient_assessment.create({
         data: {
           patient_medical_recordsId: dto.mrid,
@@ -47,33 +66,18 @@ export class PatientAssessmentService {
         },
       });
 
-      const patientMR =
-        await this.prismaService.patient_medical_records.findFirst({
-          where: { id: dto.mrid },
-          select: {
-            Patient: {
-              select: {
-                id: true,
-                norm: true,
-                clinicsId: true,
-              },
-            },
+      let pharmacyTask = null;
+      if (prescriptionsDto.length !== 0) {
+        pharmacyTask = this.prismaService.pharmacy_Task.create({
+          data: {
+            norm: patientMR.Patient.norm,
+            assessmentReffId: dto.mrid,
+            clinicsId: patientMR.Patient.clinicsId,
+            createdDate: new Date().toLocaleDateString(),
+            status: 'Todo',
           },
         });
-
-      await this.patientsService.canModifyPatient(
-        patientMR.Patient.id,
-        dto.tokenData,
-      );
-      const pharmacyTask = this.prismaService.pharmacy_Task.create({
-        data: {
-          norm: patientMR.Patient.norm,
-          assessmentReffId: dto.mrid,
-          clinicsId: patientMR.Patient.clinicsId,
-          createdDate: new Date().toLocaleDateString(),
-          status: 'Todo',
-        },
-      });
+      }
 
       return {
         assessment: await assessment,

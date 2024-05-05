@@ -1,16 +1,20 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { FindAllPharmacyTaskDto } from './dto/find-all-pharmacy-task.dto';
+import { CompleteTaskDto } from './dto/complete-task.dto';
+import { CannotAccessClinicException } from 'src/exceptions/unauthorized/cannot-access-clinic';
 
 @Injectable()
 export class PharmacyTasksService {
   constructor(private readonly prismaService: PrismaService) {}
 
   async findAll(dto: FindAllPharmacyTaskDto) {
+    const today = new Date().toLocaleDateString();
     const data = await this.prismaService.pharmacy_Task.findMany({
       where: {
         clinicsId: dto.tokenData.clinicsId,
-        createdDate: new Date().toLocaleDateString(),
+        createdDate: today,
+        status: 'Todo',
       },
       select: {
         id: true,
@@ -49,10 +53,33 @@ export class PharmacyTasksService {
       count = await this.prismaService.pharmacy_Task.count({
         where: {
           clinicsId: dto.tokenData.clinicsId,
+          createdDate: today,
+          status: 'Todo',
         },
       });
     }
 
     return { data: mappedData, count };
+  }
+
+  async completeTask(dto: CompleteTaskDto) {
+    const data = await this.prismaService.$transaction(async (tx) => {
+      const pharmacyTask = await tx.pharmacy_Task.update({
+        where: {
+          id: dto.id,
+        },
+        data: {
+          status: 'Done',
+        },
+      });
+
+      if (pharmacyTask.clinicsId !== dto.tokenData.clinicsId) {
+        throw new CannotAccessClinicException();
+      }
+
+      return pharmacyTask;
+    });
+
+    return data;
   }
 }

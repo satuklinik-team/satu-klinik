@@ -53,7 +53,7 @@ export class PatientsService {
   }
 
   async delete(dto: DeletePatientDto) {
-    this.canModifyPatient(dto.id, dto.tokenData);
+    this.canModifyPatient(dto.id, dto.tokenData.clinicsId);
 
     const data = await this.prismaService.patient.delete({
       where: { id: dto.id },
@@ -62,7 +62,7 @@ export class PatientsService {
     return data;
   }
 
-  async canModifyPatient(patientId: string, tokenData: JwtPayload) {
+  async canModifyPatient(patientId: string, clinicsId: string) {
     const patient = await this.prismaService.patient.findFirst({
       where: {
         id: patientId,
@@ -72,7 +72,7 @@ export class PatientsService {
       },
     });
 
-    if (patient.clinicsId !== tokenData.clinicsId) {
+    if (patient.clinicsId !== clinicsId) {
       throw new CannotAccessClinicException();
     }
   }

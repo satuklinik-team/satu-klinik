@@ -1,4 +1,11 @@
-import { Controller, Get, Param, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { FindAllReturn } from 'src/utils/types';
 import { FindAllPharmacyTaskDto } from './dto/find-all-pharmacy-task.dto';
 import { PharmacyTasksService } from './pharmacy-tasks.service';
@@ -18,5 +25,13 @@ export class PharmacyTasksController {
       ...dto,
       tokenData,
     });
+  }
+
+  @Post(':id')
+  async completeTask(
+    @Param('id') id: number,
+    @TokenData() tokenData: JwtPayload,
+  ) {
+    return await this.pharmacyTasksService.completeTask({ id, tokenData });
   }
 }
