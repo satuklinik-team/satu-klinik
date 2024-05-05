@@ -106,25 +106,19 @@ model Patient_prescription {
   Patient_medical_records   Patient_medical_records? @relation(fields: [patient_medical_recordsId], references: [id])
 }
 
-model Doctor_Task {
-  id         Int         @id @default(autoincrement())
-  doctorId   String?
-  status     TASK_STATUS @default(TODO)
-  url        String?
-  lastViewAt DateTime?
-  createdAt  DateTime?   @default(now()) @db.Timestamptz(6)
-}
-
 model Pharmacy_Task {
   id               Int       @id @default(autoincrement())
   norm             String
   assessmentReffId String?
   status           String?
   pharmacist       String?
+  createdDate      String?
   createdAt        DateTime? @default(now()) @db.Timestamptz(6)
   deletedAt        DateTime?
   clinicsId        String?   @db.Uuid
   Clinics          Clinics?  @relation(fields: [clinicsId], references: [id])
+
+  @@index(fields: [clinicsId, assessmentReffId])
 }
 
 model Poli {

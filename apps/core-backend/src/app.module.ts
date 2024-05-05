@@ -18,6 +18,7 @@ import { TokenModule } from './token/token.module';
 import { UsersModule } from './users/users.module';
 import { PatientAssessmentModule } from './patient-assessment/patient-assessment.module';
 import { Icd9cmModule } from './icd9cm/icd9cm.module';
+import { PharmacyTasksModule } from './pharmacy-tasks/pharmacy-tasks.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { Icd9cmModule } from './icd9cm/icd9cm.module';
     AccountsModule,
     PatientAssessmentModule,
     Icd9cmModule,
+    PharmacyTasksModule,
   ],
   providers: [{ provide: APP_GUARD, useClass: AccessTokenGuard }],
 })

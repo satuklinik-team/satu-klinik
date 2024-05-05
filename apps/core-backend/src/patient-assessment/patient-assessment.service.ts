@@ -2,14 +2,18 @@ import { Injectable } from '@nestjs/common';
 import { CreatePatientAssessmentDto } from './dto/create-patient-assessment.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { FindAllPatientAssessmentDto } from './dto/find-all-patient-assessment.dto';
+import { PatientsService } from 'src/patients/patients.service';
 
 @Injectable()
 export class PatientAssessmentService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly patientsService: PatientsService,
+  ) {}
 
   async create(dto: CreatePatientAssessmentDto) {
     const data = await this.prismaService.$transaction(async (tx) => {
-      const assessment = await tx.patient_assessment.create({
+      const assessment = tx.patient_assessment.create({
         data: {
           patient_medical_recordsId: dto.mrid,
           subjective: dto.subjective,
@@ -30,21 +34,53 @@ export class PatientAssessmentService {
         };
       });
 
-      const prescriptions = await tx.patient_prescription.createMany({
+      const prescriptions = tx.patient_prescription.createMany({
         data: prescriptionsDto,
       });
 
-      const medicalRecord =
-        await this.prismaService.patient_medical_records.update({
-          where: {
-            id: dto.mrid,
-          },
-          data: {
-            status: 'd1',
+      const medicalRecord = this.prismaService.patient_medical_records.update({
+        where: {
+          id: dto.mrid,
+        },
+        data: {
+          status: 'd1',
+        },
+      });
+
+      const patientMR =
+        await this.prismaService.patient_medical_records.findFirst({
+          where: { id: dto.mrid },
+          select: {
+            Patient: {
+              select: {
+                id: true,
+                norm: true,
+                clinicsId: true,
+              },
+            },
           },
         });
 
-      return { assessment, prescriptions, medicalRecord };
+      await this.patientsService.canModifyPatient(
+        patientMR.Patient.id,
+        dto.tokenData,
+      );
+      const pharmacyTask = this.prismaService.pharmacy_Task.create({
+        data: {
+          norm: patientMR.Patient.norm,
+          assessmentReffId: dto.mrid,
+          clinicsId: patientMR.Patient.clinicsId,
+          createdDate: new Date().toLocaleDateString(),
+          status: 'Todo',
+        },
+      });
+
+      return {
+        assessment: await assessment,
+        prescriptions: await prescriptions,
+        medicalRecord: await medicalRecord,
+        pharmacyTask: await pharmacyTask,
+      };
     });
 
     return data;

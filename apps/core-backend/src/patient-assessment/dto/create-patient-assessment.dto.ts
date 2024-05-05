@@ -6,6 +6,7 @@ import {
   IsString,
   ValidateNested,
 } from 'class-validator';
+import { JwtPayload } from 'src/auth/types';
 
 class Prescription {
   @IsString()
@@ -54,4 +55,7 @@ export class CreatePatientAssessmentDto {
   @ValidateNested({ each: true })
   @Type(() => Prescription)
   prescriptions: Prescription[];
+
+  @IsOptional()
+  tokenData?: JwtPayload;
 }

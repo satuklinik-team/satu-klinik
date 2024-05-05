@@ -18,7 +18,7 @@ export class PatientsVitalSignsService {
     this.patientService.canModifyPatient(dto.patientId, dto.tokenData);
 
     const data = await this.prismaService.$transaction(async (tx) => {
-      const queue = await this._getQueueNo('main', { tx });
+      const queue = await this._getQueueNo(dto.tokenData.clinicsId, { tx });
 
       const data = await this.prismaService.patient_medical_records.create({
         data: {
@@ -56,18 +56,23 @@ export class PatientsVitalSignsService {
     return data;
   }
 
-  async _getQueueNo(poliId: string, context?: ServiceContext) {
+  async _getQueueNo(clinicsId: string, context?: ServiceContext) {
     const prisma = this._initPrisma(context.tx);
 
-    let { counter, currentDate } = await prisma.poli.findFirst({
+    const result = await prisma.poli.findFirst({
       where: {
-        id: poliId,
+        clinicsId,
+        name: 'main',
       },
       select: {
+        id: true,
         counter: true,
         currentDate: true,
       },
     });
+
+    const { id } = result;
+    let { counter, currentDate } = result;
 
     const today = new Date().toLocaleDateString();
     if (today !== currentDate) {
@@ -78,7 +83,7 @@ export class PatientsVitalSignsService {
 
     const poli = await prisma.poli.update({
       where: {
-        id: poliId,
+        id,
       },
       data: {
         currentDate,
