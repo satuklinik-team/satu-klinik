@@ -24,7 +24,6 @@ export class PharmacyTasksService {
     });
 
     const promises = data.map(async (pharmacyTask) => {
-      console.log(pharmacyTask);
       return {
         id: pharmacyTask.id,
         status: pharmacyTask.status,
