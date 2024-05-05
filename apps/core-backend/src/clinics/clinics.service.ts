@@ -17,6 +17,12 @@ export class ClinicsService {
         address: dto.clinicAddress,
         phone: dto.clinicPhone,
         accountsId: dto.accountsId,
+        Poli: {
+          create: {
+            name: 'main',
+            alias: 'A',
+          },
+        },
       },
     });
 

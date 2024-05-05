@@ -5,6 +5,7 @@ import {
   IsString,
   IsUUID,
 } from 'class-validator';
+import { JwtPayload } from 'src/auth/types';
 
 export class CreateVitalSignDto {
   @IsString()
@@ -49,5 +50,5 @@ export class CreateVitalSignDto {
 
   @IsString()
   @IsOptional()
-  usersId?: string;
+  tokenData?: JwtPayload;
 }

@@ -6,6 +6,7 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
+import { JwtPayload } from 'src/auth/types';
 import { PaginationDto } from 'src/utils/classes';
 
 export enum FindAllPatientTypes {
@@ -16,9 +17,8 @@ export enum FindAllPatientTypes {
 }
 
 export class FindAllPatientsDto extends PaginationDto {
-  @IsString()
-  @IsNotEmpty()
-  clinicsId: string;
+  @IsOptional()
+  tokenData?: JwtPayload;
 
   @IsString()
   @IsOptional()

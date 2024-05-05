@@ -40,7 +40,7 @@ model Patient_medical_records {
   doctor       String
   status       String?                @default("e1")
   patientId    String?                @db.Uuid
-  poliId       String?
+  poliId       String?                @db.Uuid
   assessment   Patient_assessment[]
   Patient      Patient?               @relation(fields: [patientId], references: [id])
   poli         Poli?                  @relation(fields: [poliId], references: [id])
@@ -128,8 +128,9 @@ model Pharmacy_Task {
 }
 
 model Poli {
-  id                      String                    @id
+  id                      String                    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   color                   String?                   @default("#87CEEB")
+  currentDate             String?
   counter                 Int?                      @default(0)
   name                    String
   alias                   String?                   @default("A")

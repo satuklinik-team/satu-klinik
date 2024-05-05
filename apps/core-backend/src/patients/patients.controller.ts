@@ -20,24 +20,28 @@ export class PatientsController {
 
   @Post()
   createPatient(
-    @Body() createPatientDto: CreatePatientDto,
+    @Body() dto: CreatePatientDto,
     @TokenData() tokenData: JwtPayload,
   ) {
     return this.patientService.create({
-      ...createPatientDto,
-      usersId: tokenData.sub,
+      ...dto,
+      tokenData,
     });
   }
 
   @Get()
   async findAll(
     @Query() dto: FindAllPatientsDto,
+    @TokenData() tokenData: JwtPayload,
   ): Promise<FindAllReturn<object>> {
-    return this.patientService.findAll(dto);
+    return this.patientService.findAll({ ...dto, tokenData });
   }
 
   @Delete(':id')
-  async delete(@Param('id') id: string) {
-    return this.patientService.delete(id);
+  async delete(@Param('id') id: string, @TokenData() tokenData: JwtPayload) {
+    return this.patientService.delete({
+      id,
+      tokenData,
+    });
   }
 }
