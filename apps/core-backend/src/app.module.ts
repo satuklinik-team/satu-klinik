@@ -21,6 +21,8 @@ import { Icd9cmModule } from './icd9cm/icd9cm.module';
 import { PharmacyTasksModule } from './pharmacy-tasks/pharmacy-tasks.module';
 import { FindAllService } from './find-all/find-all.service';
 import { FindAllModule } from './find-all/find-all.module';
+import { SettingsModule } from './settings/settings.module';
+import { DepartmentsModule } from './departments/departments.module';
 
 @Module({
   imports: [
@@ -42,6 +44,8 @@ import { FindAllModule } from './find-all/find-all.module';
     Icd9cmModule,
     PharmacyTasksModule,
     FindAllModule,
+    SettingsModule,
+    DepartmentsModule,
   ],
   providers: [{ provide: APP_GUARD, useClass: AccessTokenGuard }],
 })
