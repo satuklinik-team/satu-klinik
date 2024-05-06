@@ -40,7 +40,7 @@ model Patient_medical_records {
   doctor       String
   status       String?                @default("e1")
   patientId    String?                @db.Uuid
-  poliId       String?
+  poliId       String?                @db.Uuid
   assessment   Patient_assessment[]
   Patient      Patient?               @relation(fields: [patientId], references: [id])
   poli         Poli?                  @relation(fields: [poliId], references: [id])
@@ -106,30 +106,25 @@ model Patient_prescription {
   Patient_medical_records   Patient_medical_records? @relation(fields: [patient_medical_recordsId], references: [id])
 }
 
-model Doctor_Task {
-  id         Int         @id @default(autoincrement())
-  doctorId   String?
-  status     TASK_STATUS @default(TODO)
-  url        String?
-  lastViewAt DateTime?
-  createdAt  DateTime?   @default(now()) @db.Timestamptz(6)
-}
-
 model Pharmacy_Task {
   id               Int       @id @default(autoincrement())
   norm             String
   assessmentReffId String?
   status           String?
   pharmacist       String?
+  createdDate      String?
   createdAt        DateTime? @default(now()) @db.Timestamptz(6)
   deletedAt        DateTime?
   clinicsId        String?   @db.Uuid
   Clinics          Clinics?  @relation(fields: [clinicsId], references: [id])
+
+  @@index(fields: [clinicsId, assessmentReffId])
 }
 
 model Poli {
-  id                      String                    @id
+  id                      String                    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   color                   String?                   @default("#87CEEB")
+  currentDate             String?
   counter                 Int?                      @default(0)
   name                    String
   alias                   String?                   @default("A")

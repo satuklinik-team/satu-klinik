@@ -3,10 +3,15 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateClinicDto } from './dto/create-clinic.dto';
 import { ServiceContext } from 'src/utils/types';
 import { FindAllClinicsDto } from './dto/find-all-clinics-dto';
+import { Prisma } from '@prisma/client';
+import { FindAllService } from 'src/find-all/find-all.service';
 
 @Injectable()
 export class ClinicsService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly findAllService: FindAllService,
+  ) {}
 
   async create(dto: CreateClinicDto, context?: ServiceContext) {
     const prisma = this._initPrisma(context.tx);
@@ -17,6 +22,17 @@ export class ClinicsService {
         address: dto.clinicAddress,
         phone: dto.clinicPhone,
         accountsId: dto.accountsId,
+        Poli: {
+          create: {
+            name: 'main',
+            alias: 'A',
+          },
+        },
+        // Setting:{
+        //   createMany: {
+        //     data: [{name:}]
+        //   }
+        // }
       },
     });
 
@@ -24,21 +40,10 @@ export class ClinicsService {
   }
 
   async findAll(dto: FindAllClinicsDto) {
-    const accounts = await this.prismaService.accounts.findFirst({
+    const args: Prisma.ClinicsFindManyArgs = {
       where: {
-        usersId: dto.usersId,
+        id: dto.clinicsId,
       },
-      select: {
-        id: true,
-      },
-    });
-
-    const data = await this.prismaService.clinics.findMany({
-      where: {
-        accountsId: accounts.id,
-      },
-      skip: dto.skip,
-      take: dto.limit,
       select: {
         id: true,
         name: true,
@@ -55,18 +60,13 @@ export class ClinicsService {
           },
         },
       },
+    };
+
+    return await this.findAllService.findAll({
+      table: this.prismaService.clinics,
+      ...args,
+      ...dto,
     });
-
-    let count = null;
-    if (dto.count) {
-      count = await this.prismaService.clinics.count({
-        where: {
-          accountsId: accounts.id,
-        },
-      });
-    }
-
-    return { data, count };
   }
 
   private _initPrisma(tx?: ServiceContext['tx']) {

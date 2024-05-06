@@ -16,6 +16,7 @@ export class ClinicsController {
   ): Promise<FindAllReturn<object>> {
     const { data, count } = await this.clinicsService.findAll({
       usersId: tokenData.sub,
+      clinicsId: tokenData.clinicsId,
       ...dto,
     });
 

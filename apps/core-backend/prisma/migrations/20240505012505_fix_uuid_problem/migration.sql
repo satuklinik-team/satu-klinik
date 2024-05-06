@@ -45,14 +45,13 @@ CREATE TABLE "Patient" (
 -- CreateTable
 CREATE TABLE "Patient_medical_records" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
-    "norm" TEXT NOT NULL,
     "visitAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "visitLabel" TEXT,
     "queue" TEXT,
     "doctor" TEXT NOT NULL,
     "status" TEXT DEFAULT 'e1',
     "patientId" UUID,
-    "poliId" TEXT,
+    "poliId" UUID,
 
     CONSTRAINT "Patient_medical_records_pkey" PRIMARY KEY ("id")
 );
@@ -72,7 +71,6 @@ CREATE TABLE "Patient_vital_sign" (
     "cholesterol" DECIMAL(65,30) DEFAULT 0,
     "pain" TEXT,
     "allergic" TEXT DEFAULT 'n/a',
-    "visitAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
     "deletedAt" TIMESTAMP(3),
     "patient_medical_recordsId" UUID,
 
@@ -87,7 +85,8 @@ CREATE TABLE "Patient_assessment" (
     "assessment" TEXT NOT NULL DEFAULT 'none',
     "plan" TEXT NOT NULL DEFAULT 'none',
     "diagnose" TEXT NOT NULL DEFAULT 'none',
-    "icd10" TEXT NOT NULL DEFAULT '-',
+    "icd10Code" TEXT,
+    "icd9CMCode" TEXT,
     "deletedAt" TIMESTAMP(3),
     "patient_medical_recordsId" UUID,
 
@@ -148,7 +147,7 @@ CREATE TABLE "Pharmacy_Task" (
 
 -- CreateTable
 CREATE TABLE "Poli" (
-    "id" TEXT NOT NULL,
+    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "color" TEXT DEFAULT '#87CEEB',
     "counter" INTEGER DEFAULT 0,
     "name" TEXT NOT NULL,
@@ -464,12 +463,12 @@ CREATE TABLE "ICD10" (
 );
 
 -- CreateTable
-CREATE TABLE "ICD10CM" (
+CREATE TABLE "ICD9CM" (
     "code" TEXT NOT NULL,
     "str" TEXT NOT NULL,
     "sab" TEXT NOT NULL,
 
-    CONSTRAINT "ICD10CM_pkey" PRIMARY KEY ("code")
+    CONSTRAINT "ICD9CM_pkey" PRIMARY KEY ("code")
 );
 
 -- CreateIndex
@@ -489,6 +488,12 @@ ALTER TABLE "Patient_medical_records" ADD CONSTRAINT "Patient_medical_records_po
 
 -- AddForeignKey
 ALTER TABLE "Patient_vital_sign" ADD CONSTRAINT "Patient_vital_sign_patient_medical_recordsId_fkey" FOREIGN KEY ("patient_medical_recordsId") REFERENCES "Patient_medical_records"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Patient_assessment" ADD CONSTRAINT "Patient_assessment_icd10Code_fkey" FOREIGN KEY ("icd10Code") REFERENCES "ICD10"("code") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Patient_assessment" ADD CONSTRAINT "Patient_assessment_icd9CMCode_fkey" FOREIGN KEY ("icd9CMCode") REFERENCES "ICD9CM"("code") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Patient_assessment" ADD CONSTRAINT "Patient_assessment_patient_medical_recordsId_fkey" FOREIGN KEY ("patient_medical_recordsId") REFERENCES "Patient_medical_records"("id") ON DELETE SET NULL ON UPDATE CASCADE;

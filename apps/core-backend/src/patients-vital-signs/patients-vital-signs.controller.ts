@@ -16,8 +16,8 @@ export class PatientsVitalSignsController {
     @TokenData() tokenData: JwtPayload,
   ) {
     return this.patientVitalSignService.create({
-      usersId: tokenData.sub,
       ...dto,
+      clinicsId: tokenData.clinicsId,
     });
   }
 }

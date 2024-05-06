@@ -3,6 +3,8 @@ import { PatientAssessmentService } from './patient-assessment.service';
 import { CreatePatientAssessmentDto } from './dto/create-patient-assessment.dto';
 import { FindAllPatientAssessmentDto } from './dto/find-all-patient-assessment.dto';
 import { FindAllReturn } from 'src/utils/types';
+import { JwtPayload } from 'src/auth/types';
+import { TokenData } from 'src/utils';
 
 @Controller('patient-assessment')
 export class PatientAssessmentController {
@@ -11,16 +13,24 @@ export class PatientAssessmentController {
   ) {}
 
   @Post()
-  async create(@Body() createPatientAssessmentDto: CreatePatientAssessmentDto) {
+  async create(
+    @Body() createPatientAssessmentDto: CreatePatientAssessmentDto,
+    @TokenData() tokenData: JwtPayload,
+  ) {
     return await this.patientAssessmentService.create({
       ...createPatientAssessmentDto,
+      clinicsId: tokenData.clinicsId,
     });
   }
 
   @Get()
   async findAll(
     @Query() dto: FindAllPatientAssessmentDto,
+    @TokenData() tokenData: JwtPayload,
   ): Promise<FindAllReturn<object>> {
-    return await this.patientAssessmentService.findAll(dto);
+    return await this.patientAssessmentService.findAll({
+      ...dto,
+      clinicsId: tokenData.clinicsId,
+    });
   }
 }
