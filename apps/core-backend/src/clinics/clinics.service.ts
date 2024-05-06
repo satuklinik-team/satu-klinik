@@ -137,7 +137,7 @@ export class ClinicsService {
       throw new UserNotFoundException();
     }
 
-    await this.prismaService.users.update({
+    const updatedUser = await this.prismaService.users.update({
       where: {
         id: userId,
         clinicsId: clinicId,
@@ -146,6 +146,29 @@ export class ClinicsService {
         ...dto,
       },
     });
+
+    return exclude(updatedUser, ['password']);
+  }
+
+  async deleteClinicUser(clinicId: string, userId: string) {
+    const user = await this.prismaService.users.findFirst({
+      where: {
+        id: userId,
+        clinicsId: clinicId,
+      },
+    });
+
+    if (!user) {
+      throw new UserNotFoundException();
+    }
+
+    await this.prismaService.users.delete({
+      where: {
+        id: userId,
+      },
+    });
+
+    return exclude(user, ['password']);
   }
 
   private _initPrisma(tx?: ServiceContext['tx']) {

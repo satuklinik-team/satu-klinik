@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -56,6 +57,17 @@ export class ClinicsController {
     return await this.clinicsService.updateClinicUser(
       dto,
       tokenData.clinicsId,
+      userId,
+    );
+  }
+
+  @Delete('users/:id')
+  async deleteUser(
+    @TokenData() TokenData: JwtPayload,
+    @Param('id') userId: string,
+  ) {
+    return await this.clinicsService.deleteClinicUser(
+      TokenData.clinicsId,
       userId,
     );
   }
