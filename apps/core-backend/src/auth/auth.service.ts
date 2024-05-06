@@ -11,6 +11,7 @@ import {
 import { PrismaService } from 'src/prisma/prisma.service';
 import { ClinicsService } from 'src/clinics/clinics.service';
 import { AccountsService } from 'src/accounts/accounts.service';
+import { Role } from '@prisma/client';
 
 @Injectable()
 export class AuthService {
@@ -24,6 +25,7 @@ export class AuthService {
   ) {}
 
   async register(dto: RegisterDto) {
+    dto.role = Role.OWNER;
     const data = await this.prismaService.$transaction(async (tx) => {
       let user = await this.usersService.create(dto, { tx });
       const account = await this.accountsService.create(

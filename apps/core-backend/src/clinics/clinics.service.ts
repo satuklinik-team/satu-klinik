@@ -5,12 +5,19 @@ import { ServiceContext } from 'src/utils/types';
 import { FindAllClinicsDto } from './dto/find-all-clinics-dto';
 import { Prisma } from '@prisma/client';
 import { FindAllService } from 'src/find-all/find-all.service';
+import { CreateUserDto } from 'src/users/dto';
+import { UsersService } from 'src/users/users.service';
+import { ClinicNotFoundException } from 'src/exceptions/not-found/clinic-not-found.exception';
+import { Role } from '@prisma/client';
+import { AddNewOwnerToClinicException } from 'src/exceptions/unauthorized/add-new-owner-to-clinic.exception';
+import { exclude } from 'src/utils';
 
 @Injectable()
 export class ClinicsService {
   constructor(
     private readonly prismaService: PrismaService,
     private readonly findAllService: FindAllService,
+    private readonly userService: UsersService,
   ) {}
 
   async create(dto: CreateClinicDto, context?: ServiceContext) {
@@ -67,6 +74,49 @@ export class ClinicsService {
       ...args,
       ...dto,
     });
+  }
+
+  async addUserOnClinic(user: CreateUserDto, clinicId: string) {
+    if (user.role === Role.OWNER) {
+      throw new AddNewOwnerToClinicException();
+    }
+
+    const clinic = await this.prismaService.clinics.findFirst({
+      where: {
+        id: clinicId,
+      },
+    });
+
+    if (!clinic) {
+      throw new ClinicNotFoundException();
+    }
+
+    return await this.prismaService.$transaction(async (tx) => {
+      const createdUser = await this.userService.create(user);
+      await tx.clinics.update({
+        where: {
+          id: clinicId,
+        },
+        data: {
+          users: {
+            connect: {
+              id: createdUser.id,
+            },
+          },
+        },
+      });
+      return exclude(createdUser, ['password']);
+    });
+  }
+
+  async findClinicUsers(clinicId: string) {
+    const users = await this.prismaService.users.findMany({
+      where: {
+        clinicsId: clinicId,
+      },
+    });
+
+    return users.map((u) => exclude(u, ['password']));
   }
 
   private _initPrisma(tx?: ServiceContext['tx']) {
