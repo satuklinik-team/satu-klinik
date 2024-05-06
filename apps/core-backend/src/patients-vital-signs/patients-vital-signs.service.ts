@@ -15,13 +15,10 @@ export class PatientsVitalSignsService {
   async create(dto: CreateVitalSignDto) {
     const now = new Date();
 
-    this.patientService.canModifyPatient(
-      dto.patientId,
-      dto.tokenData.clinicsId,
-    );
+    await this.patientService.canModifyPatient(dto.patientId, dto.clinicsId);
 
     const data = await this.prismaService.$transaction(async (tx) => {
-      const queue = await this._getQueueNo(dto.tokenData.clinicsId, { tx });
+      const queue = await this._getQueueNo(dto.clinicsId, { tx });
 
       const data = await this.prismaService.patient_medical_records.create({
         data: {

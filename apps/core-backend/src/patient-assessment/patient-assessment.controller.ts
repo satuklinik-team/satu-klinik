@@ -19,7 +19,7 @@ export class PatientAssessmentController {
   ) {
     return await this.patientAssessmentService.create({
       ...createPatientAssessmentDto,
-      tokenData,
+      clinicsId: tokenData.clinicsId,
     });
   }
 
@@ -30,7 +30,7 @@ export class PatientAssessmentController {
   ): Promise<FindAllReturn<object>> {
     return await this.patientAssessmentService.findAll({
       ...dto,
-      tokenData,
+      clinicsId: tokenData.clinicsId,
     });
   }
 }

@@ -19,6 +19,7 @@ import { UsersModule } from './users/users.module';
 import { PatientAssessmentModule } from './patient-assessment/patient-assessment.module';
 import { Icd9cmModule } from './icd9cm/icd9cm.module';
 import { PharmacyTasksModule } from './pharmacy-tasks/pharmacy-tasks.module';
+import { FindAllService } from './find-all/find-all.service';
 
 @Module({
   imports: [
@@ -40,6 +41,6 @@ import { PharmacyTasksModule } from './pharmacy-tasks/pharmacy-tasks.module';
     Icd9cmModule,
     PharmacyTasksModule,
   ],
-  providers: [{ provide: APP_GUARD, useClass: AccessTokenGuard }],
+  providers: [{ provide: APP_GUARD, useClass: AccessTokenGuard }, FindAllService],
 })
 export class AppModule {}

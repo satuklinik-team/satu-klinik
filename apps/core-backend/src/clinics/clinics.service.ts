@@ -23,6 +23,11 @@ export class ClinicsService {
             alias: 'A',
           },
         },
+        // Setting:{
+        //   createMany: {
+        //     data: [{name:}]
+        //   }
+        // }
       },
     });
 
@@ -30,18 +35,9 @@ export class ClinicsService {
   }
 
   async findAll(dto: FindAllClinicsDto) {
-    const accounts = await this.prismaService.accounts.findFirst({
-      where: {
-        usersId: dto.usersId,
-      },
-      select: {
-        id: true,
-      },
-    });
-
     const data = await this.prismaService.clinics.findMany({
       where: {
-        accountsId: accounts.id,
+        id: dto.clinicsId,
       },
       skip: dto.skip,
       take: dto.limit,
@@ -67,7 +63,7 @@ export class ClinicsService {
     if (dto.count) {
       count = await this.prismaService.clinics.count({
         where: {
-          accountsId: accounts.id,
+          id: dto.clinicsId,
         },
       });
     }

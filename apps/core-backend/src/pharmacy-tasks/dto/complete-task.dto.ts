@@ -9,6 +9,7 @@ export class CompleteTaskDto {
   @Type(() => Number)
   id?: number;
 
+  @IsString()
   @IsOptional()
-  tokenData?: JwtPayload;
+  clinicsId?: string;
 }

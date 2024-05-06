@@ -29,7 +29,7 @@ export class PatientAssessmentService {
 
       await this.patientsService.canModifyPatient(
         patientMR.Patient.id,
-        dto.tokenData.clinicsId,
+        dto.clinicsId,
       );
 
       const assessment = tx.patient_assessment.create({
@@ -91,6 +91,8 @@ export class PatientAssessmentService {
   }
 
   async findAll(dto: FindAllPatientAssessmentDto) {
+    await this.patientsService.canModifyPatient(dto.patientId, dto.clinicsId);
+
     const data = await this.prismaService.patient_assessment.findMany({
       where: {
         Patient_medical_records: {

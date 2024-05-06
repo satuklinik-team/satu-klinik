@@ -17,8 +17,9 @@ export enum FindAllPatientTypes {
 }
 
 export class FindAllPatientsDto extends PaginationDto {
+  @IsString()
   @IsOptional()
-  tokenData?: JwtPayload;
+  clinicsId?: string;
 
   @IsString()
   @IsOptional()

@@ -12,7 +12,7 @@ export class PharmacyTasksService {
     const today = new Date().toLocaleDateString();
     const data = await this.prismaService.pharmacy_Task.findMany({
       where: {
-        clinicsId: dto.tokenData.clinicsId,
+        clinicsId: dto.clinicsId,
         createdDate: today,
         status: 'Todo',
       },
@@ -35,7 +35,7 @@ export class PharmacyTasksService {
         patient: await this.prismaService.patient.findFirst({
           where: {
             norm: pharmacyTask.norm,
-            clinicsId: dto.tokenData.clinicsId,
+            clinicsId: dto.clinicsId,
           },
         }),
         prescriptions: await this.prismaService.patient_prescription.findMany({
@@ -52,7 +52,7 @@ export class PharmacyTasksService {
     if (dto.count) {
       count = await this.prismaService.pharmacy_Task.count({
         where: {
-          clinicsId: dto.tokenData.clinicsId,
+          clinicsId: dto.clinicsId,
           createdDate: today,
           status: 'Todo',
         },
@@ -73,7 +73,7 @@ export class PharmacyTasksService {
         },
       });
 
-      if (pharmacyTask.clinicsId !== dto.tokenData.clinicsId) {
+      if (pharmacyTask.clinicsId !== dto.clinicsId) {
         throw new CannotAccessClinicException();
       }
 

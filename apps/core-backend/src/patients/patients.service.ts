@@ -17,7 +17,7 @@ export class PatientsService {
   async create(dto: CreatePatientDto) {
     const data = await this.prismaService.patient.create({
       data: {
-        norm: await this.generateMedicalRecordNorm(dto.tokenData.clinicsId),
+        norm: await this.generateMedicalRecordNorm(dto.clinicsId),
         nik: dto.nik,
         fullname: dto.fullname,
         parentname: dto.parentname || '-',
@@ -27,7 +27,7 @@ export class PatientsService {
         sex: dto.sex,
         blood: dto.blood,
         birthAt: `${dto.birthAt}T00:00:00.000Z`,
-        clinicsId: dto.tokenData.clinicsId,
+        clinicsId: dto.clinicsId,
       },
     });
 
@@ -53,7 +53,7 @@ export class PatientsService {
   }
 
   async delete(dto: DeletePatientDto) {
-    this.canModifyPatient(dto.id, dto.tokenData.clinicsId);
+    await this.canModifyPatient(dto.id, dto.clinicsId);
 
     const data = await this.prismaService.patient.delete({
       where: { id: dto.id },
@@ -116,7 +116,7 @@ export class PatientsService {
       const status = dto.type.at(0).toLowerCase() + '1';
 
       return {
-        clinicsId: dto.tokenData.clinicsId,
+        clinicsId: dto.clinicsId,
         mr: {
           some: {
             status,
@@ -126,7 +126,7 @@ export class PatientsService {
       };
     }
     return {
-      clinicsId: dto.tokenData.clinicsId,
+      clinicsId: dto.clinicsId,
       OR: [
         {
           nik: {

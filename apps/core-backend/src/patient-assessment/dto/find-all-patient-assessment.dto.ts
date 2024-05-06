@@ -7,6 +7,7 @@ export class FindAllPatientAssessmentDto extends PaginationDto {
   @IsNotEmpty()
   patientId: string;
 
+  @IsString()
   @IsOptional()
-  tokenData?: JwtPayload;
+  clinicsId?: string;
 }

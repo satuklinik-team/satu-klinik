@@ -3,6 +3,7 @@ import { JwtPayload } from 'src/auth/types';
 import { PaginationDto } from 'src/utils/classes';
 
 export class FindAllPharmacyTaskDto extends PaginationDto {
+  @IsString()
   @IsOptional()
-  tokenData?: JwtPayload;
+  clinicsId?: string;
 }

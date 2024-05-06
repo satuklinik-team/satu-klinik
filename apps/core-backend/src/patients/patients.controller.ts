@@ -25,7 +25,7 @@ export class PatientsController {
   ) {
     return this.patientService.create({
       ...dto,
-      tokenData,
+      clinicsId: tokenData.clinicsId,
     });
   }
 
@@ -34,14 +34,17 @@ export class PatientsController {
     @Query() dto: FindAllPatientsDto,
     @TokenData() tokenData: JwtPayload,
   ): Promise<FindAllReturn<object>> {
-    return this.patientService.findAll({ ...dto, tokenData });
+    return this.patientService.findAll({
+      ...dto,
+      clinicsId: tokenData.clinicsId,
+    });
   }
 
   @Delete(':id')
   async delete(@Param('id') id: string, @TokenData() tokenData: JwtPayload) {
     return this.patientService.delete({
       id,
-      tokenData,
+      clinicsId: tokenData.clinicsId,
     });
   }
 }

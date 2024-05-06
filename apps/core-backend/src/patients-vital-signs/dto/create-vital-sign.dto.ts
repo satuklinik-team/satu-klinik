@@ -50,5 +50,5 @@ export class CreateVitalSignDto {
 
   @IsString()
   @IsOptional()
-  tokenData?: JwtPayload;
+  clinicsId?: string;
 }

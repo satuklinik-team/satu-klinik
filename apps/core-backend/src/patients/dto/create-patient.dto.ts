@@ -45,6 +45,7 @@ export class CreatePatientDto {
   @IsNotEmpty()
   birthAt: string;
 
+  @IsString()
   @IsOptional()
-  tokenData?: JwtPayload;
+  clinicsId?: string;
 }

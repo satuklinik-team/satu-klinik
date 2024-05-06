@@ -13,6 +13,7 @@ export class DeletePatientDto {
   @IsNotEmpty()
   id: string;
 
-  @IsNotEmpty()
-  tokenData: JwtPayload;
+  @IsString()
+  @IsOptional()
+  clinicsId?: string;
 }

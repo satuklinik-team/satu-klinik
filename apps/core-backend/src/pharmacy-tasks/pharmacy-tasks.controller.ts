@@ -23,7 +23,7 @@ export class PharmacyTasksController {
   ): Promise<FindAllReturn<object>> {
     return await this.pharmacyTasksService.findAll({
       ...dto,
-      tokenData,
+      clinicsId: tokenData.clinicsId,
     });
   }
 
@@ -32,6 +32,9 @@ export class PharmacyTasksController {
     @Param('id') id: number,
     @TokenData() tokenData: JwtPayload,
   ) {
-    return await this.pharmacyTasksService.completeTask({ id, tokenData });
+    return await this.pharmacyTasksService.completeTask({
+      id,
+      clinicsId: tokenData.clinicsId,
+    });
   }
 }

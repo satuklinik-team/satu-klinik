@@ -56,6 +56,7 @@ export class CreatePatientAssessmentDto {
   @Type(() => Prescription)
   prescriptions: Prescription[];
 
+  @IsString()
   @IsOptional()
-  tokenData?: JwtPayload;
+  clinicsId?: string;
 }
