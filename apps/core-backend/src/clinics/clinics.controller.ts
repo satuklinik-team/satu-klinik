@@ -24,21 +24,16 @@ export class ClinicsController {
     return { data, count };
   }
 
-  @Post('add-user')
+  @Post('users')
   async addUserOnClinic(
     @Body() dto: CreateUserDto,
     @TokenData() tokenData: JwtPayload,
   ) {
-    return await this.clinicsService.addUserOnClinic(
-      dto,
-      'babd0381-e07f-4f72-a7f9-5bdaa1461f59',
-    );
+    return await this.clinicsService.addUserOnClinic(dto, tokenData.clinicsId);
   }
 
   @Get('users')
   async FindClinicUsers(@TokenData() tokenData: JwtPayload) {
-    return await this.clinicsService.findClinicUsers(
-      'babd0381-e07f-4f72-a7f9-5bdaa1461f59',
-    );
+    return await this.clinicsService.findClinicUsers(tokenData.clinicsId);
   }
 }
