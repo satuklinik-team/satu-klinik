@@ -3,12 +3,15 @@ import { CreatePatientAssessmentDto } from './dto/create-patient-assessment.dto'
 import { PrismaService } from 'src/prisma/prisma.service';
 import { FindAllPatientAssessmentDto } from './dto/find-all-patient-assessment.dto';
 import { PatientsService } from 'src/patients/patients.service';
+import { Prisma } from '@prisma/client';
+import { FindAllService } from 'src/find-all/find-all.service';
 
 @Injectable()
 export class PatientAssessmentService {
   constructor(
     private readonly prismaService: PrismaService,
     private readonly patientsService: PatientsService,
+    private readonly findAllService: FindAllService,
   ) {}
 
   async create(dto: CreatePatientAssessmentDto) {
@@ -93,7 +96,7 @@ export class PatientAssessmentService {
   async findAll(dto: FindAllPatientAssessmentDto) {
     await this.patientsService.canModifyPatient(dto.patientId, dto.clinicsId);
 
-    const data = await this.prismaService.patient_assessment.findMany({
+    const args: Prisma.Patient_assessmentFindManyArgs = {
       where: {
         Patient_medical_records: {
           patientId: dto.patientId,
@@ -113,21 +116,12 @@ export class PatientAssessmentService {
           },
         },
       },
-      skip: dto.skip,
-      take: dto.limit,
+    };
+
+    return await this.findAllService.findAll({
+      table: this.prismaService.patient_assessment,
+      ...args,
+      ...dto,
     });
-
-    let count = null;
-    if (dto.count) {
-      count = await this.prismaService.patient_assessment.count({
-        where: {
-          Patient_medical_records: {
-            patientId: dto.patientId,
-          },
-        },
-      });
-    }
-
-    return { data, count };
   }
 }

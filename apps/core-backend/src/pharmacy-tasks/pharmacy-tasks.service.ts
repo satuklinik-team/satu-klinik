@@ -3,14 +3,20 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { FindAllPharmacyTaskDto } from './dto/find-all-pharmacy-task.dto';
 import { CompleteTaskDto } from './dto/complete-task.dto';
 import { CannotAccessClinicException } from 'src/exceptions/unauthorized/cannot-access-clinic';
+import { Prisma } from '@prisma/client';
+import { FindAllService } from 'src/find-all/find-all.service';
 
 @Injectable()
 export class PharmacyTasksService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly findAllService: FindAllService,
+  ) {}
 
   async findAll(dto: FindAllPharmacyTaskDto) {
     const today = new Date().toLocaleDateString();
-    const data = await this.prismaService.pharmacy_Task.findMany({
+
+    const args: Prisma.Pharmacy_TaskFindManyArgs = {
       where: {
         clinicsId: dto.clinicsId,
         createdDate: today,
@@ -23,11 +29,15 @@ export class PharmacyTasksService {
         norm: true,
         createdDate: true,
       },
-      skip: dto.skip,
-      take: dto.limit,
+    };
+
+    const { data, count } = await this.findAllService.findAll({
+      table: this.prismaService.pharmacy_Task,
+      ...args,
+      ...dto,
     });
 
-    const promises = data.map(async (pharmacyTask) => {
+    const promises = data.map(async (pharmacyTask: any) => {
       return {
         id: pharmacyTask.id,
         status: pharmacyTask.status,
@@ -47,17 +57,6 @@ export class PharmacyTasksService {
     });
 
     const mappedData = await Promise.all(promises);
-
-    let count = null;
-    if (dto.count) {
-      count = await this.prismaService.pharmacy_Task.count({
-        where: {
-          clinicsId: dto.clinicsId,
-          createdDate: today,
-          status: 'Todo',
-        },
-      });
-    }
 
     return { data: mappedData, count };
   }

@@ -2,29 +2,28 @@ import { Injectable } from '@nestjs/common';
 import { FindAllICD10Dto } from './dto/find-all-icd10-dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Prisma } from '@prisma/client';
+import { FindAllService } from 'src/find-all/find-all.service';
 
 @Injectable()
 export class Icd10Service {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly findAllService: FindAllService,
+    private readonly prismaService: PrismaService,
+  ) {}
 
   async findAll(dto: FindAllICD10Dto) {
-    const data = await this.prismaService.iCD10.findMany({
+    const args: Prisma.ICD10FindManyArgs = {
       where: this._findAllFactory(dto),
       orderBy: {
         code: 'asc',
       },
-      skip: dto.skip,
-      take: dto.limit,
+    };
+
+    return await this.findAllService.findAll({
+      table: this.prismaService.iCD10,
+      ...args,
+      ...dto,
     });
-
-    let count = null;
-    if (dto.count) {
-      count = await this.prismaService.iCD10.count({
-        where: this._findAllFactory(dto),
-      });
-    }
-
-    return { data, count };
   }
 
   private _findAllFactory(

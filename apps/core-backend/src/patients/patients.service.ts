@@ -9,10 +9,14 @@ import {
 import { CannotAccessClinicException } from 'src/exceptions/unauthorized/cannot-access-clinic';
 import { DeletePatientDto } from './dto/delete-patient.dto';
 import { JwtPayload } from 'src/auth/types';
+import { FindAllService } from 'src/find-all/find-all.service';
 
 @Injectable()
 export class PatientsService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly findAllService: FindAllService,
+  ) {}
 
   async create(dto: CreatePatientDto) {
     const data = await this.prismaService.patient.create({
@@ -35,21 +39,16 @@ export class PatientsService {
   }
 
   async findAll(dto: FindAllPatientsDto) {
-    const data = await this.prismaService.patient.findMany({
+    const args: Prisma.PatientFindManyArgs = {
       where: this._findAllWhereFactory(dto),
       select: this._findAllSelectFactory(),
-      skip: dto.skip,
-      take: dto.limit,
+    };
+
+    return await this.findAllService.findAll({
+      table: this.prismaService.patient,
+      ...args,
+      ...dto,
     });
-
-    let count = null;
-    if (dto.count) {
-      count = await this.prismaService.patient.count({
-        where: this._findAllWhereFactory(dto),
-      });
-    }
-
-    return { data, count };
   }
 
   async delete(dto: DeletePatientDto) {
