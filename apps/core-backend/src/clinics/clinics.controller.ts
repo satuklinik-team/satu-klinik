@@ -1,10 +1,20 @@
-import { Body, Controller, Get, Post, Query, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+  Res,
+} from '@nestjs/common';
 import { ClinicsService } from './clinics.service';
 import { TokenData } from 'src/utils';
 import { JwtPayload } from 'src/auth/types';
 import { FindAllClinicsDto } from './dto/find-all-clinics-dto';
 import { FindAllReturn } from 'src/utils/types';
 import { CreateUserDto } from 'src/users/dto';
+import { UpdateClinicUserDto } from './dto/update-clinic-user.dto';
 
 @Controller('clinics')
 export class ClinicsController {
@@ -24,6 +34,11 @@ export class ClinicsController {
     return { data, count };
   }
 
+  @Get('users')
+  async FindClinicUsers(@TokenData() tokenData: JwtPayload) {
+    return await this.clinicsService.findClinicUsers(tokenData.clinicsId);
+  }
+
   @Post('users')
   async addUserOnClinic(
     @Body() dto: CreateUserDto,
@@ -32,8 +47,16 @@ export class ClinicsController {
     return await this.clinicsService.addUserOnClinic(dto, tokenData.clinicsId);
   }
 
-  @Get('users')
-  async FindClinicUsers(@TokenData() tokenData: JwtPayload) {
-    return await this.clinicsService.findClinicUsers(tokenData.clinicsId);
+  @Patch('users/:id')
+  async updateClinicUser(
+    @Body() dto: UpdateClinicUserDto,
+    @TokenData() tokenData: JwtPayload,
+    @Param('id') userId: string,
+  ) {
+    return await this.clinicsService.updateClinicUser(
+      dto,
+      tokenData.clinicsId,
+      userId,
+    );
   }
 }

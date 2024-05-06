@@ -5,12 +5,14 @@ import { ServiceContext } from 'src/utils/types';
 import { FindAllClinicsDto } from './dto/find-all-clinics-dto';
 import { Prisma } from '@prisma/client';
 import { FindAllService } from 'src/find-all/find-all.service';
-import { CreateUserDto } from 'src/users/dto';
+import { CreateUserDto, UpdateUserDto } from 'src/users/dto';
 import { UsersService } from 'src/users/users.service';
 import { ClinicNotFoundException } from 'src/exceptions/not-found/clinic-not-found.exception';
 import { Role } from '@prisma/client';
 import { AddNewOwnerToClinicException } from 'src/exceptions/unauthorized/add-new-owner-to-clinic.exception';
 import { exclude } from 'src/utils';
+import { UserNotFoundException } from 'src/exceptions';
+import { UpdateClinicUserDto } from './dto/update-clinic-user.dto';
 
 @Injectable()
 export class ClinicsService {
@@ -92,7 +94,7 @@ export class ClinicsService {
     }
 
     return await this.prismaService.$transaction(async (tx) => {
-      const createdUser = await this.userService.create(user);
+      const createdUser = await this.userService.create(user, { tx });
       await tx.clinics.update({
         where: {
           id: clinicId,
@@ -117,6 +119,33 @@ export class ClinicsService {
     });
 
     return users.map((u) => exclude(u, ['password']));
+  }
+
+  async updateClinicUser(
+    dto: UpdateClinicUserDto,
+    clinicId: string,
+    userId: string,
+  ) {
+    const user = await this.prismaService.users.findFirst({
+      where: {
+        id: userId,
+        clinicsId: clinicId,
+      },
+    });
+
+    if (!user) {
+      throw new UserNotFoundException();
+    }
+
+    await this.prismaService.users.update({
+      where: {
+        id: userId,
+        clinicsId: clinicId,
+      },
+      data: {
+        ...dto,
+      },
+    });
   }
 
   private _initPrisma(tx?: ServiceContext['tx']) {

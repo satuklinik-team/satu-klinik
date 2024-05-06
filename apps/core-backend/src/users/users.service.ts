@@ -24,8 +24,10 @@ export class UsersService {
       data: {
         fullname: dto.fullname,
         email: dto.email,
-        password: password,
         roles: dto.role,
+        address: dto.address,
+        phone: dto.phone,
+        password: password,
       },
     });
 

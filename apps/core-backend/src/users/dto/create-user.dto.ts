@@ -20,10 +20,18 @@ export class CreateUserDto {
 
   @IsEnum(Role)
   @IsOptional()
-  role: Role = Role.OWNER;
+  role: Role;
 
   @IsString()
   @IsNotEmpty()
   @MinLength(5)
   password: string;
+
+  @IsString()
+  @IsOptional()
+  address: string;
+
+  @IsString()
+  @IsOptional()
+  phone: string;
 }
