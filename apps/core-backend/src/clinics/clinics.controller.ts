@@ -16,6 +16,8 @@ import { FindAllClinicsDto } from './dto/find-all-clinics-dto';
 import { FindAllReturn } from 'src/utils/types';
 import { CreateUserDto } from 'src/users/dto';
 import { UpdateClinicUserDto } from './dto/update-clinic-user.dto';
+import { PaginationDto } from 'src/utils/classes';
+import { FindClinicUsersDto } from './dto/find-clinic-users-dto';
 
 @Controller('clinics')
 export class ClinicsController {
@@ -26,18 +28,21 @@ export class ClinicsController {
     @Query() dto: FindAllClinicsDto,
     @TokenData() tokenData: JwtPayload,
   ): Promise<FindAllReturn<object>> {
-    const { data, count } = await this.clinicsService.findAll({
-      usersId: tokenData.sub,
+    return await this.clinicsService.findAll({
       clinicsId: tokenData.clinicsId,
       ...dto,
     });
-
-    return { data, count };
   }
 
   @Get('users')
-  async FindClinicUsers(@TokenData() tokenData: JwtPayload) {
-    return await this.clinicsService.findClinicUsers(tokenData.clinicsId);
+  async FindClinicUsers(
+    @Query() dto: FindClinicUsersDto,
+    @TokenData() tokenData: JwtPayload,
+  ) {
+    return await this.clinicsService.findClinicUsers({
+      clinicsId: tokenData.clinicsId,
+      ...dto,
+    });
   }
 
   @Post('users')

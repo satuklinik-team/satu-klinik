@@ -13,6 +13,7 @@ import { AddNewOwnerToClinicException } from 'src/exceptions/unauthorized/add-ne
 import { exclude } from 'src/utils';
 import { UserNotFoundException } from 'src/exceptions';
 import { UpdateClinicUserDto } from './dto/update-clinic-user.dto';
+import { FindClinicUsersDto } from './dto/find-clinic-users-dto';
 
 @Injectable()
 export class ClinicsService {
@@ -111,14 +112,21 @@ export class ClinicsService {
     });
   }
 
-  async findClinicUsers(clinicId: string) {
-    const users = await this.prismaService.users.findMany({
+  async findClinicUsers(dto: FindClinicUsersDto) {
+    const args: Prisma.UsersFindManyArgs = {
       where: {
-        clinicsId: clinicId,
+        clinicsId: dto.clinicsId,
       },
+    };
+    const { data, count } = await this.findAllService.findAll({
+      table: this.prismaService.users,
+      ...args,
+      ...dto,
     });
 
-    return users.map((u) => exclude(u, ['password']));
+    const mappedData = data.map((u: any) => exclude(u, ['password']));
+
+    return { data: mappedData, count };
   }
 
   async updateClinicUser(
