@@ -22,17 +22,35 @@ export class ClinicsService {
         address: dto.clinicAddress,
         phone: dto.clinicPhone,
         accountsId: dto.accountsId,
-        Poli: {
+        Departments: {
           create: {
             name: 'main',
             alias: 'A',
           },
         },
-        // Setting:{
-        //   createMany: {
-        //     data: [{name:}]
-        //   }
-        // }
+        Setting: {
+          createMany: {
+            data: [
+              {
+                name: 'CLINFO',
+                type: 'GROUP',
+                value: 'CLINIC INFO',
+                headerId: '',
+              },
+              {
+                name: 'SERVICEFEE',
+                type: 'CURRENCY',
+                value: '1000',
+                headerId: 'CLINFO',
+              },
+              {
+                name: 'FASYANKESID',
+                type: 'TEXT',
+                headerId: 'CLINFO',
+              },
+            ],
+          },
+        },
       },
     });
 
@@ -56,7 +74,7 @@ export class ClinicsService {
             users: true,
             Patient: true,
             Category: true,
-            Poli: true,
+            Departments: true,
           },
         },
       },
