@@ -1,54 +1,25 @@
-import {
-  Controller,
-  Get,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  Res,
-  Query,
-} from '@nestjs/common';
+import { Controller, Get, Query, Res } from '@nestjs/common';
 import { ClinicsService } from './clinics.service';
-import { UpdateClinicDto } from './dto/update-clinic.dto';
 import { TokenData } from 'src/utils';
 import { JwtPayload } from 'src/auth/types';
+import { FindAllClinicsDto } from './dto/find-all-clinics-dto';
+import { FindAllReturn } from 'src/utils/types';
 
 @Controller('clinics')
 export class ClinicsController {
   constructor(private readonly clinicsService: ClinicsService) {}
 
   @Get()
-  findAll() {
-    return this.clinicsService.findAll();
-  }
-
-  @Get('by_user')
-  getClinicsByUsersId(
-    @Query('page') page = '1',
-    @Query('pageSize') pageSize = '10',
+  async findAll(
+    @Query() dto: FindAllClinicsDto,
     @TokenData() tokenData: JwtPayload,
-  ) {
-    const pageNum = parseInt(page, 10);
-    const pageSizeNum = parseInt(pageSize, 10);
-    return this.clinicsService.getClinicsByUsersId({
+  ): Promise<FindAllReturn<object>> {
+    const { data, count } = await this.clinicsService.findAll({
       usersId: tokenData.sub,
-      page: pageNum,
-      pageSize: pageSizeNum,
+      clinicsId: tokenData.clinicsId,
+      ...dto,
     });
-  }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.clinicsService.findOne(id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() dto: UpdateClinicDto) {
-    return this.clinicsService.update(id, dto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.clinicsService.remove(id);
+    return { data, count };
   }
 }

@@ -1,16 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { UpdateClinicDto } from './dto/update-clinic.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { SatusehatOrganizationService } from 'src/satusehat-organization/satusehat-organization.service';
 import { CreateClinicDto } from './dto/create-clinic.dto';
 import { ServiceContext } from 'src/utils/types';
-import { GetClinicsByAccountsId } from './dto/get-clinics-by-accounts-id.dto';
+import { FindAllClinicsDto } from './dto/find-all-clinics-dto';
+import { Prisma } from '@prisma/client';
+import { FindAllService } from 'src/find-all/find-all.service';
 
 @Injectable()
 export class ClinicsService {
   constructor(
     private readonly prismaService: PrismaService,
-    private readonly satuSehatOrganizationService: SatusehatOrganizationService,
+    private readonly findAllService: FindAllService,
   ) {}
 
   async create(dto: CreateClinicDto, context?: ServiceContext) {
@@ -22,31 +22,48 @@ export class ClinicsService {
         address: dto.clinicAddress,
         phone: dto.clinicPhone,
         accountsId: dto.accountsId,
+        Departments: {
+          create: {
+            name: 'main',
+            alias: 'A',
+          },
+        },
+        Setting: {
+          createMany: {
+            data: [
+              {
+                name: 'CLINFO',
+                type: 'GROUP',
+                value: 'CLINIC INFO',
+                headerId: '',
+              },
+              {
+                name: 'SERVICEFEE',
+                type: 'CURRENCY',
+                value: '1000',
+                headerId: 'CLINFO',
+              },
+              {
+                name: 'FASYANKESID',
+                type: 'TEXT',
+                headerId: 'CLINFO',
+              },
+            ],
+          },
+        },
       },
     });
 
     return data;
   }
 
-  async getClinicsByUsersId(dto: GetClinicsByAccountsId) {
-    const accounts = await this.prismaService.accounts.findFirst({
+  async findAll(dto: FindAllClinicsDto) {
+    const args: Prisma.ClinicsFindManyArgs = {
       where: {
-        usersId: dto.usersId,
+        id: dto.clinicsId,
       },
       select: {
         id: true,
-      },
-    });
-
-    const skip = (dto.page - 1) * dto.pageSize;
-    const take = dto.pageSize;
-    const data = await this.prismaService.clinics.findMany({
-      where: {
-        accountsId: accounts.id,
-      },
-      skip,
-      take,
-      select: {
         name: true,
         address: true,
         phone: true,
@@ -57,29 +74,17 @@ export class ClinicsService {
             users: true,
             Patient: true,
             Category: true,
-            Poli: true,
+            Departments: true,
           },
         },
       },
+    };
+
+    return await this.findAllService.findAll({
+      table: this.prismaService.clinics,
+      ...args,
+      ...dto,
     });
-
-    return data;
-  }
-
-  findAll() {
-    return `This action returns all clinics`;
-  }
-
-  findOne(id: string) {
-    return `This action returns a #${id} clinic`;
-  }
-
-  update(id: string, dto: UpdateClinicDto) {
-    return `This action updates a #${id} clinic`;
-  }
-
-  remove(id: string) {
-    return `This action removes a #${id} clinic`;
   }
 
   private _initPrisma(tx?: ServiceContext['tx']) {
