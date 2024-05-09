@@ -18,6 +18,8 @@ import { CreateUserDto } from 'src/users/dto';
 import { UpdateClinicUserDto } from './dto/update-clinic-user.dto';
 import { PaginationDto } from 'src/utils/classes';
 import { FindClinicUsersDto } from './dto/find-clinic-users-dto';
+import { Role } from '@prisma/client';
+import { Roles } from 'src/utils/decorators/roles.decorator';
 
 @Controller('clinics')
 export class ClinicsController {
@@ -29,12 +31,13 @@ export class ClinicsController {
     @TokenData() tokenData: JwtPayload,
   ): Promise<FindAllReturn<object>> {
     return await this.clinicsService.findAll({
-      clinicsId: tokenData.clinicsId,
+      usersId: tokenData.sub,
       ...dto,
     });
   }
 
   @Get('users')
+  @Roles(Role.ADMIN)
   async FindClinicUsers(
     @Query() dto: FindClinicUsersDto,
     @TokenData() tokenData: JwtPayload,
@@ -46,6 +49,7 @@ export class ClinicsController {
   }
 
   @Post('users')
+  @Roles(Role.ADMIN)
   async addUserOnClinic(
     @Body() dto: CreateUserDto,
     @TokenData() tokenData: JwtPayload,
@@ -54,6 +58,7 @@ export class ClinicsController {
   }
 
   @Patch('users/:id')
+  @Roles(Role.ADMIN)
   async updateClinicUser(
     @Body() dto: UpdateClinicUserDto,
     @TokenData() tokenData: JwtPayload,
@@ -67,6 +72,7 @@ export class ClinicsController {
   }
 
   @Delete('users/:id')
+  @Roles(Role.ADMIN)
   async deleteUser(
     @TokenData() TokenData: JwtPayload,
     @Param('id') userId: string,

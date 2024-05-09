@@ -53,6 +53,7 @@ export class AuthService {
     const token = await this.tokenService.getAuthToken({
       sub: data.user.id,
       clinicsId: data.clinic.id,
+      role: data.user.roles,
     });
 
     return {
@@ -67,6 +68,7 @@ export class AuthService {
     const token = await this.tokenService.getAuthToken({
       sub: data.user.id,
       clinicsId: data.clinic.id,
+      role: data.user.roles,
       source: 'browser',
     });
 
@@ -79,6 +81,7 @@ export class AuthService {
       {
         sub: data.user.id,
         clinicsId: data.clinic.id,
+        role: data.user.roles,
         source: 'cli',
       },
       {

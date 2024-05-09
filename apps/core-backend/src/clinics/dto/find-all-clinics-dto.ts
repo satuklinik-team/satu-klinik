@@ -4,5 +4,5 @@ import { PaginationDto } from 'src/utils/classes';
 export class FindAllClinicsDto extends PaginationDto {
   @IsString()
   @IsOptional()
-  clinicsId?: string;
+  usersId?: string;
 }

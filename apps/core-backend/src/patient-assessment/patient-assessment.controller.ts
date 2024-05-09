@@ -5,6 +5,8 @@ import { FindAllPatientAssessmentDto } from './dto/find-all-patient-assessment.d
 import { FindAllReturn } from 'src/utils/types';
 import { JwtPayload } from 'src/auth/types';
 import { TokenData } from 'src/utils';
+import { Roles } from 'src/utils/decorators/roles.decorator';
+import { Role } from '@prisma/client';
 
 @Controller('patient-assessment')
 export class PatientAssessmentController {
@@ -13,6 +15,7 @@ export class PatientAssessmentController {
   ) {}
 
   @Post()
+  @Roles(Role.DOCTOR)
   async create(
     @Body() createPatientAssessmentDto: CreatePatientAssessmentDto,
     @TokenData() tokenData: JwtPayload,
@@ -24,6 +27,7 @@ export class PatientAssessmentController {
   }
 
   @Get()
+  @Roles(Role.DOCTOR)
   async findAll(
     @Query() dto: FindAllPatientAssessmentDto,
     @TokenData() tokenData: JwtPayload,

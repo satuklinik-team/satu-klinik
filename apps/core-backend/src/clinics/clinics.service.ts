@@ -52,7 +52,9 @@ export class ClinicsService {
   async findAll(dto: FindAllClinicsDto) {
     const args: Prisma.ClinicsFindManyArgs = {
       where: {
-        id: dto.clinicsId,
+        Accounts: {
+          usersId: dto.usersId,
+        },
       },
       select: {
         id: true,

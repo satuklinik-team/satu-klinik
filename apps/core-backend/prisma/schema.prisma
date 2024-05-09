@@ -167,6 +167,7 @@ enum Role {
   ADMIN
   SUPERADMIN
   DOCTOR
+  PHARMACY
 }
 
 model Users {

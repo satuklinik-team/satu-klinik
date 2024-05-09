@@ -13,12 +13,15 @@ import { JwtPayload } from 'src/auth/types';
 import { FindAllPatientsDto } from './dto/find-all-patients-dto';
 import { TokenData } from 'src/utils';
 import { FindAllReturn } from 'src/utils/types';
+import { Role } from '@prisma/client';
+import { Roles } from 'src/utils/decorators/roles.decorator';
 
 @Controller('patients')
 export class PatientsController {
   constructor(private readonly patientService: PatientsService) {}
 
   @Post()
+  @Roles(Role.ADMIN)
   createPatient(
     @Body() dto: CreatePatientDto,
     @TokenData() tokenData: JwtPayload,
@@ -41,6 +44,7 @@ export class PatientsController {
   }
 
   @Delete(':id')
+  @Roles(Role.ADMIN)
   async delete(@Param('id') id: string, @TokenData() tokenData: JwtPayload) {
     return this.patientService.delete({
       id,
