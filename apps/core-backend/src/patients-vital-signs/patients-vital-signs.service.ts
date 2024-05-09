@@ -59,7 +59,7 @@ export class PatientsVitalSignsService {
   async _getQueueNo(clinicsId: string, context?: ServiceContext) {
     const prisma = this._initPrisma(context.tx);
 
-    const result = await prisma.poli.findFirst({
+    const result = await prisma.departments.findFirst({
       where: {
         clinicsId,
         name: 'main',
@@ -81,7 +81,7 @@ export class PatientsVitalSignsService {
     }
     counter += 1;
 
-    const poli = await prisma.poli.update({
+    const department = await prisma.departments.update({
       where: {
         id,
       },
@@ -92,7 +92,7 @@ export class PatientsVitalSignsService {
       select: { alias: true },
     });
 
-    return `${poli.alias}-${counter}`;
+    return `${department.alias}-${counter}`;
   }
 
   private _initPrisma(tx?: ServiceContext['tx']) {

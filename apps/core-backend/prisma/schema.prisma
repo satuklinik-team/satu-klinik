@@ -138,16 +138,19 @@ model Poli {
 }
 
 model Departments {
-  id        String    @id
-  color     String?   @default("#87CEEB")
-  counter   Int?      @default(0)
-  name      String    @default("A")
-  alias     String
-  isActive  Boolean?  @default(false)
-  createdAt DateTime? @default(now()) @db.Timestamptz(6)
-  deletedAt DateTime?
-  usersId   String?   @db.Uuid
-  manager   Users?    @relation(fields: [usersId], references: [id])
+  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  color       String?   @default("#87CEEB")
+  currentDate String?
+  counter     Int?      @default(0)
+  name        String    @default("A")
+  alias       String
+  isActive    Boolean?  @default(false)
+  createdAt   DateTime? @default(now()) @db.Timestamptz(6)
+  deletedAt   DateTime?
+  clinicsId   String?   @db.Uuid
+  Clinics     Clinics?  @relation(fields: [clinicsId], references: [id])
+  usersId     String?   @db.Uuid
+  manager     Users?    @relation(fields: [usersId], references: [id])
 }
 
 model Queue_history {
@@ -217,7 +220,7 @@ model Notifications {
 }
 
 model Setting {
-  id        String   @id
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name      String
   type      String
   value     String?
@@ -249,6 +252,7 @@ model Clinics {
   Suppliers        Suppliers[]
   users            Users[]
   operationalHours regularHours[]
+  Departments      Departments[]
 }
 
 model regularHours {
