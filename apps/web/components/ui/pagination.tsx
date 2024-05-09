@@ -53,7 +53,7 @@ const PaginationButton = ({
         size,
       }),
       isActive && "bg-primary/20",
-      className,
+      className
     )}
     {...props}
   />

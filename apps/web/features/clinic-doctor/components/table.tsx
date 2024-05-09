@@ -88,7 +88,9 @@ export function ClinicDoctorTable(): JSX.Element {
                 <TooltipProvider>
                   <Tooltip>
                     <Link
-                      href={`/clinic/${clinicId as string}/mr/${row.patient.medicalRecordNumber}/diagnose`}
+                      href={`/clinic/${clinicId as string}/mr/${
+                        row.patient.medicalRecordNumber
+                      }/diagnose`}
                     >
                       <TooltipTrigger className="h-min p-2">
                         <Stethoscope size={20} />

@@ -18,7 +18,7 @@ import {
 import * as c from "react";
 import { jsx as o, jsxs as a } from "react/jsx-runtime";
 var P = n.object({
-    fullName: n.string(),
+    fullname: n.string(),
     email: n.string().email(),
     password: n
       .string()
@@ -28,10 +28,10 @@ var P = n.object({
         (m) =>
           !m ||
           /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/.test(m),
-        { message: "Invalid phone number format" },
+        { message: "Invalid phone number format" }
       ),
     confirmPassword: n.string().max(14).min(6),
-    "input-1713866125346": n.string(),
+    clinicName: n.string(),
     clinicEmail: n.string().email(),
     clinicPhone: n
       .string()
@@ -41,16 +41,16 @@ var P = n.object({
         (m) =>
           !m ||
           /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/.test(m),
-        { message: "Invalid phone number format" },
+        { message: "Invalid phone number format" }
       ),
     clinicAddress: n.string(),
     clinicCode: n.string(),
   }),
-  C = "y9joMA0SN0WuJHV8aGko",
-  N = ({
+  R = "YWIJQzBs9fvMZVhnRx2t",
+  E = ({
     onSubmit: m,
     onError: d,
-    onSuccess: R,
+    onSuccess: C,
     defaultValues: z,
     onAction: q,
     formProps: w,
@@ -65,11 +65,11 @@ var P = n.object({
     return o(
       h,
       {
-        id: C,
+        id: R,
         defaultValues: z,
         onSubmit: S,
         onError: d,
-        onSuccess: R,
+        onSuccess: C,
         zodSchema: P,
         mode: "onSubmit",
         children: (r) =>
@@ -77,7 +77,7 @@ var P = n.object({
             children: [
               o(l, {
                 control: r.control,
-                name: "fullName",
+                name: "fullname",
                 render: ({ field: e }) =>
                   a(t, {
                     children: [
@@ -174,7 +174,7 @@ var P = n.object({
               o(L.Solid, { styles: { root: {} }, size: 1, color: "#c7c7c7" }),
               o(l, {
                 control: r.control,
-                name: "input-1713866125346",
+                name: "clinicName",
                 render: ({ field: e }) =>
                   a(t, {
                     children: [
@@ -304,7 +304,7 @@ var P = n.object({
             ],
           }),
       },
-      C,
+      R
     );
   };
-export { N as Form };
+export { E as Form };

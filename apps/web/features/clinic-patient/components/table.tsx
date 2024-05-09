@@ -112,7 +112,9 @@ export function ClinicPatientTable(): JSX.Element {
                 </Tooltip>
                 <Tooltip>
                   <Link
-                    href={`/clinic/${clinicId as string}/patient/${row.medicalRecordNumber}`}
+                    href={`/clinic/${clinicId as string}/patient/${
+                      row.medicalRecordNumber
+                    }`}
                   >
                     <TooltipTrigger className="h-min p-2">
                       <Eye size={20} />
@@ -122,7 +124,9 @@ export function ClinicPatientTable(): JSX.Element {
                 </Tooltip>
                 <Tooltip>
                   <Link
-                    href={`/clinic/${clinicId as string}/patient/${row.medicalRecordNumber}/edit`}
+                    href={`/clinic/${clinicId as string}/patient/${
+                      row.medicalRecordNumber
+                    }/edit`}
                   >
                     <TooltipTrigger className="h-min p-2">
                       <Edit size={20} />

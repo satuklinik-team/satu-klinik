@@ -9,7 +9,7 @@ export function Cell({ children, className, ...rest }: CellProps): JSX.Element {
     <div
       className={cn(
         "flex flex-row items-center w-full h-full gap-4 px-4 py-2 pt-4",
-        className,
+        className
       )}
       {...rest}
     >

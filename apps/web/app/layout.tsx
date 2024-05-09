@@ -4,7 +4,10 @@ import "@lezzform/react/style.css";
 import type { Metadata } from "next";
 import CreatoDisplay from "next/font/local";
 
+import { Toaster } from "@/components/ui/toaster";
 import { cn } from "@/lib/utils";
+
+import Providers from "./providers";
 
 const creatoDisplay = CreatoDisplay({
   src: [
@@ -26,10 +29,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }): JSX.Element {
   return (
-    <html lang="en">
-      <body className={cn(creatoDisplay.className, "bg-white")}>
-        {children}
-      </body>
-    </html>
+    <Providers>
+      <html lang="en">
+        <body className={cn(creatoDisplay.className, "bg-white")}>
+          {children}
+          <Toaster />
+        </body>
+      </html>
+    </Providers>
   );
 }

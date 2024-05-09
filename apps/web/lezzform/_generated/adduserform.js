@@ -15,7 +15,7 @@ import {
   TwoColumn as k,
   Button as z,
 } from "@lezzform/react";
-import { UserRound as B, Mail as A } from "lucide-react";
+import { UserRound as A, Mail as B } from "lucide-react";
 import * as i from "react";
 import { jsx as e, jsxs as n } from "react/jsx-runtime";
 var q = a.object({
@@ -27,12 +27,12 @@ var q = a.object({
     password: a.string().max(14).min(6),
     confirmPassword: a.string().max(14).min(6),
   }),
-  C = "PM87BKIdT5FLyclQZHWU",
+  C = "XZPTG7nXMWnT9SYQdg77",
   x = ({
     onSubmit: d,
     onError: R,
     onSuccess: g,
-    defaultValues: L,
+    defaultValues: w,
     onAction: c,
     formProps: I,
   }) => {
@@ -40,15 +40,15 @@ var q = a.object({
     i.useEffect(() => {
       d && (b.current = d);
     }, [d]);
-    let w = i.useCallback(async (r, o) => {
+    let L = i.useCallback(async (r, o) => {
       if (b.current) return b.current(r, o);
     }, []);
     return e(
       p,
       {
         id: C,
-        defaultValues: L,
-        onSubmit: w,
+        defaultValues: w,
+        onSubmit: L,
         onError: R,
         onSuccess: g,
         zodSchema: q,
@@ -75,7 +75,7 @@ var q = a.object({
                           isRequired: !0,
                           styles: { root: {} },
                           prefixAdornment: {
-                            icon: e(B, { size: 18, color: "#000000" }),
+                            icon: e(A, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
@@ -102,7 +102,7 @@ var q = a.object({
                           isRequired: !0,
                           styles: { root: {} },
                           prefixAdornment: {
-                            icon: e(A, { size: 18, color: "#000000" }),
+                            icon: e(B, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
@@ -264,7 +264,7 @@ var q = a.object({
             ],
           }),
       },
-      C,
+      C
     );
   };
 export { x as Form };

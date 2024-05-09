@@ -17,7 +17,7 @@ export function QueueCard({
     <Card
       className={cn(
         "flex-row justify-between items-center gap-2 px-4 py-3",
-        className,
+        className
       )}
       {...rest}
     >

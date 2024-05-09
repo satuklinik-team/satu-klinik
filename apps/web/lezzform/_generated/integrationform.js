@@ -1,14 +1,14 @@
 import { z as a } from "zod";
 import {
-  Lezzform as p,
+  Lezzform as z,
   FormField as t,
   FormItem as s,
   FormLabel as u,
   FormControl as l,
   FormMessage as c,
   Input as F,
-  PasswordInput as g,
-  Button as L,
+  PasswordInput as f,
+  Button as g,
 } from "@lezzform/react";
 import * as n from "react";
 import { jsx as e, jsxs as m } from "react/jsx-runtime";
@@ -18,13 +18,13 @@ var C = a.object({
     username: a.string(),
     password: a.string(),
   }),
-  z = "44Li4v6P6PVkndKwTXmB",
-  y = ({
+  p = "ezseqTZazOEtswXuZkff",
+  P = ({
     onSubmit: i,
     onError: b,
     onSuccess: h,
     defaultValues: S,
-    onAction: f,
+    onAction: L,
     formProps: k,
   }) => {
     let d = n.useRef();
@@ -35,9 +35,9 @@ var C = a.object({
       if (d.current) return d.current(r, o);
     }, []);
     return e(
-      p,
+      z,
       {
-        id: z,
+        id: p,
         defaultValues: S,
         onSubmit: R,
         onError: b,
@@ -45,7 +45,7 @@ var C = a.object({
         zodSchema: C,
         mode: "onSubmit",
         children: (r) =>
-          m(p.Container, {
+          m(z.Container, {
             children: [
               e(t, {
                 control: r.control,
@@ -127,7 +127,7 @@ var C = a.object({
                     children: [
                       e(u, { isRequired: !0, children: "Password" }),
                       e(l, {
-                        children: e(g, {
+                        children: e(f, {
                           label: "Password",
                           name: o.name,
                           value: o.value ?? "",
@@ -143,7 +143,7 @@ var C = a.object({
                     ],
                   }),
               }),
-              e(L, {
+              e(g, {
                 type: "submit",
                 className: "w-full",
                 disabled: r.formState.isSubmitting,
@@ -154,7 +154,7 @@ var C = a.object({
             ],
           }),
       },
-      z,
+      p
     );
   };
-export { y as Form };
+export { P as Form };

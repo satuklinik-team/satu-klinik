@@ -17,12 +17,12 @@ import {
 import {
   CreditCard as z,
   User as N,
-  Calendar as I,
-  Phone as P,
+  Calendar as P,
+  Phone as q,
 } from "lucide-react";
 import * as c from "react";
 import { jsx as e, jsxs as n } from "react/jsx-runtime";
-var q = a.object({
+var I = a.object({
     medicalNumber: a.string().optional(),
     nik: a.string(),
     fullname: a.string(),
@@ -37,18 +37,18 @@ var q = a.object({
         (i) =>
           !i ||
           /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/.test(i),
-        { message: "Invalid phone number format" },
+        { message: "Invalid phone number format" }
       ),
     address: a.string(),
   }),
-  R = "9pyrvphD107ipoXImiwd",
+  R = "1loJy746nod6zlDhqQVc",
   O = ({
     onSubmit: i,
     onError: F,
     onSuccess: y,
     defaultValues: v,
     onAction: d,
-    formProps: w,
+    formProps: f,
   }) => {
     let b = c.useRef();
     c.useEffect(() => {
@@ -65,7 +65,7 @@ var q = a.object({
         onSubmit: L,
         onError: F,
         onSuccess: y,
-        zodSchema: q,
+        zodSchema: I,
         mode: "onSubmit",
         children: (r) =>
           n(p.Container, {
@@ -225,7 +225,7 @@ var q = a.object({
                           styles: { root: {} },
                           disabled: o.disabled,
                           prefixAdornment: {
-                            icon: e(I, { size: 18, color: "#000000" }),
+                            icon: e(P, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
@@ -252,7 +252,7 @@ var q = a.object({
                           isRequired: !0,
                           styles: { root: {} },
                           prefixAdornment: {
-                            icon: e(P, { size: 18, color: "#000000" }),
+                            icon: e(q, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
@@ -312,7 +312,7 @@ var q = a.object({
             ],
           }),
       },
-      R,
+      R
     );
   };
 export { O as Form };

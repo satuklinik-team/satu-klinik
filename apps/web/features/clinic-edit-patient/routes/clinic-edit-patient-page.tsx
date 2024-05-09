@@ -24,7 +24,7 @@ export function ClinicEditPatientPage(): JSX.Element {
             <BreadcrumbLink
               href={pathname.replace(
                 `/${medicalRecordNumber as string}/edit`,
-                "",
+                ""
               )}
             >
               Data Pasien

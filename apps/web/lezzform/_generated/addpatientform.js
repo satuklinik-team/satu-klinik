@@ -19,13 +19,13 @@ import {
 } from "@lezzform/react";
 import {
   CreditCard as B,
-  User as T,
+  User as P,
   Calendar as w,
-  Phone as P,
+  Phone as T,
 } from "lucide-react";
 import * as d from "react";
 import { jsx as o, jsxs as r } from "react/jsx-runtime";
-var x = a.object({
+var D = a.object({
     name: a.string().optional(),
     nik: a.string(),
     fullname: a.string(),
@@ -40,7 +40,7 @@ var x = a.object({
         (c) =>
           !c ||
           /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/.test(c),
-        { message: "Invalid phone number format" },
+        { message: "Invalid phone number format" }
       ),
     address: a.string(),
     height: a.coerce.number(),
@@ -53,14 +53,14 @@ var x = a.object({
     temperature: a.coerce.number(),
     pain: a.string(),
   }),
-  z = "6OZ6CeMfQxysST1kOfnI",
-  G = ({
+  L = "FFLPXtOfR0F55oGn8Jl9",
+  J = ({
     onSubmit: c,
     onError: C,
-    onSuccess: L,
+    onSuccess: z,
     defaultValues: q,
     onAction: b,
-    formProps: D,
+    formProps: x,
   }) => {
     let F = d.useRef();
     d.useEffect(() => {
@@ -72,12 +72,12 @@ var x = a.object({
     return o(
       p,
       {
-        id: z,
+        id: L,
         defaultValues: q,
         onSubmit: S,
         onError: C,
-        onSuccess: L,
-        zodSchema: x,
+        onSuccess: z,
+        zodSchema: D,
         mode: "onSubmit",
         children: (n) =>
           r(p.Container, {
@@ -155,7 +155,7 @@ var x = a.object({
                           isRequired: !0,
                           styles: { root: {} },
                           prefixAdornment: {
-                            icon: o(T, { size: 18, color: "#000000" }),
+                            icon: o(P, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
@@ -264,7 +264,7 @@ var x = a.object({
                           isRequired: !0,
                           styles: { root: {} },
                           prefixAdornment: {
-                            icon: o(P, { size: 18, color: "#000000" }),
+                            icon: o(T, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
@@ -556,7 +556,7 @@ var x = a.object({
             ],
           }),
       },
-      z,
+      L
     );
   };
-export { G as Form };
+export { J as Form };

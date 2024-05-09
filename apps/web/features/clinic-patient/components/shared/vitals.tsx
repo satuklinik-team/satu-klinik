@@ -23,7 +23,7 @@ export function ClinicPatientVitals({
     <div
       className={cn(
         "flex flex-row items-center gap-3 font-normal mt-1",
-        className,
+        className
       )}
       {...rest}
     >

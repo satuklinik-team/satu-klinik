@@ -57,7 +57,7 @@ export function BaseTable<T extends object>({
           cell: ({ row }) => {
             return Cell(row.original);
           },
-        },
+        }
       );
     }) as ColumnDef<T>[];
 
@@ -115,7 +115,7 @@ export function BaseTable<T extends object>({
                         {Boolean(!header.isPlaceholder) &&
                           flexRender(
                             header.column.columnDef.header,
-                            header.getContext(),
+                            header.getContext()
                           )}
                       </TableHead>
                     ))}
@@ -134,7 +134,7 @@ export function BaseTable<T extends object>({
                         >
                           {flexRender(
                             cell.column.columnDef.cell,
-                            cell.getContext(),
+                            cell.getContext()
                           )}
                         </TableCell>
                       ))}

@@ -16,7 +16,7 @@ import {
 import { ChevronDown as w } from "lucide-react";
 import * as s from "react";
 import { jsx as e, jsxs as n } from "react/jsx-runtime";
-var B = t.object({
+var q = t.object({
     "attachment-1713877181989": t.string(),
     category: t.string(),
     title: t.string(),
@@ -24,31 +24,31 @@ var B = t.object({
     quantity: t.coerce.number(),
     discount: t.coerce.number().optional(),
   }),
-  C = "xzg3E72du34mLYyyz7eK",
+  C = "ceOgbQVENRbWKaIYdqRP",
   f = ({
     onSubmit: b,
-    onError: y,
-    onSuccess: g,
-    defaultValues: S,
+    onError: g,
+    onSuccess: y,
+    defaultValues: R,
     onAction: i,
-    formProps: q,
+    formProps: B,
   }) => {
     let p = s.useRef();
     s.useEffect(() => {
       b && (p.current = b);
     }, [b]);
-    let R = s.useCallback(async (r, o) => {
+    let S = s.useCallback(async (r, o) => {
       if (p.current) return p.current(r, o);
     }, []);
     return e(
       h,
       {
         id: C,
-        defaultValues: S,
-        onSubmit: R,
-        onError: y,
-        onSuccess: g,
-        zodSchema: B,
+        defaultValues: R,
+        onSubmit: S,
+        onError: g,
+        onSuccess: y,
+        zodSchema: q,
         mode: "onSubmit",
         children: (r) =>
           n(h.Container, {
@@ -238,7 +238,7 @@ var B = t.object({
             ],
           }),
       },
-      C,
+      C
     );
   };
 export { f as Form };
