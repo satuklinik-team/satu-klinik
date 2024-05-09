@@ -24,7 +24,7 @@ export class AuthService {
   ) {}
 
   async register(dto: RegisterDto) {
-    const user = await this.prismaService.$transaction(async (tx) => {
+    const data = await this.prismaService.$transaction(async (tx) => {
       let user = await this.usersService.create(dto, { tx });
       const account = await this.accountsService.create(
         { usersId: user.id },
@@ -45,29 +45,38 @@ export class AuthService {
         { tx },
       );
 
-      return user;
+      return { user, clinic };
     });
 
-    const token = await this.tokenService.getAuthToken({ sub: user.id });
+    const token = await this.tokenService.getAuthToken({
+      sub: data.user.id,
+      clinicsId: data.clinic.id,
+    });
 
-    return { user: exclude(user, ['password']), token };
+    return {
+      user: exclude(data.user, ['password']),
+      clinic: data.clinic,
+      token,
+    };
   }
 
   async login(dto: LoginDto) {
-    const user = await this._login(dto);
+    const data = await this._login(dto);
     const token = await this.tokenService.getAuthToken({
-      sub: user.id,
+      sub: data.user.id,
+      clinicsId: data.clinic.id,
       source: 'browser',
     });
 
-    return { user, token };
+    return { user: data.user, clinic: data.clinic, token };
   }
 
   async cliLogin(dto: LoginDto) {
-    const user = await this._login(dto);
+    const data = await this._login(dto);
     const token = await this.tokenService.getAuthToken(
       {
-        sub: user.id,
+        sub: data.user.id,
+        clinicsId: data.clinic.id,
         source: 'cli',
       },
       {
@@ -107,6 +116,10 @@ export class AuthService {
     if (await this._isPasswordNotMatch(user.password, dto.password))
       throw new IncorrectEmailPasswordException();
 
-    return exclude(user, ['password']);
+    const clinic = await this.prismaService.clinics.findUnique({
+      where: { id: user.clinicsId },
+    });
+
+    return { user: exclude(user, ['password']), clinic };
   }
 }

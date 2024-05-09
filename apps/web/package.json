@@ -17,7 +17,7 @@
     "@lezztable-demo/react": "^0.0.31",
     "@lezztable-demo/types": "^0.0.10",
     "@repo/ui": "*",
-    "@tanstack/react-query": "^5.32.0",
+    "@tanstack/react-query": "^5.35.1",
     "@tanstack/react-table": "^8.16.0",
     "apexcharts": "^3.48.0",
     "axios": "^1.6.8",

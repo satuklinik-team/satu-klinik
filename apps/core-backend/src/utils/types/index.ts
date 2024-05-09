@@ -7,3 +7,8 @@ export type ServiceContext<T = object> = T & {
     '$connect' | '$disconnect' | '$on' | '$transaction' | '$use' | '$extends'
   >;
 };
+
+export type FindAllReturn<T> = {
+  count: number;
+  data: T[];
+};

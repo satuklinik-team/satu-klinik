@@ -5,11 +5,12 @@ import {
   IsString,
   IsUUID,
 } from 'class-validator';
+import { JwtPayload } from 'src/auth/types';
 
 export class CreateVitalSignDto {
   @IsString()
-  @IsOptional()
-  patientId?: string;
+  @IsNotEmpty()
+  patientId: string;
 
   @IsInt()
   @IsNotEmpty()
@@ -47,11 +48,7 @@ export class CreateVitalSignDto {
   @IsNotEmpty()
   pain: string;
 
-  @IsUUID()
-  @IsNotEmpty()
-  clinicsId: string;
-
   @IsString()
   @IsOptional()
-  usersId?: string;
+  clinicsId?: string;
 }
