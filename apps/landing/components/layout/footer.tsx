@@ -40,7 +40,7 @@ export function Footer(): JSX.Element {
           <ul className="flex flex-col gap-4 text-secondary text-xl max-w-[324px] items-center sm:items-center md:items-start lg:items-start xl:items-start 2xl:items-start">
             <p className="text-base font-extrabold">KONTAK</p>
             <li>
-              <Link href="">0812-3456-7890</Link>
+              <Link href="">0815-8078-550</Link>
             </li>
             <li>
               <Link href="">solusi@satuklinik.com</Link>
