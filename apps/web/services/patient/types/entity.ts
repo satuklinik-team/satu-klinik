@@ -2,12 +2,12 @@ import type { VitalEntity } from "@/services/vital/types/entity";
 
 export interface PatientEntity {
   id: string;
-  name: string;
-  medicalRecordNumber: string;
+  fullname: string;
+  norm: string;
   nik: string;
-  phoneNumber: string;
+  phone: string;
   address: string;
   sex: string;
-  bloodType: string;
-  vitals: VitalEntity;
+  blood: string;
+  mr: { id: string; vitalSign: VitalEntity[] }[];
 }

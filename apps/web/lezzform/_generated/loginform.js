@@ -1,4 +1,4 @@
-import { z as t } from "zod";
+import { z as a } from "zod";
 import {
   Lezzform as u,
   FormField as l,
@@ -13,31 +13,31 @@ import {
 } from "@lezzform/react";
 import * as n from "react";
 import { jsx as r, jsxs as s } from "react/jsx-runtime";
-var P = t.object({ email: t.string().email(), password: t.string() }),
-  p = "4pAIaaTimlNBnSRBlnXG",
-  B = ({
+var P = a.object({ email: a.string().email(), password: a.string() }),
+  F = "2HmWYzshwg4lZFYq18xN",
+  E = ({
     onSubmit: m,
     onError: f,
-    onSuccess: F,
+    onSuccess: p,
     defaultValues: S,
-    onAction: y,
-    formProps: g,
+    onAction: g,
+    formProps: y,
   }) => {
-    let a = n.useRef();
+    let t = n.useRef();
     n.useEffect(() => {
-      m && (a.current = m);
+      m && (t.current = m);
     }, [m]);
     let h = n.useCallback(async (e, o) => {
-      if (a.current) return a.current(e, o);
+      if (t.current) return t.current(e, o);
     }, []);
     return r(
       u,
       {
-        id: p,
+        id: F,
         defaultValues: S,
         onSubmit: h,
         onError: f,
-        onSuccess: F,
+        onSuccess: p,
         zodSchema: P,
         mode: "onSubmit",
         children: (e) =>
@@ -103,7 +103,7 @@ var P = t.object({ email: t.string().email(), password: t.string() }),
             ],
           }),
       },
-      p
+      F
     );
   };
-export { B as Form };
+export { E as Form };

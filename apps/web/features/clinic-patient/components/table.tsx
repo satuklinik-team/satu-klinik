@@ -1,56 +1,56 @@
-import { useMemo } from "react";
+"use client";
 
-import { Table as PatientTable } from "@/lezztable/_generated/master-patient";
+import { useParams } from "next/navigation";
+import { useMemo, useState } from "react";
+
+import { BaseTable as PatientTable } from "@/components/shared/table/base-table";
+import { useFindPatient } from "@/services/patient/hooks/use-find-patient";
+import type { PatientEntity } from "@/services/patient/types/entity";
+import type { Pagination } from "@/types";
 
 import { ClinicPatientActionsCell } from "./cell/actions-cell";
 import { ClinicPatientNameCell } from "./cell/name-cell";
 
 export function ClinicPatientTable(): JSX.Element {
+  const { clinicId } = useParams();
+
+  const [pagination, setPagination] = useState<Pagination>({
+    skip: 0,
+    limit: 20,
+  });
+
+  const { data, isLoading } = useFindPatient({
+    ...pagination,
+    clinicsId: clinicId,
+    type: "ENTRY",
+    count: true,
+  });
+
   const columns = useMemo(() => {
     return [
       {
         key: "name",
         name: "Nama",
-        formatterCell: ClinicPatientNameCell,
+        renderCell: ClinicPatientNameCell,
       },
       {
         key: "action",
         name: "Action",
-        formatterCell: ClinicPatientActionsCell,
+        renderCell: ClinicPatientActionsCell,
       },
     ];
   }, []);
 
   return (
-    <PatientTable
+    <PatientTable<PatientEntity>
       columns={columns}
-      // pagination={{
-      //   skip: 0,
-      //   limit: 20,
-      // }}
-      // rows={[
-      //   {
-      //     id: "123121ee",
-      //     name: "Pasien 1",
-      //     nik: "2024.04.00006",
-      //     medicalRecordNumber: "2024.04.00006",
-      //     phoneNumber: "082228883006",
-      //     address: "Keputih Tegal Timur",
-      //     sex: "Male",
-      //     bloodType: "O",
-      //     vitals: {
-      //       height: 182,
-      //       weight: 64,
-      //       allergy: "Gak Ada",
-      //       sistole: 122,
-      //       diastole: 132,
-      //       temperature: 37,
-      //       respiration: 128,
-      //       pulse: 90,
-      //     },
-      //   },
-      // ]}
-      // totalRows={80}
+      isLoading={isLoading}
+      onPaginationChange={(currentPagination) => {
+        setPagination(currentPagination);
+      }}
+      pagination={pagination}
+      rows={data?.data ?? []}
+      totalRows={data?.count}
     />
   );
 }

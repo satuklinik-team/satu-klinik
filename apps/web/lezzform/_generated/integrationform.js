@@ -1,30 +1,30 @@
 import { z as a } from "zod";
 import {
-  Lezzform as z,
+  Lezzform as p,
   FormField as t,
   FormItem as s,
   FormLabel as u,
   FormControl as l,
   FormMessage as c,
   Input as F,
-  PasswordInput as f,
-  Button as g,
+  PasswordInput as g,
+  Button as C,
 } from "@lezzform/react";
 import * as n from "react";
 import { jsx as e, jsxs as m } from "react/jsx-runtime";
-var C = a.object({
+var L = a.object({
     id: a.string(),
     token: a.string(),
     username: a.string(),
     password: a.string(),
   }),
-  p = "ezseqTZazOEtswXuZkff",
-  P = ({
+  z = "KvYh4ssevgP2nnlnRgK0",
+  y = ({
     onSubmit: i,
     onError: b,
     onSuccess: h,
     defaultValues: S,
-    onAction: L,
+    onAction: f,
     formProps: k,
   }) => {
     let d = n.useRef();
@@ -35,17 +35,17 @@ var C = a.object({
       if (d.current) return d.current(r, o);
     }, []);
     return e(
-      z,
+      p,
       {
-        id: p,
+        id: z,
         defaultValues: S,
         onSubmit: R,
         onError: b,
         onSuccess: h,
-        zodSchema: C,
+        zodSchema: L,
         mode: "onSubmit",
         children: (r) =>
-          m(z.Container, {
+          m(p.Container, {
             children: [
               e(t, {
                 control: r.control,
@@ -127,7 +127,7 @@ var C = a.object({
                     children: [
                       e(u, { isRequired: !0, children: "Password" }),
                       e(l, {
-                        children: e(f, {
+                        children: e(g, {
                           label: "Password",
                           name: o.name,
                           value: o.value ?? "",
@@ -143,7 +143,7 @@ var C = a.object({
                     ],
                   }),
               }),
-              e(g, {
+              e(C, {
                 type: "submit",
                 className: "w-full",
                 disabled: r.formState.isSubmitting,
@@ -154,7 +154,7 @@ var C = a.object({
             ],
           }),
       },
-      p
+      z
     );
   };
-export { P as Form };
+export { y as Form };
