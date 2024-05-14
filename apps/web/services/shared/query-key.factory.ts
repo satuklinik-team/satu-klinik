@@ -1,9 +1,7 @@
 import type { QueryKey } from "@tanstack/react-query";
 import { stringify } from "qs";
 
-import type { BaseFindOneRecordDto, BaseFindRecordsDto } from "./types";
-
-export class QueryKeyFactory<T> {
+export class QueryKeyFactory {
   private endpoint: string;
 
   constructor(endpoint: string) {
@@ -18,7 +16,7 @@ export class QueryKeyFactory<T> {
     return [...this.all(), "pagination"];
   }
 
-  pagination(filters?: BaseFindRecordsDto<T>): QueryKey {
+  pagination(filters?: object): QueryKey {
     return [
       ...this.paginations(),
       { filters: stringify(filters, { encode: false }) },
@@ -29,7 +27,7 @@ export class QueryKeyFactory<T> {
     return [...this.all(), "list"];
   }
 
-  list(filters?: BaseFindRecordsDto<T>): QueryKey {
+  list(filters?: object): QueryKey {
     return [
       ...this.lists(),
       { filters: stringify(filters, { encode: false }) },
@@ -40,7 +38,7 @@ export class QueryKeyFactory<T> {
     return [...this.all(), "detail"];
   }
 
-  detail(id: string, filters?: BaseFindOneRecordDto<T>): QueryKey {
+  detail(id: string, filters?: object): QueryKey {
     if (filters)
       return [
         ...this.details(),
@@ -49,17 +47,5 @@ export class QueryKeyFactory<T> {
       ];
 
     return [...this.details(), id];
-  }
-
-  create(): QueryKey {
-    return [...this.all(), "create"];
-  }
-
-  update(): QueryKey {
-    return [...this.all(), "update"];
-  }
-
-  delete(): QueryKey {
-    return [...this.all(), "delete"];
   }
 }

@@ -1,51 +1,50 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { PatientsService } from './patients.service';
 import { CreatePatientDto } from './dto/create-patient.dto';
-import { QueryPayload, TokenData } from 'src/utils';
-import { CreateVitalSignDto } from '../patients-vital-sign/dto/create-vital-sign.dto';
-import { PatientsVitalSignService } from 'src/patients-vital-sign/patients-vital-sign.service';
-import { Prisma } from '@prisma/client';
 import { JwtPayload } from 'src/auth/types';
+import { FindAllPatientsDto } from './dto/find-all-patients-dto';
+import { TokenData } from 'src/utils';
+import { FindAllReturn } from 'src/utils/types';
 
 @Controller('patients')
 export class PatientsController {
-  constructor(
-    private readonly patientService: PatientsService,
-    private readonly patientVitalSignService: PatientsVitalSignService,
-  ) {}
+  constructor(private readonly patientService: PatientsService) {}
+
   @Post()
   createPatient(
-    @Body() createPatientDto: CreatePatientDto,
+    @Body() dto: CreatePatientDto,
     @TokenData() tokenData: JwtPayload,
   ) {
     return this.patientService.create({
-      ...createPatientDto,
-      usersId: tokenData.sub,
-    });
-  }
-
-  @Post(':id/vital_sign')
-  createVitalSign(
-    @Param('id') id: string,
-    @Body() dto: CreateVitalSignDto,
-    @TokenData() tokenData: JwtPayload,
-  ) {
-    dto.patientId = id;
-    return this.patientVitalSignService.create({
       ...dto,
-      usersId: tokenData.sub,
+      clinicsId: tokenData.clinicsId,
     });
   }
 
   @Get()
-  async findPatientsByClinicsId(
-    @QueryPayload() prismaSelectDto: Prisma.PatientFindManyArgs['select'],
-    @Query('search') search: string,
-    @Query('clinics_id') clinicsId: string,
-  ) {
-    return this.patientService.findPatientsByClinicsId(prismaSelectDto, {
-      clinicsId,
-      search,
+  async findAll(
+    @Query() dto: FindAllPatientsDto,
+    @TokenData() tokenData: JwtPayload,
+  ): Promise<FindAllReturn<object>> {
+    return this.patientService.findAll({
+      ...dto,
+      clinicsId: tokenData.clinicsId,
+    });
+  }
+
+  @Delete(':id')
+  async delete(@Param('id') id: string, @TokenData() tokenData: JwtPayload) {
+    return this.patientService.delete({
+      id,
+      clinicsId: tokenData.clinicsId,
     });
   }
 }

@@ -28,9 +28,11 @@ import { Pagination } from "./pagination";
 interface BaseTableProps<T extends object> {
   isLoading?: boolean;
   columns: Column<T>[];
+  count?: number;
   rows: T[];
   totalRows?: number;
   pagination?: PaginationType;
+  onPaginationChange?: (pagination: PaginationType) => void;
 }
 
 export function BaseTable<T extends object>({
@@ -39,6 +41,7 @@ export function BaseTable<T extends object>({
   rows,
   totalRows = 0,
   pagination,
+  onPaginationChange,
 }: BaseTableProps<T>): JSX.Element {
   const [sorting, setSorting] = useState<SortingState>([]);
 
@@ -68,6 +71,7 @@ export function BaseTable<T extends object>({
     skip: pagination?.skip ?? 0,
     limit: pagination?.limit ?? 50,
     totalRows,
+    onPaginationChange,
   });
 
   const { getHeaderGroups, getRowModel, getCanPreviousPage, getCanNextPage } =
@@ -76,7 +80,7 @@ export function BaseTable<T extends object>({
       data: rows,
       getCoreRowModel: getCoreRowModel(),
       manualPagination: true,
-      pageCount: 2,
+      pageCount: totalPage,
       onSortingChange: setSorting,
       getSortedRowModel: getSortedRowModel(),
       state: {

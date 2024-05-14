@@ -1,38 +1,59 @@
 "use client";
 
-import { useMemo } from "react";
+import { skip } from "node:test";
 
+import { useMemo, useState } from "react";
+
+import { BaseTable as ClinicTable } from "@/components/shared/table/base-table";
 import { MemberSection } from "@/features/members/components/shared/section";
-import { Table as ClinicTable } from "@/lezztable/_generated/master-clinic";
+import { useFindClinic } from "@/services/clinic/hooks/use-find-clinic";
+import type { ClinicEntity } from "@/services/clinic/types/entity";
+import type { Pagination } from "@/types";
 
 import { MembersTeamsActionsCell } from "./cells/actions-cell";
 import { MembersTeamsClinicCell } from "./cells/clinic-cell";
 import { MembersTeamsStatisticsCell } from "./cells/statistics-cell";
 
 export function MembersTeamsTable(): JSX.Element {
+  const [pagination, setPagination] = useState<Pagination>({
+    skip: 0,
+    limit: 20,
+  });
+
+  const { data, isLoading } = useFindClinic(pagination);
+
   const columns = useMemo(() => {
     return [
       {
         key: "clinic",
         name: "Klinik",
-        formatterCell: MembersTeamsClinicCell,
+        renderCell: MembersTeamsClinicCell,
       },
       {
         key: "statistics",
         name: "Statistik",
-        formatterCell: MembersTeamsStatisticsCell,
+        renderCell: MembersTeamsStatisticsCell,
       },
       {
         key: "actions",
         name: "",
-        formatterCell: MembersTeamsActionsCell,
+        renderCell: MembersTeamsActionsCell,
       },
     ];
   }, []);
 
   return (
     <MemberSection>
-      <ClinicTable columns={columns} />
+      <ClinicTable<ClinicEntity>
+        columns={columns}
+        isLoading={isLoading}
+        onPaginationChange={(currentPagination) => {
+          setPagination(currentPagination);
+        }}
+        pagination={pagination}
+        rows={data?.data ?? []}
+        totalRows={data?.count}
+      />
     </MemberSection>
   );
 }

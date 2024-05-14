@@ -51,6 +51,7 @@ export class AuthController {
 
     return res.json({
       user: data.user,
+      clinic: data.clinic,
       token: data.token.accessToken,
       expiresIn: data.token.accessTokenExpiresIn,
     });

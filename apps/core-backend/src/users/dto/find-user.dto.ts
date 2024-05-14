@@ -1,5 +1,6 @@
 import { Prisma } from '@prisma/client';
 import { DefaultArgs } from '@prisma/client/runtime/library';
+import { Type } from 'class-transformer';
 import { IsNumber, IsObject, IsOptional } from 'class-validator';
 
 export class FindUsersDto implements Prisma.UsersFindManyArgs {
@@ -26,10 +27,12 @@ export class FindUsersDto implements Prisma.UsersFindManyArgs {
   select?: Prisma.UsersSelect<DefaultArgs>;
 
   @IsNumber()
+  @Type(() => Number)
   @IsOptional()
   skip?: number;
 
   @IsNumber()
+  @Type(() => Number)
   @IsOptional()
   take?: number;
 
