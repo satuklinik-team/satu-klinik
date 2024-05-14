@@ -1,8 +1,8 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-export async function middleware(request: NextRequest) {
-  const accessToken = request.cookies.get("accessToken");
+export function middleware(request: NextRequest) {
+  const accessToken = request.cookies.get("__accessToken");
   const isVerified = Boolean(accessToken);
   const isAuthPage = request.nextUrl.pathname.startsWith("/auth");
 
