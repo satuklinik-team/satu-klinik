@@ -11,7 +11,7 @@ class AuthApi {
   async login(values: AuthLoginDto): Promise<AuthEntity> {
     const { data } = await this.api.post<AuthEntity>("/auth/login", values);
 
-    Cookies.set("accessToken", data.token);
+    Cookies.set("__accessToken", data.token);
 
     return data;
   }
@@ -19,7 +19,7 @@ class AuthApi {
   async register(values: AuthRegisterDto): Promise<AuthEntity> {
     const { data } = await this.api.post<AuthEntity>("/auth/register", values);
 
-    Cookies.set("accessToken", data.token);
+    Cookies.set("__accessToken", data.token);
 
     return data;
   }
@@ -27,7 +27,7 @@ class AuthApi {
   async logout(): Promise<AuthEntity> {
     const { data } = await this.api.post<AuthEntity>("/auth/logout");
 
-    Cookies.remove("accessToken");
+    Cookies.remove("__accessToken");
 
     return data;
   }

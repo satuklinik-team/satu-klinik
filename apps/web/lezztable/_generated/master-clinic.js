@@ -1,20 +1,20 @@
-import * as i from "react";
+import * as s from "react";
 import { Table as r } from "@lezztable-demo/react";
-import { Fragment as y, jsx as s } from "react/jsx-runtime";
-var h = "a7b9253f-504c-41a1-8920-a3551a0343fd",
-  R = ({
+import { Fragment as y, jsx as a } from "react/jsx-runtime";
+var g = "a7b9253f-504c-41a1-8920-a3551a0343fd",
+  E = ({
     filters: c,
     sorts: u,
-    groups: m,
+    groups: b,
     pagination: l,
     columns: n,
-    headers: a,
-    queryBuilder: b,
+    headers: i,
+    queryBuilder: d,
     onClick: f,
-    data: d,
-    onAction: T,
+    data: T,
+    onAction: h,
   }) => {
-    let p = i.useMemo(
+    let m = s.useMemo(
         () =>
           [
             {
@@ -43,12 +43,12 @@ var h = "a7b9253f-504c-41a1-8920-a3551a0343fd",
           }),
         [n]
       ),
-      C = i.useMemo(() => {
-        if (a) return Object.entries(a).map(([e, t]) => ({ key: e, value: t }));
-      }, [a]),
-      o = i.useMemo(
+      p = s.useMemo(() => {
+        if (i) return Object.entries(i).map(([e, t]) => ({ key: e, value: t }));
+      }, [i]),
+      o = s.useMemo(
         () => ({
-          type: "static",
+          type: "api",
           columns: [
             {
               key: "clinic",
@@ -71,45 +71,28 @@ var h = "a7b9253f-504c-41a1-8920-a3551a0343fd",
               attributes: { isVisible: !0 },
             },
           ],
-          attributes: {
-            data: [
-              {
-                id: "123121ee",
-                name: "Klinik Demo Husada",
-                email: "darren0208.dc@gmail.com",
-                phone: "62812345678901",
-                _count: {
-                  Poli: 0,
-                  users: 1,
-                  Patient: 0,
-                  Category: 0,
-                  Pharmacy_Task: 0,
-                },
-                address: "Keputih Tegal Timur 3B. nomor 21",
-              },
-            ],
-          },
+          attributes: { url: "localhost:5050/api", path: "data", headers: [] },
         }),
         []
       );
-    return s(y, {
-      children: s(r, {
+    return a(y, {
+      children: a(r, {
         filters: c ?? [],
         sorts: u ?? [],
-        groups: m ?? [],
+        groups: b ?? [],
         pagination: l ?? {
           skip: 0,
-          limit: 50,
-          source: { key: "Limit", type: "header" },
+          limit: 10,
+          source: { path: "count", type: "body" },
         },
-        queryBuilder: b,
-        children: s(r.Grid, {
+        queryBuilder: d,
+        children: a(r.Grid, {
           id: "a4aae24f-7d59-4b51-972f-e1d1256eca46",
-          columns: p,
-          type: "static",
-          attributes: { ...o.attributes, data: d ?? o.attributes.data },
+          columns: m,
+          type: "api",
+          attributes: { ...o.attributes, headers: p ?? o.attributes.headers },
         }),
       }),
     });
   };
-export { h as TABLE_ID, R as Table };
+export { g as TABLE_ID, E as Table };
