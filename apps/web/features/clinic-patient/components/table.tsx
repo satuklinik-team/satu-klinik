@@ -1,6 +1,5 @@
 "use client";
 
-import { useParams } from "next/navigation";
 import { useMemo, useState } from "react";
 
 import { BaseTable as PatientTable } from "@/components/shared/table/base-table";
@@ -12,8 +11,6 @@ import { ClinicPatientActionsCell } from "./cell/actions-cell";
 import { ClinicPatientNameCell } from "./cell/name-cell";
 
 export function ClinicPatientTable(): JSX.Element {
-  const { clinicId } = useParams();
-
   const [pagination, setPagination] = useState<Pagination>({
     skip: 0,
     limit: 20,
@@ -21,8 +18,6 @@ export function ClinicPatientTable(): JSX.Element {
 
   const { data, isLoading } = useFindPatient({
     ...pagination,
-    clinicsId: clinicId,
-    type: "ENTRY",
     count: true,
   });
 

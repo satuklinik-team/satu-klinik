@@ -1,4 +1,4 @@
-import type { VitalEntity } from "@/services/vital/types/entity";
+import type { VitalSignEntity } from "@/services/patient-vital-sign/types/entity";
 
 export interface PatientEntity {
   id: string;
@@ -9,5 +9,5 @@ export interface PatientEntity {
   address: string;
   sex: string;
   blood: string;
-  mr: { id: string; vitalSign: VitalEntity[] }[];
+  mr: { id: string; vitalSign: VitalSignEntity[] }[];
 }

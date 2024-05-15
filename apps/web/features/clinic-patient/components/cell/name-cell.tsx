@@ -7,10 +7,13 @@ import { ScaleOutlineIcon } from "@/components/icons/scale-outline";
 import { ThermometerOutlineIcon } from "@/components/icons/thermometer-outline";
 import { Cell } from "@/components/shared/table/cell";
 import type { PatientEntity } from "@/services/patient/types/entity";
+import type { VitalSignEntity } from "@/services/patient-vital-sign/types/entity";
 
 import { ClinicPatientVitals } from "../shared/vitals";
 
 export function ClinicPatientNameCell(row: PatientEntity): JSX.Element {
+  const vitalSign = row.mr[0]?.vitalSign[0] as VitalSignEntity | undefined;
+
   return (
     <Cell className="gap-3">
       <div className="flex items-center justify-center w-12 h-12 shrink-0 bg-border rounded-full border-2">
@@ -24,17 +27,19 @@ export function ClinicPatientNameCell(row: PatientEntity): JSX.Element {
           vitals={[
             {
               icon: <Stethoscope size={16} />,
-              value: `${row.mr[0].vitalSign[0].systole} / ${row.mr[0].vitalSign[0].diastole}`,
+              value: vitalSign
+                ? `${vitalSign.systole} / ${vitalSign.diastole}`
+                : "-",
               label: "Sistole / Diastole",
             },
             {
               icon: <ThermometerOutlineIcon size={16} />,
-              value: `${row.mr[0].vitalSign[0].temperature} C`,
+              value: vitalSign ? `${vitalSign.temperature} C` : "-",
               label: "Suhu Badan",
             },
             {
               icon: <HeightFilledIcon size={16} />,
-              value: `${row.mr[0].vitalSign[0].height} cm`,
+              value: vitalSign ? `${vitalSign.height} cm` : "-",
               label: "Tinggi Badan",
             },
             {
@@ -44,22 +49,22 @@ export function ClinicPatientNameCell(row: PatientEntity): JSX.Element {
                   size={16}
                 />
               ),
-              value: `${row.mr[0].vitalSign[0].weight} kg`,
+              value: vitalSign ? `${vitalSign.weight} kg` : "-",
               label: "Berat Badan",
             },
             {
               icon: <HeartPulse size={16} />,
-              value: row.mr[0].vitalSign[0].pulse,
+              value: vitalSign?.pulse ?? "-",
               label: "Detak Jantung",
             },
             {
               icon: <LungOutlineIcon size={18} />,
-              value: row.mr[0].vitalSign[0].respiration,
+              value: vitalSign?.respiration ?? "-",
               label: "Respirasi",
             },
             {
               icon: <BloodBagOutlineIcon size={18} />,
-              value: row.blood,
+              value: row.blood.toLocaleUpperCase(),
               label: "Golongan Darah",
             },
           ]}
