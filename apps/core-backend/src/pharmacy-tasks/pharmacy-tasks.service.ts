@@ -106,7 +106,7 @@ export class PharmacyTasksService {
       }
 
       await Promise.all(
-        dto.notBought.map(async (data) => {
+        dto.notBoughtPrescriptions.map(async (data) => {
           const prescription = await tx.patient_prescription.findFirst({
             where: {
               id: data.id,

@@ -10,7 +10,7 @@ import {
 import { JwtPayload } from 'src/auth/types';
 import { PaginationDto } from 'src/utils/classes';
 
-class NotBought {
+class NotBoughtPrescriptions {
   @IsNumber()
   @Type(() => Number)
   @IsNotEmpty()
@@ -29,6 +29,6 @@ export class CompleteTaskDto {
 
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => NotBought)
-  notBought: NotBought[];
+  @Type(() => NotBoughtPrescriptions)
+  notBoughtPrescriptions: NotBoughtPrescriptions[];
 }
