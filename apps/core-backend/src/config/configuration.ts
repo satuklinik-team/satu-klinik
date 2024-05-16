@@ -11,6 +11,7 @@ export default () => ({
     url: process.env.SATU_SEHAT_URL,
     organization_id: process.env.SATU_SEHAT_ORGANIZATION_ID,
     auth_url: process.env.SATU_SEHAT_AUTH_URL,
+    kfa_url: process.env.SATU_SEHAT_KFA_URL,
   },
   http: {
     timeout: 5000,

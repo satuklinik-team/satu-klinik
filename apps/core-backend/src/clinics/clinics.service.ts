@@ -14,6 +14,7 @@ import { exclude } from 'src/utils';
 import { UserNotFoundException } from 'src/exceptions';
 import { UpdateClinicUserDto } from './dto/update-clinic-user.dto';
 import { FindClinicUsersDto } from './dto/find-clinic-users-dto';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class ClinicsService {
@@ -21,10 +22,14 @@ export class ClinicsService {
     private readonly prismaService: PrismaService,
     private readonly findAllService: FindAllService,
     private readonly userService: UsersService,
+    private readonly configService: ConfigService,
   ) {}
 
   async create(dto: CreateClinicDto, context?: ServiceContext) {
     const prisma = this._initPrisma(context.tx);
+
+    const clientId = this.configService.get<string>('oauth.client_id');
+    const clientSecret = this.configService.get<string>('oauth.client_secret');
     const data = await prisma.clinics.create({
       data: {
         name: dto.clinicName,
@@ -32,6 +37,8 @@ export class ClinicsService {
         address: dto.clinicAddress,
         phone: dto.clinicPhone,
         accountsId: dto.accountsId,
+        clientId,
+        clientSecret,
         Departments: {
           create: {
             name: 'main',

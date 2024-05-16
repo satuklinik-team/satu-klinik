@@ -1,25 +1,24 @@
 import { Module } from '@nestjs/common';
-import { SatusehatOauthService } from './satusehat-oauth.service';
+import { SatusehatKfaService } from './satusehat-kfa.service';
 import { HttpModule } from '@nestjs/axios';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import configuration from 'src/config/configuration';
-import { CacheModule } from '@nestjs/cache-manager';
-import { SatusehatKfaModule } from 'src/satusehat-kfa/satusehat-kfa.module';
+import { SatusehatOauthModule } from 'src/satusehat-oauth/satusehat-oauth.module';
 
 @Module({
-  providers: [SatusehatOauthService],
+  providers: [SatusehatKfaService],
   imports: [
-    CacheModule.register(),
+    SatusehatOauthModule,
     HttpModule.registerAsync({
       imports: [ConfigModule.forRoot({ load: [configuration] })],
       useFactory: async (configService: ConfigService) => ({
         timeout: configService.get('http.timeout'),
         maxRedirects: configService.get('http.max_redirects'),
-        baseURL: configService.get('satu_sehat.auth_url'),
+        baseURL: configService.get('satu_sehat.kfa_url'),
       }),
       inject: [ConfigService],
     }),
   ],
-  exports: [SatusehatOauthService],
+  exports: [SatusehatKfaService],
 })
-export class SatusehatOauthModule {}
+export class SatusehatKfaModule {}

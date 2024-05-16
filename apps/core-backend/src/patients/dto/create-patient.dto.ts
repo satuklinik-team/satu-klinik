@@ -3,6 +3,7 @@ import {
   IsDateString,
   IsInt,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
   IsString,
 } from 'class-validator';
@@ -29,7 +30,8 @@ export class CreatePatientDto {
   @IsNotEmpty()
   phone: string;
 
-  @IsInt()
+  @IsNumber()
+  @Type(() => Number)
   @IsOptional()
   age?: number;
 
