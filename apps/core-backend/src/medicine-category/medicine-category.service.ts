@@ -4,10 +4,16 @@ import { UpdateMedicineCategoryDto } from './dto/update-medicine-category.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CannotAccessClinicException } from 'src/exceptions/unauthorized/cannot-access-clinic';
 import { DeleteMedicineCategoryDto } from './dto/delete-medicine-category.dto';
+import { FindAllService } from 'src/find-all/find-all.service';
+import { Prisma } from '@prisma/client';
+import { FindAllMedicineCategoriesDto } from './dto/find-all-medicine-categories-dto';
 
 @Injectable()
 export class MedicineCategoryService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly findAllService: FindAllService,
+  ) {}
 
   async create(dto: CreateMedicineCategoryDto) {
     return await this.prismaService.medicineCategory.create({
@@ -18,11 +24,17 @@ export class MedicineCategoryService {
     });
   }
 
-  async findAll(clinicsId: string) {
-    return await this.prismaService.medicineCategory.findMany({
+  async findAll(dto: FindAllMedicineCategoriesDto) {
+    const args: Prisma.MedicineCategoryFindManyArgs = {
       where: {
-        clinicsId,
+        clinicsId: dto.clinicsId,
       },
+    };
+
+    return await this.findAllService.findAll({
+      table: this.prismaService.medicineCategory,
+      ...args,
+      ...dto,
     });
   }
 

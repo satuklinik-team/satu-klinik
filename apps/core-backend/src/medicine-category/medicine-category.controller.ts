@@ -7,12 +7,14 @@ import {
   Param,
   Delete,
   ParseIntPipe,
+  Query,
 } from '@nestjs/common';
 import { MedicineCategoryService } from './medicine-category.service';
 import { CreateMedicineCategoryDto } from './dto/create-medicine-category.dto';
 import { UpdateMedicineCategoryDto } from './dto/update-medicine-category.dto';
 import { JwtPayload } from 'src/auth/types';
 import { TokenData } from 'src/utils';
+import { FindAllMedicineCategoriesDto } from './dto/find-all-medicine-categories-dto';
 
 @Controller('medicine-category')
 export class MedicineCategoryController {
@@ -32,8 +34,14 @@ export class MedicineCategoryController {
   }
 
   @Get()
-  findAll(@TokenData() tokenData: JwtPayload) {
-    return this.medicineCategoryService.findAll(tokenData.clinicsId);
+  findAll(
+    @Query() dto: FindAllMedicineCategoriesDto,
+    @TokenData() tokenData: JwtPayload,
+  ) {
+    return this.medicineCategoryService.findAll({
+      ...dto,
+      clinicsId: tokenData.clinicsId,
+    });
   }
 
   @Patch(':id')

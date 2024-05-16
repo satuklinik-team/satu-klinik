@@ -428,6 +428,8 @@ model Medicine {
   price      Int
   stock      Int
   discount   Int?
+  imageUrl   String?
+  kfaCode    String?
   categoryId Int?
   category   MedicineCategory? @relation(fields: [categoryId], references: [id])
 }
