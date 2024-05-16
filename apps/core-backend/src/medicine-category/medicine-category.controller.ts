@@ -16,6 +16,8 @@ import { JwtPayload } from 'src/auth/types';
 import { TokenData } from 'src/utils';
 import { FindAllMedicineCategoriesDto } from './dto/find-all-medicine-categories-dto';
 import { FindAllReturn } from 'src/utils/types';
+import { Role } from '@prisma/client';
+import { Roles } from 'src/utils/decorators/roles.decorator';
 
 @Controller('medicine-category')
 export class MedicineCategoryController {
@@ -24,6 +26,7 @@ export class MedicineCategoryController {
   ) {}
 
   @Post()
+  @Roles(Role.PHARMACY)
   async create(
     @Body() dto: CreateMedicineCategoryDto,
     @TokenData() tokenData: JwtPayload,
@@ -35,6 +38,7 @@ export class MedicineCategoryController {
   }
 
   @Get()
+  @Roles(Role.PHARMACY)
   findAll(
     @Query() dto: FindAllMedicineCategoriesDto,
     @TokenData() tokenData: JwtPayload,
@@ -46,6 +50,7 @@ export class MedicineCategoryController {
   }
 
   @Patch(':id')
+  @Roles(Role.PHARMACY)
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body() dto: UpdateMedicineCategoryDto,
@@ -59,6 +64,7 @@ export class MedicineCategoryController {
   }
 
   @Delete(':id')
+  @Roles(Role.PHARMACY)
   remove(
     @Param('id', ParseIntPipe) id: number,
     @TokenData() tokenData: JwtPayload,

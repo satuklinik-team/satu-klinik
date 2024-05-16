@@ -21,12 +21,15 @@ import { TokenData } from 'src/utils';
 import { FindAllIMedicineDto } from './dto/find-all-medicine-dto';
 import { UpdateMedicineDto } from './dto/update-medicine-dto';
 import { FindAllReturn } from 'src/utils/types';
+import { Role } from '@prisma/client';
+import { Roles } from 'src/utils/decorators/roles.decorator';
 
 @Controller('medicine')
 export class MedicineController {
   constructor(private medicineService: MedicineService) {}
 
   @Post('')
+  @Roles(Role.PHARMACY)
   @UseInterceptors(FileInterceptor('image'))
   async create(
     @Body() dto: CreateMedicineDto,
@@ -41,6 +44,7 @@ export class MedicineController {
   }
 
   @Patch(':id')
+  @Roles(Role.PHARMACY)
   @UseInterceptors(FileInterceptor('image'))
   async update(
     @Param('id', ParseIntPipe) id: number,
@@ -57,6 +61,7 @@ export class MedicineController {
   }
 
   @Get('')
+  @Roles(Role.PHARMACY, Role.DOCTOR)
   async findAll(
     @Query() dto: FindAllIMedicineDto,
     @TokenData() tokenData: JwtPayload,
@@ -68,6 +73,7 @@ export class MedicineController {
   }
 
   @Get(':categoryId')
+  @Roles(Role.PHARMACY)
   async findMedicinesByCategory(
     @Query() dto: FindAllIMedicineDto,
     @TokenData() tokenData: JwtPayload,
@@ -81,6 +87,7 @@ export class MedicineController {
   }
 
   @Delete(':id')
+  @Roles(Role.PHARMACY)
   async delete(
     @Param('id', ParseIntPipe) id: number,
     @TokenData() tokenData: JwtPayload,
