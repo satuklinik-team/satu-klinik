@@ -15,6 +15,7 @@ import { UpdateMedicineCategoryDto } from './dto/update-medicine-category.dto';
 import { JwtPayload } from 'src/auth/types';
 import { TokenData } from 'src/utils';
 import { FindAllMedicineCategoriesDto } from './dto/find-all-medicine-categories-dto';
+import { FindAllReturn } from 'src/utils/types';
 
 @Controller('medicine-category')
 export class MedicineCategoryController {
@@ -37,7 +38,7 @@ export class MedicineCategoryController {
   findAll(
     @Query() dto: FindAllMedicineCategoriesDto,
     @TokenData() tokenData: JwtPayload,
-  ) {
+  ): Promise<FindAllReturn<object>> {
     return this.medicineCategoryService.findAll({
       ...dto,
       clinicsId: tokenData.clinicsId,

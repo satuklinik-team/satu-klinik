@@ -43,10 +43,21 @@ export class PatientsController {
     });
   }
 
+  @Get(':id')
+  async getPatientById(
+    @Param('id') id: string,
+    @TokenData() tokenData: JwtPayload,
+  ) {
+    return await this.patientService.getPatientById({
+      id,
+      clinicsId: tokenData.clinicsId,
+    });
+  }
+
   @Delete(':id')
   @Roles(Role.ADMIN)
   async delete(@Param('id') id: string, @TokenData() tokenData: JwtPayload) {
-    return this.patientService.delete({
+    return await this.patientService.delete({
       id,
       clinicsId: tokenData.clinicsId,
     });

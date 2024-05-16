@@ -1,7 +1,21 @@
 import { Type } from 'class-transformer';
-import { IsString, IsNotEmpty, IsOptional, IsNumber } from 'class-validator';
+import {
+  IsString,
+  IsNotEmpty,
+  IsOptional,
+  IsNumber,
+  IsArray,
+  ValidateNested,
+} from 'class-validator';
 import { JwtPayload } from 'src/auth/types';
 import { PaginationDto } from 'src/utils/classes';
+
+class NotBought {
+  @IsNumber()
+  @Type(() => Number)
+  @IsNotEmpty()
+  id: number;
+}
 
 export class CompleteTaskDto {
   @IsOptional()
@@ -12,4 +26,9 @@ export class CompleteTaskDto {
   @IsString()
   @IsOptional()
   clinicsId?: string;
+
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => NotBought)
+  notBought: NotBought[];
 }

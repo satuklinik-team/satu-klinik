@@ -2,6 +2,7 @@ import { Type } from 'class-transformer';
 import {
   IsArray,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
   IsString,
   ValidateNested,
@@ -9,13 +10,15 @@ import {
 import { JwtPayload } from 'src/auth/types';
 
 class Prescription {
-  @IsString()
+  @IsNumber()
+  @Type(() => Number)
   @IsNotEmpty()
-  medicine: string;
+  medicineId: number;
 
-  @IsString()
+  @IsNumber()
+  @Type(() => Number)
   @IsNotEmpty()
-  quantity: string;
+  quantity: number;
 
   @IsString()
   @IsOptional()

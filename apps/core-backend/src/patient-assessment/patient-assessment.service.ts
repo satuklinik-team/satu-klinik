@@ -49,7 +49,7 @@ export class PatientAssessmentService {
 
       const prescriptionsDto = dto.prescriptions.map((prescription) => {
         return {
-          medicine: prescription.medicine,
+          medicineId: prescription.medicineId,
           quantity: prescription.quantity,
           usage: prescription.usage,
           patient_medical_recordsId: dto.mrid,
@@ -58,6 +58,19 @@ export class PatientAssessmentService {
 
       const prescriptions = tx.patient_prescription.createMany({
         data: prescriptionsDto,
+      });
+
+      prescriptionsDto.forEach((prescription) => {
+        tx.medicine.update({
+          where: {
+            id: prescription.medicineId,
+          },
+          data: {
+            stock: {
+              decrement: prescription.quantity,
+            },
+          },
+        });
       });
 
       const medicalRecord = this.prismaService.patient_medical_records.update({

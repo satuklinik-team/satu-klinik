@@ -20,6 +20,7 @@ import { JwtPayload } from 'src/auth/types';
 import { TokenData } from 'src/utils';
 import { FindAllIMedicineDto } from './dto/find-all-medicine-dto';
 import { UpdateMedicineDto } from './dto/update-medicine-dto';
+import { FindAllReturn } from 'src/utils/types';
 
 @Controller('medicine')
 export class MedicineController {
@@ -59,7 +60,7 @@ export class MedicineController {
   async findAll(
     @Query() dto: FindAllIMedicineDto,
     @TokenData() tokenData: JwtPayload,
-  ) {
+  ): Promise<FindAllReturn<object>> {
     return await this.medicineService.findAll({
       ...dto,
       clinicsId: tokenData.clinicsId,
@@ -71,7 +72,7 @@ export class MedicineController {
     @Query() dto: FindAllIMedicineDto,
     @TokenData() tokenData: JwtPayload,
     @Param('categoryId', ParseIntPipe) categoryId: number,
-  ) {
+  ): Promise<FindAllReturn<object>> {
     return await this.medicineService.findAll({
       ...dto,
       clinicsId: tokenData.clinicsId,

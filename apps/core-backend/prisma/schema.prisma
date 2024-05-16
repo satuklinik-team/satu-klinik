@@ -95,12 +95,13 @@ model Patient_assessment_on_anathomy {
 model Patient_prescription {
   id                        Int                      @id @default(autoincrement())
   createdAt                 DateTime?                @default(now()) @db.Timestamptz(6)
-  medicine                  String
+  medicineId                Int?
+  Medicine                  Medicine?                @relation(fields: [medicineId], references: [id])
   type                      String?
   usage                     String?
   dosage                    String?
   interval                  String?
-  quantity                  Decimal
+  quantity                  Int
   deletedAt                 DateTime?
   patient_medical_recordsId String?                  @db.Uuid
   Patient_medical_records   Patient_medical_records? @relation(fields: [patient_medical_recordsId], references: [id])
@@ -423,15 +424,16 @@ model Suppliers {
 }
 
 model Medicine {
-  id         Int               @id @default(autoincrement())
-  title      String
-  price      Int
-  stock      Int
-  discount   Int?
-  imageUrl   String?
-  kfaCode    String?
-  categoryId Int?
-  category   MedicineCategory? @relation(fields: [categoryId], references: [id])
+  id                   Int                    @id @default(autoincrement())
+  title                String
+  price                Int
+  stock                Int
+  discount             Int?
+  imageUrl             String?
+  kfaCode              String?
+  categoryId           Int?
+  category             MedicineCategory?      @relation(fields: [categoryId], references: [id])
+  Patient_prescription Patient_prescription[]
 }
 
 model MedicineCategory {

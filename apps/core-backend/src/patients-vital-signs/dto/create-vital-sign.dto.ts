@@ -10,8 +10,7 @@ import {
 import { JwtPayload } from 'src/auth/types';
 
 export class CreateVitalSignDto {
-  @IsNumber()
-  @Type(() => Number)
+  @IsString()
   @IsNotEmpty()
   patientId: string;
 
