@@ -6,10 +6,10 @@ import {
   FormLabel as s,
   FormControl as i,
   FormMessage as u,
-  Input as b,
+  Input as F,
   EmailInput as p,
   PhoneNumberInput as g,
-  PasswordInput as k,
+  PasswordInput as S,
   Divider as L,
   TextArea as y,
   Spacer as v,
@@ -46,8 +46,8 @@ var P = n.object({
     clinicAddress: n.string(),
     clinicCode: n.string(),
   }),
-  R = "YWIJQzBs9fvMZVhnRx2t",
-  E = ({
+  R = "qxREaIDj8zsAE8Nbakgc",
+  K = ({
     onSubmit: m,
     onError: d,
     onSuccess: C,
@@ -55,19 +55,19 @@ var P = n.object({
     onAction: q,
     formProps: w,
   }) => {
-    let F = c.useRef();
+    let b = c.useRef();
     c.useEffect(() => {
-      m && (F.current = m);
+      m && (b.current = m);
     }, [m]);
-    let S = c.useCallback(async (r, e) => {
-      if (F.current) return F.current(r, e);
+    let k = c.useCallback(async (r, e) => {
+      if (b.current) return b.current(r, e);
     }, []);
     return o(
       h,
       {
         id: R,
         defaultValues: z,
-        onSubmit: S,
+        onSubmit: k,
         onError: d,
         onSuccess: C,
         zodSchema: P,
@@ -83,7 +83,7 @@ var P = n.object({
                     children: [
                       o(s, { isRequired: !0, children: "Nama Lengkap" }),
                       o(i, {
-                        children: o(b, {
+                        children: o(F, {
                           label: "Nama Lengkap",
                           name: e.name,
                           value: e.value ?? "",
@@ -155,7 +155,7 @@ var P = n.object({
                     children: [
                       o(s, { isRequired: !0, children: "Konfirmasi Password" }),
                       o(i, {
-                        children: o(k, {
+                        children: o(S, {
                           label: "Konfirmasi Password",
                           name: e.name,
                           value: e.value ?? "",
@@ -180,7 +180,7 @@ var P = n.object({
                     children: [
                       o(s, { isRequired: !0, children: "Nama Klinik" }),
                       o(i, {
-                        children: o(b, {
+                        children: o(F, {
                           label: "Nama Klinik",
                           name: e.name,
                           value: e.value ?? "",
@@ -276,7 +276,7 @@ var P = n.object({
                     children: [
                       o(s, { isRequired: !0, children: "Kode Fasyankes" }),
                       o(i, {
-                        children: o(b, {
+                        children: o(F, {
                           label: "Kode Fasyankes",
                           name: e.name,
                           value: e.value ?? "",
@@ -307,4 +307,4 @@ var P = n.object({
       R
     );
   };
-export { E as Form };
+export { K as Form };

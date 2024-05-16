@@ -1,11 +1,77 @@
 "use client";
 
+import { useQueryClient } from "@tanstack/react-query";
+import dayjs from "dayjs";
+import { useCallback, useState } from "react";
+
 import { Input } from "@/components/ui/input";
+import { useToast } from "@/components/ui/use-toast";
 import { ClinicCard } from "@/features/clinic/components/ui/card";
 import { QueueCard } from "@/features/clinic-patient/components/shared/queue-card";
 import { Form as AddPatientForm } from "@/lezzform/_generated/addpatientform";
+import { useCreatePatient } from "@/services/patient/hooks/use-create-patient";
+import { useFindPatient } from "@/services/patient/hooks/use-find-patient";
+import type { CreatePatientDto } from "@/services/patient/types/dto";
+import { PatientQueryKeyFactory } from "@/services/patient/utils/query-key.factory";
+import { useCreatePatientVitalSign } from "@/services/patient-vital-sign/hooks/use-create-patient";
+import type { CreatePatientVitalSignDto } from "@/services/patient-vital-sign/types/dto";
+import type { Pagination } from "@/types";
 
 export function ClinicRegisterPatientPage(): JSX.Element {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  const [pagination] = useState<Pagination>({
+    skip: 0,
+    limit: 20,
+  });
+
+  const { data } = useFindPatient({
+    ...pagination,
+    count: true,
+    type: "ENTRY",
+  });
+
+  const { mutateAsync: createPatient } = useCreatePatient();
+  const { mutateAsync: createPatientVitalSign } = useCreatePatientVitalSign();
+
+  const onSubmit = useCallback(
+    async (_form: object, dto: Record<string, unknown>) => {
+      const formattedPatientData: CreatePatientDto = {
+        nik: dto.nik as string,
+        fullname: dto.fullname as string,
+        address: dto.address as string,
+        sex: dto.sex as string,
+        blood: dto.blood as string,
+        phone: dto.phone as string,
+        birthAt: dayjs(dto.birthAt as string).format("YYYY-MM-DD"),
+      };
+
+      const { id } = await createPatient(formattedPatientData);
+
+      const formattedVitalSignData: CreatePatientVitalSignDto = {
+        height: dto.height as number,
+        weight: dto.weight as number,
+        allergic: dto.allergic as string,
+        systole: dto.systole as number,
+        diastole: dto.diastole as number,
+        temperature: dto.temperature as number,
+        respiration: dto.respiration as number,
+        pulse: dto.pulse as number,
+        pain: dto.pain as string,
+        patientId: id,
+      };
+
+      await createPatientVitalSign(formattedVitalSignData);
+
+      await queryClient.invalidateQueries({
+        queryKey: new PatientQueryKeyFactory().lists(),
+      });
+      toast({ title: "Berhasil Membuat Pasien!", variant: "success" });
+    },
+    [createPatient, createPatientVitalSign, queryClient, toast]
+  );
+
   return (
     <div className="h-full">
       <div className="mb-6 flex flex-col gap-2">
@@ -26,7 +92,7 @@ export function ClinicRegisterPatientPage(): JSX.Element {
             className="border-sky-500"
             title="Daftar Pasien"
           >
-            <AddPatientForm />
+            <AddPatientForm onSubmit={onSubmit} />
           </ClinicCard>
         </div>
         <ClinicCard
@@ -34,15 +100,9 @@ export function ClinicRegisterPatientPage(): JSX.Element {
           className="border-green-500 w-full h-full max-w-none sm:max-w-none md:max-w-none lg:max-w-md xl:max-w-md 2xl:max-w-md"
           title="Antrian Sekarang"
         >
-          <QueueCard
-            patient={{
-              name: "Darren Christian",
-              medicalRecordNumber: "2024.04.00012",
-              address: "Keputih Tegal Timur",
-            }}
-            queue="A-4"
-            status="Panggilan"
-          />
+          {data?.data.map((item, index) => (
+            <QueueCard isActive={index === 0} key={item.id} {...item} />
+          ))}
         </ClinicCard>
       </div>
     </div>
