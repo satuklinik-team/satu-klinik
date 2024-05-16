@@ -9,5 +9,10 @@ export interface PatientEntity {
   address: string;
   sex: string;
   blood: string;
-  mr: { id: string; vitalSign: VitalSignEntity[] }[];
+  mr: {
+    id: string;
+    queue: string;
+    status: string;
+    vitalSign: VitalSignEntity[];
+  }[];
 }
