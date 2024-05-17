@@ -22,7 +22,6 @@ export function ClinicUsersTable(): JSX.Element {
   const { data, isLoading } = useFindUser({
     ...pagination,
     count: true,
-    type: "ENTRY",
   });
 
   const columns = useMemo(() => {
