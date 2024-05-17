@@ -8,3 +8,7 @@ export interface Pagination {
   skip: number;
   limit: number;
 }
+
+export interface FormatterCellProps {
+  row: unknown;
+}

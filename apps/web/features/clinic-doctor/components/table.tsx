@@ -1,6 +1,9 @@
+"use client";
+
 import { HeartPulse, Stethoscope } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import { useState } from "react";
 
 import { BloodBagOutlineIcon } from "@/components/icons/blood-bag-outline";
 import { LungOutlineIcon } from "@/components/icons/lung-outline";
@@ -15,68 +18,92 @@ import {
 } from "@/components/ui/tooltip";
 import { ClinicCard } from "@/features/clinic/components/ui/card";
 import { ClinicPatientVitals } from "@/features/clinic-patient/components/shared/vitals";
-import type { TaskEntity } from "@/services/task/types/entity";
+import { useFindPatient } from "@/services/patient/hooks/use-find-patient";
+import type { PatientEntity } from "@/services/patient/types/entity";
+import type { VitalSignEntity } from "@/services/patient-vital-sign/types/entity";
+import type { Pagination } from "@/types";
 
 export function ClinicDoctorTable(): JSX.Element {
   const { clinicId } = useParams();
 
+  const [pagination, setPagination] = useState<Pagination>({
+    skip: 0,
+    limit: 20,
+  });
+
+  const { data, isLoading } = useFindPatient({
+    ...pagination,
+    count: true,
+    type: "ENTRY",
+  });
+
   return (
     <ClinicCard className="mt-4">
-      <BaseTable<TaskEntity>
+      <BaseTable<PatientEntity>
         columns={[
           {
             key: "queue",
             name: "No",
             renderCell: (row) => (
               <Cell>
-                <p>{row.queue}</p>
+                <p>{row.mr[0]?.queue}</p>
               </Cell>
             ),
           },
           {
             key: "name",
             name: "Nama",
-            renderCell: (row) => (
-              <Cell className="gap-3">
-                <div className="flex items-center justify-center w-12 h-12 shrink-0 bg-border rounded-full border-2">
-                  <p>PA</p>
-                </div>
-                <div>
-                  <p className="font-bold">{row.patient.name}</p>
-                  <ClinicPatientVitals
-                    vitals={[
-                      {
-                        icon: <Stethoscope size={16} />,
-                        value: `${row.patient.vitals.sistole} / ${row.patient.vitals.diastole}`,
-                        label: "Sistole / Diastole",
-                      },
-                      {
-                        icon: <HeartPulse size={16} />,
-                        value: row.patient.vitals.pulse,
-                        label: "Detak Jantung",
-                      },
-                      {
-                        icon: <LungOutlineIcon size={18} />,
-                        value: row.patient.vitals.respiration,
-                        label: "Respirasi",
-                      },
-                      {
-                        icon: <BloodBagOutlineIcon size={18} />,
-                        value: row.patient.bloodType,
-                        label: "Golongan Darah",
-                      },
-                    ]}
-                  />
-                </div>
-              </Cell>
-            ),
+            renderCell: (row) => {
+              const vitalSign = row.mr[0]?.vitalSign[0] as
+                | VitalSignEntity
+                | undefined;
+
+              return (
+                <Cell className="gap-3">
+                  <div className="flex items-center justify-center w-12 h-12 shrink-0 bg-border rounded-full border-2">
+                    <p>PA</p>
+                  </div>
+                  <div>
+                    <p className="font-bold">{row.fullname}</p>
+                    <ClinicPatientVitals
+                      vitals={[
+                        {
+                          icon: <Stethoscope size={16} />,
+                          value: vitalSign
+                            ? `${vitalSign.systole} / ${vitalSign.diastole}`
+                            : "-",
+                          label: "Sistole / Diastole",
+                        },
+                        {
+                          icon: <HeartPulse size={16} />,
+                          value: vitalSign ? vitalSign.pulse : "-",
+                          label: "Detak Jantung",
+                        },
+                        {
+                          icon: <LungOutlineIcon size={18} />,
+                          value: vitalSign ? vitalSign.respiration : "-",
+                          label: "Respirasi",
+                        },
+                        {
+                          icon: <BloodBagOutlineIcon size={18} />,
+                          value: row.blood.toLocaleUpperCase(),
+                          label: "Golongan Darah",
+                        },
+                      ]}
+                    />
+                  </div>
+                </Cell>
+              );
+            },
           },
           {
             key: "status",
             name: "Status",
             renderCell: (row) => (
               <Cell className="gap-2">
-                <Badge className="text-sm cursor-default">{row.status}</Badge>
+                <Badge className="text-sm cursor-default">
+                  {row.mr[0]?.status}
+                </Badge>
               </Cell>
             ),
           },
@@ -88,7 +115,9 @@ export function ClinicDoctorTable(): JSX.Element {
                 <TooltipProvider>
                   <Tooltip>
                     <Link
-                      href={`/clinic/${clinicId as string}/mr/${row.patient.medicalRecordNumber}/diagnose`}
+                      href={`/clinic/${clinicId as string}/mr/${
+                        row.norm
+                      }/diagnose`}
                     >
                       <TooltipTrigger className="h-min p-2">
                         <Stethoscope size={20} />
@@ -101,37 +130,13 @@ export function ClinicDoctorTable(): JSX.Element {
             ),
           },
         ]}
-        pagination={{
-          skip: 0,
-          limit: 20,
+        isLoading={isLoading}
+        onPaginationChange={(currentPagination) => {
+          setPagination(currentPagination);
         }}
-        rows={[
-          {
-            queue: "A-4",
-            patient: {
-              id: "123121ee",
-              name: "Pasien 1",
-              nik: "2024.04.00006",
-              medicalRecordNumber: "2024.04.00006",
-              phoneNumber: "082228883006",
-              address: "Keputih Tegal Timur",
-              sex: "Male",
-              bloodType: "O",
-              vitals: {
-                height: 182,
-                weight: 64,
-                allergy: "Gak Ada",
-                sistole: 122,
-                diastole: 132,
-                temperature: 37,
-                respiration: 128,
-                pulse: 90,
-              },
-            },
-            status: "Sedang Mengantri",
-          },
-        ]}
-        totalRows={80}
+        pagination={pagination}
+        rows={data?.data ?? []}
+        totalRows={data?.count}
       />
     </ClinicCard>
   );

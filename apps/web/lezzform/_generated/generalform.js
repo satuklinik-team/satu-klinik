@@ -5,7 +5,7 @@ import {
   FormItem as s,
   FormLabel as l,
   FormControl as i,
-  FormMessage as c,
+  FormMessage as u,
   Input as d,
   PhoneNumberInput as C,
   NumberInput as S,
@@ -17,9 +17,9 @@ import {
   Building as B,
   Phone as N,
 } from "lucide-react";
-import * as u from "react";
+import * as c from "react";
 import { jsx as o, jsxs as a } from "react/jsx-runtime";
-var v = n.object({
+var f = n.object({
     licenseNumber: n.string(),
     clinicId: n.string(),
     clinicName: n.string(),
@@ -31,25 +31,25 @@ var v = n.object({
         (m) =>
           !m ||
           /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/.test(m),
-        { message: "Invalid phone number format" },
+        { message: "Invalid phone number format" }
       ),
     address: n.string(),
     price: n.coerce.number(),
   }),
-  h = "AcDGv9IzNL5PecLyjWEv",
-  q = ({
+  h = "LAzCWUfQrT7cvAwMZQNj",
+  D = ({
     onSubmit: m,
     onError: F,
     onSuccess: z,
     defaultValues: g,
-    onAction: P,
-    formProps: f,
+    onAction: k,
+    formProps: v,
   }) => {
-    let b = u.useRef();
-    u.useEffect(() => {
+    let b = c.useRef();
+    c.useEffect(() => {
       m && (b.current = m);
     }, [m]);
-    let R = u.useCallback(async (r, e) => {
+    let R = c.useCallback(async (r, e) => {
       if (b.current) return b.current(r, e);
     }, []);
     return o(
@@ -60,7 +60,7 @@ var v = n.object({
         onSubmit: R,
         onError: F,
         onSuccess: z,
-        zodSchema: v,
+        zodSchema: f,
         mode: "onSubmit",
         children: (r) =>
           a(p.Container, {
@@ -92,7 +92,7 @@ var v = n.object({
                           },
                         }),
                       }),
-                      o(c, {}),
+                      o(u, {}),
                     ],
                   }),
               }),
@@ -119,7 +119,7 @@ var v = n.object({
                           },
                         }),
                       }),
-                      o(c, {}),
+                      o(u, {}),
                     ],
                   }),
               }),
@@ -146,7 +146,7 @@ var v = n.object({
                           },
                         }),
                       }),
-                      o(c, {}),
+                      o(u, {}),
                     ],
                   }),
               }),
@@ -173,7 +173,7 @@ var v = n.object({
                           },
                         }),
                       }),
-                      o(c, {}),
+                      o(u, {}),
                     ],
                   }),
               }),
@@ -197,7 +197,7 @@ var v = n.object({
                           styles: { root: {} },
                         }),
                       }),
-                      o(c, {}),
+                      o(u, {}),
                     ],
                   }),
               }),
@@ -221,7 +221,7 @@ var v = n.object({
                           styles: { root: { marginBottom: 16 } },
                         }),
                       }),
-                      o(c, {}),
+                      o(u, {}),
                     ],
                   }),
               }),
@@ -236,7 +236,7 @@ var v = n.object({
             ],
           }),
       },
-      h,
+      h
     );
   };
-export { q as Form };
+export { D as Form };

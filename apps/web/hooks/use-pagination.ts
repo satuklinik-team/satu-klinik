@@ -1,29 +1,33 @@
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
+
+import type { Pagination } from "@/types";
 
 interface UsePaginationProps {
   totalRows: number;
   skip: number;
   limit: number;
+  onPaginationChange?: (pagination: Pagination) => void;
 }
 
-export function usePagination({ skip, limit, totalRows }: UsePaginationProps) {
-  const [currentSkip, setCurrentSkip] = useState<number>(skip);
-
+export function usePagination({
+  skip,
+  limit,
+  totalRows,
+  onPaginationChange,
+}: UsePaginationProps) {
   const totalPage = Math.ceil(Number(totalRows) / Number(limit));
-  const activePageIndex = Math.floor(currentSkip / limit);
+  const activePageIndex = Math.floor(skip / limit);
 
   const onChangePage = useCallback(
     (value: number) => {
-      setCurrentSkip(value * limit);
+      onPaginationChange?.({ limit, skip: value * limit });
     },
-    [limit],
+    [limit, onPaginationChange]
   );
 
   return {
     totalPage,
     activePageIndex,
-    currentSkip,
-    setCurrentSkip,
     onChangePage,
     limit,
   };

@@ -8,17 +8,17 @@ import {
   FormMessage as c,
   Input as F,
   PasswordInput as g,
-  Button as L,
+  Button as C,
 } from "@lezzform/react";
 import * as n from "react";
 import { jsx as e, jsxs as m } from "react/jsx-runtime";
-var C = a.object({
+var L = a.object({
     id: a.string(),
     token: a.string(),
     username: a.string(),
     password: a.string(),
   }),
-  z = "44Li4v6P6PVkndKwTXmB",
+  z = "KvYh4ssevgP2nnlnRgK0",
   y = ({
     onSubmit: i,
     onError: b,
@@ -42,7 +42,7 @@ var C = a.object({
         onSubmit: R,
         onError: b,
         onSuccess: h,
-        zodSchema: C,
+        zodSchema: L,
         mode: "onSubmit",
         children: (r) =>
           m(p.Container, {
@@ -143,7 +143,7 @@ var C = a.object({
                     ],
                   }),
               }),
-              e(L, {
+              e(C, {
                 type: "submit",
                 className: "w-full",
                 disabled: r.formState.isSubmitting,
@@ -154,7 +154,7 @@ var C = a.object({
             ],
           }),
       },
-      z,
+      z
     );
   };
 export { y as Form };

@@ -1,6 +1,6 @@
 import { z as t } from "zod";
 import {
-  Lezzform as h,
+  Lezzform as d,
   FormField as a,
   FormItem as m,
   FormLabel as l,
@@ -9,9 +9,9 @@ import {
   Attachment as v,
   Dropdown as L,
   Input as P,
-  NumberInput as d,
+  NumberInput as h,
   TwoColumn as k,
-  Button as z,
+  Button as C,
 } from "@lezzform/react";
 import { ChevronDown as w } from "lucide-react";
 import * as s from "react";
@@ -24,7 +24,7 @@ var B = t.object({
     quantity: t.coerce.number(),
     discount: t.coerce.number().optional(),
   }),
-  C = "xzg3E72du34mLYyyz7eK",
+  z = "tTMvX1aoe3O6p8lfy6bC",
   f = ({
     onSubmit: b,
     onError: y,
@@ -41,9 +41,9 @@ var B = t.object({
       if (p.current) return p.current(r, o);
     }, []);
     return e(
-      h,
+      d,
       {
-        id: C,
+        id: z,
         defaultValues: S,
         onSubmit: R,
         onError: y,
@@ -51,7 +51,7 @@ var B = t.object({
         zodSchema: B,
         mode: "onSubmit",
         children: (r) =>
-          n(h.Container, {
+          n(d.Container, {
             children: [
               e(a, {
                 control: r.control,
@@ -148,7 +148,7 @@ var B = t.object({
                     children: [
                       e(l, { children: "Price" }),
                       e(u, {
-                        children: e(d, {
+                        children: e(h, {
                           label: "Price",
                           name: o.name,
                           value: o.value ?? 0,
@@ -171,7 +171,7 @@ var B = t.object({
                     children: [
                       e(l, { isRequired: !0, children: "Quantity" }),
                       e(u, {
-                        children: e(d, {
+                        children: e(h, {
                           label: "Quantity",
                           name: o.name,
                           value: o.value ?? 0,
@@ -195,7 +195,7 @@ var B = t.object({
                     children: [
                       e(l, { children: "Discount" }),
                       e(u, {
-                        children: e(d, {
+                        children: e(h, {
                           label: "Discount",
                           name: o.name,
                           value: o.value ?? 0,
@@ -213,7 +213,7 @@ var B = t.object({
               n(k, {
                 styles: { root: {} },
                 children: [
-                  e(z, {
+                  e(C, {
                     type: "button",
                     className: "w-full",
                     onClick: () => {
@@ -223,7 +223,7 @@ var B = t.object({
                     styles: { root: { backgroundColor: "#2E584F" } },
                     children: "Submit",
                   }),
-                  e(z, {
+                  e(C, {
                     type: "button",
                     className: "w-full",
                     onClick: () => {
@@ -238,7 +238,7 @@ var B = t.object({
             ],
           }),
       },
-      C,
+      z
     );
   };
 export { f as Form };

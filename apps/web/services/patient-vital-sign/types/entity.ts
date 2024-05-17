@@ -1,10 +1,11 @@
-export interface VitalEntity {
+export interface VitalSignEntity {
   height: number;
   weight: number;
-  allergy: string;
-  sistole: number;
+  allergic: string;
+  systole: number;
   diastole: number;
   temperature: number;
   respiration: number;
   pulse: number;
+  pain: string;
 }

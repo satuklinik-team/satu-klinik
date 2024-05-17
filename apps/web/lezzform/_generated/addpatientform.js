@@ -1,31 +1,31 @@
 import { z as a } from "zod";
 import {
-  Lezzform as p,
+  Lezzform as C,
   FormField as l,
   FormItem as t,
   FormLabel as m,
   FormControl as s,
   FormMessage as u,
-  Input as h,
-  Dropdown as R,
-  DatePicker as I,
-  PhoneNumberInput as k,
-  TextArea as y,
-  Divider as N,
+  Input as b,
+  Dropdown as p,
+  DatePicker as q,
+  PhoneNumberInput as I,
+  TextArea as R,
+  Divider as A,
   TwoColumn as g,
-  ThreeColumn as A,
-  Button as v,
+  ThreeColumn as k,
+  Button as y,
   NumberInput as i,
 } from "@lezzform/react";
 import {
-  CreditCard as B,
-  User as T,
+  CreditCard as v,
+  User as N,
   Calendar as w,
   Phone as P,
 } from "lucide-react";
 import * as d from "react";
 import { jsx as o, jsxs as r } from "react/jsx-runtime";
-var x = a.object({
+var T = a.object({
     name: a.string().optional(),
     nik: a.string(),
     fullname: a.string(),
@@ -40,7 +40,7 @@ var x = a.object({
         (c) =>
           !c ||
           /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/.test(c),
-        { message: "Invalid phone number format" },
+        { message: "Invalid phone number format" }
       ),
     address: a.string(),
     height: a.coerce.number(),
@@ -53,34 +53,34 @@ var x = a.object({
     temperature: a.coerce.number(),
     pain: a.string(),
   }),
-  z = "6OZ6CeMfQxysST1kOfnI",
-  G = ({
+  B = "RLSSkF3cC9FmqEgZW4wF",
+  M = ({
     onSubmit: c,
-    onError: C,
+    onError: F,
     onSuccess: L,
-    defaultValues: q,
-    onAction: b,
-    formProps: D,
+    defaultValues: z,
+    onAction: D,
+    formProps: x,
   }) => {
-    let F = d.useRef();
+    let h = d.useRef();
     d.useEffect(() => {
-      c && (F.current = c);
+      c && (h.current = c);
     }, [c]);
     let S = d.useCallback(async (n, e) => {
-      if (F.current) return F.current(n, e);
+      if (h.current) return h.current(n, e);
     }, []);
     return o(
-      p,
+      C,
       {
-        id: z,
-        defaultValues: q,
+        id: B,
+        defaultValues: z,
         onSubmit: S,
-        onError: C,
+        onError: F,
         onSuccess: L,
-        zodSchema: x,
+        zodSchema: T,
         mode: "onSubmit",
         children: (n) =>
-          r(p.Container, {
+          r(C.Container, {
             children: [
               o(l, {
                 control: n.control,
@@ -91,7 +91,7 @@ var x = a.object({
                     children: [
                       o(m, { children: "Nomor Rekam Medis" }),
                       o(s, {
-                        children: o(h, {
+                        children: o(b, {
                           label: "Nomor Rekam Medis",
                           name: e.name,
                           value: e.value ?? "",
@@ -101,7 +101,7 @@ var x = a.object({
                           disabled: e.disabled,
                           styles: { root: {} },
                           prefixAdornment: {
-                            icon: o(B, { size: 18, color: "#000000" }),
+                            icon: o(v, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
@@ -117,7 +117,7 @@ var x = a.object({
                     children: [
                       o(m, { isRequired: !0, children: "NIK" }),
                       o(s, {
-                        children: o(h, {
+                        children: o(b, {
                           label: "NIK",
                           name: e.name,
                           value: e.value ?? "",
@@ -128,7 +128,7 @@ var x = a.object({
                           isRequired: !0,
                           styles: { root: {} },
                           prefixAdornment: {
-                            icon: o(B, { size: 18, color: "#000000" }),
+                            icon: o(v, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
@@ -144,7 +144,7 @@ var x = a.object({
                     children: [
                       o(m, { isRequired: !0, children: "Nama" }),
                       o(s, {
-                        children: o(h, {
+                        children: o(b, {
                           label: "Nama",
                           name: e.name,
                           value: e.value ?? "",
@@ -155,7 +155,7 @@ var x = a.object({
                           isRequired: !0,
                           styles: { root: {} },
                           prefixAdornment: {
-                            icon: o(T, { size: 18, color: "#000000" }),
+                            icon: o(N, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
@@ -171,7 +171,7 @@ var x = a.object({
                     children: [
                       o(m, { isRequired: !0, children: "Jenis Kelamin" }),
                       o(s, {
-                        children: o(R.List, {
+                        children: o(p.List, {
                           label: "Jenis Kelamin",
                           name: e.name,
                           value: e.value,
@@ -197,7 +197,7 @@ var x = a.object({
                     children: [
                       o(m, { isRequired: !0, children: "Golongan Darah" }),
                       o(s, {
-                        children: o(R.List, {
+                        children: o(p.List, {
                           label: "Golongan Darah",
                           name: e.name,
                           value: e.value,
@@ -226,7 +226,7 @@ var x = a.object({
                     children: [
                       o(m, { isRequired: !0, children: "Tanggal Lahir" }),
                       o(s, {
-                        children: o(I, {
+                        children: o(q, {
                           label: "Tanggal Lahir",
                           name: e.name,
                           value: e.value,
@@ -253,7 +253,7 @@ var x = a.object({
                     children: [
                       o(m, { isRequired: !0, children: "Nomor Telepon" }),
                       o(s, {
-                        children: o(k, {
+                        children: o(I, {
                           label: "Nomor Telepon",
                           name: e.name,
                           value: e.value ?? "",
@@ -280,7 +280,7 @@ var x = a.object({
                     children: [
                       o(m, { isRequired: !0, children: "Alamat" }),
                       o(s, {
-                        children: o(y, {
+                        children: o(R, {
                           label: "Alamat",
                           name: e.name,
                           value: e.value ?? "",
@@ -296,7 +296,7 @@ var x = a.object({
                     ],
                   }),
               }),
-              o(N.Solid, { styles: { root: {} }, size: 2, color: "#E8E8E8" }),
+              o(A.Solid, { styles: { root: {} }, size: 2, color: "#E8E8E8" }),
               r(g, {
                 styles: { root: {} },
                 children: [
@@ -358,7 +358,7 @@ var x = a.object({
                     children: [
                       o(m, { isRequired: !0, children: "Alergi" }),
                       o(s, {
-                        children: o(h, {
+                        children: o(b, {
                           label: "Alergi",
                           name: e.name,
                           value: e.value ?? "",
@@ -427,7 +427,7 @@ var x = a.object({
                   }),
                 ],
               }),
-              r(A, {
+              r(k, {
                 styles: { root: {} },
                 children: [
                   o(l, {
@@ -512,7 +512,7 @@ var x = a.object({
                     children: [
                       o(m, { isRequired: !0, children: "Keluhan" }),
                       o(s, {
-                        children: o(y, {
+                        children: o(R, {
                           label: "Keluhan",
                           name: e.name,
                           value: e.value ?? "",
@@ -531,23 +531,17 @@ var x = a.object({
               r(g, {
                 styles: { root: {} },
                 children: [
-                  o(v, {
-                    type: "button",
+                  o(y, {
+                    type: "reset",
                     className: "w-full",
-                    onClick: () => {
-                      b?.["button-1713872929774"] &&
-                        b?.["button-1713872929774"](n);
-                    },
                     styles: { root: { backgroundColor: "rgb(239, 68, 68)" } },
                     children: "Batalkan",
                   }),
-                  o(v, {
-                    type: "button",
+                  o(y, {
+                    type: "submit",
                     className: "w-full",
-                    onClick: () => {
-                      b?.["button-1713872927911"] &&
-                        b?.["button-1713872927911"](n);
-                    },
+                    disabled: n.formState.isSubmitting,
+                    isLoading: n.formState.isSubmitting,
                     styles: { root: { backgroundColor: "#2E584F" } },
                     children: "Daftar",
                   }),
@@ -556,7 +550,7 @@ var x = a.object({
             ],
           }),
       },
-      z,
+      B
     );
   };
-export { G as Form };
+export { M as Form };

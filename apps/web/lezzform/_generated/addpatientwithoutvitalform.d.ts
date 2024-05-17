@@ -36,11 +36,7 @@ declare const zodFormSchema: z.ZodObject<
   }
 >;
 export type FormSchema = z.infer<typeof zodFormSchema>;
-type OnActionFn = (form: LezzformReturn<FormSchema>) => unknown;
-type OnAction = {
-  "button-1713924193321": OnActionFn;
-  "button-1713924197611": OnActionFn;
-};
+type OnAction = {};
 interface Props {
   onSubmit?: (form: LezzformReturn<FormSchema>, values: FormSchema) => unknown;
   defaultValues?: FormSchema;
