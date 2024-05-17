@@ -10,21 +10,16 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import type { PatientEntity } from "@/services/patient/types/entity";
-import type { FormatterCellProps } from "@/types";
 import { getWhatsappUrl } from "@/utils";
 
-export function ClinicPatientActionsCell({
-  row,
-}: FormatterCellProps): JSX.Element {
+export function ClinicPatientActionsCell(row: PatientEntity): JSX.Element {
   const { clinicId } = useParams();
-
-  const typedRow = row as PatientEntity;
 
   return (
     <Cell className="gap-2">
       <TooltipProvider>
         <Tooltip>
-          <Link href={getWhatsappUrl(typedRow.phoneNumber)}>
+          <Link href={getWhatsappUrl(row.phone)}>
             <TooltipTrigger className="h-min p-2">
               <MessageCircle className="text-green-500" size={20} />
             </TooltipTrigger>
@@ -32,11 +27,7 @@ export function ClinicPatientActionsCell({
           <TooltipContent>Kontak WA</TooltipContent>
         </Tooltip>
         <Tooltip>
-          <Link
-            href={`/clinic/${clinicId as string}/patient/${
-              typedRow.medicalRecordNumber
-            }`}
-          >
+          <Link href={`/clinic/${clinicId as string}/patient/${row.norm}`}>
             <TooltipTrigger className="h-min p-2">
               <Eye size={20} />
             </TooltipTrigger>
@@ -44,11 +35,7 @@ export function ClinicPatientActionsCell({
           <TooltipContent>Lihat Detail</TooltipContent>
         </Tooltip>
         <Tooltip>
-          <Link
-            href={`/clinic/${clinicId as string}/patient/${
-              typedRow.medicalRecordNumber
-            }/edit`}
-          >
+          <Link href={`/clinic/${clinicId as string}/patient/${row.norm}/edit`}>
             <TooltipTrigger className="h-min p-2">
               <Edit size={20} />
             </TooltipTrigger>

@@ -1,13 +1,28 @@
 "use client";
 
 // import ReactApexChart from "react-apexcharts";
+import { useState } from "react";
+
 import { ClinicCard } from "@/features/clinic/components/ui/card";
 import { QueueCard } from "@/features/clinic-patient/components/shared/queue-card";
+import { useFindPatient } from "@/services/patient/hooks/use-find-patient";
+import type { Pagination } from "@/types";
 
 import { ClinicDashboardUsersTable } from "../components/table";
 // import { ClinicServicesCard } from "@/features/clinic/components/ui/services-card";
 
 export function ClinicDashboardPage(): JSX.Element {
+  const [pagination] = useState<Pagination>({
+    skip: 0,
+    limit: 20,
+  });
+
+  const { data } = useFindPatient({
+    ...pagination,
+    count: true,
+    type: "ENTRY",
+  });
+
   return (
     <div className="h-full">
       <div className="mb-6 flex flex-col gap-2">
@@ -123,15 +138,9 @@ export function ClinicDashboardPage(): JSX.Element {
           className="flex-1 flex flex-col gap-2 border-sky-500"
           title="Antrian"
         >
-          <QueueCard
-            patient={{
-              name: "Darren Christian",
-              medicalRecordNumber: "2024.04.00012",
-              address: "Keputih Tegal Timur",
-            }}
-            queue="A-4"
-            status="Panggilan"
-          />
+          {data?.data.map((item, index) => (
+            <QueueCard isActive={index === 0} key={item.id} {...item} />
+          ))}
         </ClinicCard>
         <ClinicCard
           borderPosition="left"

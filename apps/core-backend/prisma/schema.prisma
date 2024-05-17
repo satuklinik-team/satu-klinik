@@ -34,14 +34,13 @@ model Patient {
 
 model Patient_medical_records {
   id           String                 @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  norm         String
   visitAt      DateTime               @default(now())
   visitLabel   String?
   queue        String?
   doctor       String
   status       String?                @default("e1")
   patientId    String?                @db.Uuid
-  poliId       String?
+  poliId       String?                @db.Uuid
   assessment   Patient_assessment[]
   Patient      Patient?               @relation(fields: [patientId], references: [id])
   poli         Poli?                  @relation(fields: [poliId], references: [id])
@@ -63,7 +62,6 @@ model Patient_vital_sign {
   cholesterol               Decimal?                 @default(0)
   pain                      String?
   allergic                  String?                  @default("n/a")
-  visitAt                   DateTime?                @default(now())
   deletedAt                 DateTime?
   patient_medical_recordsId String?                  @db.Uuid
   Patient_medical_records   Patient_medical_records? @relation(fields: [patient_medical_recordsId], references: [id])
@@ -76,7 +74,10 @@ model Patient_assessment {
   assessment                String                           @default("none")
   plan                      String                           @default("none")
   diagnose                  String                           @default("none")
-  icd10                     String                           @default("-")
+  icd10Code                 String?
+  icd10                     ICD10?                           @relation(fields: [icd10Code], references: [code])
+  icd9CMCode                String?
+  icd9CM                    ICD9CM?                          @relation(fields: [icd9CMCode], references: [code])
   deletedAt                 DateTime?
   patient_medical_recordsId String?                          @db.Uuid
   Patient_medical_records   Patient_medical_records?         @relation(fields: [patient_medical_recordsId], references: [id])
@@ -105,30 +106,25 @@ model Patient_prescription {
   Patient_medical_records   Patient_medical_records? @relation(fields: [patient_medical_recordsId], references: [id])
 }
 
-model Doctor_Task {
-  id         Int         @id @default(autoincrement())
-  doctorId   String?
-  status     TASK_STATUS @default(TODO)
-  url        String?
-  lastViewAt DateTime?
-  createdAt  DateTime?   @default(now()) @db.Timestamptz(6)
-}
-
 model Pharmacy_Task {
   id               Int       @id @default(autoincrement())
   norm             String
   assessmentReffId String?
   status           String?
   pharmacist       String?
+  createdDate      String?
   createdAt        DateTime? @default(now()) @db.Timestamptz(6)
   deletedAt        DateTime?
   clinicsId        String?   @db.Uuid
   Clinics          Clinics?  @relation(fields: [clinicsId], references: [id])
+
+  @@index(fields: [clinicsId, assessmentReffId])
 }
 
 model Poli {
-  id                      String                    @id
+  id                      String                    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   color                   String?                   @default("#87CEEB")
+  currentDate             String?
   counter                 Int?                      @default(0)
   name                    String
   alias                   String?                   @default("A")
@@ -142,16 +138,19 @@ model Poli {
 }
 
 model Departments {
-  id        String    @id
-  color     String?   @default("#87CEEB")
-  counter   Int?      @default(0)
-  name      String    @default("A")
-  alias     String
-  isActive  Boolean?  @default(false)
-  createdAt DateTime? @default(now()) @db.Timestamptz(6)
-  deletedAt DateTime?
-  usersId   String?   @db.Uuid
-  manager   Users?    @relation(fields: [usersId], references: [id])
+  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  color       String?   @default("#87CEEB")
+  currentDate String?
+  counter     Int?      @default(0)
+  name        String    @default("A")
+  alias       String
+  isActive    Boolean?  @default(false)
+  createdAt   DateTime? @default(now()) @db.Timestamptz(6)
+  deletedAt   DateTime?
+  clinicsId   String?   @db.Uuid
+  Clinics     Clinics?  @relation(fields: [clinicsId], references: [id])
+  usersId     String?   @db.Uuid
+  manager     Users?    @relation(fields: [usersId], references: [id])
 }
 
 model Queue_history {
@@ -220,7 +219,7 @@ model Notifications {
 }
 
 model Setting {
-  id        String   @id
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name      String
   type      String
   value     String?
@@ -252,6 +251,7 @@ model Clinics {
   Suppliers        Suppliers[]
   users            Users[]
   operationalHours regularHours[]
+  Departments      Departments[]
 }
 
 model regularHours {
@@ -419,15 +419,17 @@ model Suppliers {
 }
 
 model ICD10 {
-  code String @id
-  strt String
-  sab  String
+  code               String               @id
+  strt               String
+  sab                String
+  Patient_assessment Patient_assessment[]
 }
 
-model ICD10CM {
-  code String @id
-  str  String
-  sab  String
+model ICD9CM {
+  code               String               @id
+  str                String
+  sab                String
+  Patient_assessment Patient_assessment[]
 }
 
 enum transactions_status {

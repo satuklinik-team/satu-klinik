@@ -5,7 +5,7 @@ export interface ClinicEntity {
   address: string;
   phone: string;
   _count: {
-    Poli: number;
+    Departments: number;
     users: number;
     Patient: number;
     Category: number;

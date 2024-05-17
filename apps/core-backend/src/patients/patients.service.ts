@@ -2,16 +2,23 @@ import { Injectable } from '@nestjs/common';
 import { CreatePatientDto } from './dto/create-patient.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Prisma } from '@prisma/client';
-import { FindPatientsByClinicsIdDto } from './dto/find-patient-by-clinic-id-dto';
+import {
+  FindAllPatientTypes,
+  FindAllPatientsDto,
+} from './dto/find-all-patients-dto';
 import { CannotAccessClinicException } from 'src/exceptions/unauthorized/cannot-access-clinic';
+import { DeletePatientDto } from './dto/delete-patient.dto';
+import { JwtPayload } from 'src/auth/types';
+import { FindAllService } from 'src/find-all/find-all.service';
 
 @Injectable()
 export class PatientsService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly findAllService: FindAllService,
+  ) {}
 
   async create(dto: CreatePatientDto) {
-    await this.checkAuthorized(dto.usersId, dto.clinicsId);
-
     const data = await this.prismaService.patient.create({
       data: {
         norm: await this.generateMedicalRecordNorm(dto.clinicsId),
@@ -31,27 +38,42 @@ export class PatientsService {
     return data;
   }
 
-  async findPatientsByClinicsId(
-    dto: Prisma.PatientFindManyArgs['select'],
-    searchQuery: FindPatientsByClinicsIdDto,
-  ) {
-    const data = await this.prismaService.patient.findMany({
-      where: this._findAllFactory(searchQuery.search, searchQuery.clinicsId),
-      select: {
-        norm: true,
-        nik: true,
-        fullname: true,
-        sex: true,
-        blood: true,
-        birthAt: true,
-        phone: true,
-        address: true,
-        clinicsId: true,
-        ...dto,
-      },
+  async findAll(dto: FindAllPatientsDto) {
+    const args: Prisma.PatientFindManyArgs = {
+      where: this._findAllWhereFactory(dto),
+      select: this._findAllSelectFactory(),
+    };
+
+    return await this.findAllService.findAll({
+      table: this.prismaService.patient,
+      ...args,
+      ...dto,
+    });
+  }
+
+  async delete(dto: DeletePatientDto) {
+    await this.canModifyPatient(dto.id, dto.clinicsId);
+
+    const data = await this.prismaService.patient.delete({
+      where: { id: dto.id },
     });
 
     return data;
+  }
+
+  async canModifyPatient(patientId: string, clinicsId: string) {
+    const patient = await this.prismaService.patient.findFirst({
+      where: {
+        id: patientId,
+      },
+      select: {
+        clinicsId: true,
+      },
+    });
+
+    if (patient.clinicsId !== clinicsId) {
+      throw new CannotAccessClinicException();
+    }
   }
 
   async generateMedicalRecordNorm(clinicsId: string) {
@@ -62,7 +84,7 @@ export class PatientsService {
       where: {
         clinicsId,
         norm: {
-          contains: `${yearString}.${monthString}`,
+          startsWith: `${yearString}.${monthString}`,
         },
       },
       _max: {
@@ -82,57 +104,80 @@ export class PatientsService {
     return rm;
   }
 
-  private _findAllFactory(
-    search: string,
-    clinicsId: string,
+  private _findAllWhereFactory(
+    dto: FindAllPatientsDto,
   ): Prisma.PatientFindManyArgs['where'] {
-    if (!search) {
+    if (!dto.search) {
+      if (dto.type == FindAllPatientTypes.ALL) {
+        return {};
+      }
+      const now = new Date();
+      const status = dto.type.at(0).toLowerCase() + '1';
+
       return {
-        clinicsId,
+        clinicsId: dto.clinicsId,
+        mr: {
+          some: {
+            status,
+            visitLabel: now.toLocaleDateString(),
+          },
+        },
       };
     }
     return {
-      clinicsId,
+      clinicsId: dto.clinicsId,
       OR: [
         {
+          nik: {
+            startsWith: dto.search,
+          },
+        },
+        {
           fullname: {
-            startsWith: search,
+            startsWith: dto.search,
           },
         },
         {
           norm: {
-            startsWith: search,
+            startsWith: dto.search,
           },
         },
         {
           address: {
-            startsWith: search,
+            startsWith: dto.search,
+          },
+        },
+        {
+          phone: {
+            startsWith: dto.search,
           },
         },
       ],
     };
   }
 
-  async checkAuthorized(usersId: string, clinicsId: string) {
-    const user = await this.prismaService.users.findFirst({
-      where: {
-        id: usersId,
-      },
-    });
-
-    if (clinicsId !== user.clinicsId) {
-      const clinic = await this.prismaService.clinics.findFirst({
-        where: {
-          id: clinicsId,
-        },
+  private _findAllSelectFactory(): Prisma.PatientFindManyArgs['select'] {
+    return {
+      id: true,
+      norm: true,
+      nik: true,
+      fullname: true,
+      sex: true,
+      blood: true,
+      birthAt: true,
+      phone: true,
+      address: true,
+      clinicsId: true,
+      mr: {
+        orderBy: { visitAt: 'desc' },
+        take: 1,
         select: {
-          Accounts: true,
+          id: true,
+          queue: true,
+          status: true,
+          vitalSign: { orderBy: { id: 'desc' }, take: 1 },
         },
-      });
-
-      if (clinic.Accounts.usersId !== usersId) {
-        throw new CannotAccessClinicException();
-      }
-    }
+      },
+    };
   }
 }

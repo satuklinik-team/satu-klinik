@@ -11,9 +11,9 @@ import {
   TextArea as v,
   Dropdown as y,
   PasswordInput as h,
-  Spacer as P,
-  TwoColumn as k,
-  Button as z,
+  Spacer as k,
+  TwoColumn as P,
+  Button as C,
 } from "@lezzform/react";
 import { UserRound as A, Mail as B } from "lucide-react";
 import * as i from "react";
@@ -27,8 +27,8 @@ var q = a.object({
     password: a.string().max(14).min(6),
     confirmPassword: a.string().max(14).min(6),
   }),
-  C = "XZPTG7nXMWnT9SYQdg77",
-  x = ({
+  z = "OWUbpW5CCjtctCQphR3i",
+  O = ({
     onSubmit: d,
     onError: R,
     onSuccess: g,
@@ -46,7 +46,7 @@ var q = a.object({
     return e(
       p,
       {
-        id: C,
+        id: z,
         defaultValues: w,
         onSubmit: L,
         onError: R,
@@ -235,11 +235,11 @@ var q = a.object({
                     ],
                   }),
               }),
-              e(P, { styles: { root: {} }, size: 16 }),
-              n(k, {
+              e(k, { styles: { root: {} }, size: 16 }),
+              n(P, {
                 styles: { root: {} },
                 children: [
-                  e(z, {
+                  e(C, {
                     type: "button",
                     className: "w-full",
                     onClick: () => {
@@ -249,7 +249,7 @@ var q = a.object({
                     styles: { root: { backgroundColor: "#2E584F" } },
                     children: "Submit",
                   }),
-                  e(z, {
+                  e(C, {
                     type: "button",
                     className: "w-full",
                     onClick: () => {
@@ -264,7 +264,7 @@ var q = a.object({
             ],
           }),
       },
-      C
+      z
     );
   };
-export { x as Form };
+export { O as Form };
