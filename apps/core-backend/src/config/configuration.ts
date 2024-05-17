@@ -23,9 +23,9 @@ export default () => ({
     client_secret: process.env.OAUTH_CLIENT_SECRET,
   },
   minio: {
-    endpoint: 'localhost',
+    endpoint: process.env.MINIO_ENDPOINT,
     public_endpoint: process.env.MINIO_PUBLIC_ENDPOINT,
-    port: 9000,
+    port: process.env.MINIO_PORT,
     user: process.env.MINIO_USER,
     password: process.env.MINIO_PASSWORD,
     bucket: process.env.MINIO_BUCKET,

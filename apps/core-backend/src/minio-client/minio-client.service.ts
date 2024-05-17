@@ -24,7 +24,7 @@ export class MinioClientService {
     file: BufferedFile,
     baseBucket: string = this.baseBucket,
   ) {
-    if (!(file.mimetype.includes('jpeg') || file.mimetype.includes('png'))) {
+    if (!file.mimetype.startsWith('image')) {
       throw new HttpException('Error uploading file', HttpStatus.BAD_REQUEST);
     }
 
