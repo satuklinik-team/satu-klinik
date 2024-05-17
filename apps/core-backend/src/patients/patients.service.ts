@@ -10,6 +10,7 @@ import { CannotAccessClinicException } from 'src/exceptions/unauthorized/cannot-
 import { DeletePatientDto } from './dto/delete-patient.dto';
 import { JwtPayload } from 'src/auth/types';
 import { FindAllService } from 'src/find-all/find-all.service';
+import { GetPatientByIdDto } from './dto/get-patient-by-id-dto';
 
 @Injectable()
 export class PatientsService {
@@ -48,6 +49,17 @@ export class PatientsService {
       table: this.prismaService.patient,
       ...args,
       ...dto,
+    });
+  }
+
+  async getPatientById(dto: GetPatientByIdDto) {
+    this.canModifyPatient(dto.id, dto.clinicsId);
+
+    return await this.prismaService.patient.findFirst({
+      where: {
+        id: dto.id,
+      },
+      select: this._findAllSelectFactory(),
     });
   }
 

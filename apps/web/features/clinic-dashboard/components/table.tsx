@@ -1,6 +1,7 @@
 "use client";
 
 import { MessageCircle } from "lucide-react";
+import Link from "next/link";
 
 import { BaseTable } from "@/components/shared/table/base-table";
 import { Cell } from "@/components/shared/table/cell";
@@ -11,7 +12,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import type { UserEntity } from "@/services/user/types/entity";
-import { redirectToWhatsapp } from "@/utils";
+import { getWhatsappUrl } from "@/utils";
 
 export function ClinicDashboardUsersTable(): JSX.Element {
   return (
@@ -26,7 +27,7 @@ export function ClinicDashboardUsersTable(): JSX.Element {
                 <p>AD</p>
               </div>
               <div>
-                <p className="font-bold">{row.fullName}</p>
+                <p className="font-bold">{row.fullname}</p>
                 <p className="font-normal text-muted-foreground">{row.email}</p>
               </div>
             </Cell>
@@ -39,14 +40,11 @@ export function ClinicDashboardUsersTable(): JSX.Element {
             <Cell className="gap-2">
               <TooltipProvider>
                 <Tooltip>
-                  <TooltipTrigger
-                    className="h-min p-2"
-                    onClick={() => {
-                      redirectToWhatsapp(row.phoneNumber);
-                    }}
-                  >
-                    <MessageCircle className="text-green-500" size={20} />
-                  </TooltipTrigger>
+                  <Link href={getWhatsappUrl(row.phone)}>
+                    <TooltipTrigger className="h-min p-2">
+                      <MessageCircle className="text-green-500" size={20} />
+                    </TooltipTrigger>
+                  </Link>
                   <TooltipContent>Kontak WA</TooltipContent>
                 </Tooltip>
               </TooltipProvider>
@@ -61,9 +59,9 @@ export function ClinicDashboardUsersTable(): JSX.Element {
       rows={[
         {
           id: "123121ee",
-          fullName: "Admin Demo",
+          fullname: "Admin Demo",
           email: "admin@demo.id",
-          phoneNumber: "082228883006",
+          phone: "082228883006",
           role: "Admin",
           status: "Active",
         },

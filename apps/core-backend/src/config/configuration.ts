@@ -11,6 +11,7 @@ export default () => ({
     url: process.env.SATU_SEHAT_URL,
     organization_id: process.env.SATU_SEHAT_ORGANIZATION_ID,
     auth_url: process.env.SATU_SEHAT_AUTH_URL,
+    kfa_url: process.env.SATU_SEHAT_KFA_URL,
   },
   http: {
     timeout: 5000,
@@ -20,5 +21,13 @@ export default () => ({
     access_token: '',
     client_id: process.env.OAUTH_CLIENT_ID,
     client_secret: process.env.OAUTH_CLIENT_SECRET,
+  },
+  minio: {
+    endpoint: process.env.MINIO_ENDPOINT,
+    public_endpoint: process.env.MINIO_PUBLIC_ENDPOINT,
+    port: process.env.MINIO_PORT,
+    user: process.env.MINIO_USER,
+    password: process.env.MINIO_PASSWORD,
+    bucket: process.env.MINIO_BUCKET,
   },
 });

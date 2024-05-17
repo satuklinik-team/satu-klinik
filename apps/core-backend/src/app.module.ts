@@ -13,7 +13,6 @@ import { PatientsModule } from './patients/patients.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { SatusehatOauthModule } from './satusehat-oauth/satusehat-oauth.module';
 import { SatusehatOrganizationModule } from './satusehat-organization/satusehat-organization.module';
-import { SatusehatModule } from './satusehat/satusehat.module';
 import { TokenModule } from './token/token.module';
 import { UsersModule } from './users/users.module';
 import { PatientAssessmentModule } from './patient-assessment/patient-assessment.module';
@@ -23,6 +22,11 @@ import { FindAllService } from './find-all/find-all.service';
 import { FindAllModule } from './find-all/find-all.module';
 import { SettingsModule } from './settings/settings.module';
 import { DepartmentsModule } from './departments/departments.module';
+import { SatusehatKfaModule } from './satusehat-kfa/satusehat-kfa.module';
+import { SatusehatTestModule } from './satusehat-test/satusehat-test.module';
+import { MedicineModule } from './medicine/medicine.module';
+import { MedicineCategoryModule } from './medicine-category/medicine-category.module';
+import { MinioClientModule } from './minio-client/minio-client.module';
 
 @Module({
   imports: [
@@ -33,7 +37,6 @@ import { DepartmentsModule } from './departments/departments.module';
     TokenModule,
     CryptoModule,
     UsersModule,
-    SatusehatModule,
     SatusehatOrganizationModule,
     ClinicsModule,
     SatusehatOauthModule,
@@ -46,6 +49,11 @@ import { DepartmentsModule } from './departments/departments.module';
     FindAllModule,
     SettingsModule,
     DepartmentsModule,
+    SatusehatKfaModule,
+    SatusehatTestModule,
+    MedicineModule,
+    MedicineCategoryModule,
+    MinioClientModule,
   ],
   providers: [{ provide: APP_GUARD, useClass: AccessTokenGuard }],
 })

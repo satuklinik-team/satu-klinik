@@ -5,8 +5,4 @@ export class FindAllClinicsDto extends PaginationDto {
   @IsString()
   @IsOptional()
   usersId?: string;
-
-  @IsString()
-  @IsOptional()
-  clinicsId?: string;
 }
