@@ -1,25 +1,25 @@
 import { z as a } from "zod";
 import {
-  Lezzform as p,
-  FormField as t,
+  Lezzform as b,
+  FormField as m,
   FormItem as l,
-  FormLabel as m,
+  FormLabel as t,
   FormControl as s,
   FormMessage as u,
-  Input as F,
-  EmailInput as S,
-  TextArea as v,
-  Dropdown as y,
-  PasswordInput as h,
-  Spacer as k,
+  Input as p,
+  EmailInput as L,
+  TextArea as w,
+  Dropdown as v,
+  PasswordInput as F,
+  Spacer as y,
   TwoColumn as P,
-  Button as C,
+  Button as h,
 } from "@lezzform/react";
-import { UserRound as A, Mail as B } from "lucide-react";
+import { UserRound as A, Mail as k } from "lucide-react";
 import * as i from "react";
 import { jsx as e, jsxs as n } from "react/jsx-runtime";
-var q = a.object({
-    fullName: a.string(),
+var B = a.object({
+    fullname: a.string(),
     email: a.string().email(),
     phone: a.string(),
     address: a.string(),
@@ -27,44 +27,44 @@ var q = a.object({
     password: a.string().max(14).min(6),
     confirmPassword: a.string().max(14).min(6),
   }),
-  z = "OWUbpW5CCjtctCQphR3i",
-  O = ({
-    onSubmit: d,
-    onError: R,
-    onSuccess: g,
-    defaultValues: w,
-    onAction: c,
+  R = "2J1DamYzvycoed2Fnb9x",
+  D = ({
+    onSubmit: c,
+    onError: z,
+    onSuccess: C,
+    defaultValues: g,
+    onAction: q,
     formProps: I,
   }) => {
-    let b = i.useRef();
+    let d = i.useRef();
     i.useEffect(() => {
-      d && (b.current = d);
-    }, [d]);
-    let L = i.useCallback(async (r, o) => {
-      if (b.current) return b.current(r, o);
+      c && (d.current = c);
+    }, [c]);
+    let S = i.useCallback(async (r, o) => {
+      if (d.current) return d.current(r, o);
     }, []);
     return e(
-      p,
+      b,
       {
-        id: z,
-        defaultValues: w,
-        onSubmit: L,
-        onError: R,
-        onSuccess: g,
-        zodSchema: q,
+        id: R,
+        defaultValues: g,
+        onSubmit: S,
+        onError: z,
+        onSuccess: C,
+        zodSchema: B,
         mode: "onSubmit",
         children: (r) =>
-          n(p.Container, {
+          n(b.Container, {
             children: [
-              e(t, {
+              e(m, {
                 control: r.control,
-                name: "fullName",
+                name: "fullname",
                 render: ({ field: o }) =>
                   n(l, {
                     children: [
-                      e(m, { isRequired: !0, children: "Nama Lengkap" }),
+                      e(t, { isRequired: !0, children: "Nama Lengkap" }),
                       e(s, {
-                        children: e(F, {
+                        children: e(p, {
                           label: "Nama Lengkap",
                           name: o.name,
                           value: o.value ?? "",
@@ -83,15 +83,15 @@ var q = a.object({
                     ],
                   }),
               }),
-              e(t, {
+              e(m, {
                 control: r.control,
                 name: "email",
                 render: ({ field: o }) =>
                   n(l, {
                     children: [
-                      e(m, { isRequired: !0, children: "Email" }),
+                      e(t, { isRequired: !0, children: "Email" }),
                       e(s, {
-                        children: e(S, {
+                        children: e(L, {
                           label: "Email",
                           name: o.name,
                           value: o.value ?? "",
@@ -102,7 +102,7 @@ var q = a.object({
                           isRequired: !0,
                           styles: { root: {} },
                           prefixAdornment: {
-                            icon: e(B, { size: 18, color: "#000000" }),
+                            icon: e(k, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
@@ -110,15 +110,15 @@ var q = a.object({
                     ],
                   }),
               }),
-              e(t, {
+              e(m, {
                 control: r.control,
                 name: "phone",
                 render: ({ field: o }) =>
                   n(l, {
                     children: [
-                      e(m, { isRequired: !0, children: "Nomor Telepon" }),
+                      e(t, { isRequired: !0, children: "Nomor Telepon" }),
                       e(s, {
-                        children: e(F, {
+                        children: e(p, {
                           label: "Nomor Telepon",
                           name: o.name,
                           value: o.value ?? "",
@@ -134,15 +134,15 @@ var q = a.object({
                     ],
                   }),
               }),
-              e(t, {
+              e(m, {
                 control: r.control,
                 name: "address",
                 render: ({ field: o }) =>
                   n(l, {
                     children: [
-                      e(m, { isRequired: !0, children: "Alamat" }),
+                      e(t, { isRequired: !0, children: "Alamat" }),
                       e(s, {
-                        children: e(v, {
+                        children: e(w, {
                           label: "Alamat",
                           name: o.name,
                           value: o.value ?? "",
@@ -158,25 +158,25 @@ var q = a.object({
                     ],
                   }),
               }),
-              e(t, {
+              e(m, {
                 control: r.control,
                 name: "role",
                 render: ({ field: o }) =>
                   n(l, {
                     children: [
-                      e(m, { isRequired: !0, children: "Role" }),
+                      e(t, { isRequired: !0, children: "Role" }),
                       e(s, {
-                        children: e(y.List, {
+                        children: e(v.List, {
                           label: "Role",
                           name: o.name,
                           value: o.value,
                           onChange: o.onChange,
                           placeholder: "Role",
                           items: [
-                            { label: "Admin", value: "Admin" },
-                            { label: "Dokter", value: "Doctor" },
-                            { label: "Apoteker", value: "Apoteker" },
-                            { label: "Asisten", value: "Assistant" },
+                            { label: "Admin", value: "SUPERADMIN" },
+                            { label: "Dokter", value: "DOCTOR" },
+                            { label: "Apoteker", value: "PHARMACY" },
+                            { label: "Asisten", value: "ADMIN" },
                           ],
                           isRequired: !0,
                           disabled: o.disabled,
@@ -187,15 +187,15 @@ var q = a.object({
                     ],
                   }),
               }),
-              e(t, {
+              e(m, {
                 control: r.control,
                 name: "password",
                 render: ({ field: o }) =>
                   n(l, {
                     children: [
-                      e(m, { isRequired: !0, children: "Password" }),
+                      e(t, { isRequired: !0, children: "Password" }),
                       e(s, {
-                        children: e(h, {
+                        children: e(F, {
                           label: "Password",
                           name: o.name,
                           value: o.value ?? "",
@@ -211,15 +211,15 @@ var q = a.object({
                     ],
                   }),
               }),
-              e(t, {
+              e(m, {
                 control: r.control,
                 name: "confirmPassword",
                 render: ({ field: o }) =>
                   n(l, {
                     children: [
-                      e(m, { isRequired: !0, children: "Konfirmasi Password" }),
+                      e(t, { isRequired: !0, children: "Konfirmasi Password" }),
                       e(s, {
-                        children: e(h, {
+                        children: e(F, {
                           label: "Konfirmasi Password",
                           name: o.name,
                           value: o.value ?? "",
@@ -235,27 +235,21 @@ var q = a.object({
                     ],
                   }),
               }),
-              e(k, { styles: { root: {} }, size: 16 }),
+              e(y, { styles: { root: {} }, size: 16 }),
               n(P, {
                 styles: { root: {} },
                 children: [
-                  e(C, {
-                    type: "button",
+                  e(h, {
+                    type: "submit",
                     className: "w-full",
-                    onClick: () => {
-                      c?.["button-1713871145398"] &&
-                        c?.["button-1713871145398"](r);
-                    },
+                    disabled: r.formState.isSubmitting,
+                    isLoading: r.formState.isSubmitting,
                     styles: { root: { backgroundColor: "#2E584F" } },
                     children: "Submit",
                   }),
-                  e(C, {
-                    type: "button",
+                  e(h, {
+                    type: "reset",
                     className: "w-full",
-                    onClick: () => {
-                      c?.["button-1713871147318"] &&
-                        c?.["button-1713871147318"](r);
-                    },
                     styles: { root: { backgroundColor: "rgb(239, 68, 68)" } },
                     children: "Reset",
                   }),
@@ -264,7 +258,7 @@ var q = a.object({
             ],
           }),
       },
-      z
+      R,
     );
   };
-export { O as Form };
+export { D as Form };

@@ -138,9 +138,11 @@ export function ClinicDashboardPage(): JSX.Element {
           className="flex-1 flex flex-col gap-2 border-sky-500"
           title="Antrian"
         >
-          {data?.data.map((item, index) => (
-            <QueueCard isActive={index === 0} key={item.id} {...item} />
-          ))}
+          <div className="flex flex-col gap-2">
+            {data?.data.map((item, index) => (
+              <QueueCard isActive={index === 0} key={item.id} {...item} />
+            ))}
+          </div>
         </ClinicCard>
         <ClinicCard
           borderPosition="left"

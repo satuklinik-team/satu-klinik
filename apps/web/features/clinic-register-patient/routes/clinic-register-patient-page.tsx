@@ -69,7 +69,7 @@ export function ClinicRegisterPatientPage(): JSX.Element {
       });
       toast({ title: "Berhasil Membuat Pasien!", variant: "success" });
     },
-    [createPatient, createPatientVitalSign, queryClient, toast]
+    [createPatient, createPatientVitalSign, queryClient, toast],
   );
 
   return (
@@ -100,9 +100,11 @@ export function ClinicRegisterPatientPage(): JSX.Element {
           className="border-green-500 w-full h-full max-w-none sm:max-w-none md:max-w-none lg:max-w-md xl:max-w-md 2xl:max-w-md"
           title="Antrian Sekarang"
         >
-          {data?.data.map((item, index) => (
-            <QueueCard isActive={index === 0} key={item.id} {...item} />
-          ))}
+          <div className="flex flex-col gap-2">
+            {data?.data.map((item, index) => (
+              <QueueCard isActive={index === 0} key={item.id} {...item} />
+            ))}
+          </div>
         </ClinicCard>
       </div>
     </div>

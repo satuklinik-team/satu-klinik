@@ -6,18 +6,18 @@ import {
   FormLabel as s,
   FormControl as i,
   FormMessage as u,
-  Input as F,
+  Input as b,
   EmailInput as p,
   PhoneNumberInput as g,
   PasswordInput as S,
-  Divider as L,
+  Divider as k,
   TextArea as y,
-  Spacer as v,
-  Button as B,
+  Spacer as P,
+  Button as v,
 } from "@lezzform/react";
 import * as c from "react";
 import { jsx as o, jsxs as a } from "react/jsx-runtime";
-var P = n.object({
+var B = n.object({
     fullname: n.string(),
     email: n.string().email(),
     password: n
@@ -28,7 +28,7 @@ var P = n.object({
         (m) =>
           !m ||
           /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/.test(m),
-        { message: "Invalid phone number format" }
+        { message: "Invalid phone number format" },
       ),
     confirmPassword: n.string().max(14).min(6),
     clinicName: n.string(),
@@ -41,36 +41,36 @@ var P = n.object({
         (m) =>
           !m ||
           /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/.test(m),
-        { message: "Invalid phone number format" }
+        { message: "Invalid phone number format" },
       ),
     clinicAddress: n.string(),
     clinicCode: n.string(),
   }),
-  R = "qxREaIDj8zsAE8Nbakgc",
-  K = ({
+  C = "Lxmwzr69pPeqqTEc3LJM",
+  E = ({
     onSubmit: m,
     onError: d,
-    onSuccess: C,
+    onSuccess: R,
     defaultValues: z,
     onAction: q,
     formProps: w,
   }) => {
-    let b = c.useRef();
+    let F = c.useRef();
     c.useEffect(() => {
-      m && (b.current = m);
+      m && (F.current = m);
     }, [m]);
-    let k = c.useCallback(async (r, e) => {
-      if (b.current) return b.current(r, e);
+    let L = c.useCallback(async (r, e) => {
+      if (F.current) return F.current(r, e);
     }, []);
     return o(
       h,
       {
-        id: R,
+        id: C,
         defaultValues: z,
-        onSubmit: k,
+        onSubmit: L,
         onError: d,
-        onSuccess: C,
-        zodSchema: P,
+        onSuccess: R,
+        zodSchema: B,
         mode: "onSubmit",
         children: (r) =>
           a(h.Container, {
@@ -83,7 +83,7 @@ var P = n.object({
                     children: [
                       o(s, { isRequired: !0, children: "Nama Lengkap" }),
                       o(i, {
-                        children: o(F, {
+                        children: o(b, {
                           label: "Nama Lengkap",
                           name: e.name,
                           value: e.value ?? "",
@@ -171,7 +171,7 @@ var P = n.object({
                     ],
                   }),
               }),
-              o(L.Solid, { styles: { root: {} }, size: 1, color: "#c7c7c7" }),
+              o(k.Solid, { styles: { root: {} }, size: 1, color: "#c7c7c7" }),
               o(l, {
                 control: r.control,
                 name: "clinicName",
@@ -180,7 +180,7 @@ var P = n.object({
                     children: [
                       o(s, { isRequired: !0, children: "Nama Klinik" }),
                       o(i, {
-                        children: o(F, {
+                        children: o(b, {
                           label: "Nama Klinik",
                           name: e.name,
                           value: e.value ?? "",
@@ -276,7 +276,7 @@ var P = n.object({
                     children: [
                       o(s, { isRequired: !0, children: "Kode Fasyankes" }),
                       o(i, {
-                        children: o(F, {
+                        children: o(b, {
                           label: "Kode Fasyankes",
                           name: e.name,
                           value: e.value ?? "",
@@ -292,8 +292,8 @@ var P = n.object({
                     ],
                   }),
               }),
-              o(v, { styles: { root: {} }, size: 16 }),
-              o(B, {
+              o(P, { styles: { root: {} }, size: 16 }),
+              o(v, {
                 type: "submit",
                 className: "w-full",
                 disabled: r.formState.isSubmitting,
@@ -304,7 +304,7 @@ var P = n.object({
             ],
           }),
       },
-      R
+      C,
     );
   };
-export { K as Form };
+export { E as Form };
