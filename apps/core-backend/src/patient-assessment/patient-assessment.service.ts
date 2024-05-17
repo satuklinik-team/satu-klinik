@@ -5,6 +5,8 @@ import { FindAllPatientAssessmentDto } from './dto/find-all-patient-assessment.d
 import { PatientsService } from 'src/patients/patients.service';
 import { Prisma } from '@prisma/client';
 import { FindAllService } from 'src/find-all/find-all.service';
+import { MedicineCategoryService } from 'src/medicine-category/medicine-category.service';
+import { MedicineService } from 'src/medicine/medicine.service';
 
 @Injectable()
 export class PatientAssessmentService {
@@ -12,6 +14,7 @@ export class PatientAssessmentService {
     private readonly prismaService: PrismaService,
     private readonly patientsService: PatientsService,
     private readonly findAllService: FindAllService,
+    private readonly medicineService: MedicineService,
   ) {}
 
   async create(dto: CreatePatientAssessmentDto) {
@@ -60,8 +63,13 @@ export class PatientAssessmentService {
         data: prescriptionsDto,
       });
 
-      prescriptionsDto.forEach((prescription) => {
-        tx.medicine.update({
+      for (const prescription of prescriptionsDto) {
+        await this.medicineService.canModifyMedicine(
+          prescription.medicineId,
+          dto.clinicsId,
+        );
+
+        await tx.medicine.update({
           where: {
             id: prescription.medicineId,
           },
@@ -71,7 +79,7 @@ export class PatientAssessmentService {
             },
           },
         });
-      });
+      }
 
       const medicalRecord = this.prismaService.patient_medical_records.update({
         where: {
