@@ -23,7 +23,6 @@ import { FindAllModule } from './find-all/find-all.module';
 import { SettingsModule } from './settings/settings.module';
 import { DepartmentsModule } from './departments/departments.module';
 import { SatusehatKfaModule } from './satusehat-kfa/satusehat-kfa.module';
-import { SatusehatTestModule } from './satusehat-test/satusehat-test.module';
 import { MedicineModule } from './medicine/medicine.module';
 import { MedicineCategoryModule } from './medicine-category/medicine-category.module';
 import { MinioClientModule } from './minio-client/minio-client.module';
@@ -50,7 +49,6 @@ import { MinioClientModule } from './minio-client/minio-client.module';
     SettingsModule,
     DepartmentsModule,
     SatusehatKfaModule,
-    SatusehatTestModule,
     MedicineModule,
     MedicineCategoryModule,
     MinioClientModule,

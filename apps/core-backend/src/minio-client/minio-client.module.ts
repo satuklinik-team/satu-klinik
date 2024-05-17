@@ -10,7 +10,7 @@ import configuration from 'src/config/configuration';
       imports: [ConfigModule.forRoot({ load: [configuration] })],
       useFactory: async (configService: ConfigService) => ({
         endPoint: configService.get('minio.endpoint'),
-        port: configService.get('minio.port'),
+        port: parseInt(configService.get('minio.port')),
         useSSL: false,
         accessKey: configService.get('minio.user'),
         secretKey: configService.get('minio.password'),
