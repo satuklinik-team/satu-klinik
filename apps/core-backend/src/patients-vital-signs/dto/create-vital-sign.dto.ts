@@ -1,6 +1,8 @@
+import { Type } from 'class-transformer';
 import {
   IsInt,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
   IsString,
   IsUUID,
@@ -12,7 +14,8 @@ export class CreateVitalSignDto {
   @IsNotEmpty()
   patientId: string;
 
-  @IsInt()
+  @IsNumber()
+  @Type(() => Number)
   @IsNotEmpty()
   temperature: number;
 
@@ -20,27 +23,33 @@ export class CreateVitalSignDto {
   @IsNotEmpty()
   allergic: string;
 
-  @IsInt()
+  @IsNumber()
+  @Type(() => Number)
   @IsNotEmpty()
   systole: number;
 
-  @IsInt()
+  @IsNumber()
+  @Type(() => Number)
   @IsNotEmpty()
   diastole: number;
 
-  @IsInt()
+  @IsNumber()
+  @Type(() => Number)
   @IsNotEmpty()
   height: number;
 
-  @IsInt()
+  @IsNumber()
+  @Type(() => Number)
   @IsNotEmpty()
   weight: number;
 
-  @IsInt()
+  @IsNumber()
+  @Type(() => Number)
   @IsNotEmpty()
   respiration: number;
 
-  @IsInt()
+  @IsNumber()
+  @Type(() => Number)
   @IsNotEmpty()
   pulse: number;
 

@@ -5,6 +5,7 @@ import { CompleteTaskDto } from './dto/complete-task.dto';
 import { CannotAccessClinicException } from 'src/exceptions/unauthorized/cannot-access-clinic';
 import { Prisma } from '@prisma/client';
 import { FindAllService } from 'src/find-all/find-all.service';
+import { FindPharmacyTaskByIdDto } from './dto/find-pharmacy-task-by-id.dto';
 
 @Injectable()
 export class PharmacyTasksService {
@@ -48,17 +49,45 @@ export class PharmacyTasksService {
             clinicsId: dto.clinicsId,
           },
         }),
-        prescriptions: await this.prismaService.patient_prescription.findMany({
-          where: {
-            patient_medical_recordsId: pharmacyTask.assessmentReffId,
-          },
-        }),
       };
     });
 
     const mappedData = await Promise.all(promises);
 
     return { data: mappedData, count };
+  }
+
+  async findById(dto: FindPharmacyTaskByIdDto) {
+    const pharmacyTask = await this.prismaService.pharmacy_Task.findFirst({
+      where: {
+        id: dto.id,
+      },
+      select: {
+        assessmentReffId: true,
+      },
+    });
+    const mr = await this.prismaService.patient_medical_records.findFirst({
+      where: {
+        id: pharmacyTask.assessmentReffId,
+      },
+      select: {
+        Patient: {
+          select: {
+            clinicsId: true,
+          },
+        },
+        prescription: true,
+      },
+    });
+
+    if (mr.Patient.clinicsId !== dto.clinicsId) {
+      throw new CannotAccessClinicException();
+    }
+
+    return {
+      ...pharmacyTask,
+      prescriptions: mr.prescription,
+    };
   }
 
   async completeTask(dto: CompleteTaskDto) {
@@ -75,6 +104,26 @@ export class PharmacyTasksService {
       if (pharmacyTask.clinicsId !== dto.clinicsId) {
         throw new CannotAccessClinicException();
       }
+
+      await Promise.all(
+        dto.notBoughtPrescriptions.map(async (data) => {
+          const prescription = await tx.patient_prescription.findFirst({
+            where: {
+              id: data.id,
+            },
+          });
+          await tx.medicine.update({
+            where: {
+              id: prescription.medicineId,
+            },
+            data: {
+              stock: {
+                increment: prescription.quantity,
+              },
+            },
+          });
+        }),
+      );
 
       return pharmacyTask;
     });
