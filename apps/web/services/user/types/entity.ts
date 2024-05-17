@@ -5,6 +5,6 @@ export interface UserEntity {
   fullname: string;
   email: string;
   phone: string;
-  role: UserRole;
-  status: string;
+  roles: UserRole;
+  isActive: boolean;
 }

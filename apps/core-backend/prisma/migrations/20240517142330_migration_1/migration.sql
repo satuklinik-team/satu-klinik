@@ -1,5 +1,5 @@
 -- CreateEnum
-CREATE TYPE "Role" AS ENUM ('OWNER', 'ADMIN', 'SUPERADMIN', 'DOCTOR');
+CREATE TYPE "Role" AS ENUM ('OWNER', 'ADMIN', 'SUPERADMIN', 'DOCTOR', 'PHARMACY');
 
 -- CreateEnum
 CREATE TYPE "transactions_status" AS ENUM ('PENDING_PAYMENT', 'PAID', 'CANCELED');
@@ -107,28 +107,16 @@ CREATE TABLE "Patient_assessment_on_anathomy" (
 CREATE TABLE "Patient_prescription" (
     "id" SERIAL NOT NULL,
     "createdAt" TIMESTAMPTZ(6) DEFAULT CURRENT_TIMESTAMP,
-    "medicine" TEXT NOT NULL,
+    "medicineId" INTEGER,
     "type" TEXT,
     "usage" TEXT,
     "dosage" TEXT,
     "interval" TEXT,
-    "quantity" DECIMAL(65,30) NOT NULL,
+    "quantity" INTEGER NOT NULL,
     "deletedAt" TIMESTAMP(3),
     "patient_medical_recordsId" UUID,
 
     CONSTRAINT "Patient_prescription_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "Doctor_Task" (
-    "id" SERIAL NOT NULL,
-    "doctorId" TEXT,
-    "status" "TASK_STATUS" NOT NULL DEFAULT 'TODO',
-    "url" TEXT,
-    "lastViewAt" TIMESTAMP(3),
-    "createdAt" TIMESTAMPTZ(6) DEFAULT CURRENT_TIMESTAMP,
-
-    CONSTRAINT "Doctor_Task_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -138,6 +126,7 @@ CREATE TABLE "Pharmacy_Task" (
     "assessmentReffId" TEXT,
     "status" TEXT,
     "pharmacist" TEXT,
+    "createdDate" TEXT,
     "createdAt" TIMESTAMPTZ(6) DEFAULT CURRENT_TIMESTAMP,
     "deletedAt" TIMESTAMP(3),
     "clinicsId" UUID,
@@ -149,6 +138,7 @@ CREATE TABLE "Pharmacy_Task" (
 CREATE TABLE "Poli" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "color" TEXT DEFAULT '#87CEEB',
+    "currentDate" TEXT,
     "counter" INTEGER DEFAULT 0,
     "name" TEXT NOT NULL,
     "alias" TEXT DEFAULT 'A',
@@ -163,14 +153,16 @@ CREATE TABLE "Poli" (
 
 -- CreateTable
 CREATE TABLE "Departments" (
-    "id" TEXT NOT NULL,
+    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "color" TEXT DEFAULT '#87CEEB',
+    "currentDate" TEXT,
     "counter" INTEGER DEFAULT 0,
     "name" TEXT NOT NULL DEFAULT 'A',
     "alias" TEXT NOT NULL,
     "isActive" BOOLEAN DEFAULT false,
     "createdAt" TIMESTAMPTZ(6) DEFAULT CURRENT_TIMESTAMP,
     "deletedAt" TIMESTAMP(3),
+    "clinicsId" UUID,
     "usersId" UUID,
 
     CONSTRAINT "Departments_pkey" PRIMARY KEY ("id")
@@ -242,7 +234,7 @@ CREATE TABLE "Notifications" (
 
 -- CreateTable
 CREATE TABLE "Setting" (
-    "id" TEXT NOT NULL,
+    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "name" TEXT NOT NULL,
     "type" TEXT NOT NULL,
     "value" TEXT,
@@ -265,6 +257,8 @@ CREATE TABLE "Clinics" (
     "license" TEXT,
     "dueTo" TIMESTAMP(3),
     "photo" TEXT NOT NULL DEFAULT '/images/clinic.png',
+    "clientId" TEXT,
+    "clientSecret" TEXT,
     "accountsId" UUID,
 
     CONSTRAINT "Clinics_pkey" PRIMARY KEY ("id")
@@ -454,6 +448,29 @@ CREATE TABLE "Suppliers" (
 );
 
 -- CreateTable
+CREATE TABLE "Medicine" (
+    "id" SERIAL NOT NULL,
+    "title" TEXT NOT NULL,
+    "price" INTEGER NOT NULL,
+    "stock" INTEGER NOT NULL,
+    "discount" INTEGER,
+    "imageUrl" TEXT,
+    "kfaCode" TEXT,
+    "categoryId" INTEGER,
+
+    CONSTRAINT "Medicine_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "MedicineCategory" (
+    "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
+    "clinicsId" UUID,
+
+    CONSTRAINT "MedicineCategory_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "ICD10" (
     "code" TEXT NOT NULL,
     "strt" TEXT NOT NULL,
@@ -470,6 +487,9 @@ CREATE TABLE "ICD9CM" (
 
     CONSTRAINT "ICD9CM_pkey" PRIMARY KEY ("code")
 );
+
+-- CreateIndex
+CREATE INDEX "Pharmacy_Task_clinicsId_assessmentReffId_idx" ON "Pharmacy_Task"("clinicsId", "assessmentReffId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Users_email_key" ON "Users"("email");
@@ -502,6 +522,9 @@ ALTER TABLE "Patient_assessment" ADD CONSTRAINT "Patient_assessment_patient_medi
 ALTER TABLE "Patient_assessment_on_anathomy" ADD CONSTRAINT "Patient_assessment_on_anathomy_patient_assessmentId_fkey" FOREIGN KEY ("patient_assessmentId") REFERENCES "Patient_assessment"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "Patient_prescription" ADD CONSTRAINT "Patient_prescription_medicineId_fkey" FOREIGN KEY ("medicineId") REFERENCES "Medicine"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "Patient_prescription" ADD CONSTRAINT "Patient_prescription_patient_medical_recordsId_fkey" FOREIGN KEY ("patient_medical_recordsId") REFERENCES "Patient_medical_records"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -509,6 +532,9 @@ ALTER TABLE "Pharmacy_Task" ADD CONSTRAINT "Pharmacy_Task_clinicsId_fkey" FOREIG
 
 -- AddForeignKey
 ALTER TABLE "Poli" ADD CONSTRAINT "Poli_clinicsId_fkey" FOREIGN KEY ("clinicsId") REFERENCES "Clinics"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Departments" ADD CONSTRAINT "Departments_clinicsId_fkey" FOREIGN KEY ("clinicsId") REFERENCES "Clinics"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Departments" ADD CONSTRAINT "Departments_usersId_fkey" FOREIGN KEY ("usersId") REFERENCES "Users"("id") ON DELETE SET NULL ON UPDATE CASCADE;
@@ -557,3 +583,9 @@ ALTER TABLE "Products" ADD CONSTRAINT "Products_suppliersId_fkey" FOREIGN KEY ("
 
 -- AddForeignKey
 ALTER TABLE "Suppliers" ADD CONSTRAINT "Suppliers_clinicsId_fkey" FOREIGN KEY ("clinicsId") REFERENCES "Clinics"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Medicine" ADD CONSTRAINT "Medicine_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "MedicineCategory"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "MedicineCategory" ADD CONSTRAINT "MedicineCategory_clinicsId_fkey" FOREIGN KEY ("clinicsId") REFERENCES "Clinics"("id") ON DELETE SET NULL ON UPDATE CASCADE;
