@@ -49,7 +49,6 @@ import { MinioClientModule } from './minio-client/minio-client.module';
     SettingsModule,
     DepartmentsModule,
     SatusehatKfaModule,
-    SatusehatTestModule,
     MedicineModule,
     MedicineCategoryModule,
     MinioClientModule,
