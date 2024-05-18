@@ -4,5 +4,6 @@ import { CacheModule } from '@nestjs/cache-manager';
 
 @Module({
   providers: [SatusehatJsonService],
+  exports: [SatusehatJsonService],
 })
 export class SatusehatJsonModule {}

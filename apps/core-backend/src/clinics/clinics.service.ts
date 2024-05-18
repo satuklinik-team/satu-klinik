@@ -28,8 +28,6 @@ export class ClinicsService {
   async create(dto: CreateClinicDto, context?: ServiceContext) {
     const prisma = this._initPrisma(context.tx);
 
-    const clientId = this.configService.get<string>('oauth.client_id');
-    const clientSecret = this.configService.get<string>('oauth.client_secret');
     const data = await prisma.clinics.create({
       data: {
         name: dto.clinicName,
@@ -37,8 +35,11 @@ export class ClinicsService {
         address: dto.clinicAddress,
         phone: dto.clinicPhone,
         accountsId: dto.accountsId,
-        clientId,
-        clientSecret,
+        clientId: process.env.OAUTH_CLIENT_ID,
+        clientSecret: process.env.OAUTH_CLIENT_SECRET,
+        organizationId: process.env.ORG_ID,
+        locationSatuSehatId: process.env.LOCATION_ID,
+        locationName: process.env.LOCATION_NAME,
         Departments: {
           create: {
             name: 'main',
