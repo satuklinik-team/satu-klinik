@@ -22,6 +22,7 @@ export class PatientAssessmentController {
   ) {
     return await this.patientAssessmentService.create({
       ...createPatientAssessmentDto,
+      usersId: tokenData.sub,
       clinicsId: tokenData.clinicsId,
     });
   }

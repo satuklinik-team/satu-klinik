@@ -62,4 +62,8 @@ export class CreatePatientAssessmentDto {
   @IsString()
   @IsOptional()
   clinicsId?: string;
+
+  @IsString()
+  @IsOptional()
+  usersId?: string;
 }

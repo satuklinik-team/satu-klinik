@@ -38,9 +38,9 @@ model Patient_medical_records {
   visitAt        DateTime               @default(now())
   visitLabel     String?
   queue          String?
-  doctor         String
   status         String?                @default("e1")
   patientId      String?                @db.Uuid
+  encounterId    String?
   poliId         String?                @db.Uuid
   practitionerId String?                @db.Uuid
   Practitioner   Users?                 @relation(fields: [practitionerId], references: [id])
@@ -73,6 +73,8 @@ model Patient_vital_sign {
 model Patient_assessment {
   id                        Int                              @id @default(autoincrement())
   createdAt                 DateTime                         @default(now())
+  doctorId                  String?                          @db.Uuid
+  Doctor                    Users?                           @relation(fields: [doctorId], references: [id])
   subjective                String                           @default("none")
   objective                 String                           @default("none")
   assessment                String                           @default("none")
@@ -201,6 +203,7 @@ model Users {
   session                  Session[]
   Clinics                  Clinics?                  @relation(fields: [clinicsId], references: [id])
   Patient_medical_records  Patient_medical_records[]
+  Patient_assessment       Patient_assessment[]
 }
 
 model Session {

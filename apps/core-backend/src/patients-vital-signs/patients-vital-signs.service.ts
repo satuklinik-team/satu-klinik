@@ -23,7 +23,6 @@ export class PatientsVitalSignsService {
       const data = await this.prismaService.patient_medical_records.create({
         data: {
           patientId: dto.patientId,
-          doctor: '',
           visitAt: now,
           visitLabel: now.toLocaleDateString(),
           queue,

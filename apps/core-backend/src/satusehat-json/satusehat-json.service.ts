@@ -9,6 +9,73 @@ import { time } from 'console';
 export class SatusehatJsonService {
   constructor(private readonly prismaService: PrismaService) {}
 
+  async registerPatientJson(patientId: string) {
+    const patient = await this.prismaService.patient.findFirst({
+      where: {
+        id: patientId,
+      },
+    });
+    return {
+      resourceType: 'Patient',
+      meta: {
+        profile: ['https://fhir.kemkes.go.id/r4/StructureDefinition/Patient'],
+      },
+      identifier: [
+        {
+          use: 'official',
+          system: 'https://fhir.kemkes.go.id/id/nik',
+          value: patient.nik,
+        },
+      ],
+      active: true,
+      name: [
+        {
+          use: 'official',
+          text: patient.fullname,
+        },
+      ],
+      telecom: [
+        {
+          system: 'phone',
+          value: patient.phone,
+          use: 'mobile',
+        },
+      ],
+      gender: patient.sex == 'L' ? 'male' : 'female',
+      birthDate: patient.birthAt.toISOString().split('T')[0],
+      deceasedBoolean: false,
+      address: [
+        {
+          use: 'home',
+          line: [patient.address],
+          country: 'ID',
+        },
+      ],
+      multipleBirthInteger: 0,
+      communication: [
+        {
+          language: {
+            coding: [
+              {
+                system: 'urn:ietf:bcp:47',
+                code: 'id-ID',
+                display: 'Indonesian',
+              },
+            ],
+            text: 'Indonesian',
+          },
+          preferred: true,
+        },
+      ],
+      extension: [
+        {
+          url: 'https://fhir.kemkes.go.id/r4/StructureDefinition/citizenshipStatus',
+          valueCode: 'WNI',
+        },
+      ],
+    };
+  }
+
   async encounterJson(mrid: string) {
     const patientMR =
       await this.prismaService.patient_medical_records.findFirst({

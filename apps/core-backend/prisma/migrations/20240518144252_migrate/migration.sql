@@ -83,6 +83,7 @@ CREATE TABLE "Patient_vital_sign" (
 CREATE TABLE "Patient_assessment" (
     "id" SERIAL NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "doctorId" UUID,
     "subjective" TEXT NOT NULL DEFAULT 'none',
     "objective" TEXT NOT NULL DEFAULT 'none',
     "assessment" TEXT NOT NULL DEFAULT 'none',
@@ -520,6 +521,9 @@ ALTER TABLE "Patient_medical_records" ADD CONSTRAINT "Patient_medical_records_po
 
 -- AddForeignKey
 ALTER TABLE "Patient_vital_sign" ADD CONSTRAINT "Patient_vital_sign_patient_medical_recordsId_fkey" FOREIGN KEY ("patient_medical_recordsId") REFERENCES "Patient_medical_records"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Patient_assessment" ADD CONSTRAINT "Patient_assessment_doctorId_fkey" FOREIGN KEY ("doctorId") REFERENCES "Users"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Patient_assessment" ADD CONSTRAINT "Patient_assessment_icd10Code_fkey" FOREIGN KEY ("icd10Code") REFERENCES "ICD10"("code") ON DELETE SET NULL ON UPDATE CASCADE;

@@ -41,6 +41,7 @@ export class PatientAssessmentService {
       const assessment = tx.patient_assessment.create({
         data: {
           patient_medical_recordsId: dto.mrid,
+          doctorId: dto.usersId,
           subjective: dto.subjective,
           objective: dto.objective,
           assessment: dto.assessment,
