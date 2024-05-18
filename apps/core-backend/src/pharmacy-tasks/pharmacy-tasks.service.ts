@@ -98,6 +98,7 @@ export class PharmacyTasksService {
           id: dto.id,
         },
         data: {
+          doneAt: new Date(),
           status: 'Done',
         },
       });

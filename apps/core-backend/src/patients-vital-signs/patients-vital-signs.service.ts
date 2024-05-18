@@ -28,6 +28,7 @@ export class PatientsVitalSignsService {
           visitLabel: now.toLocaleDateString(),
           queue,
           status: 'e1',
+          practitionerId: dto.usersId,
           vitalSign: {
             create: {
               height: dto.height,

@@ -9,95 +9,128 @@ import { time } from 'console';
 export class SatusehatJsonService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async encounterJson(dto: EncounterJsonDto) {
-    const clinics = await this.prismaService.clinics.findFirst({
-      where: {
-        id: dto.clinicsId,
-      },
-      select: {
-        organizationId: true,
-        locationSatuSehatId: true,
-        locationName: true,
-      },
-    });
-
+  async encounterJson(mrid: string) {
     const patientMR =
       await this.prismaService.patient_medical_records.findFirst({
         where: {
-          id: dto.mrid,
+          id: mrid,
         },
         select: {
           queue: true,
+          visitAt: true,
           Patient: {
             select: {
+              satuSehatId: true,
+              fullname: true,
+              Clinics: {
+                select: {
+                  organizationId: true,
+                  locationSatuSehatId: true,
+                  locationName: true,
+                },
+              },
+            },
+          },
+          Practitioner: {
+            select: {
+              satuSehatId: true,
               fullname: true,
             },
           },
         },
       });
 
+    const pharmacyTask = await this.prismaService.pharmacy_Task.findFirst({
+      where: {
+        assessmentReffId: mrid,
+      },
+    });
+
     return {
-      resourceType: 'Encounter',
-      identifier: [
-        {
-          system: `http://sys-ids.kemkes.go.id/encounter/${clinics.organizationId}`,
-          value: patientMR.queue,
-        },
-      ],
-      status: 'arrived',
-      class: {
-        system: 'http://terminology.hl7.org/CodeSystem/v3-ActCode',
-        code: 'AMB',
-        display: 'ambulatory',
-      },
-      subject: {
-        reference: `Patient/${dto.patientSatuSehatId}`,
-        display: patientMR.Patient.fullname,
-      },
-      participant: [
-        {
-          type: [
-            {
-              coding: [
-                {
-                  system:
-                    'http://terminology.hl7.org/CodeSystem/v3-ParticipationType',
-                  code: 'ATND',
-                  display: 'attender',
-                },
-              ],
+      fullUrl: 'urn:uuid:7bc68ccf-22b9-464a-ba8d-f99a14a33171',
+      resource: {
+        resourceType: 'Encounter',
+        identifier: [
+          {
+            system: `http://sys-ids.kemkes.go.id/encounter/${patientMR.Patient.Clinics.organizationId}`,
+            value: patientMR.queue,
+          },
+        ],
+        status: 'finished',
+        statusHistory: [
+          {
+            status: 'arrived',
+            period: {
+              start: patientMR.visitAt,
+              end: patientMR.visitAt,
             },
-          ],
-          individual: {
-            reference: `Practitioner/${dto.practitionerId}`,
-            display: dto.practitionerName,
           },
+          {
+            status: 'in-progress',
+            period: {
+              start: patientMR.visitAt,
+              end: pharmacyTask.doneAt,
+            },
+          },
+          {
+            status: 'finished',
+            period: {
+              start: pharmacyTask.doneAt,
+              end: pharmacyTask.doneAt,
+            },
+          },
+        ],
+        class: {
+          system: 'http://terminology.hl7.org/CodeSystem/v3-ActCode',
+          code: 'AMB',
+          display: 'ambulatory',
         },
-      ],
-      period: {
-        start: dto.time,
+        subject: {
+          reference: `Patient/${patientMR.Patient.satuSehatId}`,
+          display: patientMR.Patient.fullname,
+        },
+        participant: [
+          {
+            type: [
+              {
+                coding: [
+                  {
+                    system:
+                      'http://terminology.hl7.org/CodeSystem/v3-ParticipationType',
+                    code: 'ATND',
+                    display: 'attender',
+                  },
+                ],
+              },
+            ],
+            individual: {
+              reference: `Practitioner/${patientMR.Practitioner.satuSehatId}`,
+              display: patientMR.Practitioner.fullname,
+            },
+          },
+        ],
+        period: {
+          start: patientMR.visitAt,
+          end: pharmacyTask.doneAt,
+        },
+        location: [
+          {
+            location: {
+              reference: `Location/${patientMR.Patient.Clinics.locationSatuSehatId}`,
+              display: patientMR.Patient.Clinics.locationName,
+            },
+            period: {
+              start: patientMR.visitAt,
+            },
+          },
+        ],
+        serviceProvider: {
+          reference: `Organization/${patientMR.Patient.Clinics.organizationId}`,
+        },
       },
-      location: [
-        {
-          location: {
-            reference: `Location/${clinics.locationSatuSehatId}`,
-            display: clinics.locationName,
-          },
-          period: {
-            start: dto.time,
-          },
-        },
-      ],
-      statusHistory: [
-        {
-          status: 'arrived',
-          period: {
-            start: dto.time,
-          },
-        },
-      ],
-      serviceProvider: {
-        reference: `Organization/${clinics.organizationId}`,
+      request: {
+        method: 'POST',
+        url: 'Encounter',
       },
     };
   }

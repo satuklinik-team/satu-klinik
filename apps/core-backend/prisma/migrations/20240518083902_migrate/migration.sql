@@ -23,6 +23,7 @@ CREATE TYPE "INTERVALUNIT" AS ENUM ('MONTH', 'YEAR');
 CREATE TABLE "Patient" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "norm" TEXT NOT NULL,
+    "satuSehatId" TEXT,
     "nik" TEXT,
     "fullname" TEXT NOT NULL,
     "parentname" TEXT,
@@ -52,6 +53,7 @@ CREATE TABLE "Patient_medical_records" (
     "status" TEXT DEFAULT 'e1',
     "patientId" UUID,
     "poliId" UUID,
+    "practitionerId" UUID,
 
     CONSTRAINT "Patient_medical_records_pkey" PRIMARY KEY ("id")
 );
@@ -80,6 +82,7 @@ CREATE TABLE "Patient_vital_sign" (
 -- CreateTable
 CREATE TABLE "Patient_assessment" (
     "id" SERIAL NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "subjective" TEXT NOT NULL DEFAULT 'none',
     "objective" TEXT NOT NULL DEFAULT 'none',
     "assessment" TEXT NOT NULL DEFAULT 'none',
@@ -128,6 +131,7 @@ CREATE TABLE "Pharmacy_Task" (
     "pharmacist" TEXT,
     "createdDate" TEXT,
     "createdAt" TIMESTAMPTZ(6) DEFAULT CURRENT_TIMESTAMP,
+    "doneAt" TIMESTAMP(3),
     "deletedAt" TIMESTAMP(3),
     "clinicsId" UUID,
 
@@ -143,7 +147,7 @@ CREATE TABLE "Poli" (
     "name" TEXT NOT NULL,
     "alias" TEXT DEFAULT 'A',
     "doctor" TEXT NOT NULL DEFAULT 'dr whoisname',
-    "isActive" BOOLEAN DEFAULT false,
+    "isActive" BOOLEAN DEFAULT true,
     "createdAt" TIMESTAMPTZ(6) DEFAULT CURRENT_TIMESTAMP,
     "deletedAt" TIMESTAMP(3),
     "clinicsId" UUID,
@@ -187,13 +191,15 @@ CREATE TABLE "Queue_history" (
 CREATE TABLE "Users" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "roles" "Role" NOT NULL,
+    "nik" TEXT,
+    "satuSehatId" TEXT,
     "email" TEXT NOT NULL,
     "fullname" TEXT NOT NULL,
     "address" TEXT,
     "phone" TEXT,
     "photo" TEXT DEFAULT '/images/user.png',
     "password" TEXT NOT NULL,
-    "isActive" BOOLEAN DEFAULT false,
+    "isActive" BOOLEAN DEFAULT true,
     "token" TEXT,
     "email_verification_token" TEXT,
     "reset_password_token" TEXT,
@@ -259,6 +265,9 @@ CREATE TABLE "Clinics" (
     "photo" TEXT NOT NULL DEFAULT '/images/clinic.png',
     "clientId" TEXT,
     "clientSecret" TEXT,
+    "organizationId" TEXT,
+    "locationSatuSehatId" TEXT,
+    "locationName" TEXT,
     "accountsId" UUID,
 
     CONSTRAINT "Clinics_pkey" PRIMARY KEY ("id")
@@ -499,6 +508,9 @@ ALTER TABLE "Patient" ADD CONSTRAINT "Patient_clinicsId_fkey" FOREIGN KEY ("clin
 
 -- AddForeignKey
 ALTER TABLE "Patient" ADD CONSTRAINT "Patient_parentId_fkey" FOREIGN KEY ("parentId") REFERENCES "Patient"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Patient_medical_records" ADD CONSTRAINT "Patient_medical_records_practitionerId_fkey" FOREIGN KEY ("practitionerId") REFERENCES "Users"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Patient_medical_records" ADD CONSTRAINT "Patient_medical_records_patientId_fkey" FOREIGN KEY ("patientId") REFERENCES "Patient"("id") ON DELETE SET NULL ON UPDATE CASCADE;

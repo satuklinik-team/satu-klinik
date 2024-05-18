@@ -14,25 +14,5 @@ import { PaginationDto } from 'src/utils/classes';
 export class EncounterJsonDto {
   @IsString()
   @IsNotEmpty()
-  clinicsId: string;
-
-  @IsString()
-  @IsNotEmpty()
   mrid: string;
-
-  @IsString()
-  @IsNotEmpty()
-  patientSatuSehatId: string;
-
-  @IsDateString()
-  @IsNotEmpty()
-  time: string;
-
-  @IsString()
-  @IsNotEmpty()
-  practitionerId: string;
-
-  @IsString()
-  @IsNotEmpty()
-  practitionerName: string;
 }
