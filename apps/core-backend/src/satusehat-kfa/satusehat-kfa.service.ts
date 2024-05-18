@@ -2,6 +2,7 @@ import { HttpService } from '@nestjs/axios';
 import { Injectable, Logger } from '@nestjs/common';
 import { AxiosError } from 'axios';
 import { firstValueFrom, catchError } from 'rxjs';
+import { SatuSehatErrorException } from 'src/exceptions/bad-request/satusehat-error-exception';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { SatusehatOauthService } from 'src/satusehat-oauth/satusehat-oauth.service';
 
@@ -29,7 +30,7 @@ export class SatusehatKfaService {
       this.httpService.get('/products/all', { params: queryParams }).pipe(
         catchError((error: AxiosError) => {
           this.logger.error(error.message);
-          throw 'An error happened!';
+          throw new SatuSehatErrorException(error.response.status);
         }),
       ),
     );

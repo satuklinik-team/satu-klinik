@@ -6,7 +6,7 @@ import { CannotAccessClinicException } from 'src/exceptions/unauthorized/cannot-
 import { Prisma } from '@prisma/client';
 import { FindAllService } from 'src/find-all/find-all.service';
 import { FindPharmacyTaskByIdDto } from './dto/find-pharmacy-task-by-id.dto';
-import { IncorrectPrescriptionIdException } from 'src/exceptions/bad-request/cannot-access-clinic';
+import { IncorrectPrescriptionIdException } from 'src/exceptions/bad-request/incorrect-prescription-id-exception';
 
 @Injectable()
 export class PharmacyTasksService {
