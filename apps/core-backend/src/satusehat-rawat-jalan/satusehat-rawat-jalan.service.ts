@@ -41,6 +41,9 @@ export class SatusehatRawatJalanService {
     await this.ensureAuthenticated(clinics.Patient.clinicsId);
     await this.ensurePatientSatuSehatId(mrid);
     await this.ensurePractitionerSatuSehatId(mrid);
+    await this.ensureDoctorSatuSehatId(mrid);
+
+    this.satusehatJsonService.clearUsedUUIDs();
 
     const encounterBody = {
       resourceType: 'Bundle',
@@ -48,10 +51,11 @@ export class SatusehatRawatJalanService {
       entry: [await this.satusehatJsonService.encounterJson(mrid)],
     };
 
-    const { data } = await firstValueFrom(
+    const encounterResponse = await firstValueFrom(
       this.httpService.post('', encounterBody).pipe(
         catchError((error: AxiosError) => {
           this.logger.error(error.message);
+          this.logger.error(JSON.stringify(error.response.data, null, 2));
           throw new SatuSehatErrorException(error.response.status);
         }),
       ),
@@ -62,11 +66,82 @@ export class SatusehatRawatJalanService {
         id: mrid,
       },
       data: {
-        encounterId: data.entry[0].response.resourceID,
+        encounterId: encounterResponse.data.entry[0].response.resourceID,
       },
     });
 
-    return data;
+    const afterEncounterBody = {
+      resourceType: 'Bundle',
+      type: 'transaction',
+      entry: [
+        ...(await this.observationHttpBodyList(mrid)),
+        await this.satusehatJsonService.conditionJson(mrid),
+        await this.satusehatJsonService.procedureJson(mrid),
+      ],
+    };
+
+    const afterEncounterResponse = await firstValueFrom(
+      this.httpService.post('', afterEncounterBody).pipe(
+        catchError((error: AxiosError) => {
+          this.logger.error(error.message);
+          this.logger.error(JSON.stringify(error.response.data, null, 2));
+          throw new SatuSehatErrorException(error.response.status);
+        }),
+      ),
+    );
+
+    // return [
+    //   ...encounterResponse.data.entry,
+    //   ...afterEncounterResponse.data.entry,
+    // ];
+
+    return { encounterBody, afterEncounterBody };
+  }
+
+  async observationHttpBodyList(mrid: string) {
+    const valuesList = [
+      {
+        key: 'pulse',
+        code: '8867-4',
+        display: 'Heart rate',
+        valueUnit: 'beats/minute',
+        valueCode: '/min',
+      },
+      {
+        key: 'respiration',
+        code: '9279-1',
+        display: 'Respiratory rate',
+        valueUnit: 'breaths/minute',
+        valueCode: '/min',
+      },
+      {
+        key: 'systole',
+        code: '8480-6',
+        display: 'Systolic blood pressure',
+        valueUnit: 'mm[Hg]',
+        valueCode: 'mm[Hg]',
+      },
+      {
+        key: 'diastole',
+        code: '8462-4',
+        display: 'Diastolic blood pressure',
+        valueUnit: 'mm[Hg]',
+        valueCode: 'mm[Hg]',
+      },
+      {
+        key: 'temperature',
+        code: '8310-5',
+        display: 'Body temperature',
+        valueUnit: 'C',
+        valueCode: 'Cel',
+      },
+    ];
+
+    const transformedValues = valuesList.map(async (value) => {
+      return await this.satusehatJsonService.observationJson(mrid, value);
+    });
+
+    return Promise.all(transformedValues);
   }
 
   async ensurePatientSatuSehatId(mrid: string) {
@@ -96,6 +171,7 @@ export class SatusehatRawatJalanService {
         this.httpService.get('Patient', { params: queryParams }).pipe(
           catchError((error: AxiosError) => {
             this.logger.error(error.message);
+            this.logger.error(JSON.stringify(error.response.data, null, 2));
             throw new SatuSehatErrorException(error.response.status);
           }),
         ),
@@ -113,6 +189,7 @@ export class SatusehatRawatJalanService {
           this.httpService.post('Patient', body).pipe(
             catchError((error: AxiosError) => {
               this.logger.error(error.message);
+              this.logger.error(JSON.stringify(error.response.data, null, 2));
               throw new SatuSehatErrorException(error.response.status);
             }),
           ),
@@ -175,6 +252,7 @@ export class SatusehatRawatJalanService {
           this.httpService.get('Practitioner', { params: queryParams }).pipe(
             catchError((error: AxiosError) => {
               this.logger.error(error.message);
+              this.logger.error(JSON.stringify(error.response.data, null, 2));
               throw new SatuSehatErrorException(error.response.status);
             }),
           ),
@@ -193,6 +271,49 @@ export class SatusehatRawatJalanService {
           break;
         }
       }
+    }
+  }
+
+  async ensureDoctorSatuSehatId(mrid: string) {
+    const patientAssessment =
+      await this.prismaService.patient_assessment.findFirst({
+        where: {
+          patient_medical_recordsId: mrid,
+        },
+        select: {
+          Doctor: {
+            select: {
+              id: true,
+              nik: true,
+              satuSehatId: true,
+            },
+          },
+        },
+      });
+
+    if (!patientAssessment.Doctor.satuSehatId) {
+      const queryParams = {
+        identifier: `https://fhir.kemkes.go.id/id/nik|${patientAssessment.Doctor.nik}`,
+      };
+
+      const { data } = await firstValueFrom(
+        this.httpService.get('Practitioner', { params: queryParams }).pipe(
+          catchError((error: AxiosError) => {
+            this.logger.error(error.message);
+            this.logger.error(JSON.stringify(error.response.data, null, 2));
+            throw new SatuSehatErrorException(error.response.status);
+          }),
+        ),
+      );
+
+      await this.prismaService.users.update({
+        where: {
+          id: patientAssessment.Doctor.id,
+        },
+        data: {
+          satuSehatId: data.entry[0].resource.id,
+        },
+      });
     }
   }
 }

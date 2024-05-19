@@ -53,16 +53,16 @@ model Patient_medical_records {
 
 model Patient_vital_sign {
   id                        Int                      @id @default(autoincrement())
-  height                    Decimal?                 @default(0)
-  weight                    Decimal?                 @default(0)
-  temperature               Decimal                  @default(0)
+  height                    Int?                 @default(0)
+  weight                    Int?                 @default(0)
+  temperature               Int?                  @default(0)
   systole                   Int?                     @default(0)
   diastole                  Int?                     @default(0)
   pulse                     Int?                     @default(0)
   respiration               Int?                     @default(0)
   saturation                Int?                     @default(0)
-  sugar                     Decimal?                 @default(0)
-  cholesterol               Decimal?                 @default(0)
+  sugar                     Int?                 @default(0)
+  cholesterol               Int?                 @default(0)
   pain                      String?
   allergic                  String?                  @default("n/a")
   deletedAt                 DateTime?
