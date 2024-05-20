@@ -13,4 +13,5 @@ export interface AuthRegisterDto {
   clinicPhone: string;
   clinicAddress: string;
   clinicCode?: string;
+  nik: string;
 }

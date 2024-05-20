@@ -7,4 +7,5 @@ export interface CreateUserDto {
   password: string;
   role: UserRole;
   address: string;
+  nik: string;
 }

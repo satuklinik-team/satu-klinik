@@ -36,6 +36,7 @@ export function ClinicNewUserPage(): JSX.Element {
         password: dto.password as string,
         role: dto.role as UserRole,
         address: dto.address as string,
+        nik: dto.nik as string,
       };
 
       await mutateAsync(formattedData);
