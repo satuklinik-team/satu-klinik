@@ -138,8 +138,7 @@ export class PharmacyTasksService {
           },
           select: {
             medicineId: true,
-            patient_medical_recordsId: true,
-            quantity: true,
+            totalQuantity: true,
           },
         });
 
@@ -149,8 +148,23 @@ export class PharmacyTasksService {
           },
           data: {
             stock: {
-              increment: prescription.quantity,
+              increment: prescription.totalQuantity,
             },
+          },
+        });
+      }
+
+      const boughtPrescriptionsId = patientPrescriptionIds.filter((id) =>
+        dto.boughtPrescriptionsId.includes(id),
+      );
+
+      for (const prescriptionId of boughtPrescriptionsId) {
+        await tx.patient_prescription.update({
+          where: {
+            id: prescriptionId,
+          },
+          data: {
+            bought: true,
           },
         });
       }

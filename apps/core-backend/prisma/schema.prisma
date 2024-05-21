@@ -53,16 +53,16 @@ model Patient_medical_records {
 
 model Patient_vital_sign {
   id                        Int                      @id @default(autoincrement())
-  height                    Int?                 @default(0)
-  weight                    Int?                 @default(0)
-  temperature               Int?                  @default(0)
+  height                    Int?                     @default(0)
+  weight                    Int?                     @default(0)
+  temperature               Int?                     @default(0)
   systole                   Int?                     @default(0)
   diastole                  Int?                     @default(0)
   pulse                     Int?                     @default(0)
   respiration               Int?                     @default(0)
   saturation                Int?                     @default(0)
-  sugar                     Int?                 @default(0)
-  cholesterol               Int?                 @default(0)
+  sugar                     Int?                     @default(0)
+  cholesterol               Int?                     @default(0)
   pain                      String?
   allergic                  String?                  @default("n/a")
   deletedAt                 DateTime?
@@ -73,6 +73,7 @@ model Patient_vital_sign {
 model Patient_assessment {
   id                        Int                              @id @default(autoincrement())
   createdAt                 DateTime                         @default(now())
+  conditionId               String?
   doctorId                  String?                          @db.Uuid
   Doctor                    Users?                           @relation(fields: [doctorId], references: [id])
   subjective                String                           @default("none")
@@ -104,11 +105,15 @@ model Patient_prescription {
   medicineId                Int?
   Medicine                  Medicine?                @relation(fields: [medicineId], references: [id])
   type                      String?
-  usage                     String?
-  dosage                    String?
-  interval                  String?
-  quantity                  Int
+  frequency                 Int?
+  period                    Int?
+  doseQuantity              Int?
+  totalQuantity             Int?
+  supplyDuration            Int?
+  notes                     String?
+  satuSehatId               String?
   deletedAt                 DateTime?
+  bought                    Boolean                  @default(false)
   patient_medical_recordsId String?                  @db.Uuid
   Patient_medical_records   Patient_medical_records? @relation(fields: [patient_medical_recordsId], references: [id])
 }
@@ -445,6 +450,7 @@ model Medicine {
   discount             Int?
   imageUrl             String?
   kfaCode              String?
+  satuSehatId          String?
   categoryId           Int?
   category             MedicineCategory?      @relation(fields: [categoryId], references: [id])
   Patient_prescription Patient_prescription[]

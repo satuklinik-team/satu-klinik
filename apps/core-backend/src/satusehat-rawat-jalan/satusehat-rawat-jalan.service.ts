@@ -90,12 +90,44 @@ export class SatusehatRawatJalanService {
       ),
     );
 
-    // return [
-    //   ...encounterResponse.data.entry,
-    //   ...afterEncounterResponse.data.entry,
-    // ];
+    await this.prismaService.patient_assessment.updateMany({
+      where: {
+        patient_medical_recordsId: mrid,
+      },
+      data: {
+        conditionId: afterEncounterResponse.data.entry[5].response.resourceID,
+      },
+    });
 
-    return { encounterBody, afterEncounterBody };
+    await this.ensureMedicationsSatuSehatId(clinics.Patient.clinicsId);
+
+    const medicationRequestBody = {
+      resourceType: 'Bundle',
+      type: 'transaction',
+      entry: [
+        ...(await this.medicationRequestHttpBodyList(
+          clinics.Patient.clinicsId,
+          mrid,
+        )),
+      ],
+    };
+
+    const medicationRequestResponse = await firstValueFrom(
+      this.httpService.post('', medicationRequestBody).pipe(
+        catchError((error: AxiosError) => {
+          this.logger.error(error.message);
+          this.logger.error(JSON.stringify(error.response.data, null, 2));
+          throw new SatuSehatErrorException(error.response.status);
+        }),
+      ),
+    );
+
+    return {
+      encounterBody,
+      encounterResponse: encounterResponse.data.entry,
+      afterEncounterBody,
+      afterEncounterResponse: afterEncounterResponse.data.entry,
+    };
   }
 
   async observationHttpBodyList(mrid: string) {
@@ -141,7 +173,25 @@ export class SatusehatRawatJalanService {
       return await this.satusehatJsonService.observationJson(mrid, value);
     });
 
-    return Promise.all(transformedValues);
+    return await Promise.all(transformedValues);
+  }
+
+  async medicationRequestHttpBodyList(clinicsId: string, mrid: string) {
+    const prescriptions =
+      await this.prismaService.patient_prescription.findMany({
+        where: {
+          patient_medical_recordsId: mrid,
+        },
+      });
+
+    const transformedValues = prescriptions.map(async (value) => {
+      return await this.satusehatJsonService.medicationRequestJson(
+        clinicsId,
+        value.id,
+      );
+    });
+
+    return await Promise.all(transformedValues);
   }
 
   async ensurePatientSatuSehatId(mrid: string) {
@@ -315,5 +365,56 @@ export class SatusehatRawatJalanService {
         },
       });
     }
+  }
+
+  async ensureMedicationsSatuSehatId(clinicsId: string) {
+    const medicines = await this.prismaService.medicine.findMany({
+      where: {
+        category: {
+          clinicsId,
+        },
+        satuSehatId: {
+          not: null,
+        },
+      },
+    });
+
+    await this.ensureAuthenticated(clinicsId);
+
+    const medicationBody = {
+      resourceType: 'Bundle',
+      type: 'transaction',
+      entry: await Promise.all(
+        medicines.map(
+          async (medicine) =>
+            await this.satusehatJsonService.medicationJson(
+              clinicsId,
+              medicine.id,
+            ),
+        ),
+      ),
+    };
+
+    const medicationResponse = await firstValueFrom(
+      this.httpService.post('', medicationBody).pipe(
+        catchError((error: AxiosError) => {
+          this.logger.error(error.message);
+          this.logger.error(JSON.stringify(error.response.data, null, 2));
+          throw new SatuSehatErrorException(error.response.status);
+        }),
+      ),
+    );
+
+    for (const [index, value] of medicines.entries()) {
+      await this.prismaService.medicine.update({
+        where: {
+          id: value.id,
+        },
+        data: {
+          satuSehatId: medicationResponse.data.entry[index].response.resourceID,
+        },
+      });
+    }
+    return medicationResponse.data.entry;
   }
 }
