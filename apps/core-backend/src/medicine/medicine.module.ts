@@ -9,5 +9,6 @@ import { FindAllModule } from 'src/find-all/find-all.module';
   imports: [MinioClientModule, MedicineCategoryModule, FindAllModule],
   controllers: [MedicineController],
   providers: [MedicineService],
+  exports: [MedicineService],
 })
 export class MedicineModule {}

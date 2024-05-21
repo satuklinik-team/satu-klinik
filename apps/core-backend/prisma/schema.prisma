@@ -130,7 +130,7 @@ model Poli {
   name                    String
   alias                   String?                   @default("A")
   doctor                  String                    @default("dr whoisname")
-  isActive                Boolean?                  @default(false)
+  isActive                Boolean?                  @default(true)
   createdAt               DateTime?                 @default(now()) @db.Timestamptz(6)
   deletedAt               DateTime?
   clinicsId               String?                   @db.Uuid
