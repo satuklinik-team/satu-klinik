@@ -4,7 +4,10 @@ import { stringify } from "qs";
 import { api } from "@/lib/api";
 
 import type { BaseFindConnectionResponse } from "../shared/types";
-import type { CreateMedicineDto, UpdateMedicineDto } from "./types/dto";
+import type {
+  CreateMedicineCategoryDto,
+  UpdateMedicineCategoryDto,
+} from "./types/dto";
 import type { MedicineCategoryEntity } from "./types/entity";
 
 class MedicineCategoryApi {
@@ -23,7 +26,7 @@ class MedicineCategoryApi {
   }
 
   async createMedicineCategory(
-    values?: CreateMedicineDto,
+    values?: CreateMedicineCategoryDto,
   ): Promise<MedicineCategoryEntity> {
     const { data } = await this.api.post<MedicineCategoryEntity>(
       "/medicine-category",
@@ -35,7 +38,7 @@ class MedicineCategoryApi {
 
   async updateMedicineCategory(
     id: string,
-    values?: UpdateMedicineDto,
+    values?: UpdateMedicineCategoryDto,
   ): Promise<MedicineCategoryEntity> {
     const { data } = await this.api.post<MedicineCategoryEntity>(
       `/medicine-category/${id}`,

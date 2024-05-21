@@ -9,8 +9,8 @@ import {
   Input as b,
   EmailInput as p,
   PhoneNumberInput as g,
-  PasswordInput as S,
-  Divider as k,
+  PasswordInput as k,
+  Divider as L,
   TextArea as y,
   Spacer as P,
   Button as v,
@@ -46,20 +46,20 @@ var B = n.object({
     clinicAddress: n.string(),
     clinicCode: n.string(),
   }),
-  C = "Lxmwzr69pPeqqTEc3LJM",
+  C = "PsalxH2jbWnwMJzKniF2",
   E = ({
     onSubmit: m,
     onError: d,
     onSuccess: R,
     defaultValues: z,
-    onAction: q,
-    formProps: w,
+    onAction: w,
+    formProps: q,
   }) => {
     let F = c.useRef();
     c.useEffect(() => {
       m && (F.current = m);
     }, [m]);
-    let L = c.useCallback(async (r, e) => {
+    let S = c.useCallback(async (r, e) => {
       if (F.current) return F.current(r, e);
     }, []);
     return o(
@@ -67,7 +67,7 @@ var B = n.object({
       {
         id: C,
         defaultValues: z,
-        onSubmit: L,
+        onSubmit: S,
         onError: d,
         onSuccess: R,
         zodSchema: B,
@@ -155,7 +155,7 @@ var B = n.object({
                     children: [
                       o(s, { isRequired: !0, children: "Konfirmasi Password" }),
                       o(i, {
-                        children: o(S, {
+                        children: o(k, {
                           label: "Konfirmasi Password",
                           name: e.name,
                           value: e.value ?? "",
@@ -171,7 +171,7 @@ var B = n.object({
                     ],
                   }),
               }),
-              o(k.Solid, { styles: { root: {} }, size: 1, color: "#c7c7c7" }),
+              o(L.Solid, { styles: { root: {} }, size: 1, color: "#c7c7c7" }),
               o(l, {
                 control: r.control,
                 name: "clinicName",

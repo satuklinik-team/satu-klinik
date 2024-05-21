@@ -4,15 +4,15 @@ import { useQuery } from "@tanstack/react-query";
 
 import type { BaseFindConnectionResponse } from "@/services/shared/types";
 
-import { medicineApi } from "../api";
-import type { MedicineEntity } from "../types/entity";
-import { MedicineQueryKeyFactory } from "../utils/query-key.factory";
+import { medicineCategoryApi } from "../api";
+import type { MedicineCategoryEntity } from "../types/entity";
+import { MedicineCategoryQueryKeyFactory } from "../utils/query-key.factory";
 
-export const useFindMedicine = (dto?: object) => {
-  const queryKeyFactory = new MedicineQueryKeyFactory();
+export const useFindMedicineCategory = (dto?: object) => {
+  const queryKeyFactory = new MedicineCategoryQueryKeyFactory();
 
-  return useQuery<BaseFindConnectionResponse<MedicineEntity>>({
-    queryFn: () => medicineApi.findMedicine(dto),
+  return useQuery<BaseFindConnectionResponse<MedicineCategoryEntity>>({
+    queryFn: () => medicineCategoryApi.findMedicineCategory(dto),
     queryKey: queryKeyFactory.list(dto),
   });
 };

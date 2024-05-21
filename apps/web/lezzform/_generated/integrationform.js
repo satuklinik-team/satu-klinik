@@ -1,6 +1,6 @@
 import { z as a } from "zod";
 import {
-  Lezzform as p,
+  Lezzform as z,
   FormField as t,
   FormItem as s,
   FormLabel as u,
@@ -18,10 +18,10 @@ var L = a.object({
     username: a.string(),
     password: a.string(),
   }),
-  z = "e8FwU7YEXkVFVA7hr86m",
+  b = "uXjrDrsbJzs1uZV3ajOt",
   P = ({
     onSubmit: i,
-    onError: b,
+    onError: p,
     onSuccess: h,
     defaultValues: S,
     onAction: f,
@@ -35,17 +35,17 @@ var L = a.object({
       if (d.current) return d.current(r, o);
     }, []);
     return e(
-      p,
+      z,
       {
-        id: z,
+        id: b,
         defaultValues: S,
         onSubmit: R,
-        onError: b,
+        onError: p,
         onSuccess: h,
         zodSchema: L,
         mode: "onSubmit",
         children: (r) =>
-          m(p.Container, {
+          m(z.Container, {
             children: [
               e(t, {
                 control: r.control,
@@ -154,7 +154,7 @@ var L = a.object({
             ],
           }),
       },
-      z,
+      b,
     );
   };
 export { P as Form };

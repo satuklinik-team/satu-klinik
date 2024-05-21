@@ -8,18 +8,18 @@ import {
   FormMessage as u,
   Input as b,
   Dropdown as p,
-  DatePicker as S,
+  DatePicker as q,
   PhoneNumberInput as I,
   TextArea as R,
-  Divider as A,
+  Divider as k,
   TwoColumn as g,
-  ThreeColumn as N,
+  ThreeColumn as A,
   Button as y,
   NumberInput as i,
 } from "@lezzform/react";
 import {
   CreditCard as v,
-  User as k,
+  User as N,
   Calendar as w,
   Phone as P,
 } from "lucide-react";
@@ -53,8 +53,8 @@ var T = a.object({
     temperature: a.coerce.number(),
     pain: a.string(),
   }),
-  B = "Aho9ajsLALjuDY6RKagH",
-  M = ({
+  B = "MsakSh0Okc8Ytt4s52LV",
+  G = ({
     onSubmit: c,
     onError: F,
     onSuccess: L,
@@ -66,7 +66,7 @@ var T = a.object({
     d.useEffect(() => {
       c && (h.current = c);
     }, [c]);
-    let q = d.useCallback(async (n, e) => {
+    let S = d.useCallback(async (n, e) => {
       if (h.current) return h.current(n, e);
     }, []);
     return o(
@@ -74,7 +74,7 @@ var T = a.object({
       {
         id: B,
         defaultValues: z,
-        onSubmit: q,
+        onSubmit: S,
         onError: F,
         onSuccess: L,
         zodSchema: T,
@@ -155,7 +155,7 @@ var T = a.object({
                           isRequired: !0,
                           styles: { root: {} },
                           prefixAdornment: {
-                            icon: o(k, { size: 18, color: "#000000" }),
+                            icon: o(N, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
@@ -226,7 +226,7 @@ var T = a.object({
                     children: [
                       o(m, { isRequired: !0, children: "Tanggal Lahir" }),
                       o(s, {
-                        children: o(S, {
+                        children: o(q, {
                           label: "Tanggal Lahir",
                           name: e.name,
                           value: e.value,
@@ -296,7 +296,7 @@ var T = a.object({
                     ],
                   }),
               }),
-              o(A.Solid, { styles: { root: {} }, size: 2, color: "#E8E8E8" }),
+              o(k.Solid, { styles: { root: {} }, size: 2, color: "#E8E8E8" }),
               r(g, {
                 styles: { root: {} },
                 children: [
@@ -427,7 +427,7 @@ var T = a.object({
                   }),
                 ],
               }),
-              r(N, {
+              r(A, {
                 styles: { root: {} },
                 children: [
                   o(l, {
@@ -553,4 +553,4 @@ var T = a.object({
       B,
     );
   };
-export { M as Form };
+export { G as Form };

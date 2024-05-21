@@ -7,8 +7,8 @@ import {
   FormControl as i,
   FormMessage as u,
   Input as d,
-  PhoneNumberInput as C,
-  NumberInput as S,
+  PhoneNumberInput as S,
+  NumberInput as C,
   Button as I,
 } from "@lezzform/react";
 import {
@@ -19,7 +19,7 @@ import {
 } from "lucide-react";
 import * as c from "react";
 import { jsx as o, jsxs as a } from "react/jsx-runtime";
-var f = n.object({
+var P = n.object({
     licenseNumber: n.string(),
     clinicId: n.string(),
     clinicName: n.string(),
@@ -36,14 +36,14 @@ var f = n.object({
     address: n.string(),
     price: n.coerce.number(),
   }),
-  h = "3Uvdejiq5Bo4LounINtI",
+  h = "xPZqSjlnGNuTGRlUBiio",
   D = ({
     onSubmit: m,
     onError: F,
     onSuccess: g,
     defaultValues: z,
-    onAction: k,
-    formProps: v,
+    onAction: f,
+    formProps: k,
   }) => {
     let b = c.useRef();
     c.useEffect(() => {
@@ -60,7 +60,7 @@ var f = n.object({
         onSubmit: R,
         onError: F,
         onSuccess: g,
-        zodSchema: f,
+        zodSchema: P,
         mode: "onSubmit",
         children: (r) =>
           a(p.Container, {
@@ -158,7 +158,7 @@ var f = n.object({
                     children: [
                       o(l, { isRequired: !0, children: "Nomor Telepon" }),
                       o(i, {
-                        children: o(C, {
+                        children: o(S, {
                           label: "Nomor Telepon",
                           name: e.name,
                           value: e.value ?? "",
@@ -209,7 +209,7 @@ var f = n.object({
                     children: [
                       o(l, { isRequired: !0, children: "Harga Dasar" }),
                       o(i, {
-                        children: o(S, {
+                        children: o(C, {
                           label: "Harga Dasar",
                           name: e.name,
                           value: e.value ?? 0,

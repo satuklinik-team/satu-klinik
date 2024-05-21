@@ -1,7 +1,7 @@
 import { QueryKeyFactory } from "@/services/shared/query-key.factory";
 
-export class MedicineQueryKeyFactory extends QueryKeyFactory {
+export class MedicineCategoryQueryKeyFactory extends QueryKeyFactory {
   constructor() {
-    super("medicines");
+    super("medicine=categories");
   }
 }

@@ -1,40 +1,41 @@
 import { z as a } from "zod";
 import {
-  Lezzform as b,
-  FormField as m,
-  FormItem as l,
+  Lezzform as p,
+  FormField as l,
+  FormItem as m,
   FormLabel as t,
   FormControl as s,
   FormMessage as u,
-  Input as p,
+  Input as b,
   EmailInput as L,
-  TextArea as w,
-  Dropdown as v,
+  TextArea as v,
+  Dropdown as w,
   PasswordInput as F,
   Spacer as y,
-  TwoColumn as P,
+  TwoColumn as A,
   Button as h,
 } from "@lezzform/react";
-import { UserRound as A, Mail as k } from "lucide-react";
+import { UserRound as P, Mail as k, CreditCard as B } from "lucide-react";
 import * as i from "react";
 import { jsx as e, jsxs as n } from "react/jsx-runtime";
-var B = a.object({
+var I = a.object({
     fullname: a.string(),
     email: a.string().email(),
     phone: a.string(),
+    nik: a.string(),
     address: a.string(),
     role: a.string(),
     password: a.string().max(14).min(6),
     confirmPassword: a.string().max(14).min(6),
   }),
-  R = "2J1DamYzvycoed2Fnb9x",
+  C = "hRAHgQjsaA6tVHr1lk4E",
   D = ({
     onSubmit: c,
-    onError: z,
-    onSuccess: C,
-    defaultValues: g,
+    onError: R,
+    onSuccess: g,
+    defaultValues: z,
     onAction: q,
-    formProps: I,
+    formProps: N,
   }) => {
     let d = i.useRef();
     i.useEffect(() => {
@@ -44,27 +45,27 @@ var B = a.object({
       if (d.current) return d.current(r, o);
     }, []);
     return e(
-      b,
+      p,
       {
-        id: R,
-        defaultValues: g,
+        id: C,
+        defaultValues: z,
         onSubmit: S,
-        onError: z,
-        onSuccess: C,
-        zodSchema: B,
+        onError: R,
+        onSuccess: g,
+        zodSchema: I,
         mode: "onSubmit",
         children: (r) =>
-          n(b.Container, {
+          n(p.Container, {
             children: [
-              e(m, {
+              e(l, {
                 control: r.control,
                 name: "fullname",
                 render: ({ field: o }) =>
-                  n(l, {
+                  n(m, {
                     children: [
                       e(t, { isRequired: !0, children: "Nama Lengkap" }),
                       e(s, {
-                        children: e(p, {
+                        children: e(b, {
                           label: "Nama Lengkap",
                           name: o.name,
                           value: o.value ?? "",
@@ -75,7 +76,7 @@ var B = a.object({
                           isRequired: !0,
                           styles: { root: {} },
                           prefixAdornment: {
-                            icon: e(A, { size: 18, color: "#000000" }),
+                            icon: e(P, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
@@ -83,11 +84,11 @@ var B = a.object({
                     ],
                   }),
               }),
-              e(m, {
+              e(l, {
                 control: r.control,
                 name: "email",
                 render: ({ field: o }) =>
-                  n(l, {
+                  n(m, {
                     children: [
                       e(t, { isRequired: !0, children: "Email" }),
                       e(s, {
@@ -110,15 +111,15 @@ var B = a.object({
                     ],
                   }),
               }),
-              e(m, {
+              e(l, {
                 control: r.control,
                 name: "phone",
                 render: ({ field: o }) =>
-                  n(l, {
+                  n(m, {
                     children: [
                       e(t, { isRequired: !0, children: "Nomor Telepon" }),
                       e(s, {
-                        children: e(p, {
+                        children: e(b, {
                           label: "Nomor Telepon",
                           name: o.name,
                           value: o.value ?? "",
@@ -134,15 +135,42 @@ var B = a.object({
                     ],
                   }),
               }),
-              e(m, {
+              e(l, {
+                control: r.control,
+                name: "nik",
+                render: ({ field: o }) =>
+                  n(m, {
+                    children: [
+                      e(t, { isRequired: !0, children: "NIK" }),
+                      e(s, {
+                        children: e(b, {
+                          label: "NIK",
+                          name: o.name,
+                          value: o.value ?? "",
+                          onBlur: o.onBlur,
+                          onChange: o.onChange,
+                          placeholder: "NIK",
+                          disabled: o.disabled,
+                          isRequired: !0,
+                          styles: { root: {} },
+                          prefixAdornment: {
+                            icon: e(B, { size: 18, color: "#000000" }),
+                          },
+                        }),
+                      }),
+                      e(u, {}),
+                    ],
+                  }),
+              }),
+              e(l, {
                 control: r.control,
                 name: "address",
                 render: ({ field: o }) =>
-                  n(l, {
+                  n(m, {
                     children: [
                       e(t, { isRequired: !0, children: "Alamat" }),
                       e(s, {
-                        children: e(w, {
+                        children: e(v, {
                           label: "Alamat",
                           name: o.name,
                           value: o.value ?? "",
@@ -158,15 +186,15 @@ var B = a.object({
                     ],
                   }),
               }),
-              e(m, {
+              e(l, {
                 control: r.control,
                 name: "role",
                 render: ({ field: o }) =>
-                  n(l, {
+                  n(m, {
                     children: [
                       e(t, { isRequired: !0, children: "Role" }),
                       e(s, {
-                        children: e(v.List, {
+                        children: e(w.List, {
                           label: "Role",
                           name: o.name,
                           value: o.value,
@@ -187,11 +215,11 @@ var B = a.object({
                     ],
                   }),
               }),
-              e(m, {
+              e(l, {
                 control: r.control,
                 name: "password",
                 render: ({ field: o }) =>
-                  n(l, {
+                  n(m, {
                     children: [
                       e(t, { isRequired: !0, children: "Password" }),
                       e(s, {
@@ -211,11 +239,11 @@ var B = a.object({
                     ],
                   }),
               }),
-              e(m, {
+              e(l, {
                 control: r.control,
                 name: "confirmPassword",
                 render: ({ field: o }) =>
-                  n(l, {
+                  n(m, {
                     children: [
                       e(t, { isRequired: !0, children: "Konfirmasi Password" }),
                       e(s, {
@@ -236,7 +264,7 @@ var B = a.object({
                   }),
               }),
               e(y, { styles: { root: {} }, size: 16 }),
-              n(P, {
+              n(A, {
                 styles: { root: {} },
                 children: [
                   e(h, {
@@ -258,7 +286,7 @@ var B = a.object({
             ],
           }),
       },
-      R,
+      C,
     );
   };
 export { D as Form };

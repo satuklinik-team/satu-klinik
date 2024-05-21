@@ -1,10 +1,5 @@
-export interface CreateMedicineDto {
-  image: object;
-  title: string;
-  price: number;
-  stock: number;
-  discount: number;
-  categoryId: string;
+export interface CreateMedicineCategoryDto {
+  name: string;
 }
 
-export type UpdateMedicineDto = Partial<CreateMedicineDto>;
+export type UpdateMedicineCategoryDto = Partial<CreateMedicineCategoryDto>;
