@@ -24,13 +24,14 @@ export function RegisterPage(): JSX.Element {
         clinicEmail: dto.clinicEmail as string,
         clinicPhone: dto.clinicPhone as string,
         clinicAddress: dto.clinicAddress as string,
+        nik: "-",
       };
 
       await mutateAsync(formattedData);
       toast({ title: "Akun berhasil dibuat!", variant: "success" });
       router.replace("/members");
     },
-    [mutateAsync, router, toast]
+    [mutateAsync, router, toast],
   );
 
   return (

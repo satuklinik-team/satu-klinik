@@ -9,19 +9,14 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import type { UserEntity } from "@/services/user/types/entity";
-import type { FormatterCellProps } from "@/types";
 import { getWhatsappUrl } from "@/utils";
 
-export function ClinicUsersActionsCell({
-  row,
-}: FormatterCellProps): JSX.Element {
-  const typedRow = row as UserEntity;
-
+export function ClinicUsersActionsCell(row: UserEntity): JSX.Element {
   return (
     <Cell className="gap-2">
       <TooltipProvider>
         <Tooltip>
-          <Link href={getWhatsappUrl(typedRow.phone)}>
+          <Link href={getWhatsappUrl(row.phone)}>
             <TooltipTrigger className="h-min p-2">
               <MessageCircle className="text-green-500" size={20} />
             </TooltipTrigger>
@@ -29,7 +24,7 @@ export function ClinicUsersActionsCell({
           <TooltipContent>Kontak WA</TooltipContent>
         </Tooltip>
         <Tooltip>
-          <Link href={`/clinic/${typedRow.id}`}>
+          <Link href={`/clinic/${row.id}`}>
             <TooltipTrigger className="h-min p-2">
               <Trash className="text-red-500" size={20} />
             </TooltipTrigger>

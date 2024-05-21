@@ -3,33 +3,15 @@ import type { LezzformReturn, LezzformProps } from "@lezzform/react";
 import * as React from "react";
 declare const zodFormSchema: z.ZodObject<
   {
-    fullname: z.ZodString;
-    email: z.ZodString;
-    phone: z.ZodString;
-    address: z.ZodString;
-    role: z.ZodString;
-    password: z.ZodString;
-    confirmPassword: z.ZodString;
+    name: z.ZodOptional<z.ZodString>;
   },
   "strip",
   z.ZodTypeAny,
   {
-    address?: string;
-    role?: string;
-    email?: string;
-    password?: string;
-    fullname?: string;
-    phone?: string;
-    confirmPassword?: string;
+    name?: string;
   },
   {
-    address?: string;
-    role?: string;
-    email?: string;
-    password?: string;
-    fullname?: string;
-    phone?: string;
-    confirmPassword?: string;
+    name?: string;
   }
 >;
 export type FormSchema = z.infer<typeof zodFormSchema>;

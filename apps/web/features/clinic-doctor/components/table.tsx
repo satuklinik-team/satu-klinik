@@ -18,10 +18,12 @@ import {
 } from "@/components/ui/tooltip";
 import { ClinicCard } from "@/features/clinic/components/ui/card";
 import { ClinicPatientVitals } from "@/features/clinic-patient/components/shared/vitals";
+import { patientStatuses } from "@/features/clinic-patient/utils";
 import { useFindPatient } from "@/services/patient/hooks/use-find-patient";
 import type { PatientEntity } from "@/services/patient/types/entity";
 import type { VitalSignEntity } from "@/services/patient-vital-sign/types/entity";
 import type { Pagination } from "@/types";
+import { getInitial } from "@/utils";
 
 export function ClinicDoctorTable(): JSX.Element {
   const { clinicId } = useParams();
@@ -61,7 +63,7 @@ export function ClinicDoctorTable(): JSX.Element {
               return (
                 <Cell className="gap-3">
                   <div className="flex items-center justify-center w-12 h-12 shrink-0 bg-border rounded-full border-2">
-                    <p>PA</p>
+                    <p>{getInitial(row.fullname)}</p>
                   </div>
                   <div>
                     <p className="font-bold">{row.fullname}</p>
@@ -102,7 +104,7 @@ export function ClinicDoctorTable(): JSX.Element {
             renderCell: (row) => (
               <Cell className="gap-2">
                 <Badge className="text-sm cursor-default">
-                  {row.mr[0]?.status}
+                  {patientStatuses[row.mr[0]?.status as "e1" | "p1" | "d1"]}
                 </Badge>
               </Cell>
             ),
@@ -116,7 +118,7 @@ export function ClinicDoctorTable(): JSX.Element {
                   <Tooltip>
                     <Link
                       href={`/clinic/${clinicId as string}/mr/${
-                        row.norm
+                        row.mr[0]?.id
                       }/diagnose`}
                     >
                       <TooltipTrigger className="h-min p-2">

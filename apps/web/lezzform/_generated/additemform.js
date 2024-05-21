@@ -11,7 +11,7 @@ import {
   Input as P,
   NumberInput as h,
   TwoColumn as k,
-  Button as C,
+  Button as z,
 } from "@lezzform/react";
 import { ChevronDown as w } from "lucide-react";
 import * as s from "react";
@@ -24,14 +24,14 @@ var B = t.object({
     quantity: t.coerce.number(),
     discount: t.coerce.number().optional(),
   }),
-  z = "tTMvX1aoe3O6p8lfy6bC",
-  f = ({
+  C = "ZZsO9eU2L3SIxInp1Tzx",
+  T = ({
     onSubmit: b,
-    onError: y,
-    onSuccess: g,
+    onError: g,
+    onSuccess: y,
     defaultValues: S,
     onAction: i,
-    formProps: q,
+    formProps: I,
   }) => {
     let p = s.useRef();
     s.useEffect(() => {
@@ -43,11 +43,11 @@ var B = t.object({
     return e(
       d,
       {
-        id: z,
+        id: C,
         defaultValues: S,
         onSubmit: R,
-        onError: y,
-        onSuccess: g,
+        onError: g,
+        onSuccess: y,
         zodSchema: B,
         mode: "onSubmit",
         children: (r) =>
@@ -213,7 +213,7 @@ var B = t.object({
               n(k, {
                 styles: { root: {} },
                 children: [
-                  e(C, {
+                  e(z, {
                     type: "button",
                     className: "w-full",
                     onClick: () => {
@@ -223,7 +223,7 @@ var B = t.object({
                     styles: { root: { backgroundColor: "#2E584F" } },
                     children: "Submit",
                   }),
-                  e(C, {
+                  e(z, {
                     type: "button",
                     className: "w-full",
                     onClick: () => {
@@ -238,7 +238,7 @@ var B = t.object({
             ],
           }),
       },
-      z
+      C,
     );
   };
-export { f as Form };
+export { T as Form };

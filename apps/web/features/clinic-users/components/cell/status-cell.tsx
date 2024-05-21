@@ -1,16 +1,13 @@
 import { Cell } from "@/components/shared/table/cell";
 import { Badge } from "@/components/ui/badge";
 import type { UserEntity } from "@/services/user/types/entity";
-import type { FormatterCellProps } from "@/types";
 
-export function ClinicUsersStatusCell({
-  row,
-}: FormatterCellProps): JSX.Element {
-  const typedRow = row as UserEntity;
-
+export function ClinicUsersStatusCell(row: UserEntity): JSX.Element {
   return (
     <Cell className="gap-2">
-      <Badge className="text-sm cursor-default">{typedRow.status}</Badge>
+      <Badge className="text-sm cursor-default">
+        {row.isActive ? "Active" : "Inactive"}
+      </Badge>
     </Cell>
   );
 }
