@@ -1,16 +1,9 @@
-import { CACHE_MANAGER } from '@nestjs/cache-manager';
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { EncounterJsonDto } from './dto/encounter-json';
-import { Cache } from 'cache-manager';
-import { time } from 'console';
-import { v4 as uuidv4 } from 'uuid';
 import { SatusehatKfaService } from 'src/satusehat-kfa/satusehat-kfa.service';
 
 @Injectable()
 export class SatusehatJsonService {
-  private usedUUIDs: Set<string> = new Set<string>();
-
   constructor(
     private readonly prismaService: PrismaService,
     private readonly satusehatKfaService: SatusehatKfaService,
