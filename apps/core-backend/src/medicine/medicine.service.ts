@@ -35,6 +35,7 @@ export class MedicineService {
         stock: dto.stock,
         discount: dto.discount,
         categoryId: dto.categoryId,
+        kfaCode: dto.kfaCode,
         imageUrl: uploadedImage.url,
       },
     });

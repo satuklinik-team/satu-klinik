@@ -100,6 +100,7 @@ export class PharmacyTasksService {
         data: {
           doneAt: new Date(),
           status: 'Done',
+          pharmacist: dto.usersId,
         },
       });
 

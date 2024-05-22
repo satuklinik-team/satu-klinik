@@ -55,6 +55,7 @@ export class PharmacyTasksController {
     return await this.pharmacyTasksService.completeTask({
       ...dto,
       id,
+      usersId: tokenData.sub,
       clinicsId: tokenData.clinicsId,
     });
   }

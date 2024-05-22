@@ -683,12 +683,13 @@ export class SatusehatJsonService {
           {
             use: 'official',
             system: `http://sys-ids.kemkes.go.id/prescription/${clinics.organizationId}`,
-            value: prescription,
+            value: prescription.id.toString(),
           },
           {
             use: 'official',
             system: 'http://sys-ids.kemkes.go.id/prescription-item/{{Org_id}}',
-            value: prescription.Patient_medical_records.assessment[0].id,
+            value:
+              prescription.Patient_medical_records.assessment[0].id.toString(),
           },
         ],
         status: 'completed',
@@ -805,21 +806,90 @@ export class SatusehatJsonService {
     };
   }
 
-  async medicationDispenseJson() {
+  async medicationDispenseJson(clinicsId: string, prescriptionId: number) {
+    const clinics = await this.prismaService.clinics.findFirst({
+      where: {
+        id: clinicsId,
+      },
+    });
+
+    const prescription =
+      await this.prismaService.patient_prescription.findFirst({
+        where: {
+          id: prescriptionId,
+        },
+        select: {
+          id: true,
+          frequency: true,
+          period: true,
+          createdAt: true,
+          notes: true,
+          doseQuantity: true,
+          totalQuantity: true,
+          supplyDuration: true,
+          satuSehatId: true,
+          Medicine: {
+            select: {
+              id: true,
+              satuSehatId: true,
+              title: true,
+            },
+          },
+          Patient_medical_records: {
+            select: {
+              id: true,
+              encounterId: true,
+              assessment: {
+                take: 1,
+                select: {
+                  Doctor: {
+                    select: {
+                      fullname: true,
+                      satuSehatId: true,
+                    },
+                  },
+                  id: true,
+                  conditionId: true,
+                },
+              },
+              Patient: {
+                select: {
+                  fullname: true,
+                  satuSehatId: true,
+                },
+              },
+            },
+          },
+        },
+      });
+
+    const pharmacyTask = await this.prismaService.pharmacy_Task.findFirst({
+      where: {
+        assessmentReffId: prescription.Patient_medical_records.id,
+      },
+    });
+
+    const pharmacist = await this.prismaService.users.findFirst({
+      where: {
+        id: pharmacyTask.pharmacist,
+      },
+    });
+
     return {
-      fullUrl: 'urn:uuid:c208648c-9f2f-4437-b4b4-7a8a2ddcf19f',
+      fullUrl: `urn:uuid:${this.getUUID()}`,
       resource: {
         resourceType: 'MedicationDispense',
         identifier: [
           {
             use: 'official',
-            system: 'http://sys-ids.kemkes.go.id/prescription/{{Org_id}}',
-            value: '123456788',
+            system: `http://sys-ids.kemkes.go.id/prescription/${clinics.organizationId}`,
+            value: prescription.id.toString(),
           },
           {
             use: 'official',
-            system: 'http://sys-ids.kemkes.go.id/prescription-item/{{Org_id}}',
-            value: '123456788-1',
+            system: `http://sys-ids.kemkes.go.id/prescription-item/${clinics.organizationId}`,
+            value:
+              prescription.Patient_medical_records.assessment[0].id.toString(),
           },
         ],
         status: 'completed',
@@ -834,57 +904,65 @@ export class SatusehatJsonService {
           ],
         },
         medicationReference: {
-          reference: 'Medication/{{Medication_ForDispense}}',
-          display: '{{Medication_Name}}',
+          reference: `Medication/${prescription.Medicine.satuSehatId}`,
+          display: prescription.Medicine.title,
         },
         subject: {
-          reference: 'Patient/{{Patient_Id}}',
-          display: '{{Patient_Name}}',
+          reference: `Patient/${prescription.Patient_medical_records.Patient.satuSehatId}`,
+          display: prescription.Patient_medical_records.Patient.fullname,
         },
         context: {
-          reference: 'Encounter/{{Encounter_uuid}}',
+          reference: `Encounter/${prescription.Patient_medical_records.encounterId}`,
         },
         performer: [
           {
             actor: {
-              reference: 'Practitioner/N10000003',
-              display: 'Apoteker Miller',
+              reference: `Practitioner/${pharmacist.satuSehatId}`,
+              display: pharmacist.fullname,
             },
           },
         ],
         location: {
-          reference: 'Location/{{Location_farmasi_uuid}}',
-          display: '{{Location_farmasi_Name}}',
+          reference: `Location/${clinics.locationSatuSehatId}`,
+          display: clinics.locationName,
         },
         authorizingPrescription: [
           {
-            reference: 'MedicationRequest/{{MedicationRequest_uuid}}',
+            reference: `MedicationRequest/${prescription.satuSehatId}`,
           },
         ],
         quantity: {
-          value: 120,
+          value: prescription.totalQuantity,
           system: 'http://terminology.hl7.org/CodeSystem/v3-orderableDrugForm',
           code: 'TAB',
         },
         daysSupply: {
-          value: 30,
+          value: prescription.supplyDuration,
           unit: 'Day',
           system: 'http://unitsofmeasure.org',
           code: 'd',
         },
-        whenPrepared: '2023-08-31T03:27:00+00:00',
-        whenHandedOver: '2023-08-31T03:27:00+00:00',
+        whenPrepared: pharmacyTask.doneAt,
+        whenHandedOver: pharmacyTask.doneAt,
         dosageInstruction: [
           {
             sequence: 1,
-            patientInstruction:
-              '4 tablet perhari, diminum setiap hari tanpa jeda sampai prose pengobatan berakhir',
+            patientInstruction: prescription.notes,
             timing: {
               repeat: {
-                frequency: 1,
-                period: 1,
+                frequency: prescription.frequency,
+                period: prescription.period,
                 periodUnit: 'd',
               },
+            },
+            route: {
+              coding: [
+                {
+                  system: 'http://www.whocc.no/atc',
+                  code: 'O',
+                  display: 'Oral',
+                },
+              ],
             },
             doseAndRate: [
               {
@@ -899,7 +977,7 @@ export class SatusehatJsonService {
                   ],
                 },
                 doseQuantity: {
-                  value: 4,
+                  value: prescription.doseQuantity,
                   unit: 'TAB',
                   system:
                     'http://terminology.hl7.org/CodeSystem/v3-orderableDrugForm',
