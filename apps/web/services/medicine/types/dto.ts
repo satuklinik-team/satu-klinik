@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const createMedicineSchema = z.object({
-  image: z.object({}),
+  image: z.instanceof(FileList),
   title: z.string(),
   price: z.number(),
   stock: z.number(),

@@ -49,6 +49,8 @@ export function ClinicNewItemForm(): JSX.Element {
     resolver: zodResolver(createMedicineSchema),
   });
 
+  const imageRef = form.register("image");
+
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const { mutateAsync } = useCreateMedicine();
@@ -72,7 +74,7 @@ export function ClinicNewItemForm(): JSX.Element {
         <FormField
           control={form.control}
           name="image"
-          render={({ field: { value, onChange } }) => {
+          render={() => {
             return (
               <FormItem>
                 <FormLabel>Image</FormLabel>
@@ -91,9 +93,8 @@ export function ClinicNewItemForm(): JSX.Element {
                   <Input
                     className="hidden"
                     id="image"
-                    onChange={onChange}
                     type="file"
-                    value={value}
+                    {...imageRef}
                   />
                 </FormControl>
                 <FormMessage />
