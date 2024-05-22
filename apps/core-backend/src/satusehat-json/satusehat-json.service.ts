@@ -16,20 +16,6 @@ export class SatusehatJsonService {
     private readonly satusehatKfaService: SatusehatKfaService,
   ) {}
 
-  getUUID(): string {
-    let newUUID: string;
-    do {
-      newUUID = uuidv4();
-    } while (this.usedUUIDs.has(newUUID));
-
-    this.usedUUIDs.add(newUUID);
-    return newUUID;
-  }
-
-  clearUsedUUIDs(): void {
-    this.usedUUIDs.clear();
-  }
-
   async registerPatientJson(patientId: string) {
     const patient = await this.prismaService.patient.findFirst({
       where: {
@@ -135,7 +121,6 @@ export class SatusehatJsonService {
     });
 
     return {
-      fullUrl: `urn:uuid:${this.getUUID()}`,
       resource: {
         resourceType: 'Encounter',
         identifier: [
@@ -277,7 +262,6 @@ export class SatusehatJsonService {
       });
 
     return {
-      fullUrl: `urn:uuid:${this.getUUID()}`,
       resource: {
         resourceType: 'Observation',
         status: 'final',
@@ -367,7 +351,6 @@ export class SatusehatJsonService {
       });
 
     return {
-      fullUrl: `urn:uuid:${this.getUUID()}`,
       resource: {
         resourceType: 'Condition',
         clinicalStatus: {
@@ -456,7 +439,6 @@ export class SatusehatJsonService {
       });
 
     return {
-      fullUrl: `urn:uuid:${this.getUUID()}`,
       resource: {
         resourceType: 'Procedure',
         status: 'completed',
@@ -532,7 +514,6 @@ export class SatusehatJsonService {
     );
 
     return {
-      fullUrl: `urn:uuid:${this.getUUID()}`,
       resource: {
         resourceType: 'Medication',
         meta: {
@@ -676,7 +657,6 @@ export class SatusehatJsonService {
       });
 
     return {
-      fullUrl: `urn:uuid:${this.getUUID()}`,
       resource: {
         resourceType: 'MedicationRequest',
         identifier: [
@@ -876,7 +856,6 @@ export class SatusehatJsonService {
     });
 
     return {
-      fullUrl: `urn:uuid:${this.getUUID()}`,
       resource: {
         resourceType: 'MedicationDispense',
         identifier: [

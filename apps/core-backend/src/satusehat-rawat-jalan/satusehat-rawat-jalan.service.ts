@@ -7,6 +7,7 @@ import { SatuSehatErrorException } from 'src/exceptions/bad-request/satusehat-er
 import { PrismaService } from 'src/prisma/prisma.service';
 import { SatusehatJsonService } from 'src/satusehat-json/satusehat-json.service';
 import { SatusehatOauthService } from 'src/satusehat-oauth/satusehat-oauth.service';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class SatusehatRawatJalanService {
@@ -38,8 +39,6 @@ export class SatusehatRawatJalanService {
     await this.ensurePractitionerSatuSehatId(mrid);
     await this.ensureDoctorSatuSehatId(patientMR.Patient.clinicsId, mrid);
     await this.ensurePharmacySatuSehatId(patientMR.Patient.clinicsId, mrid);
-
-    this.satusehatJsonService.clearUsedUUIDs();
 
     const encounter = await this.postBundle(patientMR.Patient.clinicsId, [
       await this.satusehatJsonService.encounterJson(mrid),
@@ -117,10 +116,23 @@ export class SatusehatRawatJalanService {
   async postBundle(clinicsId: string, entry: any[]) {
     const token = await this.satusehatOauthService.token(clinicsId);
 
+    const uuidSet = new Set<string>();
+
+    while (uuidSet.size < entry.length) {
+      uuidSet.add(uuidv4());
+    }
+
+    const uuidArray = Array.from(uuidSet);
+
     const requestBody = {
       resourceType: 'Bundle',
       type: 'transaction',
-      entry,
+      entry: entry.map((value, index) => {
+        return {
+          fullUrl: `urn:uuid:${uuidArray[index]}`,
+          ...value,
+        };
+      }),
     };
 
     const responseBody = await firstValueFrom(
