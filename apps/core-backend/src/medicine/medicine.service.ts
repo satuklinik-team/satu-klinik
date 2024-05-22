@@ -9,6 +9,7 @@ import { Prisma } from '@prisma/client';
 import { FindAllService } from 'src/find-all/find-all.service';
 import { UpdateMedicineDto } from './dto/update-medicine-dto';
 import { DeleteMedicineDto } from './dto/delete-medicine-dto';
+import { GetMedicineByIdDto } from './dto/get-medicine-by-id';
 
 @Injectable()
 export class MedicineService {
@@ -40,7 +41,7 @@ export class MedicineService {
   }
 
   async update(dto: UpdateMedicineDto) {
-    this.canModifyMedicine(dto.id, dto.clinicsId);
+    await this.canModifyMedicine(dto.id, dto.clinicsId);
 
     await this.medicineCategoryService.canModifyMedicineCategory(
       dto.categoryId,
@@ -68,7 +69,7 @@ export class MedicineService {
   }
 
   async delete(dto: DeleteMedicineDto) {
-    this.canModifyMedicine(dto.id, dto.clinicsId);
+    await this.canModifyMedicine(dto.id, dto.clinicsId);
 
     return await this.prismaService.medicine.delete({
       where: {
@@ -86,6 +87,16 @@ export class MedicineService {
       table: this.prismaService.medicine,
       ...args,
       ...dto,
+    });
+  }
+
+  async findById(dto: GetMedicineByIdDto) {
+    await this.canModifyMedicine(dto.id, dto.clinicsId);
+
+    return await this.prismaService.medicine.findFirst({
+      where: {
+        id: dto.id,
+      },
     });
   }
 
