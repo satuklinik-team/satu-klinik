@@ -59,7 +59,6 @@ export function ClinicNewItemForm(): JSX.Element {
 
   const onSubmit = useCallback(
     async (dto: CreateMedicineDto) => {
-      return console.log(dto);
       await mutateAsync(dto);
       await queryClient.invalidateQueries({
         queryKey: new MedicineQueryKeyFactory().lists(),
@@ -75,7 +74,10 @@ export function ClinicNewItemForm(): JSX.Element {
         <FormField
           control={form.control}
           name="image"
-          render={() => {
+          render={({ field }) => {
+            const value = field.value;
+            const imageObject = value?.item(0);
+
             return (
               <FormItem>
                 <FormLabel>Image</FormLabel>
@@ -85,8 +87,13 @@ export function ClinicNewItemForm(): JSX.Element {
                       className="text-muted-foreground"
                       size={32}
                     />
+                    {imageObject?.name && (
+                      <p className="text-muted-foreground text-xs font-bold">
+                        {imageObject.name}
+                      </p>
+                    )}
                     <p className="text-muted-foreground font-bold">
-                      Upload a file
+                      {imageObject?.name ? "Change file" : "Upload a file"}
                     </p>
                   </div>
                 </FormLabel>

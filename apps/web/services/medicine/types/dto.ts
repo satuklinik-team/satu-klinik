@@ -1,7 +1,9 @@
 import { z } from "zod";
 
 export const createMedicineSchema = z.object({
-  image: z.instanceof(FileList),
+  image: z
+    .instanceof(FileList)
+    .refine((file) => file.length === 1, "File is required."),
   title: z.string(),
   price: z.number(),
   stock: z.number(),
