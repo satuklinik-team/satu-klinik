@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
-import { Check, ChevronsUpDown } from "lucide-react";
+import { Check, ChevronsUpDown, ImagePlusIcon } from "lucide-react";
 import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -40,7 +40,10 @@ import { MedicineQueryKeyFactory } from "@/services/medicine/utils/query-key.fac
 import { useFindMedicineCategory } from "@/services/medicine-category/hooks/use-find-medicine";
 
 export function ClinicNewItemForm(): JSX.Element {
-  const { data: medicineCategoryData } = useFindMedicineCategory();
+  const { data: medicineCategoryData } = useFindMedicineCategory({
+    skip: 0,
+    limit: 50,
+  });
 
   const form = useForm<CreateMedicineSchema>({
     resolver: zodResolver(createMedicineSchema),
@@ -68,12 +71,45 @@ export function ClinicNewItemForm(): JSX.Element {
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <FormField
           control={form.control}
+          name="image"
+          render={({ field: { value, onChange } }) => {
+            return (
+              <FormItem>
+                <FormLabel>Image</FormLabel>
+                <FormLabel className="block" htmlFor="image">
+                  <div className="flex flex-col gap-3 items-center border border-dashed py-8 rounded-lg">
+                    <ImagePlusIcon
+                      className="text-muted-foreground"
+                      size={32}
+                    />
+                    <p className="text-muted-foreground font-bold">
+                      Upload a file
+                    </p>
+                  </div>
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    className="hidden"
+                    id="image"
+                    onChange={onChange}
+                    type="file"
+                    value={value}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            );
+          }}
+        />
+
+        <FormField
+          control={form.control}
           name="categoryId"
           render={({ field: { value, onChange } }) => {
             const options = medicineCategoryData?.data ?? [];
 
             const label = medicineCategoryData?.data.find(
-              (category) => category.id === value,
+              (category) => category.id === Number(value),
             )?.name;
 
             return (
@@ -112,7 +148,7 @@ export function ClinicNewItemForm(): JSX.Element {
                               <Check
                                 className={cn(
                                   "mr-2 h-4 w-4",
-                                  value === item.id
+                                  Number(value) === item.id
                                     ? "opacity-100"
                                     : "opacity-0",
                                 )}
