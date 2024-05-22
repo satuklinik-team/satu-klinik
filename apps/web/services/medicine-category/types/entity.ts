@@ -1,5 +1,5 @@
 export interface MedicineCategoryEntity {
-  id: string;
+  id: number;
   name: string;
   clinicsId: string;
 }
