@@ -59,6 +59,7 @@ export function ClinicNewItemForm(): JSX.Element {
 
   const onSubmit = useCallback(
     async (dto: CreateMedicineDto) => {
+      return console.log(dto);
       await mutateAsync(dto);
       await queryClient.invalidateQueries({
         queryKey: new MedicineQueryKeyFactory().lists(),
@@ -110,7 +111,7 @@ export function ClinicNewItemForm(): JSX.Element {
             const options = medicineCategoryData?.data ?? [];
 
             const label = medicineCategoryData?.data.find(
-              (category) => category.id === Number(value),
+              (category) => category.id === value,
             )?.name;
 
             return (
@@ -141,7 +142,7 @@ export function ClinicNewItemForm(): JSX.Element {
                             <CommandItem
                               key={item.id}
                               onSelect={(currentValue) => {
-                                onChange(currentValue);
+                                onChange(Number(currentValue));
                                 setIsCategoryOpen(false);
                               }}
                               value={String(item.id)}
@@ -149,7 +150,7 @@ export function ClinicNewItemForm(): JSX.Element {
                               <Check
                                 className={cn(
                                   "mr-2 h-4 w-4",
-                                  Number(value) === item.id
+                                  value === item.id
                                     ? "opacity-100"
                                     : "opacity-0",
                                 )}
@@ -189,7 +190,14 @@ export function ClinicNewItemForm(): JSX.Element {
             <FormItem>
               <FormLabel>Price</FormLabel>
               <FormControl>
-                <Input placeholder="Price" type="number" {...field} />
+                <Input
+                  placeholder="Price"
+                  type="number"
+                  {...field}
+                  onChange={(e) => {
+                    field.onChange(Number(e.target.value));
+                  }}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -203,7 +211,14 @@ export function ClinicNewItemForm(): JSX.Element {
             <FormItem>
               <FormLabel>Discount</FormLabel>
               <FormControl>
-                <Input placeholder="Discount %" type="number" {...field} />
+                <Input
+                  placeholder="Discount %"
+                  type="number"
+                  {...field}
+                  onChange={(e) => {
+                    field.onChange(Number(e.target.value));
+                  }}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -217,7 +232,14 @@ export function ClinicNewItemForm(): JSX.Element {
             <FormItem>
               <FormLabel>Quantity</FormLabel>
               <FormControl>
-                <Input placeholder="Quantity" type="number" {...field} />
+                <Input
+                  placeholder="Quantity"
+                  type="number"
+                  {...field}
+                  onChange={(e) => {
+                    field.onChange(Number(e.target.value));
+                  }}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
