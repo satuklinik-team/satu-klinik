@@ -2,6 +2,7 @@ import { HttpService } from '@nestjs/axios';
 import { Injectable, Logger } from '@nestjs/common';
 import { AxiosError } from 'axios';
 import { firstValueFrom, catchError } from 'rxjs';
+import { SatuSehatErrorException } from 'src/exceptions/bad-request/satusehat-error-exception';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { SatusehatOauthService } from 'src/satusehat-oauth/satusehat-oauth.service';
 
@@ -14,9 +15,13 @@ export class SatusehatKfaService {
     private readonly satusehatOauthService: SatusehatOauthService,
   ) {}
 
-  async getKfa(clinicsId: string) {
+  async ensureAuthenticated(clinicsId: string) {
     const token = await this.satusehatOauthService.token(clinicsId);
     this.httpService.axiosRef.defaults.headers.common.Authorization = `Bearer ${token}`;
+  }
+
+  async getKfaList(clinicsId: string) {
+    await this.ensureAuthenticated(clinicsId);
 
     const queryParams = {
       page: 1,
@@ -29,7 +34,27 @@ export class SatusehatKfaService {
       this.httpService.get('/products/all', { params: queryParams }).pipe(
         catchError((error: AxiosError) => {
           this.logger.error(error.message);
-          throw 'An error happened!';
+          throw new SatuSehatErrorException(error.response.status);
+        }),
+      ),
+    );
+
+    return data;
+  }
+
+  async getKfaDetail(clinicsId: string, kfaCode: string) {
+    await this.ensureAuthenticated(clinicsId);
+
+    const queryParams = {
+      identifier: 'kfa',
+      code: kfaCode,
+    };
+
+    const { data } = await firstValueFrom(
+      this.httpService.get('/products', { params: queryParams }).pipe(
+        catchError((error: AxiosError) => {
+          this.logger.error(error.message);
+          throw new SatuSehatErrorException(error.response.status);
         }),
       ),
     );

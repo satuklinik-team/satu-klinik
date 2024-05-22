@@ -60,4 +60,8 @@ export class CreateVitalSignDto {
   @IsString()
   @IsOptional()
   clinicsId?: string;
+
+  @IsString()
+  @IsOptional()
+  usersId?: string;
 }

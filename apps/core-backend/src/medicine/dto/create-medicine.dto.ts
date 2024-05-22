@@ -33,4 +33,8 @@ export class CreateMedicineDto {
   @IsString()
   @IsOptional()
   clinicsId?: string;
+
+  @IsString()
+  @IsOptional()
+  kfaCode?: string;
 }

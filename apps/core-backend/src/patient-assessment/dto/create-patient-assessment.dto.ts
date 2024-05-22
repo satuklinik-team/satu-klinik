@@ -18,11 +18,31 @@ class Prescription {
   @IsNumber()
   @Type(() => Number)
   @IsNotEmpty()
-  quantity: number;
+  frequency: number;
+
+  @IsNumber()
+  @Type(() => Number)
+  @IsNotEmpty()
+  period: number;
+
+  @IsNumber()
+  @Type(() => Number)
+  @IsNotEmpty()
+  doseQuantity: number;
+
+  @IsNumber()
+  @Type(() => Number)
+  @IsNotEmpty()
+  totalQuantity: number;
+
+  @IsNumber()
+  @Type(() => Number)
+  @IsNotEmpty()
+  supplyDuration: number;
 
   @IsString()
   @IsOptional()
-  usage?: string;
+  notes?: string;
 }
 
 export class CreatePatientAssessmentDto {
@@ -62,4 +82,8 @@ export class CreatePatientAssessmentDto {
   @IsString()
   @IsOptional()
   clinicsId?: string;
+
+  @IsString()
+  @IsOptional()
+  usersId?: string;
 }

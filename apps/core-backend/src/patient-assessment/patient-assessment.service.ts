@@ -41,6 +41,7 @@ export class PatientAssessmentService {
       const assessment = tx.patient_assessment.create({
         data: {
           patient_medical_recordsId: dto.mrid,
+          doctorId: dto.usersId,
           subjective: dto.subjective,
           objective: dto.objective,
           assessment: dto.assessment,
@@ -52,9 +53,7 @@ export class PatientAssessmentService {
 
       const prescriptionsDto = dto.prescriptions.map((prescription) => {
         return {
-          medicineId: prescription.medicineId,
-          quantity: prescription.quantity,
-          usage: prescription.usage,
+          ...prescription,
           patient_medical_recordsId: dto.mrid,
         };
       });
@@ -75,7 +74,7 @@ export class PatientAssessmentService {
           },
           data: {
             stock: {
-              decrement: prescription.quantity,
+              decrement: prescription.totalQuantity,
             },
           },
         });

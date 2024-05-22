@@ -72,7 +72,7 @@ export class MedicineController {
     });
   }
 
-  @Get(':categoryId')
+  @Get('category/:categoryId')
   @Roles(Role.PHARMACY)
   async findMedicinesByCategory(
     @Query() dto: FindAllIMedicineDto,
@@ -83,6 +83,18 @@ export class MedicineController {
       ...dto,
       clinicsId: tokenData.clinicsId,
       categoryId,
+    });
+  }
+
+  @Get(':id')
+  @Roles(Role.PHARMACY)
+  async findMedicineById(
+    @TokenData() tokenData: JwtPayload,
+    @Param('id', ParseIntPipe) id: number,
+  ) {
+    return await this.medicineService.findById({
+      id,
+      clinicsId: tokenData.clinicsId,
     });
   }
 

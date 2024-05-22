@@ -21,6 +21,7 @@ export class PatientsVitalSignsController {
     return this.patientVitalSignService.create({
       ...dto,
       clinicsId: tokenData.clinicsId,
+      usersId: tokenData.sub,
     });
   }
 }

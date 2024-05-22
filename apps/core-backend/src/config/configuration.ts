@@ -19,8 +19,6 @@ export default () => ({
   },
   oauth: {
     access_token: '',
-    client_id: process.env.OAUTH_CLIENT_ID,
-    client_secret: process.env.OAUTH_CLIENT_SECRET,
   },
   minio: {
     endpoint: process.env.MINIO_ENDPOINT,
