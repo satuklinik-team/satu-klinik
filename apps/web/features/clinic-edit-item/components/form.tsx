@@ -61,7 +61,7 @@ export function ClinicEditItemForm({
 
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  const { mutateAsync } = useUpdateMedicine(defaultValues.id);
+  const { mutateAsync } = useUpdateMedicine(String(defaultValues.id));
 
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
 
@@ -69,7 +69,10 @@ export function ClinicEditItemForm({
     async (dto: UpdateMedicineDto) => {
       const formData = new FormData();
 
-      formData.append("image", dto.image?.item(0) as unknown as Blob);
+      if (dto.image?.item(0)) {
+        formData.append("image", dto.image.item(0) as unknown as Blob);
+      }
+
       formData.append("title", String(dto.title));
       formData.append("price", String(dto.price));
       formData.append("stock", String(dto.stock));
@@ -80,9 +83,9 @@ export function ClinicEditItemForm({
       await queryClient.invalidateQueries({
         queryKey: new MedicineQueryKeyFactory().lists(),
       });
-      toast({ title: "Berhasil Membuat Obat Baru!", variant: "success" });
+      toast({ title: "Berhasil Memperbarui Obat Baru!", variant: "success" });
     },
-    [mutateAsync, queryClient, toast]
+    [mutateAsync, queryClient, toast],
   );
 
   return (
@@ -104,13 +107,13 @@ export function ClinicEditItemForm({
                       className="text-muted-foreground"
                       size={32}
                     />
-                    {imageObject?.name ? (
+                    {imageObject?.name || defaultValues.imageUrl ? (
                       <p className="text-muted-foreground text-xs font-bold">
-                        {imageObject.name}
+                        {imageObject?.name ?? defaultValues.imageUrl}
                       </p>
                     ) : null}
                     <p className="text-muted-foreground font-bold">
-                      {imageObject?.name ? "Change file" : "Upload a file"}
+                      Edit image
                     </p>
                   </div>
                 </FormLabel>
@@ -135,7 +138,7 @@ export function ClinicEditItemForm({
             const options = medicineCategoryData?.data ?? [];
 
             const label = medicineCategoryData?.data.find(
-              (category) => category.id === value
+              (category) => category.id === value,
             )?.name;
 
             return (
@@ -176,7 +179,7 @@ export function ClinicEditItemForm({
                                   "mr-2 h-4 w-4",
                                   value === item.id
                                     ? "opacity-100"
-                                    : "opacity-0"
+                                    : "opacity-0",
                                 )}
                               />
                               {item.name}
