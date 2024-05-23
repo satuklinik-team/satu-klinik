@@ -1,5 +1,5 @@
 export interface MedicineEntity {
-  id: string;
+  id: number;
   title: string;
   price: number;
   stock: number;

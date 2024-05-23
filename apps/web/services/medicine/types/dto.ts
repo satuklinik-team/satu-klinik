@@ -13,7 +13,7 @@ export const createMedicineSchema = z.object({
 });
 
 export const updateMedicineSchema = z.object({
-  image: z.object({}).optional(),
+  image: z.instanceof(FileList).optional(),
   title: z.string().optional(),
   price: z.number().optional(),
   stock: z.number().optional(),

@@ -10,11 +10,17 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { ClinicCard } from "@/features/clinic/components/ui/card";
-import { Form as EditItemForm } from "@/lezzform/_generated/additemform";
+import { useGetMedicine } from "@/services/medicine/hooks/use-get-medicine";
 
-export function ClinicEditItemPage(): JSX.Element {
+import { ClinicEditItemForm } from "../components/form";
+
+export function ClinicEditItemPage(): JSX.Element | undefined {
   const pathname = usePathname();
   const { itemId } = useParams();
+
+  const { data: medicineData } = useGetMedicine(Number(itemId));
+
+  if (!medicineData) return;
 
   return (
     <div className="flex flex-col gap-4">
@@ -50,7 +56,7 @@ export function ClinicEditItemPage(): JSX.Element {
       </div>
 
       <ClinicCard title="Edit Item">
-        <EditItemForm />
+        <ClinicEditItemForm defaultValues={medicineData} />
       </ClinicCard>
     </div>
   );
