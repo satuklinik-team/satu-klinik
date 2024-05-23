@@ -14,6 +14,10 @@ export class CreateUserDto {
   fullname: string;
 
   @IsString()
+  @IsNotEmpty()
+  nik: string;
+
+  @IsString()
   @IsEmail()
   @IsNotEmpty()
   email: string;

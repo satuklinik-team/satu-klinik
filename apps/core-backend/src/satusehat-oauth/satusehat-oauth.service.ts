@@ -5,6 +5,7 @@ import { ConfigService } from '@nestjs/config';
 import { AxiosError } from 'axios';
 import { Cache } from 'cache-manager';
 import { catchError, firstValueFrom } from 'rxjs';
+import { SatuSehatErrorException } from 'src/exceptions/bad-request/satusehat-error-exception';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
@@ -20,29 +21,14 @@ export class SatusehatOauthService {
 
   async generate(clinicsId: string) {
     const cacheKey = `satusehat_access_token_${clinicsId}`;
-    const clientIdCacheKey = `satusehat_client_id_${clinicsId}`;
-    const clientSecretCacheKey = `satusehat_client_secret_${clinicsId}`;
 
-    let clientId = await this.cacheManager.get<string>(clientIdCacheKey);
-    let clientSecret = await this.cacheManager.get<string>(
-      clientSecretCacheKey,
-    );
-
-    if (!clientId || !clientSecret) {
-      const clinic = await this.prismaService.clinics.findFirst({
-        where: { id: clinicsId },
-      });
-
-      clientId = clinic.clientId;
-      clientSecret = clinic.clientSecret;
-
-      await this.cacheManager.set(clientIdCacheKey, clientId);
-      await this.cacheManager.set(clientSecretCacheKey, clientSecret);
-    }
+    const clinic = await this.prismaService.clinics.findFirst({
+      where: { id: clinicsId },
+    });
 
     const formData = {
-      client_id: clientId,
-      client_secret: clientSecret,
+      client_id: clinic.clientId,
+      client_secret: clinic.clientSecret,
     };
 
     const { data } = await firstValueFrom(
@@ -53,7 +39,7 @@ export class SatusehatOauthService {
         .pipe(
           catchError((error: AxiosError) => {
             this.logger.error(error.message);
-            throw 'An error happened!';
+            throw new SatuSehatErrorException(error.response.status);
           }),
         ),
     );

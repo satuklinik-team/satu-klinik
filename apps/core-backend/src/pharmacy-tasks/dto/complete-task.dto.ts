@@ -20,6 +20,10 @@ export class CompleteTaskDto {
   @IsOptional()
   clinicsId?: string;
 
+  @IsString()
+  @IsOptional()
+  usersId?: string;
+
   @IsArray()
   @IsNumber({}, { each: true })
   @IsNotEmpty({ each: true })

@@ -6,7 +6,7 @@ import { CannotAccessClinicException } from 'src/exceptions/unauthorized/cannot-
 import { Prisma } from '@prisma/client';
 import { FindAllService } from 'src/find-all/find-all.service';
 import { FindPharmacyTaskByIdDto } from './dto/find-pharmacy-task-by-id.dto';
-import { IncorrectPrescriptionIdException } from 'src/exceptions/bad-request/cannot-access-clinic';
+import { IncorrectPrescriptionIdException } from 'src/exceptions/bad-request/incorrect-prescription-id-exception';
 
 @Injectable()
 export class PharmacyTasksService {
@@ -98,7 +98,9 @@ export class PharmacyTasksService {
           id: dto.id,
         },
         data: {
+          doneAt: new Date(),
           status: 'Done',
+          pharmacist: dto.usersId,
         },
       });
 
@@ -137,8 +139,7 @@ export class PharmacyTasksService {
           },
           select: {
             medicineId: true,
-            patient_medical_recordsId: true,
-            quantity: true,
+            totalQuantity: true,
           },
         });
 
@@ -148,8 +149,23 @@ export class PharmacyTasksService {
           },
           data: {
             stock: {
-              increment: prescription.quantity,
+              increment: prescription.totalQuantity,
             },
+          },
+        });
+      }
+
+      const boughtPrescriptionsId = patientPrescriptionIds.filter((id) =>
+        dto.boughtPrescriptionsId.includes(id),
+      );
+
+      for (const prescriptionId of boughtPrescriptionsId) {
+        await tx.patient_prescription.update({
+          where: {
+            id: prescriptionId,
+          },
+          data: {
+            bought: true,
           },
         });
       }
