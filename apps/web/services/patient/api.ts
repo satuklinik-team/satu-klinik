@@ -10,8 +10,18 @@ import type { PatientEntity } from "./types/entity";
 class PatientApi {
   api: AxiosInstance = api;
 
+  async getPatient(id: string, dto?: object): Promise<PatientEntity> {
+    const queryParams = stringify(dto);
+
+    const { data } = await this.api.get<PatientEntity>(
+      `/patients/${id}?&${queryParams}`,
+    );
+
+    return data;
+  }
+
   async findPatient(
-    dto?: object
+    dto?: object,
   ): Promise<BaseFindConnectionResponse<PatientEntity>> {
     const queryParams = stringify(dto);
 

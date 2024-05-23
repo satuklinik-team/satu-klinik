@@ -9,6 +9,7 @@ export interface PatientEntity {
   address: string;
   sex: string;
   blood: string;
+  birthAt: string;
   mr: {
     id: string;
     queue: string;
