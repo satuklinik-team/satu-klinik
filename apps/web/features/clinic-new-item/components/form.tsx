@@ -59,7 +59,16 @@ export function ClinicNewItemForm(): JSX.Element {
 
   const onSubmit = useCallback(
     async (dto: CreateMedicineDto) => {
-      await mutateAsync(dto);
+      const formData = new FormData();
+
+      formData.append("image", dto.image?.item(0) as unknown as Blob);
+      formData.append("title", String(dto.title));
+      formData.append("price", String(dto.price));
+      formData.append("stock", String(dto.stock));
+      formData.append("discount", String(dto.discount));
+      formData.append("categoryId", String(dto.categoryId));
+
+      await mutateAsync(formData as unknown as CreateMedicineDto);
       await queryClient.invalidateQueries({
         queryKey: new MedicineQueryKeyFactory().lists(),
       });
@@ -82,16 +91,16 @@ export function ClinicNewItemForm(): JSX.Element {
               <FormItem>
                 <FormLabel>Image</FormLabel>
                 <FormLabel className="block" htmlFor="image">
-                  <div className="flex flex-col gap-3 items-center border border-dashed py-8 rounded-lg">
+                  <div className="flex flex-col gap-3 items-center border border-dashed py-8 rounded-lg cursor-pointer">
                     <ImagePlusIcon
                       className="text-muted-foreground"
                       size={32}
                     />
-                    {imageObject?.name && (
+                    {imageObject?.name ? (
                       <p className="text-muted-foreground text-xs font-bold">
                         {imageObject.name}
                       </p>
-                    )}
+                    ) : null}
                     <p className="text-muted-foreground font-bold">
                       {imageObject?.name ? "Change file" : "Upload a file"}
                     </p>
@@ -253,9 +262,7 @@ export function ClinicNewItemForm(): JSX.Element {
           )}
         />
 
-        <div className="flex flex-row justify-end">
-          <Button className="mt-4">Simpan</Button>
-        </div>
+        <Button className="w-full mt-4">Simpan</Button>
       </form>
     </Form>
   );
