@@ -1,20 +1,20 @@
 import { z as a } from "zod";
 import {
   Lezzform as c,
-  FormField as S,
-  FormItem as F,
+  FormField as F,
+  FormItem as S,
   FormLabel as p,
-  FormControl as h,
-  FormMessage as d,
+  FormControl as d,
+  FormMessage as h,
   Text as b,
   Input as L,
-  Button as y,
+  Button as R,
 } from "@lezzform/react";
 import * as e from "react";
 import { jsx as o, jsxs as s } from "react/jsx-runtime";
-var R = a.object({ name: a.string().optional() }),
-  u = "KQ8ulEIyUFGdhZbrj2Sx",
-  C = ({
+var y = a.object({ name: a.string().optional() }),
+  u = "nFK1q7NCJ7fFFeHFdd22",
+  w = ({
     onSubmit: m,
     onError: i,
     onSuccess: l,
@@ -37,20 +37,20 @@ var R = a.object({ name: a.string().optional() }),
         onSubmit: z,
         onError: i,
         onSuccess: l,
-        zodSchema: R,
+        zodSchema: y,
         mode: "onSubmit",
         children: (n) =>
           s(c.Container, {
             children: [
               o(b.Heading2, { styles: { root: {} }, children: "SOAPForm" }),
-              o(S, {
+              o(F, {
                 control: n.control,
                 name: "name",
                 render: ({ field: r }) =>
-                  s(F, {
+                  s(S, {
                     children: [
                       o(p, { children: "Name" }),
-                      o(h, {
+                      o(d, {
                         children: o(L, {
                           label: "Name",
                           name: r.name,
@@ -62,11 +62,11 @@ var R = a.object({ name: a.string().optional() }),
                           styles: { root: {} },
                         }),
                       }),
-                      o(d, {}),
+                      o(h, {}),
                     ],
                   }),
               }),
-              o(y, {
+              o(R, {
                 type: "submit",
                 className: "w-full",
                 disabled: n.formState.isSubmitting,
@@ -80,4 +80,4 @@ var R = a.object({ name: a.string().optional() }),
       u,
     );
   };
-export { C as Form };
+export { w as Form };

@@ -1,10 +1,22 @@
 "use client";
 
+import { useQueryClient } from "@tanstack/react-query";
 import { Plus } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
 
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -20,11 +32,23 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useDeleteMedicine } from "@/services/medicine/hooks/use-delete-medicine";
+import { useFindMedicineByCategory } from "@/services/medicine/hooks/use-find-medicine-by-category";
+import { MedicineQueryKeyFactory } from "@/services/medicine/utils/query-key.factory";
+import { useFindMedicineCategory } from "@/services/medicine-category/hooks/use-find-medicine";
 
 import { ClinicItemCard } from "../components/shared/card";
 
 export function ClinicItemsPage(): JSX.Element {
+  const queryClient = useQueryClient();
   const pathname = usePathname();
+
+  const [toBeDeletedId, setToBeDeletedId] = useState<string>("");
+  const [selectedCategory, setSelectedCategory] = useState<number>(0);
+  const { mutateAsync: deleteMedicine } = useDeleteMedicine(toBeDeletedId);
+  const { data: medicineCategoryData } = useFindMedicineCategory();
+  const { data: medicineByCategoryData } =
+    useFindMedicineByCategory(selectedCategory);
 
   return (
     <div className="h-full">
@@ -37,11 +61,25 @@ export function ClinicItemsPage(): JSX.Element {
 
       <div className="flex flex-row justify-between items-center mb-6">
         <div className="hidden sm:hidden md:flex lg:flex xl:flex 2xl:flex flex-row items-center flex-wrap gap-2">
-          <Badge>All</Badge>
-          <Badge variant="outline">Main Service</Badge>
-          <Badge variant="outline">Medicine</Badge>
-          <Badge variant="outline">Other Service</Badge>
-          <Badge variant="outline">Supplement</Badge>
+          <Badge
+            onClick={() => {
+              setSelectedCategory(0);
+            }}
+            variant={!selectedCategory ? "default" : "outline"}
+          >
+            All
+          </Badge>
+          {medicineCategoryData?.data.map((item) => (
+            <Badge
+              key={item.id}
+              onClick={() => {
+                setSelectedCategory(item.id);
+              }}
+              variant={item.id === selectedCategory ? "default" : "outline"}
+            >
+              {item.name}
+            </Badge>
+          ))}
         </div>
 
         <Select>
@@ -73,61 +111,49 @@ export function ClinicItemsPage(): JSX.Element {
       </div>
 
       <div className="grid 2xl:grid-cols-5 xl:grid-cols-5 lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-4">
-        <ClinicItemCard
-          category=""
-          discount={50}
-          id="1"
-          imageUrl=""
-          price={100000}
-          quantity={4}
-          title="My Item 1"
-        />
-        <ClinicItemCard
-          category=""
-          discount={20}
-          id="2"
-          imageUrl=""
-          price={200000}
-          quantity={4}
-          title="My Item 2"
-        />
-        <ClinicItemCard
-          category=""
-          discount={40}
-          id="3"
-          imageUrl=""
-          price={1000000}
-          quantity={4}
-          title="My Item 3"
-        />
-        <ClinicItemCard
-          category=""
-          discount={10}
-          id="4"
-          imageUrl=""
-          price={200000}
-          quantity={4}
-          title="My Item 4"
-        />
-        <ClinicItemCard
-          category=""
-          discount={70}
-          id="5"
-          imageUrl=""
-          price={150000}
-          quantity={4}
-          title="My Item 5"
-        />
-        <ClinicItemCard
-          category=""
-          discount={50}
-          id="6"
-          imageUrl=""
-          price={100000}
-          quantity={4}
-          title="My Item 6"
-        />
+        {medicineByCategoryData?.data.map((item) => (
+          <ClinicItemCard
+            key={item.kfaCode}
+            {...item}
+            onSelectDelete={() => {
+              setToBeDeletedId(item.id);
+            }}
+          />
+        ))}
       </div>
+
+      <AlertDialog
+        onOpenChange={(value) => {
+          if (!value) setToBeDeletedId("");
+        }}
+        open={!!toBeDeletedId}
+      >
+        <AlertDialogContent className="bg-white">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete your
+              medicine.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <Button
+              className="text-red-500 hover:text-red-500 hover:bg-red-500/10"
+              onClick={async () => {
+                await deleteMedicine();
+                await queryClient.invalidateQueries({
+                  queryKey: new MedicineQueryKeyFactory().lists(),
+                });
+                setToBeDeletedId("");
+              }}
+              variant="ghost"
+            >
+              Continue
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

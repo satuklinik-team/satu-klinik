@@ -5,7 +5,7 @@ import {
   FormItem as c,
   FormLabel as i,
   FormControl as z,
-  FormMessage as F,
+  FormMessage as d,
   EmailInput as b,
   PasswordInput as R,
   Spacer as L,
@@ -14,14 +14,14 @@ import {
 import * as n from "react";
 import { jsx as r, jsxs as s } from "react/jsx-runtime";
 var P = a.object({ email: a.string().email(), password: a.string() }),
-  d = "8Mrp3Kzx2FTS9SEoukFq",
+  F = "TnCFUinXmQKcAOTlSmcG",
   E = ({
     onSubmit: m,
-    onError: p,
-    onSuccess: f,
+    onError: f,
+    onSuccess: p,
     defaultValues: S,
     onAction: y,
-    formProps: g,
+    formProps: C,
   }) => {
     let t = n.useRef();
     n.useEffect(() => {
@@ -33,11 +33,11 @@ var P = a.object({ email: a.string().email(), password: a.string() }),
     return r(
       u,
       {
-        id: d,
+        id: F,
         defaultValues: S,
         onSubmit: h,
-        onError: p,
-        onSuccess: f,
+        onError: f,
+        onSuccess: p,
         zodSchema: P,
         mode: "onSubmit",
         children: (e) =>
@@ -63,7 +63,7 @@ var P = a.object({ email: a.string().email(), password: a.string() }),
                           styles: { root: {} },
                         }),
                       }),
-                      r(F, {}),
+                      r(d, {}),
                     ],
                   }),
               }),
@@ -87,7 +87,7 @@ var P = a.object({ email: a.string().email(), password: a.string() }),
                           styles: { root: {} },
                         }),
                       }),
-                      r(F, {}),
+                      r(d, {}),
                     ],
                   }),
               }),
@@ -103,7 +103,7 @@ var P = a.object({ email: a.string().email(), password: a.string() }),
             ],
           }),
       },
-      d,
+      F,
     );
   };
 export { E as Form };

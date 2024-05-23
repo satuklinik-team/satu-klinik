@@ -10,7 +10,8 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { ClinicCard } from "@/features/clinic/components/ui/card";
-import { Form as AddItemForm } from "@/lezzform/_generated/additemform";
+
+import { ClinicNewItemForm } from "../components/form";
 
 export function ClinicNewItemPage(): JSX.Element {
   const pathname = usePathname();
@@ -41,7 +42,7 @@ export function ClinicNewItemPage(): JSX.Element {
       </div>
 
       <ClinicCard title="Add New Item">
-        <AddItemForm />
+        <ClinicNewItemForm />
       </ClinicCard>
     </div>
   );
