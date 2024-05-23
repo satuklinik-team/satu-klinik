@@ -44,7 +44,7 @@ export function ClinicItemsPage(): JSX.Element {
   const pathname = usePathname();
 
   const [toBeDeletedId, setToBeDeletedId] = useState<string>("");
-  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [selectedCategory, setSelectedCategory] = useState<number>(0);
   const { mutateAsync: deleteMedicine } = useDeleteMedicine(toBeDeletedId);
   const { data: medicineCategoryData } = useFindMedicineCategory();
   const { data: medicineByCategoryData } =
@@ -63,7 +63,7 @@ export function ClinicItemsPage(): JSX.Element {
         <div className="hidden sm:hidden md:flex lg:flex xl:flex 2xl:flex flex-row items-center flex-wrap gap-2">
           <Badge
             onClick={() => {
-              setSelectedCategory("");
+              setSelectedCategory(0);
             }}
             variant={!selectedCategory ? "default" : "outline"}
           >

@@ -8,7 +8,7 @@ import { medicineApi } from "../api";
 import type { MedicineEntity } from "../types/entity";
 import { MedicineQueryKeyFactory } from "../utils/query-key.factory";
 
-export const useFindMedicineByCategory = (categoryId: string, dto?: object) => {
+export const useFindMedicineByCategory = (categoryId: number, dto?: object) => {
   const queryKeyFactory = new MedicineQueryKeyFactory();
 
   return useQuery<BaseFindConnectionResponse<MedicineEntity>>({

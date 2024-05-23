@@ -10,6 +10,16 @@ import type { MedicineEntity } from "./types/entity";
 class MedicineApi {
   api: AxiosInstance = api;
 
+  async getMedicine(id: number, dto?: object): Promise<MedicineEntity> {
+    const queryParams = stringify(dto);
+
+    const { data } = await this.api.get<MedicineEntity>(
+      `/medicine/${id}?${queryParams}`,
+    );
+
+    return data;
+  }
+
   async findMedicine(
     dto?: object,
   ): Promise<BaseFindConnectionResponse<MedicineEntity>> {
@@ -23,7 +33,7 @@ class MedicineApi {
   }
 
   async findMedicineByCategory(
-    categoryId: string,
+    categoryId: number,
     dto?: object,
   ): Promise<BaseFindConnectionResponse<MedicineEntity>> {
     const queryParams = stringify(dto);

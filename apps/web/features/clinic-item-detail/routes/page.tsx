@@ -1,7 +1,7 @@
 "use client";
 
 import { StarIcon } from "lucide-react";
-import { usePathname } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 
 import { Badge } from "@/components/ui/badge";
 import {
@@ -13,9 +13,15 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { useGetMedicine } from "@/services/medicine/hooks/use-get-medicine";
 
 export function ClinicItemDetailPage(): JSX.Element {
   const pathname = usePathname();
+  const { itemId } = useParams();
+
+  const { data: medicineData } = useGetMedicine(Number(itemId));
+
+  console.log({ medicineData });
 
   return (
     <div className="flex flex-col gap-8">

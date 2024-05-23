@@ -1,6 +1,8 @@
+"use client";
+
 import { Edit, Trash } from "lucide-react";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import type { HTMLAttributes } from "react";
 
 import { Badge } from "@/components/ui/badge";
@@ -30,20 +32,26 @@ export function ClinicItemCard({
   onSelectDelete,
   ...rest
 }: ClinicItemCardProps): JSX.Element {
+  const router = useRouter();
   const { clinicId } = useParams();
 
   const discountPrice = (price * (100 - discount)) / 100;
 
   return (
-    <Card className={cn("cursor-pointer", className)} {...rest}>
+    <Card
+      className={cn("cursor-pointer", className)}
+      onClick={() => {
+        router.push(`/clinic/${clinicId as string}/items/${id}`);
+      }}
+      {...rest}
+    >
       <img
         alt={title}
-        className="w-full h-16 bg-muted-foreground/20 rounded-t-md"
+        className="w-full h-36 bg-muted-foreground/20 rounded-t-md"
         height={144}
         src={imageUrl}
         width={200}
       />
-      <div className="w-full h-36 bg-muted-foreground/20 rounded-t-md" />
       <div className="flex flex-col gap-3 p-4">
         <p className="text-base font-bold">{title}</p>
         <div className="flex flex-row justify-between items-start gap-2">
@@ -63,7 +71,7 @@ export function ClinicItemCard({
         <div className="flex flex-row items-center gap-2">
           <TooltipProvider>
             <Tooltip>
-              <Link href={`/clinic/${clinicId as string}/items/${id}`}>
+              <Link href={`/clinic/${clinicId as string}/items/${id}/edit`}>
                 <TooltipTrigger className="h-min p-2">
                   <Edit size={20} />
                 </TooltipTrigger>
