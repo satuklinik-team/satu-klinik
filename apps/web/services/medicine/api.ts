@@ -40,7 +40,7 @@ class MedicineApi {
 
     const { data } = await this.api.get<
       BaseFindConnectionResponse<MedicineEntity>
-    >(`/medicine/${categoryId}?count=true&${queryParams}`);
+    >(`/medicine/category/${categoryId}?count=true&${queryParams}`);
 
     return data;
   }

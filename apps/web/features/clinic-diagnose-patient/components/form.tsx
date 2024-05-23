@@ -2,6 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Check, ChevronsUpDown } from "lucide-react";
+import { useParams } from "next/navigation";
 import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -38,8 +39,10 @@ import type {
 import { createPatientAssessmentSchema } from "@/services/patient-assessment/types/dto";
 
 export function ClinicDiagnosePatientForm(): JSX.Element {
+  const { mrId } = useParams();
   const form = useForm<CreatePatientAssessmentSchema>({
     resolver: zodResolver(createPatientAssessmentSchema),
+    defaultValues: { mrid: mrId as string, prescriptions: [] },
   });
 
   const { mutateAsync } = useCreatePatientAssessment();
