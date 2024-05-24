@@ -1,10 +1,11 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Check, ChevronsUpDown } from "lucide-react";
+import { useQueryClient } from "@tanstack/react-query";
+import { Check, ChevronsUpDown, Trash2Icon } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useCallback, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -22,12 +23,14 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/components/ui/use-toast";
 import { cn } from "@/lib/utils";
 import { useFindIcd9CM } from "@/services/icd/hooks/use-find-icd-9cm";
 import { useFindIcd10 } from "@/services/icd/hooks/use-find-icd-10";
@@ -37,12 +40,24 @@ import type {
   CreatePatientAssessmentSchema,
 } from "@/services/patient-assessment/types/dto";
 import { createPatientAssessmentSchema } from "@/services/patient-assessment/types/dto";
+import { PharmacyTaskQueryKeyFactory } from "@/services/pharmacy-task/utils/query-key.factory";
 
 export function ClinicDiagnosePatientForm(): JSX.Element {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
   const { mrId } = useParams();
   const form = useForm<CreatePatientAssessmentSchema>({
     resolver: zodResolver(createPatientAssessmentSchema),
     defaultValues: { mrid: mrId as string, prescriptions: [] },
+  });
+
+  const {
+    fields: prescriptions,
+    remove,
+    insert,
+  } = useFieldArray({
+    control: form.control,
+    name: "prescriptions",
   });
 
   const { mutateAsync } = useCreatePatientAssessment();
@@ -60,8 +75,12 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
   const onSubmit = useCallback(
     async (data: CreatePatientAssessmentDto) => {
       await mutateAsync(data);
+      toast({ title: "Berhasil Membuat Diagnosa!", variant: "success" });
+      await queryClient.invalidateQueries({
+        queryKey: new PharmacyTaskQueryKeyFactory().lists(),
+      });
     },
-    [mutateAsync],
+    [mutateAsync, queryClient, toast],
   );
 
   return (
@@ -124,7 +143,7 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
           render={({ field: { value, onChange } }) => {
             const options = icd10Data?.data ?? [];
 
-            const label = icd10Data?.data.find(
+            const label = options.find(
               (disease) => disease.code === value,
             )?.strt;
 
@@ -159,7 +178,10 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
                             <CommandItem
                               key={item.code}
                               onSelect={(currentValue) => {
-                                onChange(currentValue);
+                                onChange(
+                                  currentValue.slice(0, 1).toUpperCase() +
+                                    currentValue.slice(1, currentValue.length),
+                                );
                                 setIsIcd10Open(false);
                               }}
                               value={item.code}
@@ -268,6 +290,73 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
             );
           }}
         />
+
+        <div className="space-y-2 mt-3">
+          <p className="text-sm font-medium">Prescriptions</p>
+          <div className="flex flex-col gap-3">
+            {prescriptions.map((item, index) => (
+              <div
+                className="flex flex-row justify-center items-center gap-2"
+                key={item.id}
+              >
+                <FormField
+                  control={form.control}
+                  name={`prescriptions.${index}.quantity`}
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormControl>
+                        <Input
+                          className="bg-white"
+                          placeholder="Quantity"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name={`prescriptions.${index}.usage`}
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormControl>
+                        <Input
+                          className="bg-white"
+                          placeholder="Usage"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <Button
+                  onClick={() => {
+                    remove(index);
+                  }}
+                  size="sm"
+                  variant="ghost"
+                >
+                  <Trash2Icon className="text-red-500" size={18} />
+                </Button>
+              </div>
+            ))}
+            <Button
+              className="w-min"
+              onClick={() => {
+                insert(prescriptions.length, { quantity: "12", usage: "12" });
+              }}
+              size="sm"
+              type="button"
+              variant="ghost"
+            >
+              + Add More
+            </Button>
+          </div>
+        </div>
 
         <div className="flex flex-row justify-end">
           <Button className="mt-4">Simpan</Button>

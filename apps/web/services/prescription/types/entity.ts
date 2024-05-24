@@ -5,3 +5,7 @@ export const prescriptionSchema = z.object({
   quantity: z.string(),
   usage: z.string(),
 });
+
+export type PrescriptionSchema = z.infer<typeof prescriptionSchema>;
+
+export type PrescriptionDto = PrescriptionSchema;

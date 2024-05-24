@@ -1,6 +1,7 @@
 "use client";
 
 import { ClinicCard } from "@/features/clinic/components/ui/card";
+import { ClinicPharmacyTable } from "../components/table";
 
 export function ClinicPharmacyPage(): JSX.Element {
   return (
@@ -42,7 +43,9 @@ export function ClinicPharmacyPage(): JSX.Element {
         borderPosition="left"
         className="border-green-500"
         title="Today Patient"
-      />
+      >
+        <ClinicPharmacyTable />
+      </ClinicCard>
     </div>
   );
 }
