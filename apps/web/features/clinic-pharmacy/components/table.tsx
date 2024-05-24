@@ -38,8 +38,8 @@ export function ClinicPharmacyTable(): JSX.Element {
         key: "name",
         name: "Name",
         renderCell: (row: PharmacyTaskEntity) => (
-          <Cell className="gap-3">
-            <p className="font-semibold">
+          <Cell className="flex flex-col items-start gap-1 text-xs">
+            <p className="font-semibold text-sm">
               {row.patient.fullname} -{" "}
               {dayjs().diff(dayjs(row.patient.birthAt), "year")}
             </p>
