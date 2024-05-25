@@ -13,8 +13,10 @@ export class SatusehatTestController {
   ) {}
 
   @Get('')
-  async test(@Query('mrid') mrid: string) {
+  async test(@Query('clinicsId') clinicsId: string) {
     // @Query('kfaCode') kfaCode: string, // @Query('mrid') mrid: string, // @Query('clinicsId') clinicsId: string,
-    return await this.satusehatRawatJalanService.post(mrid);
+    return await this.satusehatRawatJalanService.postSatuSehatForClinic(
+      clinicsId,
+    );
   }
 }

@@ -113,6 +113,20 @@ export class SatusehatJsonService {
       },
     });
 
+    let doneAt: Date;
+    if (pharmacyTask) {
+      doneAt = pharmacyTask.doneAt;
+    } else {
+      const patientAssessment =
+        await this.prismaService.patient_assessment.findFirst({
+          where: {
+            patient_medical_recordsId: mrid,
+          },
+        });
+
+      doneAt = patientAssessment.createdAt;
+    }
+
     return {
       resource: {
         resourceType: 'Encounter',
@@ -135,14 +149,14 @@ export class SatusehatJsonService {
             status: 'in-progress',
             period: {
               start: patientMR.visitAt,
-              end: pharmacyTask.doneAt,
+              end: doneAt,
             },
           },
           {
             status: 'finished',
             period: {
-              start: pharmacyTask.doneAt,
-              end: pharmacyTask.doneAt,
+              start: doneAt,
+              end: doneAt,
             },
           },
         ],
@@ -177,7 +191,7 @@ export class SatusehatJsonService {
         ],
         period: {
           start: patientMR.visitAt,
-          end: pharmacyTask.doneAt,
+          end: doneAt,
         },
         location: [
           {

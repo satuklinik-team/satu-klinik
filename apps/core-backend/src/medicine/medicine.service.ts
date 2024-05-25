@@ -64,7 +64,7 @@ export class MedicineService {
         stock: dto.stock,
         discount: dto.discount,
         categoryId: dto.categoryId,
-        imageUrl: uploadedImage.url,
+        imageUrl: uploadedImage?.url,
       },
     });
   }
@@ -124,7 +124,7 @@ export class MedicineService {
 
   async canModifyMedicine(id: number, clinicsId: string) {
     const medicine = await this.prismaService.medicine.findFirst({
-      where: { id: id },
+      where: { id },
       select: {
         categoryId: true,
       },

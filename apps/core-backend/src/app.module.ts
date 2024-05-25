@@ -12,7 +12,6 @@ import { PatientsVitalSignsModule } from './patients-vital-signs/patients-vital-
 import { PatientsModule } from './patients/patients.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { SatusehatOauthModule } from './satusehat-oauth/satusehat-oauth.module';
-import { SatusehatOrganizationModule } from './satusehat-organization/satusehat-organization.module';
 import { TokenModule } from './token/token.module';
 import { UsersModule } from './users/users.module';
 import { PatientAssessmentModule } from './patient-assessment/patient-assessment.module';
@@ -39,7 +38,6 @@ import { SatusehatTestModule } from './satusehat-test/satusehat-test.module';
     TokenModule,
     CryptoModule,
     UsersModule,
-    SatusehatOrganizationModule,
     ClinicsModule,
     SatusehatOauthModule,
     PatientsModule,

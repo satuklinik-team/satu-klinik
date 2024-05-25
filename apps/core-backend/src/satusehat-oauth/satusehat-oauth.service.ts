@@ -37,8 +37,14 @@ export class SatusehatOauthService {
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         })
         .pipe(
-          catchError((error: AxiosError) => {
+          catchError(async (error: AxiosError) => {
             this.logger.error(error.message);
+            await this.prismaService.satuSehatError.create({
+              data: {
+                requestBody: JSON.stringify(formData),
+                responseBody: JSON.stringify(error.response.data),
+              },
+            });
             throw new SatuSehatErrorException(error.response.status);
           }),
         ),

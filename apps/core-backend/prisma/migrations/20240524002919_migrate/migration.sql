@@ -1,5 +1,5 @@
 -- CreateEnum
-CREATE TYPE "Role" AS ENUM ('OWNER', 'ADMIN', 'SUPERADMIN', 'DOCTOR', 'PHARMACY');
+CREATE TYPE "Role" AS ENUM ('OWNER', 'ADMIN', 'SUPERADMIN', 'DOCTOR', 'PHARMACY', 'SATUKLINIKADMIN');
 
 -- CreateEnum
 CREATE TYPE "transactions_status" AS ENUM ('PENDING_PAYMENT', 'PAID', 'CANCELED');
@@ -49,9 +49,9 @@ CREATE TABLE "Patient_medical_records" (
     "visitAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "visitLabel" TEXT,
     "queue" TEXT,
-    "doctor" TEXT NOT NULL,
     "status" TEXT DEFAULT 'e1',
     "patientId" UUID,
+    "encounterId" TEXT,
     "poliId" UUID,
     "practitionerId" UUID,
 
@@ -61,16 +61,16 @@ CREATE TABLE "Patient_medical_records" (
 -- CreateTable
 CREATE TABLE "Patient_vital_sign" (
     "id" SERIAL NOT NULL,
-    "height" DECIMAL(65,30) DEFAULT 0,
-    "weight" DECIMAL(65,30) DEFAULT 0,
-    "temperature" DECIMAL(65,30) NOT NULL DEFAULT 0,
+    "height" INTEGER DEFAULT 0,
+    "weight" INTEGER DEFAULT 0,
+    "temperature" INTEGER DEFAULT 0,
     "systole" INTEGER DEFAULT 0,
     "diastole" INTEGER DEFAULT 0,
     "pulse" INTEGER DEFAULT 0,
     "respiration" INTEGER DEFAULT 0,
     "saturation" INTEGER DEFAULT 0,
-    "sugar" DECIMAL(65,30) DEFAULT 0,
-    "cholesterol" DECIMAL(65,30) DEFAULT 0,
+    "sugar" INTEGER DEFAULT 0,
+    "cholesterol" INTEGER DEFAULT 0,
     "pain" TEXT,
     "allergic" TEXT DEFAULT 'n/a',
     "deletedAt" TIMESTAMP(3),
@@ -83,6 +83,7 @@ CREATE TABLE "Patient_vital_sign" (
 CREATE TABLE "Patient_assessment" (
     "id" SERIAL NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "conditionId" TEXT,
     "doctorId" UUID,
     "subjective" TEXT NOT NULL DEFAULT 'none',
     "objective" TEXT NOT NULL DEFAULT 'none',
@@ -113,11 +114,15 @@ CREATE TABLE "Patient_prescription" (
     "createdAt" TIMESTAMPTZ(6) DEFAULT CURRENT_TIMESTAMP,
     "medicineId" INTEGER,
     "type" TEXT,
-    "usage" TEXT,
-    "dosage" TEXT,
-    "interval" TEXT,
-    "quantity" INTEGER NOT NULL,
+    "frequency" INTEGER,
+    "period" INTEGER,
+    "doseQuantity" INTEGER,
+    "totalQuantity" INTEGER,
+    "supplyDuration" INTEGER,
+    "notes" TEXT,
+    "satuSehatId" TEXT,
     "deletedAt" TIMESTAMP(3),
+    "bought" BOOLEAN NOT NULL DEFAULT false,
     "patient_medical_recordsId" UUID,
 
     CONSTRAINT "Patient_prescription_pkey" PRIMARY KEY ("id")
@@ -466,6 +471,7 @@ CREATE TABLE "Medicine" (
     "discount" INTEGER,
     "imageUrl" TEXT,
     "kfaCode" TEXT,
+    "satuSehatId" TEXT,
     "categoryId" INTEGER,
 
     CONSTRAINT "Medicine_pkey" PRIMARY KEY ("id")
