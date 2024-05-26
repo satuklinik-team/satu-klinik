@@ -26,7 +26,25 @@ export class SatusehatRawatJalanService {
 
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
   async handleCron() {
-    const clinics = await this.prismaService.clinics.findMany();
+    const clinics = await this.prismaService.clinics.findMany({
+      where: {
+        clientId: {
+          not: null,
+        },
+        clientSecret: {
+          not: null,
+        },
+        organizationId: {
+          not: null,
+        },
+        locationSatuSehatId: {
+          not: null,
+        },
+        locationName: {
+          not: null,
+        },
+      },
+    });
 
     for (const clinic of clinics) {
       await this.postSatuSehatForClinic(clinic.id);

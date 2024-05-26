@@ -6,6 +6,7 @@ import { AxiosError } from 'axios';
 import { Cache } from 'cache-manager';
 import { catchError, firstValueFrom } from 'rxjs';
 import { SatuSehatErrorException } from 'src/exceptions/bad-request/satusehat-error-exception';
+import { IncompleteSatuSehatCreds } from 'src/exceptions/not-found/incomplete-satusehat-creds';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
@@ -25,6 +26,10 @@ export class SatusehatOauthService {
     const clinic = await this.prismaService.clinics.findFirst({
       where: { id: clinicsId },
     });
+
+    if (!clinic.clientId || !clinic.clientSecret) {
+      throw new IncompleteSatuSehatCreds();
+    }
 
     const formData = {
       client_id: clinic.clientId,
