@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
-import { Check, ChevronsUpDown, Trash2Icon } from "lucide-react";
+import { Check, ChevronsUpDown } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useCallback, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
@@ -23,7 +23,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import {
   Popover,
   PopoverContent,
@@ -41,11 +40,15 @@ import type {
 } from "@/services/patient-assessment/types/dto";
 import { createPatientAssessmentSchema } from "@/services/patient-assessment/types/dto";
 import { PharmacyTaskQueryKeyFactory } from "@/services/pharmacy-task/utils/query-key.factory";
+import type { PrescriptionEntity } from "@/services/prescription/types/entity";
+
+import { ClinicDiagnosePatientPrescriptionTable } from "./prescription-table";
 
 export function ClinicDiagnosePatientForm(): JSX.Element {
   const queryClient = useQueryClient();
   const { toast } = useToast();
   const { mrId } = useParams();
+
   const form = useForm<CreatePatientAssessmentSchema>({
     resolver: zodResolver(createPatientAssessmentSchema),
     defaultValues: { mrid: mrId as string, prescriptions: [] },
@@ -54,6 +57,7 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
   const {
     fields: prescriptions,
     remove,
+    update,
     insert,
   } = useFieldArray({
     control: form.control,
@@ -61,6 +65,7 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
   });
 
   const { mutateAsync } = useCreatePatientAssessment();
+
   const [isIcd10Open, setIsIcd10Open] = useState(false);
   const [icd10Search, setIcd10Search] = useState("");
   const { data: icd10Data } = useFindIcd10({ search: icd10Search, limit: 20 });
@@ -71,6 +76,11 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
     search: icd9CMSearch,
     limit: 20,
   });
+
+  const [onAddPrescription, setOnAddPrescription] = useState<boolean>();
+
+  const [onEditPrescription, setOnEditPrescription] =
+    useState<PrescriptionEntity>();
 
   const onSubmit = useCallback(
     async (data: CreatePatientAssessmentDto) => {
@@ -294,60 +304,17 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
         <div className="space-y-2 mt-3">
           <p className="text-sm font-medium">Prescriptions</p>
           <div className="flex flex-col gap-3">
-            {prescriptions.map((item, index) => (
-              <div
-                className="flex flex-row justify-center items-center gap-2"
-                key={item.id}
-              >
-                <FormField
-                  control={form.control}
-                  name={`prescriptions.${index}.quantity`}
-                  render={({ field }) => (
-                    <FormItem className="flex-1">
-                      <FormControl>
-                        <Input
-                          className="bg-white"
-                          placeholder="Quantity"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name={`prescriptions.${index}.usage`}
-                  render={({ field }) => (
-                    <FormItem className="flex-1">
-                      <FormControl>
-                        <Input
-                          className="bg-white"
-                          placeholder="Usage"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <Button
-                  onClick={() => {
-                    remove(index);
-                  }}
-                  size="sm"
-                  variant="ghost"
-                >
-                  <Trash2Icon className="text-red-500" size={18} />
-                </Button>
-              </div>
-            ))}
+            <ClinicDiagnosePatientPrescriptionTable
+              onDelete={remove}
+              onEdit={(currentPrescription) => {
+                setOnEditPrescription(currentPrescription);
+              }}
+              prescriptions={prescriptions}
+            />
             <Button
               className="w-min"
               onClick={() => {
-                insert(prescriptions.length, { quantity: "12", usage: "12" });
+                setOnAddPrescription(true);
               }}
               size="sm"
               type="button"
