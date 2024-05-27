@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 export const prescriptionSchema = z.object({
+  id: z.string().optional(),
   medicine: z.object({
     id: z.string(),
     name: z.string(),
@@ -16,7 +17,4 @@ export const prescriptionSchema = z.object({
 export type PrescriptionSchema = z.infer<typeof prescriptionSchema>;
 
 export type PrescriptionDto = PrescriptionSchema;
-
-export type PrescriptionEntity = Omit<PrescriptionDto, "medicineId"> & {
-  id: string;
-};
+export type PrescriptionEntity = PrescriptionDto;

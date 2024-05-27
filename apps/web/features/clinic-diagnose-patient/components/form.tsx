@@ -42,6 +42,7 @@ import { createPatientAssessmentSchema } from "@/services/patient-assessment/typ
 import { PharmacyTaskQueryKeyFactory } from "@/services/pharmacy-task/utils/query-key.factory";
 import type { PrescriptionEntity } from "@/services/prescription/types/entity";
 
+import { ClinicDiagnosePatientPrescriptionForm } from "./prescription-form";
 import { ClinicDiagnosePatientPrescriptionTable } from "./prescription-table";
 
 export function ClinicDiagnosePatientForm(): JSX.Element {
@@ -94,241 +95,258 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
   );
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
-        <FormField
-          control={form.control}
-          name="subjective"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Subjektif</FormLabel>
-              <FormControl>
-                <Textarea
-                  placeholder="Patient's story of complain, pain, feel etc."
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="objective"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Objektif</FormLabel>
-              <FormControl>
-                <Textarea
-                  placeholder="Observation, physical exam and laboratory information summary"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="assessment"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Penilaian</FormLabel>
-              <FormControl>
-                <Textarea
-                  placeholder="Assessment, a summary of your diagnosis of the patient's existing condition"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="icd10Code"
-          render={({ field: { value, onChange } }) => {
-            const options = icd10Data?.data ?? [];
-
-            const label = options.find(
-              (disease) => disease.code === value,
-            )?.strt;
-
-            return (
+    <>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+          <FormField
+            control={form.control}
+            name="subjective"
+            render={({ field }) => (
               <FormItem>
-                <FormLabel>ICD10</FormLabel>
+                <FormLabel>Subjektif</FormLabel>
                 <FormControl>
-                  <Popover onOpenChange={setIsIcd10Open} open={isIcd10Open}>
-                    <PopoverTrigger asChild>
-                      <Button
-                        aria-expanded={isIcd10Open}
-                        className="w-full justify-between"
-                        role="combobox"
-                        variant="outline"
-                      >
-                        {value ? label : "Select disease..."}
-                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-[200px] max-h-[300px] overflow-y-auto p-0">
-                      <Command>
-                        <CommandInput
-                          onValueChange={(commandValue) => {
-                            setIcd10Search(commandValue);
-                          }}
-                          placeholder="Search diseases..."
-                          value={icd10Search}
-                        />
-                        <CommandEmpty>No diseases found.</CommandEmpty>
-                        <CommandGroup>
-                          {options.map((item) => (
-                            <CommandItem
-                              key={item.code}
-                              onSelect={(currentValue) => {
-                                onChange(
-                                  currentValue.slice(0, 1).toUpperCase() +
-                                    currentValue.slice(1, currentValue.length),
-                                );
-                                setIsIcd10Open(false);
-                              }}
-                              value={item.code}
-                            >
-                              <Check
-                                className={cn(
-                                  "mr-2 h-4 w-4",
-                                  value === item.code
-                                    ? "opacity-100"
-                                    : "opacity-0",
-                                )}
-                              />
-                              {item.strt}
-                            </CommandItem>
-                          ))}
-                        </CommandGroup>
-                      </Command>
-                    </PopoverContent>
-                  </Popover>
+                  <Textarea
+                    placeholder="Patient's story of complain, pain, feel etc."
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
-            );
-          }}
-        />
+            )}
+          />
 
-        <FormField
-          control={form.control}
-          name="plan"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Rencana</FormLabel>
-              <FormControl>
-                <Textarea
-                  placeholder="The treatment plan (e.g., medication, therapies, surgeries)"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="icd9CMCode"
-          render={({ field: { value, onChange } }) => {
-            const label = icd9CMData?.data.find(
-              (action) => action.code === value,
-            )?.str;
-
-            return (
+          <FormField
+            control={form.control}
+            name="objective"
+            render={({ field }) => (
               <FormItem>
-                <FormLabel>ICD9CM / Tindakan</FormLabel>
+                <FormLabel>Objektif</FormLabel>
                 <FormControl>
-                  <Popover onOpenChange={setIsIcd9CMOpen} open={isIcd9CMOpen}>
-                    <PopoverTrigger asChild>
-                      <Button
-                        aria-expanded={isIcd9CMOpen}
-                        className="w-full justify-between"
-                        role="combobox"
-                        variant="outline"
-                      >
-                        {value ? label : "Select action..."}
-                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-[200px] max-h-[300px] overflow-y-auto p-0">
-                      <Command>
-                        <CommandInput
-                          onValueChange={(commandValue) => {
-                            setIcd9CMSearch(commandValue);
-                          }}
-                          placeholder="Search actions..."
-                          value={icd9CMSearch}
-                        />
-                        <CommandEmpty>No actions found.</CommandEmpty>
-                        <CommandGroup>
-                          {icd9CMData?.data.map((item) => (
-                            <CommandItem
-                              key={item.code}
-                              onSelect={(currentValue) => {
-                                onChange(currentValue);
-                                setIsIcd9CMOpen(false);
-                              }}
-                              value={item.code}
-                            >
-                              <Check
-                                className={cn(
-                                  "mr-2 h-4 w-4",
-                                  value === item.code
-                                    ? "opacity-100"
-                                    : "opacity-0",
-                                )}
-                              />
-                              {item.str}
-                            </CommandItem>
-                          ))}
-                        </CommandGroup>
-                      </Command>
-                    </PopoverContent>
-                  </Popover>
+                  <Textarea
+                    placeholder="Observation, physical exam and laboratory information summary"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
-            );
-          }}
-        />
+            )}
+          />
 
-        <div className="space-y-2 mt-3">
-          <p className="text-sm font-medium">Prescriptions</p>
-          <div className="flex flex-col gap-3">
-            <ClinicDiagnosePatientPrescriptionTable
-              onDelete={remove}
-              onEdit={(currentPrescription) => {
-                setOnEditPrescription(currentPrescription);
-              }}
-              prescriptions={prescriptions}
-            />
-            <Button
-              className="w-min"
-              onClick={() => {
-                setOnAddPrescription(true);
-              }}
-              size="sm"
-              type="button"
-              variant="ghost"
-            >
-              + Add More
-            </Button>
+          <FormField
+            control={form.control}
+            name="assessment"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Penilaian</FormLabel>
+                <FormControl>
+                  <Textarea
+                    placeholder="Assessment, a summary of your diagnosis of the patient's existing condition"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="icd10Code"
+            render={({ field: { value, onChange } }) => {
+              const options = icd10Data?.data ?? [];
+
+              const label = options.find(
+                (disease) => disease.code === value,
+              )?.strt;
+
+              return (
+                <FormItem>
+                  <FormLabel>ICD10</FormLabel>
+                  <FormControl>
+                    <Popover onOpenChange={setIsIcd10Open} open={isIcd10Open}>
+                      <PopoverTrigger asChild>
+                        <Button
+                          aria-expanded={isIcd10Open}
+                          className="w-full justify-between"
+                          role="combobox"
+                          variant="outline"
+                        >
+                          {value ? label : "Select disease..."}
+                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-[200px] max-h-[300px] overflow-y-auto p-0">
+                        <Command>
+                          <CommandInput
+                            onValueChange={(commandValue) => {
+                              setIcd10Search(commandValue);
+                            }}
+                            placeholder="Search diseases..."
+                            value={icd10Search}
+                          />
+                          <CommandEmpty>No diseases found.</CommandEmpty>
+                          <CommandGroup>
+                            {options.map((item) => (
+                              <CommandItem
+                                key={item.code}
+                                onSelect={(currentValue) => {
+                                  onChange(
+                                    currentValue.slice(0, 1).toUpperCase() +
+                                      currentValue.slice(
+                                        1,
+                                        currentValue.length,
+                                      ),
+                                  );
+                                  setIsIcd10Open(false);
+                                }}
+                                value={item.code}
+                              >
+                                <Check
+                                  className={cn(
+                                    "mr-2 h-4 w-4",
+                                    value === item.code
+                                      ? "opacity-100"
+                                      : "opacity-0",
+                                  )}
+                                />
+                                {item.strt}
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </Command>
+                      </PopoverContent>
+                    </Popover>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
+          />
+
+          <FormField
+            control={form.control}
+            name="plan"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Rencana</FormLabel>
+                <FormControl>
+                  <Textarea
+                    placeholder="The treatment plan (e.g., medication, therapies, surgeries)"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="icd9CMCode"
+            render={({ field: { value, onChange } }) => {
+              const label = icd9CMData?.data.find(
+                (action) => action.code === value,
+              )?.str;
+
+              return (
+                <FormItem>
+                  <FormLabel>ICD9CM / Tindakan</FormLabel>
+                  <FormControl>
+                    <Popover onOpenChange={setIsIcd9CMOpen} open={isIcd9CMOpen}>
+                      <PopoverTrigger asChild>
+                        <Button
+                          aria-expanded={isIcd9CMOpen}
+                          className="w-full justify-between"
+                          role="combobox"
+                          variant="outline"
+                        >
+                          {value ? label : "Select action..."}
+                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-[200px] max-h-[300px] overflow-y-auto p-0">
+                        <Command>
+                          <CommandInput
+                            onValueChange={(commandValue) => {
+                              setIcd9CMSearch(commandValue);
+                            }}
+                            placeholder="Search actions..."
+                            value={icd9CMSearch}
+                          />
+                          <CommandEmpty>No actions found.</CommandEmpty>
+                          <CommandGroup>
+                            {icd9CMData?.data.map((item) => (
+                              <CommandItem
+                                key={item.code}
+                                onSelect={(currentValue) => {
+                                  onChange(currentValue);
+                                  setIsIcd9CMOpen(false);
+                                }}
+                                value={item.code}
+                              >
+                                <Check
+                                  className={cn(
+                                    "mr-2 h-4 w-4",
+                                    value === item.code
+                                      ? "opacity-100"
+                                      : "opacity-0",
+                                  )}
+                                />
+                                {item.str}
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </Command>
+                      </PopoverContent>
+                    </Popover>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
+          />
+
+          <div className="space-y-2 mt-3">
+            <p className="text-sm font-medium">Prescriptions</p>
+            <div className="flex flex-col gap-3">
+              <ClinicDiagnosePatientPrescriptionTable
+                onDelete={remove}
+                onEdit={(currentPrescription) => {
+                  setOnEditPrescription(currentPrescription);
+                }}
+                prescriptions={prescriptions}
+              />
+              <Button
+                className="w-min"
+                onClick={() => {
+                  setOnAddPrescription(true);
+                }}
+                size="sm"
+                type="button"
+                variant="ghost"
+              >
+                + Add More
+              </Button>
+            </div>
           </div>
-        </div>
 
-        <div className="flex flex-row justify-end">
-          <Button className="mt-4">Simpan</Button>
-        </div>
-      </form>
-    </Form>
+          <div className="flex flex-row justify-end">
+            <Button className="mt-4">Simpan</Button>
+          </div>
+        </form>
+      </Form>
+      <ClinicDiagnosePatientPrescriptionForm
+        defaultValues={onEditPrescription}
+        onOpenChange={(open) => {
+          if (!open) {
+            setOnAddPrescription(undefined);
+            setOnEditPrescription(undefined);
+          }
+        }}
+        onSubmit={() => console.log("")}
+        open={Boolean(onAddPrescription) || Boolean(onEditPrescription)}
+        title={onAddPrescription ? "Add Prescription" : "Edit Prescription"}
+      />
+    </>
   );
 }
