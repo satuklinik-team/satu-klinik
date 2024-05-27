@@ -37,7 +37,7 @@ export function ClinicDiagnosePatientPrescriptionForm({
 
   return (
     <Dialog onOpenChange={onOpenChange} open={open}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px] bg-white">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <DialogHeader>
@@ -45,7 +45,7 @@ export function ClinicDiagnosePatientPrescriptionForm({
             </DialogHeader>
             <div className="grid gap-4 py-4"></div>
             <DialogFooter>
-              <Button type="submit">Save changes</Button>
+              <Button>Save changes</Button>
             </DialogFooter>
           </form>
         </Form>
