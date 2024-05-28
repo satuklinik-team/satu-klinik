@@ -40,7 +40,7 @@ export function ClinicDiagnosePatientPrescriptionTable({
         renderCell: (prescription: PrescriptionEntity) => (
           <Cell className="flex flex-col items-start gap-0">
             <p className="text-base font-semibold">
-              {prescription.medicine.name}
+              {prescription.medicine?.title}
             </p>
             <p className="text-muted-foreground">{prescription.notes}</p>
           </Cell>
@@ -95,7 +95,7 @@ export function ClinicDiagnosePatientPrescriptionTable({
                 <TooltipTrigger
                   className="h-min p-2"
                   onClick={() => {
-                    onDeletePrescription(prescription.id);
+                    onDeletePrescription(String(prescription.id));
                   }}
                 >
                   <Trash className="text-red-500" size={20} />

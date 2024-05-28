@@ -58,7 +58,6 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
   const {
     fields: prescriptions,
     remove,
-    update,
     insert,
   } = useFieldArray({
     control: form.control,
@@ -85,7 +84,15 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
 
   const onSubmit = useCallback(
     async (data: CreatePatientAssessmentDto) => {
-      await mutateAsync(data);
+      await mutateAsync({
+        ...data,
+        prescriptions: {
+          ...(data.prescriptions?.map((item) => ({
+            ...item,
+            medicine: undefined,
+          })) ?? []),
+        },
+      });
       toast({ title: "Berhasil Membuat Diagnosa!", variant: "success" });
       await queryClient.invalidateQueries({
         queryKey: new PharmacyTaskQueryKeyFactory().lists(),
@@ -343,7 +350,19 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
             setOnEditPrescription(undefined);
           }
         }}
-        onSubmit={() => console.log("")}
+        onSubmit={(prescription) => {
+          insert(prescriptions.length, {
+            ...prescription,
+            medicineId: prescription.medicine?.id,
+            totalQuantity:
+              prescription.supplyDuration *
+              prescription.frequency *
+              prescription.doseQuantity,
+          });
+
+          setOnAddPrescription(undefined);
+          setOnEditPrescription(undefined);
+        }}
         open={Boolean(onAddPrescription) || Boolean(onEditPrescription)}
         title={onAddPrescription ? "Add Prescription" : "Edit Prescription"}
       />
