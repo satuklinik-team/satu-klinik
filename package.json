@@ -7,7 +7,9 @@
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "prepare": "husky install",
-    "core:dev": "turbo run start:dev --filter=core-backend"
+    "core:dev": "turbo run start:dev --filter=core-backend",
+    "core:build": "turbo run build --filter=core-backend",
+    "core:start:migrate:prod": "turbo run start:migrate:prod --filter=core-backend"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.2.1",
