@@ -86,12 +86,13 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
     async (data: CreatePatientAssessmentDto) => {
       await mutateAsync({
         ...data,
-        prescriptions: {
+        prescriptions: [
           ...(data.prescriptions?.map((item) => ({
             ...item,
+            medicineId: Number(item.medicine?.id),
             medicine: undefined,
           })) ?? []),
-        },
+        ],
       });
       toast({ title: "Berhasil Membuat Diagnosa!", variant: "success" });
       await queryClient.invalidateQueries({

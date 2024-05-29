@@ -1,6 +1,7 @@
 "use client";
 
 import { ClinicCard } from "@/features/clinic/components/ui/card";
+
 import { ClinicPharmacyTable } from "../components/table";
 
 export function ClinicPharmacyPage(): JSX.Element {

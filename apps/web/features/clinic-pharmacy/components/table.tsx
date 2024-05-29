@@ -66,7 +66,9 @@ export function ClinicPharmacyTable(): JSX.Element {
             <Button
               className="w-min h-min p-1.5 rounded-full"
               onClick={() => {
-                router.push(`${pathname}/${row.id}`);
+                router.push(
+                  `${pathname}/${row.id}?patientId=${row.patient.id}`,
+                );
               }}
               variant="ghost"
             >
