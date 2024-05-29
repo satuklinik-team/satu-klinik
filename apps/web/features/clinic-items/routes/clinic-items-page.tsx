@@ -44,7 +44,7 @@ export function ClinicItemsPage(): JSX.Element {
   const pathname = usePathname();
 
   const [toBeDeletedId, setToBeDeletedId] = useState<string>("");
-  const [selectedCategory, setSelectedCategory] = useState<number>(0);
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
   const { mutateAsync: deleteMedicine } = useDeleteMedicine(toBeDeletedId);
   const { data: medicineCategoryData } = useFindMedicineCategory();
   const { data: medicineByCategoryData } =
@@ -63,7 +63,7 @@ export function ClinicItemsPage(): JSX.Element {
         <div className="hidden sm:hidden md:flex lg:flex xl:flex 2xl:flex flex-row items-center flex-wrap gap-2">
           <Badge
             onClick={() => {
-              setSelectedCategory(0);
+              setSelectedCategory("");
             }}
             variant={!selectedCategory ? "default" : "outline"}
           >
@@ -73,9 +73,11 @@ export function ClinicItemsPage(): JSX.Element {
             <Badge
               key={item.id}
               onClick={() => {
-                setSelectedCategory(item.id);
+                setSelectedCategory(String(item.id));
               }}
-              variant={item.id === selectedCategory ? "default" : "outline"}
+              variant={
+                String(item.id) === selectedCategory ? "default" : "outline"
+              }
             >
               {item.name}
             </Badge>
@@ -116,7 +118,7 @@ export function ClinicItemsPage(): JSX.Element {
             key={item.kfaCode}
             {...item}
             onSelectDelete={() => {
-              setToBeDeletedId(item.id);
+              setToBeDeletedId(String(item.id));
             }}
           />
         ))}

@@ -16,7 +16,7 @@ import {
 import { cn } from "@/lib/utils";
 import type { MedicineEntity } from "@/services/medicine/types/entity";
 
-type ClinicItemCardProps = HTMLAttributes<HTMLDivElement> &
+type ClinicItemCardProps = Omit<HTMLAttributes<HTMLDivElement>, "id"> &
   MedicineEntity & {
     onSelectDelete: () => void;
   };
@@ -71,7 +71,12 @@ export function ClinicItemCard({
         <div className="flex flex-row items-center gap-2">
           <TooltipProvider>
             <Tooltip>
-              <Link href={`/clinic/${clinicId as string}/items/${id}/edit`}>
+              <Link
+                href={`/clinic/${clinicId as string}/items/${id}/edit`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+              >
                 <TooltipTrigger className="h-min p-2">
                   <Edit size={20} />
                 </TooltipTrigger>

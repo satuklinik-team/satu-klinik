@@ -14,14 +14,14 @@ class MedicineApi {
     const queryParams = stringify(dto);
 
     const { data } = await this.api.get<MedicineEntity>(
-      `/medicine/${id}?${queryParams}`
+      `/medicine/${id}?${queryParams}`,
     );
 
     return data;
   }
 
   async findMedicine(
-    dto?: object
+    dto?: object,
   ): Promise<BaseFindConnectionResponse<MedicineEntity>> {
     const queryParams = stringify(dto);
 
@@ -33,14 +33,16 @@ class MedicineApi {
   }
 
   async findMedicineByCategory(
-    categoryId: number,
-    dto?: object
+    categoryId: string,
+    dto?: object,
   ): Promise<BaseFindConnectionResponse<MedicineEntity>> {
     const queryParams = stringify(dto);
 
     const { data } = await this.api.get<
       BaseFindConnectionResponse<MedicineEntity>
-    >(`/medicine/${categoryId}?count=true&${queryParams}`);
+    >(
+      `/medicine/${categoryId ? `category/${categoryId}` : ""}?count=true&${queryParams}`,
+    );
 
     return data;
   }
@@ -52,12 +54,12 @@ class MedicineApi {
   }
 
   async updateMedicine(
-    id: number,
-    values?: UpdateMedicineDto
+    id: string,
+    values?: UpdateMedicineDto,
   ): Promise<MedicineEntity> {
-    const { data } = await this.api.post<MedicineEntity>(
+    const { data } = await this.api.patch<MedicineEntity>(
       `/medicine/${id}`,
-      values
+      values,
     );
 
     return data;

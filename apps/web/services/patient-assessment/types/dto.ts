@@ -3,14 +3,14 @@ import { z } from "zod";
 import { prescriptionSchema } from "@/services/prescription/types/entity";
 
 export const createPatientAssessmentSchema = z.object({
-  mrId: z.string(),
+  mrid: z.string().optional(),
   subjective: z.string(),
   objective: z.string(),
   assessment: z.string(),
   plan: z.string(),
   icd10Code: z.string(),
   icd9CMCode: z.string(),
-  prescription: z.array(prescriptionSchema),
+  prescriptions: z.array(prescriptionSchema).optional(),
 });
 
 export type CreatePatientAssessmentSchema = z.infer<

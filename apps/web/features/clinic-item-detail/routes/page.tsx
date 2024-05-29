@@ -15,14 +15,16 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useGetMedicine } from "@/services/medicine/hooks/use-get-medicine";
 
-export function ClinicItemDetailPage(): JSX.Element {
+export function ClinicItemDetailPage(): JSX.Element | undefined {
   const pathname = usePathname();
   const { itemId } = useParams();
 
   const { data: medicineData } = useGetMedicine(Number(itemId));
 
+  if (!medicineData) return;
+
   const discountPrice =
-    (medicineData?.price ?? 0 * (100 - (medicineData?.discount ?? 0))) / 100;
+    (medicineData.price * (100 - medicineData.discount)) / 100;
 
   return (
     <div className="flex flex-col gap-8">
@@ -41,10 +43,9 @@ export function ClinicItemDetailPage(): JSX.Element {
       </Breadcrumb>
 
       <div className="flex flex-col sm:flex-col md:flex-row lg:flex-row xl:flex-row 2xl:flex-row items-start sm:items-start md:items-center lg:items-center xl:items-center 2xl:items-center gap-4">
-        <div className="bg-border w-full sm:w-full md:w-96 lg:w-96 xl:w-96 2xl:w-96 h-96 rounded-xl" />
         <img
           alt={medicineData?.title}
-          className="w-full h-36 bg-muted-foreground/20 rounded-xl"
+          className="w-full sm:w-full md:w-96 lg:w-96 xl:w-96 2xl:w-96 h-96 bg-muted-foreground/20 rounded-xl"
           height={400}
           src={medicineData?.imageUrl}
           width={400}
