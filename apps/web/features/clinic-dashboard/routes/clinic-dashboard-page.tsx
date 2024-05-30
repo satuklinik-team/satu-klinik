@@ -1,24 +1,17 @@
 "use client";
 
 // import ReactApexChart from "react-apexcharts";
-import { useState } from "react";
-
 import { ClinicCard } from "@/features/clinic/components/ui/card";
 import { QueueCard } from "@/features/clinic-patient/components/shared/queue-card";
 import { useFindPatient } from "@/services/patient/hooks/use-find-patient";
-import type { Pagination } from "@/types";
 
 import { ClinicDashboardUsersTable } from "../components/table";
 // import { ClinicServicesCard } from "@/features/clinic/components/ui/services-card";
 
 export function ClinicDashboardPage(): JSX.Element {
-  const [pagination] = useState<Pagination>({
+  const { data } = useFindPatient({
     skip: 0,
     limit: 20,
-  });
-
-  const { data } = useFindPatient({
-    ...pagination,
     count: true,
     type: "ENTRY",
   });

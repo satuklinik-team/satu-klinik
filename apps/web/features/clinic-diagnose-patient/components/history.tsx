@@ -1,3 +1,3 @@
 export function ClinicDiagnoseHistory(): JSX.Element {
-  return <></>;
+  return <>History</>;
 }
