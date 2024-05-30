@@ -19,9 +19,9 @@ export function TopBar(): JSX.Element {
         onClick={onToggleLeftBar}
         variant="ghost"
       >
-        {isLeftBarOpen && (
+        {isLeftBarOpen ? (
           <PanelLeftClose className="text-foreground" size={20} />
-        )}
+        ) : null}
 
         {!isLeftBarOpen && (
           <PanelLeftOpen className="text-foreground" size={20} />

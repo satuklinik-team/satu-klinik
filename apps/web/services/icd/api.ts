@@ -4,7 +4,7 @@ import { stringify } from "qs";
 import { api } from "@/lib/api";
 
 import type { BaseFindConnectionResponse } from "../shared/types";
-import type { Icd9cmEntity, Icd10Entity } from "./types/entity";
+import type { Icd9CMEntity, Icd10Entity } from "./types/entity";
 
 class IcdApi {
   api: AxiosInstance = api;
@@ -23,11 +23,11 @@ class IcdApi {
 
   async findIcd9cm(
     dto?: object,
-  ): Promise<BaseFindConnectionResponse<Icd9cmEntity>> {
+  ): Promise<BaseFindConnectionResponse<Icd9CMEntity>> {
     const queryParams = stringify(dto);
 
     const { data } = await this.api.get<
-      BaseFindConnectionResponse<Icd9cmEntity>
+      BaseFindConnectionResponse<Icd9CMEntity>
     >(`/icd9cm?count=true&${queryParams}`);
 
     return data;

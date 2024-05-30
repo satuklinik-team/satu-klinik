@@ -1,7 +1,5 @@
 "use client";
 
-import { skip } from "node:test";
-
 import { useMemo, useState } from "react";
 
 import { BaseTable as ClinicTable } from "@/components/shared/table/base-table";

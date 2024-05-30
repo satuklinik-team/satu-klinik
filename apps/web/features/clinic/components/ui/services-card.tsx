@@ -1,10 +1,12 @@
-import { cn } from "@/lib/utils";
-import { HTMLAttributes } from "react";
-import { ClinicCard } from "./card";
-import { clinicDashboardServices } from "../../utils";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import type { HTMLAttributes } from "react";
+
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+
+import { clinicDashboardServices } from "../../utils";
+import { ClinicCard } from "./card";
 
 type ClinicCardProps = HTMLAttributes<HTMLDivElement>;
 

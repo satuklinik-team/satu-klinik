@@ -1,6 +1,7 @@
-import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
+import type { HTMLAttributes } from "react";
+
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { HTMLAttributes } from "react";
 
 interface ClinicCardProps
   extends Omit<HTMLAttributes<HTMLDivElement>, "title"> {
@@ -30,7 +31,7 @@ export function ClinicCard({
         borderPosition === "right" && "border-r-4",
         borderPosition === "bottom" && "border-b-4",
         className,
-        "border-gray-400"
+        "border-gray-400",
       )}
       {...rest}
     >
@@ -45,7 +46,7 @@ export function ClinicCard({
       <CardContent
         className={cn(
           "flex-1 px-4 py-3 text-2xl font-medium",
-          classNames?.content
+          classNames?.content,
         )}
       >
         {children}
