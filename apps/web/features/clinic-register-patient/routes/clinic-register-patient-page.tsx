@@ -3,7 +3,7 @@
 import { useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useParams, useRouter } from "next/navigation";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
@@ -16,7 +16,6 @@ import type { CreatePatientDto } from "@/services/patient/types/dto";
 import { PatientQueryKeyFactory } from "@/services/patient/utils/query-key.factory";
 import { useCreatePatientVitalSign } from "@/services/patient-vital-sign/hooks/use-create-patient";
 import type { CreatePatientVitalSignDto } from "@/services/patient-vital-sign/types/dto";
-import type { Pagination } from "@/types";
 
 export function ClinicRegisterPatientPage(): JSX.Element {
   const queryClient = useQueryClient();
@@ -24,13 +23,9 @@ export function ClinicRegisterPatientPage(): JSX.Element {
   const { clinicId } = useParams();
   const { toast } = useToast();
 
-  const [pagination] = useState<Pagination>({
+  const { data } = useFindPatient({
     skip: 0,
     limit: 20,
-  });
-
-  const { data } = useFindPatient({
-    ...pagination,
     count: true,
     type: "ENTRY",
   });

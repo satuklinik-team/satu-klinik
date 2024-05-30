@@ -27,9 +27,17 @@ export function RegisterPage(): JSX.Element {
         nik: "-",
       };
 
-      await mutateAsync(formattedData);
+      const data = await mutateAsync(formattedData);
+
       toast({ title: "Akun berhasil dibuat!", variant: "success" });
-      router.replace("/members");
+
+      if (data.user.roles === "OWNER") {
+        router.replace("/members");
+      }
+
+      if (data.user.roles !== "OWNER") {
+        router.replace(`/clinic/${data.clinic.id}`);
+      }
     },
     [mutateAsync, router, toast],
   );

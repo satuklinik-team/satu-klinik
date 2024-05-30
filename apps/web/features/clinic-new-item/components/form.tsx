@@ -3,6 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { Check, ChevronsUpDown, ImagePlusIcon } from "lucide-react";
+import { useParams, useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -40,6 +41,8 @@ import { MedicineQueryKeyFactory } from "@/services/medicine/utils/query-key.fac
 import { useFindMedicineCategory } from "@/services/medicine-category/hooks/use-find-medicine";
 
 export function ClinicNewItemForm(): JSX.Element {
+  const router = useRouter();
+  const { clinicId } = useParams();
   const [search, setSearch] = useState<string>("");
 
   const { data: medicineCategoryData } = useFindMedicineCategory({
@@ -76,8 +79,9 @@ export function ClinicNewItemForm(): JSX.Element {
         queryKey: new MedicineQueryKeyFactory().lists(),
       });
       toast({ title: "Berhasil Membuat Obat Baru!", variant: "success" });
+      router.push(`/clinic/${clinicId as string}/items`);
     },
-    [mutateAsync, queryClient, toast],
+    [clinicId, mutateAsync, queryClient, router, toast],
   );
 
   return (
