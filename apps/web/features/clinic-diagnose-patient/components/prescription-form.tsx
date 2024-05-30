@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Check, ChevronsUpDown } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
@@ -68,7 +68,7 @@ export function ClinicDiagnosePatientPrescriptionForm({
   });
 
   const [search, setSearch] = useState<string>(
-    defaultValues?.medicine.title ?? "",
+    defaultValues?.medicine?.title ?? "",
   );
 
   const [isMedicineOpen, setIsMedicineOpen] = useState<boolean>(false);
@@ -77,19 +77,6 @@ export function ClinicDiagnosePatientPrescriptionForm({
     search,
     limit: 50,
   });
-
-  // useEffect(() => {
-  //   form.reset({
-  //     medicine: undefined,
-  //     frequency: undefined,
-  //     period: undefined,
-  //     doseQuantity: undefined,
-  //     supplyDuration: undefined,
-  //     id: undefined,
-  //     totalQuantity: undefined,
-  //     notes: undefined,
-  //   });
-  // }, [open]);
 
   return (
     <Dialog onOpenChange={onOpenChange} open={open}>
@@ -126,7 +113,7 @@ export function ClinicDiagnosePatientPrescriptionForm({
                             </Button>
                           </PopoverTrigger>
                           <PopoverContent className="w-[200px] max-h-[300px] overflow-y-auto p-0">
-                            <Command>
+                            <Command shouldFilter={false}>
                               <CommandInput
                                 onValueChange={(commandValue) => {
                                   setSearch(commandValue);

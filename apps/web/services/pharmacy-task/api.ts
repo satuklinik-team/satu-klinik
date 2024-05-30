@@ -13,8 +13,13 @@ class PharmacyTaskApi {
   async completePharmacyTask(
     id: string,
     dto: CompletePharmacyTaskDto,
-  ): Promise<void> {
-    await this.api.post(`/pharmacy-tasks/${id}`, dto);
+  ): Promise<PharmacyTaskEntity> {
+    const { data } = await this.api.post<PharmacyTaskEntity>(
+      `/pharmacy-tasks/${id}`,
+      dto,
+    );
+
+    return data;
   }
 
   async getPharmacyTask(id: string, dto?: object): Promise<PharmacyTaskEntity> {

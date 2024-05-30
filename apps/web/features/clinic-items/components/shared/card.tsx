@@ -85,7 +85,13 @@ export function ClinicItemCard({
             </Tooltip>
 
             <Tooltip>
-              <TooltipTrigger className="h-min p-2" onClick={onSelectDelete}>
+              <TooltipTrigger
+                className="h-min p-2"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onSelectDelete();
+                }}
+              >
                 <Trash className="text-red-500" size={20} />
               </TooltipTrigger>
               <TooltipContent>Hapus Item</TooltipContent>

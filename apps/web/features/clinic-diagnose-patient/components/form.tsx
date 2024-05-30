@@ -89,7 +89,7 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
         prescriptions: [
           ...(data.prescriptions?.map((item) => ({
             ...item,
-            medicineId: Number(item.medicine?.id),
+            medicineId: Number(item.medicine?.id) as unknown as string,
             medicine: undefined,
           })) ?? []),
         ],
@@ -184,7 +184,7 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
                         </Button>
                       </PopoverTrigger>
                       <PopoverContent className="w-[200px] max-h-[300px] overflow-y-auto p-0">
-                        <Command>
+                        <Command shouldFilter={false}>
                           <CommandInput
                             onValueChange={(commandValue) => {
                               setIcd10Search(commandValue);
@@ -273,7 +273,7 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
                         </Button>
                       </PopoverTrigger>
                       <PopoverContent className="w-[200px] max-h-[300px] overflow-y-auto p-0">
-                        <Command>
+                        <Command shouldFilter={false}>
                           <CommandInput
                             onValueChange={(commandValue) => {
                               setIcd9CMSearch(commandValue);
