@@ -1,35 +1,26 @@
 import { z as n } from "zod";
 import {
   Lezzform as h,
-  FormField as l,
-  FormItem as t,
-  FormLabel as s,
-  FormControl as i,
-  FormMessage as u,
-  Input as b,
+  FormField as m,
+  FormItem as l,
+  FormLabel as t,
+  FormControl as s,
+  FormMessage as i,
+  Input as F,
   EmailInput as p,
-  PhoneNumberInput as g,
-  PasswordInput as k,
-  Divider as L,
+  PasswordInput as g,
+  Divider as S,
+  PhoneNumberInput as k,
   TextArea as y,
-  Spacer as P,
+  Spacer as B,
   Button as v,
 } from "@lezzform/react";
 import * as c from "react";
 import { jsx as o, jsxs as a } from "react/jsx-runtime";
-var B = n.object({
+var P = n.object({
     fullname: n.string(),
     email: n.string().email(),
-    password: n
-      .string()
-      .max(14)
-      .min(6)
-      .refine(
-        (m) =>
-          !m ||
-          /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/.test(m),
-        { message: "Invalid phone number format" },
-      ),
+    password: n.string().max(14).min(6),
     confirmPassword: n.string().max(14).min(6),
     clinicName: n.string(),
     clinicEmail: n.string().email(),
@@ -38,52 +29,52 @@ var B = n.object({
       .max(14)
       .min(10)
       .refine(
-        (m) =>
-          !m ||
-          /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/.test(m),
+        (u) =>
+          !u ||
+          /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/.test(u),
         { message: "Invalid phone number format" },
       ),
     clinicAddress: n.string(),
     clinicCode: n.string(),
   }),
-  C = "PsalxH2jbWnwMJzKniF2",
+  C = "oLcnCBIJcDop0MwcxriQ",
   E = ({
-    onSubmit: m,
-    onError: d,
+    onSubmit: u,
+    onError: b,
     onSuccess: R,
     defaultValues: z,
     onAction: w,
     formProps: q,
   }) => {
-    let F = c.useRef();
+    let d = c.useRef();
     c.useEffect(() => {
-      m && (F.current = m);
-    }, [m]);
-    let S = c.useCallback(async (r, e) => {
-      if (F.current) return F.current(r, e);
+      u && (d.current = u);
+    }, [u]);
+    let L = c.useCallback(async (r, e) => {
+      if (d.current) return d.current(r, e);
     }, []);
     return o(
       h,
       {
         id: C,
         defaultValues: z,
-        onSubmit: S,
-        onError: d,
+        onSubmit: L,
+        onError: b,
         onSuccess: R,
-        zodSchema: B,
+        zodSchema: P,
         mode: "onSubmit",
         children: (r) =>
           a(h.Container, {
             children: [
-              o(l, {
+              o(m, {
                 control: r.control,
                 name: "fullname",
                 render: ({ field: e }) =>
-                  a(t, {
+                  a(l, {
                     children: [
-                      o(s, { isRequired: !0, children: "Nama Lengkap" }),
-                      o(i, {
-                        children: o(b, {
+                      o(t, { isRequired: !0, children: "Nama Lengkap" }),
+                      o(s, {
+                        children: o(F, {
                           label: "Nama Lengkap",
                           name: e.name,
                           value: e.value ?? "",
@@ -95,18 +86,18 @@ var B = n.object({
                           styles: { root: {} },
                         }),
                       }),
-                      o(u, {}),
+                      o(i, {}),
                     ],
                   }),
               }),
-              o(l, {
+              o(m, {
                 control: r.control,
                 name: "email",
                 render: ({ field: e }) =>
-                  a(t, {
+                  a(l, {
                     children: [
-                      o(s, { isRequired: !0, children: "Email" }),
-                      o(i, {
+                      o(t, { isRequired: !0, children: "Email" }),
+                      o(s, {
                         children: o(p, {
                           label: "Email",
                           name: e.name,
@@ -119,18 +110,18 @@ var B = n.object({
                           styles: { root: {} },
                         }),
                       }),
-                      o(u, {}),
+                      o(i, {}),
                     ],
                   }),
               }),
-              o(l, {
+              o(m, {
                 control: r.control,
                 name: "password",
                 render: ({ field: e }) =>
-                  a(t, {
+                  a(l, {
                     children: [
-                      o(s, { isRequired: !0, children: "Password" }),
-                      o(i, {
+                      o(t, { isRequired: !0, children: "Password" }),
+                      o(s, {
                         children: o(g, {
                           label: "Password",
                           name: e.name,
@@ -143,19 +134,19 @@ var B = n.object({
                           styles: { root: {} },
                         }),
                       }),
-                      o(u, {}),
+                      o(i, {}),
                     ],
                   }),
               }),
-              o(l, {
+              o(m, {
                 control: r.control,
                 name: "confirmPassword",
                 render: ({ field: e }) =>
-                  a(t, {
+                  a(l, {
                     children: [
-                      o(s, { isRequired: !0, children: "Konfirmasi Password" }),
-                      o(i, {
-                        children: o(k, {
+                      o(t, { isRequired: !0, children: "Konfirmasi Password" }),
+                      o(s, {
+                        children: o(g, {
                           label: "Konfirmasi Password",
                           name: e.name,
                           value: e.value ?? "",
@@ -167,20 +158,20 @@ var B = n.object({
                           styles: { root: {} },
                         }),
                       }),
-                      o(u, {}),
+                      o(i, {}),
                     ],
                   }),
               }),
-              o(L.Solid, { styles: { root: {} }, size: 1, color: "#c7c7c7" }),
-              o(l, {
+              o(S.Solid, { styles: { root: {} }, size: 1, color: "#c7c7c7" }),
+              o(m, {
                 control: r.control,
                 name: "clinicName",
                 render: ({ field: e }) =>
-                  a(t, {
+                  a(l, {
                     children: [
-                      o(s, { isRequired: !0, children: "Nama Klinik" }),
-                      o(i, {
-                        children: o(b, {
+                      o(t, { isRequired: !0, children: "Nama Klinik" }),
+                      o(s, {
+                        children: o(F, {
                           label: "Nama Klinik",
                           name: e.name,
                           value: e.value ?? "",
@@ -192,18 +183,18 @@ var B = n.object({
                           styles: { root: {} },
                         }),
                       }),
-                      o(u, {}),
+                      o(i, {}),
                     ],
                   }),
               }),
-              o(l, {
+              o(m, {
                 control: r.control,
                 name: "clinicEmail",
                 render: ({ field: e }) =>
-                  a(t, {
+                  a(l, {
                     children: [
-                      o(s, { isRequired: !0, children: "Email Klinik" }),
-                      o(i, {
+                      o(t, { isRequired: !0, children: "Email Klinik" }),
+                      o(s, {
                         children: o(p, {
                           label: "Email Klinik",
                           name: e.name,
@@ -216,19 +207,19 @@ var B = n.object({
                           styles: { root: {} },
                         }),
                       }),
-                      o(u, {}),
+                      o(i, {}),
                     ],
                   }),
               }),
-              o(l, {
+              o(m, {
                 control: r.control,
                 name: "clinicPhone",
                 render: ({ field: e }) =>
-                  a(t, {
+                  a(l, {
                     children: [
-                      o(s, { isRequired: !0, children: "No Telp. Klinik" }),
-                      o(i, {
-                        children: o(g, {
+                      o(t, { isRequired: !0, children: "No Telp. Klinik" }),
+                      o(s, {
+                        children: o(k, {
                           label: "No Telp. Klinik",
                           name: e.name,
                           value: e.value ?? "",
@@ -240,18 +231,18 @@ var B = n.object({
                           styles: { root: {} },
                         }),
                       }),
-                      o(u, {}),
+                      o(i, {}),
                     ],
                   }),
               }),
-              o(l, {
+              o(m, {
                 control: r.control,
                 name: "clinicAddress",
                 render: ({ field: e }) =>
-                  a(t, {
+                  a(l, {
                     children: [
-                      o(s, { isRequired: !0, children: "Alamat" }),
-                      o(i, {
+                      o(t, { isRequired: !0, children: "Alamat" }),
+                      o(s, {
                         children: o(y, {
                           label: "Alamat",
                           name: e.name,
@@ -264,19 +255,19 @@ var B = n.object({
                           styles: { root: {} },
                         }),
                       }),
-                      o(u, {}),
+                      o(i, {}),
                     ],
                   }),
               }),
-              o(l, {
+              o(m, {
                 control: r.control,
                 name: "clinicCode",
                 render: ({ field: e }) =>
-                  a(t, {
+                  a(l, {
                     children: [
-                      o(s, { isRequired: !0, children: "Kode Fasyankes" }),
-                      o(i, {
-                        children: o(b, {
+                      o(t, { isRequired: !0, children: "Kode Fasyankes" }),
+                      o(s, {
+                        children: o(F, {
                           label: "Kode Fasyankes",
                           name: e.name,
                           value: e.value ?? "",
@@ -288,11 +279,11 @@ var B = n.object({
                           styles: { root: {} },
                         }),
                       }),
-                      o(u, {}),
+                      o(i, {}),
                     ],
                   }),
               }),
-              o(P, { styles: { root: {} }, size: 16 }),
+              o(B, { styles: { root: {} }, size: 16 }),
               o(v, {
                 type: "submit",
                 className: "w-full",

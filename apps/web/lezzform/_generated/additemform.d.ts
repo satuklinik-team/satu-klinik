@@ -15,16 +15,16 @@ declare const zodFormSchema: z.ZodObject<
   {
     title?: string;
     image?: string;
-    categoryId?: string;
     price?: number;
+    categoryId?: string;
     stock?: number;
     discount?: number;
   },
   {
     title?: string;
     image?: string;
-    categoryId?: string;
     price?: number;
+    categoryId?: string;
     stock?: number;
     discount?: number;
   }

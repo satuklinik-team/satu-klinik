@@ -7,8 +7,8 @@ import {
   FormControl as i,
   FormMessage as u,
   Input as d,
-  PhoneNumberInput as S,
-  NumberInput as C,
+  PhoneNumberInput as C,
+  NumberInput as S,
   Button as I,
 } from "@lezzform/react";
 import {
@@ -19,7 +19,7 @@ import {
 } from "lucide-react";
 import * as c from "react";
 import { jsx as o, jsxs as a } from "react/jsx-runtime";
-var P = n.object({
+var f = n.object({
     licenseNumber: n.string(),
     clinicId: n.string(),
     clinicName: n.string(),
@@ -36,14 +36,14 @@ var P = n.object({
     address: n.string(),
     price: n.coerce.number(),
   }),
-  h = "xPZqSjlnGNuTGRlUBiio",
-  D = ({
+  h = "8zM3DcolJeI883mzuhW1",
+  A = ({
     onSubmit: m,
     onError: F,
-    onSuccess: g,
-    defaultValues: z,
-    onAction: f,
-    formProps: k,
+    onSuccess: z,
+    defaultValues: g,
+    onAction: k,
+    formProps: P,
   }) => {
     let b = c.useRef();
     c.useEffect(() => {
@@ -56,11 +56,11 @@ var P = n.object({
       p,
       {
         id: h,
-        defaultValues: z,
+        defaultValues: g,
         onSubmit: R,
         onError: F,
-        onSuccess: g,
-        zodSchema: P,
+        onSuccess: z,
+        zodSchema: f,
         mode: "onSubmit",
         children: (r) =>
           a(p.Container, {
@@ -158,7 +158,7 @@ var P = n.object({
                     children: [
                       o(l, { isRequired: !0, children: "Nomor Telepon" }),
                       o(i, {
-                        children: o(S, {
+                        children: o(C, {
                           label: "Nomor Telepon",
                           name: e.name,
                           value: e.value ?? "",
@@ -209,7 +209,7 @@ var P = n.object({
                     children: [
                       o(l, { isRequired: !0, children: "Harga Dasar" }),
                       o(i, {
-                        children: o(C, {
+                        children: o(S, {
                           label: "Harga Dasar",
                           name: e.name,
                           value: e.value ?? 0,
@@ -239,4 +239,4 @@ var P = n.object({
       h,
     );
   };
-export { D as Form };
+export { A as Form };
