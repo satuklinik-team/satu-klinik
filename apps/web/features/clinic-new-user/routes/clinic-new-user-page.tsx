@@ -1,7 +1,7 @@
 "use client";
 
 import { useQueryClient } from "@tanstack/react-query";
-import { usePathname } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import { useCallback } from "react";
 
 import {
@@ -21,6 +21,8 @@ import { UserQueryKeyFactory } from "@/services/user/utils/query-key.factory";
 
 export function ClinicNewUserPage(): JSX.Element {
   const queryClient = useQueryClient();
+  const router = useRouter();
+  const { clinicId } = useParams();
   const pathname = usePathname();
 
   const { toast } = useToast();
@@ -44,8 +46,9 @@ export function ClinicNewUserPage(): JSX.Element {
         queryKey: new UserQueryKeyFactory().lists(),
       });
       toast({ title: "Berhasil Membuat User Baru!", variant: "success" });
+      router.push(`/clinic/${clinicId as string}/users`);
     },
-    [mutateAsync, queryClient, toast],
+    [clinicId, mutateAsync, queryClient, router, toast],
   );
 
   return (
