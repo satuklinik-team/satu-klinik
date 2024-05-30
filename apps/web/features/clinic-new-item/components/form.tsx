@@ -40,9 +40,12 @@ import { MedicineQueryKeyFactory } from "@/services/medicine/utils/query-key.fac
 import { useFindMedicineCategory } from "@/services/medicine-category/hooks/use-find-medicine";
 
 export function ClinicNewItemForm(): JSX.Element {
+  const [search, setSearch] = useState<string>("");
+
   const { data: medicineCategoryData } = useFindMedicineCategory({
     skip: 0,
     limit: 50,
+    search,
   });
 
   const form = useForm<CreateMedicineSchema>({
@@ -150,8 +153,14 @@ export function ClinicNewItemForm(): JSX.Element {
                       </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-[200px] max-h-[300px] overflow-y-auto p-0">
-                      <Command>
-                        <CommandInput placeholder="Search categories..." />
+                      <Command shouldFilter={false}>
+                        <CommandInput
+                          onValueChange={(inputValue) => {
+                            setSearch(inputValue);
+                          }}
+                          placeholder="Search categories..."
+                          value={search}
+                        />
                         <CommandEmpty>No categories found.</CommandEmpty>
                         <CommandGroup>
                           {options.map((item) => (

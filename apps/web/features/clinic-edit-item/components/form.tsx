@@ -47,9 +47,12 @@ interface ClinicEditItemFormProps {
 export function ClinicEditItemForm({
   defaultValues,
 }: ClinicEditItemFormProps): JSX.Element {
+  const [search, setSearch] = useState<string>("");
+
   const { data: medicineCategoryData } = useFindMedicineCategory({
     skip: 0,
     limit: 50,
+    search,
   });
 
   const form = useForm<UpdateMedicineSchema>({
@@ -161,8 +164,14 @@ export function ClinicEditItemForm({
                       </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-[200px] max-h-[300px] overflow-y-auto p-0">
-                      <Command>
-                        <CommandInput placeholder="Search categories..." />
+                      <Command shouldFilter={false}>
+                        <CommandInput
+                          onValueChange={(inputValue) => {
+                            setSearch(inputValue);
+                          }}
+                          placeholder="Search categories..."
+                          value={search}
+                        />
                         <CommandEmpty>No categories found.</CommandEmpty>
                         <CommandGroup>
                           {options.map((item) => (

@@ -2,6 +2,7 @@
 
 import { useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
+import { useParams, useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
 
 import { Input } from "@/components/ui/input";
@@ -19,6 +20,8 @@ import type { Pagination } from "@/types";
 
 export function ClinicRegisterPatientPage(): JSX.Element {
   const queryClient = useQueryClient();
+  const router = useRouter();
+  const { clinicId } = useParams();
   const { toast } = useToast();
 
   const [pagination] = useState<Pagination>({
@@ -67,9 +70,19 @@ export function ClinicRegisterPatientPage(): JSX.Element {
       await queryClient.invalidateQueries({
         queryKey: new PatientQueryKeyFactory().lists(),
       });
+
       toast({ title: "Berhasil Membuat Pasien!", variant: "success" });
+
+      router.push(`/clinic/${clinicId as string}/doctor`);
     },
-    [createPatient, createPatientVitalSign, queryClient, toast],
+    [
+      clinicId,
+      createPatient,
+      createPatientVitalSign,
+      queryClient,
+      router,
+      toast,
+    ],
   );
 
   return (

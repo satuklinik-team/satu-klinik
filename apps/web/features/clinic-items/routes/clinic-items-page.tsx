@@ -44,11 +44,12 @@ export function ClinicItemsPage(): JSX.Element {
   const pathname = usePathname();
 
   const [toBeDeletedId, setToBeDeletedId] = useState<string>("");
-  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const { mutateAsync: deleteMedicine } = useDeleteMedicine(toBeDeletedId);
   const { data: medicineCategoryData } = useFindMedicineCategory();
-  const { data: medicineByCategoryData } =
-    useFindMedicineByCategory(selectedCategory);
+  const { data: medicineByCategoryData } = useFindMedicineByCategory(
+    selectedCategory === "All" ? "" : selectedCategory,
+  );
 
   return (
     <div className="h-full">
@@ -63,9 +64,9 @@ export function ClinicItemsPage(): JSX.Element {
         <div className="hidden sm:hidden md:flex lg:flex xl:flex 2xl:flex flex-row items-center flex-wrap gap-2">
           <Badge
             onClick={() => {
-              setSelectedCategory("");
+              setSelectedCategory("All");
             }}
-            variant={!selectedCategory ? "default" : "outline"}
+            variant={selectedCategory === "All" ? "default" : "outline"}
           >
             All
           </Badge>
@@ -84,18 +85,24 @@ export function ClinicItemsPage(): JSX.Element {
           ))}
         </div>
 
-        <Select>
+        <Select
+          onValueChange={(value) => {
+            setSelectedCategory(value);
+          }}
+          value={selectedCategory}
+        >
           <SelectTrigger className="flex sm:flex md:hidden lg:hidden xl:hidden 2xl:hidden w-[180px]">
             <SelectValue placeholder="Pilih kategori" />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
               <SelectLabel>Pilih kategori</SelectLabel>
-              <SelectItem value="all">All</SelectItem>
-              <SelectItem value="mainService">Main Service</SelectItem>
-              <SelectItem value="medicine">Medicine</SelectItem>
-              <SelectItem value="otherService">Other Service</SelectItem>
-              <SelectItem value="supplement">Supplement</SelectItem>
+              <SelectItem value="All">All</SelectItem>
+              {medicineCategoryData?.data.map((item) => (
+                <SelectItem key={item.id} value={String(item.id)}>
+                  {item.name}
+                </SelectItem>
+              ))}
             </SelectGroup>
           </SelectContent>
         </Select>
@@ -128,7 +135,7 @@ export function ClinicItemsPage(): JSX.Element {
         onOpenChange={(value) => {
           if (!value) setToBeDeletedId("");
         }}
-        open={!!toBeDeletedId}
+        open={Boolean(toBeDeletedId)}
       >
         <AlertDialogContent className="bg-white">
           <AlertDialogHeader>
