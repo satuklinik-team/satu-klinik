@@ -16,6 +16,10 @@
     "start:dev": {
       "cache": false,
       "persistent": true
+    },
+    "start:migrate:prod": {
+      "cache": false,
+      "persistent": true
     }
   }
 }

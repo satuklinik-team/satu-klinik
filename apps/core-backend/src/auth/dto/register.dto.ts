@@ -1,20 +1,20 @@
-import { IsNotEmpty, IsString, MinLength } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
+import { CreateUserDto } from 'src/users/dto';
 
-export class RegisterDto {
+export class RegisterDto extends CreateUserDto {
   @IsString()
   @IsNotEmpty()
-  name: string;
-
-  @IsString()
-  @IsNotEmpty()
-  email: string;
+  clinicName: string;
 
   @IsString()
   @IsNotEmpty()
-  address: string;
+  clinicEmail: string;
 
   @IsString()
   @IsNotEmpty()
-  @MinLength(5)
-  password: string;
+  clinicPhone: string;
+
+  @IsString()
+  @IsNotEmpty()
+  clinicAddress: string;
 }

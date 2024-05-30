@@ -3,11 +3,13 @@ import { SatusehatOauthService } from './satusehat-oauth.service';
 import { HttpModule } from '@nestjs/axios';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import configuration from 'src/config/configuration';
+import { CacheModule } from '@nestjs/cache-manager';
+import { SatusehatKfaModule } from 'src/satusehat-kfa/satusehat-kfa.module';
 
 @Module({
   providers: [SatusehatOauthService],
-  controllers: [],
   imports: [
+    CacheModule.register(),
     HttpModule.registerAsync({
       imports: [ConfigModule.forRoot({ load: [configuration] })],
       useFactory: async (configService: ConfigService) => ({

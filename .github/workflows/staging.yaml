@@ -1,0 +1,69 @@
+name: satuklinik staging
+
+on:
+  push:
+    branches: [ "staging" ]
+    # paths:
+    #   - 'apps/web/**'
+    #   - 'apps/core-backend/**'
+  workflow_dispatch:
+
+jobs:
+
+  changes:
+    runs-on: ubuntu-latest
+    # Required permissions
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      backend: ${{ steps.filter.outputs.backend }}
+      frontend: ${{ steps.filter.outputs.frontend }}
+    steps:
+
+      - name: Checkout SCM
+        uses: actions/checkout@v3
+
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            backend:
+              - 'apps/core-backend/**'
+            frontend:
+              - 'apps/web/**'  
+
+  backend:
+    needs: changes
+    if: ${{ needs.changes.outputs.backend == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout SCM
+        uses: actions/checkout@v3
+      
+      - name: Login to Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ secrets.DOCKER_REGISTRY_URL }}
+          username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
+          password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
+
+      - name: Building core
+        run: |
+          docker buildx build -f "${{ secrets.DOCKERFILE_CORE }}" --tag "${{ secrets.DOCKER_IMAGE_CORE_STAGING }}" .
+
+      - name: Push core image into Registry
+        run: docker push ${{ secrets.DOCKER_IMAGE_CORE_STAGING }}
+
+      - name: Redeploy backend
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SSH_STAGING }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASS }}
+          port: 22
+          script: |
+           docker compose -f ${{ secrets.PATH}} pull
+           docker compose -f ${{ secrets.PATH }} down
+           docker compose -f ${{ secrets.PATH }} up -d
