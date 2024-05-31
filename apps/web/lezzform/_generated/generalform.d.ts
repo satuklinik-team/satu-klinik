@@ -14,19 +14,19 @@ declare const zodFormSchema: z.ZodObject<
   z.ZodTypeAny,
   {
     address?: string;
+    price?: number;
     licenseNumber?: string;
     clinicId?: string;
     clinicName?: string;
     phone?: string;
-    price?: number;
   },
   {
     address?: string;
+    price?: number;
     licenseNumber?: string;
     clinicId?: string;
     clinicName?: string;
     phone?: string;
-    price?: number;
   }
 >;
 export type FormSchema = z.infer<typeof zodFormSchema>;

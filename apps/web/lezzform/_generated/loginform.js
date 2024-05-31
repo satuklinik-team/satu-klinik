@@ -8,20 +8,20 @@ import {
   FormMessage as d,
   EmailInput as b,
   PasswordInput as R,
-  Spacer as L,
-  Button as w,
+  Spacer as y,
+  Button as L,
 } from "@lezzform/react";
 import * as n from "react";
 import { jsx as r, jsxs as s } from "react/jsx-runtime";
-var P = a.object({ email: a.string().email(), password: a.string() }),
-  F = "TnCFUinXmQKcAOTlSmcG",
+var w = a.object({ email: a.string().email(), password: a.string() }),
+  f = "yulEMH53ryZ0lUNdhfy6",
   E = ({
     onSubmit: m,
-    onError: f,
-    onSuccess: p,
+    onError: p,
+    onSuccess: F,
     defaultValues: S,
-    onAction: y,
-    formProps: C,
+    onAction: P,
+    formProps: g,
   }) => {
     let t = n.useRef();
     n.useEffect(() => {
@@ -33,12 +33,12 @@ var P = a.object({ email: a.string().email(), password: a.string() }),
     return r(
       u,
       {
-        id: F,
+        id: f,
         defaultValues: S,
         onSubmit: h,
-        onError: f,
-        onSuccess: p,
-        zodSchema: P,
+        onError: p,
+        onSuccess: F,
+        zodSchema: w,
         mode: "onSubmit",
         children: (e) =>
           s(u.Container, {
@@ -91,8 +91,8 @@ var P = a.object({ email: a.string().email(), password: a.string() }),
                     ],
                   }),
               }),
-              r(L, { styles: { root: {} }, size: 16 }),
-              r(w, {
+              r(y, { styles: { root: {} }, size: 16 }),
+              r(L, {
                 type: "submit",
                 className: "w-full",
                 disabled: e.formState.isSubmitting,
@@ -103,7 +103,7 @@ var P = a.object({ email: a.string().email(), password: a.string() }),
             ],
           }),
       },
-      F,
+      f,
     );
   };
 export { E as Form };

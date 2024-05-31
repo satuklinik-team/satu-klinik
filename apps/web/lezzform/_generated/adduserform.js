@@ -15,10 +15,10 @@ import {
   TwoColumn as A,
   Button as h,
 } from "@lezzform/react";
-import { UserRound as P, Mail as k, CreditCard as B } from "lucide-react";
+import { UserRound as P, Mail as k, CreditCard as q } from "lucide-react";
 import * as i from "react";
 import { jsx as e, jsxs as n } from "react/jsx-runtime";
-var I = a.object({
+var B = a.object({
     fullname: a.string(),
     email: a.string().email(),
     phone: a.string(),
@@ -28,13 +28,13 @@ var I = a.object({
     password: a.string().max(14).min(6),
     confirmPassword: a.string().max(14).min(6),
   }),
-  C = "hRAHgQjsaA6tVHr1lk4E",
+  C = "xSFCAXLlZt7q7up289Y9",
   D = ({
     onSubmit: c,
     onError: R,
     onSuccess: g,
     defaultValues: z,
-    onAction: q,
+    onAction: I,
     formProps: N,
   }) => {
     let d = i.useRef();
@@ -52,7 +52,7 @@ var I = a.object({
         onSubmit: S,
         onError: R,
         onSuccess: g,
-        zodSchema: I,
+        zodSchema: B,
         mode: "onSubmit",
         children: (r) =>
           n(p.Container, {
@@ -154,7 +154,7 @@ var I = a.object({
                           isRequired: !0,
                           styles: { root: {} },
                           prefixAdornment: {
-                            icon: e(B, { size: 18, color: "#000000" }),
+                            icon: e(q, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
