@@ -11,15 +11,15 @@ import {
   DatePicker as q,
   PhoneNumberInput as I,
   TextArea as R,
-  Divider as k,
+  Divider as A,
   TwoColumn as g,
-  ThreeColumn as A,
+  ThreeColumn as N,
   Button as y,
   NumberInput as i,
 } from "@lezzform/react";
 import {
   CreditCard as v,
-  User as N,
+  User as k,
   Calendar as w,
   Phone as P,
 } from "lucide-react";
@@ -53,8 +53,8 @@ var T = a.object({
     temperature: a.coerce.number(),
     pain: a.string(),
   }),
-  B = "MsakSh0Okc8Ytt4s52LV",
-  G = ({
+  B = "3KSdeXxfLi2zDhRcyoZ7",
+  M = ({
     onSubmit: c,
     onError: F,
     onSuccess: L,
@@ -155,7 +155,7 @@ var T = a.object({
                           isRequired: !0,
                           styles: { root: {} },
                           prefixAdornment: {
-                            icon: o(N, { size: 18, color: "#000000" }),
+                            icon: o(k, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
@@ -296,7 +296,7 @@ var T = a.object({
                     ],
                   }),
               }),
-              o(k.Solid, { styles: { root: {} }, size: 2, color: "#E8E8E8" }),
+              o(A.Solid, { styles: { root: {} }, size: 2, color: "#E8E8E8" }),
               r(g, {
                 styles: { root: {} },
                 children: [
@@ -427,7 +427,7 @@ var T = a.object({
                   }),
                 ],
               }),
-              r(A, {
+              r(N, {
                 styles: { root: {} },
                 children: [
                   o(l, {
@@ -553,4 +553,4 @@ var T = a.object({
       B,
     );
   };
-export { G as Form };
+export { M as Form };

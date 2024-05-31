@@ -5,7 +5,7 @@ declare const zodFormSchema: z.ZodObject<
   {
     fullname: z.ZodString;
     email: z.ZodString;
-    password: z.ZodEffects<z.ZodString, string, string>;
+    password: z.ZodString;
     confirmPassword: z.ZodString;
     clinicName: z.ZodString;
     clinicEmail: z.ZodString;
