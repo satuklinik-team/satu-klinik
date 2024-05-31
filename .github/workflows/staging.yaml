@@ -31,7 +31,7 @@ jobs:
             backend:
               - 'apps/core-backend/**'
             frontend:
-              - 'apps/web/**'  
+              - 'apps/web/**'
 
   backend:
     needs: changes
@@ -64,6 +64,42 @@ jobs:
           password: ${{ secrets.SSH_PASS }}
           port: 22
           script: |
-           docker compose -f ${{ secrets.PATH}} pull
-           docker compose -f ${{ secrets.PATH }} down
-           docker compose -f ${{ secrets.PATH }} up -d
+           docker compose -f ${{ secrets.PATH }} pull  ${{ secrets.CORE_SERVICE }}
+           docker compose -f ${{ secrets.PATH }} down  ${{ secrets.CORE_SERVICE }}
+           docker compose -f ${{ secrets.PATH }} up -d ${{ secrets.CORE_SERVICE }}
+
+  frontend:
+    needs: changes
+    if: ${{ needs.changes.outputs.frontend == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout SCM
+        uses: actions/checkout@v3
+      
+      - name: Login to Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ secrets.DOCKER_REGISTRY_URL }}
+          username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
+          password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
+
+      - name: Building Web
+        run: |
+          echo ${{ secrets.BACKEND_STAGING_PUBLIC_URL }} > apps/web/.env  
+          docker buildx build -f "${{ secrets.DOCKERFILE_WEB }}" --tag "${{ secrets.DOCKER_IMAGE_WEB_STAGING }}" .
+
+      - name: Push web image into Registry
+        run: docker push ${{ secrets.DOCKER_IMAGE_WEB_STAGING }}
+
+      - name: Redeploy frontend
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SSH_STAGING }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASS }}
+          port: 22
+          script: |
+           docker compose -f ${{ secrets.PATH }} pull  ${{ secrets.WEB_SERVICE }}
+           docker compose -f ${{ secrets.PATH }} down  ${{ secrets.WEB_SERVICE }}
+           docker compose -f ${{ secrets.PATH }} up -d ${{ secrets.WEB_SERVICE }}
