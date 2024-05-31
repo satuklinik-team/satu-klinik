@@ -26,6 +26,9 @@ export class SatusehatRawatJalanService {
 
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
   async handleCron() {
+    // return await this.satusehatJsonService.encounterCompleteJson(
+    //   '392da046-92eb-4401-bd91-c90cdb3f0232',
+    // );
     const clinics = await this.prismaService.clinics.findMany({
       where: {
         clientId: {
@@ -46,9 +49,16 @@ export class SatusehatRawatJalanService {
       },
     });
 
+    const satusehatResponseBodyJsonArray = [];
+
     for (const clinic of clinics) {
-      await this.postSatuSehatForClinic(clinic.id);
+      satusehatResponseBodyJsonArray.push({
+        clinic,
+        clinicResponseBody: await this.postSatuSehatForClinic(clinic.id),
+      });
     }
+
+    return satusehatResponseBodyJsonArray;
   }
 
   async postSatuSehatForClinic(clinicsId: string) {
@@ -96,7 +106,7 @@ export class SatusehatRawatJalanService {
       return { mrid: mr.id };
     });
 
-    const encounterJsonArray = [];
+    const encounterKunjunganBaruJsonArray = [];
 
     for (const { mrid } of mridList) {
       await this.ensurePatientSatuSehatId(mrid);
@@ -104,14 +114,14 @@ export class SatusehatRawatJalanService {
       await this.ensureDoctorSatuSehatId(clinicsId, mrid);
       await this.ensurePharmacySatuSehatId(clinicsId, mrid);
 
-      encounterJsonArray.push(
-        await this.satusehatJsonService.encounterJson(mrid),
+      encounterKunjunganBaruJsonArray.push(
+        await this.satusehatJsonService.encounterKunjunganBaruJson(mrid),
       );
     }
 
-    const encounterResponseBody = await this.postBundle(
+    const encounterKunjunganBaruResponseBody = await this.postBundle(
       clinicsId,
-      encounterJsonArray,
+      encounterKunjunganBaruJsonArray,
     );
 
     for (const [index, { mrid }] of mridList.entries()) {
@@ -120,7 +130,8 @@ export class SatusehatRawatJalanService {
           id: mrid,
         },
         data: {
-          encounterId: encounterResponseBody[index].response.resourceID,
+          encounterId:
+            encounterKunjunganBaruResponseBody[index].response.resourceID,
         },
       });
     }
@@ -183,7 +194,7 @@ export class SatusehatRawatJalanService {
       });
     }
 
-    const medicationDispenseJsonArray = [];
+    const mdEcJsonArray = [];
 
     for (const { mrid } of mridList) {
       const medicationDispenseJson = await this.medicationDispenseBundle(
@@ -191,19 +202,20 @@ export class SatusehatRawatJalanService {
         mrid,
       );
 
-      medicationDispenseJsonArray.push(...medicationDispenseJson);
+      mdEcJsonArray.push(...medicationDispenseJson);
+
+      mdEcJsonArray.push(
+        await this.satusehatJsonService.encounterCompleteJson(mrid),
+      );
     }
 
-    const medicationDispenseResponseBody = await this.postBundle(
-      clinicsId,
-      medicationDispenseJsonArray.map((value: any) => value.requestBody),
-    );
+    const mdEcResponseBody = await this.postBundle(clinicsId, mdEcJsonArray);
 
     return {
-      encounterResponseBody,
+      encounterKunjunganBaruResponseBody,
       ocpResponseBody,
       medicationRequestResponseBody,
-      medicationDispenseResponseBody,
+      mdEcResponseBody,
     };
   }
 
@@ -298,6 +310,11 @@ export class SatusehatRawatJalanService {
       await this.prismaService.patient_prescription.findMany({
         where: {
           patient_medical_recordsId: mrid,
+          Medicine: {
+            kfaCode: {
+              not: null,
+            },
+          },
         },
       });
 
@@ -319,18 +336,20 @@ export class SatusehatRawatJalanService {
       await this.prismaService.patient_prescription.findMany({
         where: {
           patient_medical_recordsId: mrid,
+          Medicine: {
+            kfaCode: {
+              not: null,
+            },
+          },
           bought: true,
         },
       });
 
     const transformedValues = prescriptions.map(async (value) => {
-      return {
-        id: value.id,
-        requestBody: await this.satusehatJsonService.medicationDispenseJson(
-          clinicsId,
-          value.id,
-        ),
-      };
+      return await this.satusehatJsonService.medicationDispenseJson(
+        clinicsId,
+        value.id,
+      );
     });
 
     return await Promise.all(transformedValues);
@@ -636,6 +655,7 @@ export class SatusehatRawatJalanService {
     this.logger.error(error.message);
     await this.prismaService.satuSehatError.create({
       data: {
+        url: error.request._redirectable._currentUrl,
         requestBody: JSON.stringify(requestBody),
         responseBody: JSON.stringify(error.response.data),
       },

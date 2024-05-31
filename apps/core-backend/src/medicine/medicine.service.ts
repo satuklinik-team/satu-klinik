@@ -65,6 +65,7 @@ export class MedicineService {
         discount: dto.discount,
         categoryId: dto.categoryId,
         imageUrl: uploadedImage?.url,
+        kfaCode: dto.kfaCode,
       },
     });
   }

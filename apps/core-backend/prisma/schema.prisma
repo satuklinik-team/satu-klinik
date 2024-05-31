@@ -467,8 +467,9 @@ model MedicineCategory {
 
 model SatuSehatError {
   id           Int      @id @default(autoincrement())
-  requestBody  String
-  responseBody String
+  url String?
+  requestBody  String?
+  responseBody String?
   time         DateTime @default(now())
 }
 

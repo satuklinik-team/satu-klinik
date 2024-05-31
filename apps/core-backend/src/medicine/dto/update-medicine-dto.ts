@@ -18,6 +18,10 @@ export class UpdateMedicineDto {
   @IsNotEmpty()
   title?: string;
 
+  @IsString()
+  @IsNotEmpty()
+  kfaCode?: string;
+
   @IsNumber()
   @Type(() => Number)
   @IsNotEmpty()

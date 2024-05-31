@@ -27,6 +27,7 @@ import { MedicineCategoryModule } from './medicine-category/medicine-category.mo
 import { MinioClientModule } from './minio-client/minio-client.module';
 import { SatusehatJsonModule } from './satusehat-json/satusehat-json.module';
 import { SatusehatRawatJalanModule } from './satusehat-rawat-jalan/satusehat-rawat-jalan.module';
+import { SatusehatAdminModule } from './satusehat-admin/satusehat-admin.module';
 
 @Module({
   imports: [
@@ -54,6 +55,7 @@ import { SatusehatRawatJalanModule } from './satusehat-rawat-jalan/satusehat-raw
     MinioClientModule,
     SatusehatJsonModule,
     SatusehatRawatJalanModule,
+    SatusehatAdminModule,
   ],
   providers: [{ provide: APP_GUARD, useClass: AccessTokenGuard }],
 })

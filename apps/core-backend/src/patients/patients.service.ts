@@ -141,27 +141,32 @@ export class PatientsService {
       OR: [
         {
           nik: {
-            startsWith: dto.search,
+            contains: dto.search,
+            mode: 'insensitive',
           },
         },
         {
           fullname: {
-            startsWith: dto.search,
+            contains: dto.search,
+            mode: 'insensitive',
           },
         },
         {
           norm: {
-            startsWith: dto.search,
+            contains: dto.search,
+            mode: 'insensitive',
           },
         },
         {
           address: {
-            startsWith: dto.search,
+            contains: dto.search,
+            mode: 'insensitive',
           },
         },
         {
           phone: {
-            startsWith: dto.search,
+            contains: dto.search,
+            mode: 'insensitive',
           },
         },
       ],

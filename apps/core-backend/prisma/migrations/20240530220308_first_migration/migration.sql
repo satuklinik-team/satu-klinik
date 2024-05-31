@@ -200,7 +200,7 @@ CREATE TABLE "Users" (
     "nik" TEXT,
     "satuSehatId" TEXT,
     "email" TEXT NOT NULL,
-    "fullname" TEXT NOT NULL,
+    "fullname" TEXT,
     "address" TEXT,
     "phone" TEXT,
     "photo" TEXT DEFAULT '/images/user.png',
@@ -484,6 +484,17 @@ CREATE TABLE "MedicineCategory" (
     "clinicsId" UUID,
 
     CONSTRAINT "MedicineCategory_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "SatuSehatError" (
+    "id" SERIAL NOT NULL,
+    "url" TEXT,
+    "requestBody" TEXT,
+    "responseBody" TEXT,
+    "time" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "SatuSehatError_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable

@@ -86,6 +86,7 @@ export class SatusehatKfaService {
     this.logger.error(error.message);
     await this.prismaService.satuSehatError.create({
       data: {
+        url: error.request._redirectable._currentUrl,
         requestBody: JSON.stringify(requestBody),
         responseBody: JSON.stringify(error.response.data),
       },
