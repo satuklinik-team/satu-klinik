@@ -3,8 +3,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { Check, ChevronsUpDown } from "lucide-react";
-import { useParams } from "next/navigation";
-import { useCallback, useState } from "react";
+import { useParams, useSearchParams } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
@@ -33,6 +33,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { cn } from "@/lib/utils";
 import { useFindIcd9CM } from "@/services/icd/hooks/use-find-icd-9cm";
 import { useFindIcd10 } from "@/services/icd/hooks/use-find-icd-10";
+import { useGetPatient } from "@/services/patient/hooks/use-get-patient";
 import { useCreatePatientAssessment } from "@/services/patient-assessment/hooks/use-create-patient-assessment";
 import type {
   CreatePatientAssessmentDto,
@@ -49,6 +50,10 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
   const queryClient = useQueryClient();
   const { toast } = useToast();
   const { mrId } = useParams();
+  const searchParams = useSearchParams();
+  const patientId = searchParams.get("patientId");
+
+  const { data: patientData } = useGetPatient(String(patientId));
 
   const form = useForm<CreatePatientAssessmentSchema>({
     resolver: zodResolver(createPatientAssessmentSchema),
@@ -101,6 +106,14 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
     },
     [mutateAsync, queryClient, toast],
   );
+
+  useEffect(() => {
+    const defaultSubjective = patientData?.mr[0].vitalSign[0].pain;
+
+    if (defaultSubjective) {
+      form.setValue("subjective", defaultSubjective);
+    }
+  }, [form, patientData?.mr]);
 
   return (
     <>
@@ -161,7 +174,12 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
             control={form.control}
             name="icd10Code"
             render={({ field: { value, onChange } }) => {
-              const options = icd10Data?.data ?? [];
+              console.log(icd10Data?.data);
+              const options = Array.isArray(icd10Data?.data)
+                ? icd10Data.data
+                : [];
+
+              console.log({ options });
 
               const label = options.find(
                 (disease) => disease.code === value,
@@ -183,7 +201,7 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
                           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                         </Button>
                       </PopoverTrigger>
-                      <PopoverContent className="w-[200px] max-h-[300px] overflow-y-auto p-0">
+                      <PopoverContent className="w-full max-h-[300px] overflow-y-auto p-0">
                         <Command shouldFilter={false}>
                           <CommandInput
                             onValueChange={(commandValue) => {
@@ -194,7 +212,7 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
                           />
                           <CommandEmpty>No diseases found.</CommandEmpty>
                           <CommandGroup>
-                            {options.map((item) => (
+                            {options?.map((item) => (
                               <CommandItem
                                 key={item.code}
                                 onSelect={(currentValue) => {

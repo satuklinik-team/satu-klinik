@@ -15,11 +15,11 @@ import {
   Briefcase as L,
   CreditCard as y,
   Building as B,
-  Phone as N,
+  Phone as P,
 } from "lucide-react";
 import * as c from "react";
 import { jsx as o, jsxs as a } from "react/jsx-runtime";
-var f = n.object({
+var N = n.object({
     licenseNumber: n.string(),
     clinicId: n.string(),
     clinicName: n.string(),
@@ -36,31 +36,31 @@ var f = n.object({
     address: n.string(),
     price: n.coerce.number(),
   }),
-  h = "8zM3DcolJeI883mzuhW1",
+  h = "FnaWMuPY3hBP8DT7TFue",
   A = ({
     onSubmit: m,
-    onError: F,
-    onSuccess: z,
-    defaultValues: g,
-    onAction: k,
-    formProps: P,
+    onError: b,
+    onSuccess: g,
+    defaultValues: z,
+    onAction: f,
+    formProps: k,
   }) => {
-    let b = c.useRef();
+    let F = c.useRef();
     c.useEffect(() => {
-      m && (b.current = m);
+      m && (F.current = m);
     }, [m]);
     let R = c.useCallback(async (r, e) => {
-      if (b.current) return b.current(r, e);
+      if (F.current) return F.current(r, e);
     }, []);
     return o(
       p,
       {
         id: h,
-        defaultValues: g,
+        defaultValues: z,
         onSubmit: R,
-        onError: F,
-        onSuccess: z,
-        zodSchema: f,
+        onError: b,
+        onSuccess: g,
+        zodSchema: N,
         mode: "onSubmit",
         children: (r) =>
           a(p.Container, {
@@ -169,7 +169,7 @@ var f = n.object({
                           isRequired: !0,
                           styles: { root: {} },
                           prefixAdornment: {
-                            icon: o(N, { size: 18, color: "#000000" }),
+                            icon: o(P, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),

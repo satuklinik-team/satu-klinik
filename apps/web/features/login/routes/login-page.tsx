@@ -25,6 +25,8 @@ export function LoginPage(): JSX.Element {
 
       toast({ title: "Berhasil Masuk!", variant: "success" });
 
+      localStorage.setItem("user", JSON.stringify(data.user));
+
       if (data.user.roles === "OWNER") {
         router.replace("/members");
       }
@@ -42,6 +44,9 @@ export function LoginPage(): JSX.Element {
       title="Login"
     >
       <LoginForm onSubmit={onSubmit} />
+      <a className="text-sm text-primary -mt-1" href="/auth/register">
+        Belum ada akun? Register disini
+      </a>
     </AuthFormWrapper>
   );
 }

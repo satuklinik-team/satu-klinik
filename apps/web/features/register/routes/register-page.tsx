@@ -31,6 +31,8 @@ export function RegisterPage(): JSX.Element {
 
       toast({ title: "Akun berhasil dibuat!", variant: "success" });
 
+      localStorage.setItem("user", JSON.stringify(data.user));
+
       if (data.user.roles === "OWNER") {
         router.replace("/members");
       }
@@ -48,6 +50,9 @@ export function RegisterPage(): JSX.Element {
       title="Register"
     >
       <RegisterForm onSubmit={onSubmit} />
+      <a className="text-sm text-primary -mt-1" href="/auth/login">
+        Sudah ada akun? Login disini
+      </a>
     </AuthFormWrapper>
   );
 }

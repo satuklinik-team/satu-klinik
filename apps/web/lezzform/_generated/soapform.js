@@ -5,22 +5,22 @@ import {
   FormItem as S,
   FormLabel as p,
   FormControl as h,
-  FormMessage as b,
-  Text as d,
+  FormMessage as d,
+  Text as b,
   Input as L,
-  Button as y,
+  Button as R,
 } from "@lezzform/react";
 import * as e from "react";
 import { jsx as o, jsxs as s } from "react/jsx-runtime";
-var R = a.object({ name: a.string().optional() }),
-  u = "1Wy7YbC0mUUx4yfIFHRv",
+var y = a.object({ name: a.string().optional() }),
+  u = "KFBBCr4d4c8nknP7oKBO",
   w = ({
     onSubmit: m,
     onError: i,
     onSuccess: l,
     defaultValues: f,
     onAction: P,
-    formProps: g,
+    formProps: k,
   }) => {
     let t = e.useRef();
     e.useEffect(() => {
@@ -37,12 +37,12 @@ var R = a.object({ name: a.string().optional() }),
         onSubmit: z,
         onError: i,
         onSuccess: l,
-        zodSchema: R,
+        zodSchema: y,
         mode: "onSubmit",
         children: (n) =>
           s(c.Container, {
             children: [
-              o(d.Heading2, { styles: { root: {} }, children: "SOAPForm" }),
+              o(b.Heading2, { styles: { root: {} }, children: "SOAPForm" }),
               o(F, {
                 control: n.control,
                 name: "name",
@@ -62,11 +62,11 @@ var R = a.object({ name: a.string().optional() }),
                           styles: { root: {} },
                         }),
                       }),
-                      o(b, {}),
+                      o(d, {}),
                     ],
                   }),
               }),
-              o(y, {
+              o(R, {
                 type: "submit",
                 className: "w-full",
                 disabled: n.formState.isSubmitting,

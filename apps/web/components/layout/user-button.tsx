@@ -9,8 +9,10 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { useGetUserData } from "@/hooks/use-get-user-data";
 import { cn } from "@/lib/utils";
 import { useAuthLogout } from "@/services/auth/hooks/use-auth-logout";
+import { formalizeWord, getInitial } from "@/utils";
 
 import { useClinicLayoutStore } from "../../features/clinic/stores/use-clinic-layout-store";
 import { useToast } from "../ui/use-toast";
@@ -26,6 +28,8 @@ export function UserButton({ classNames }: UserButtonProps): JSX.Element {
   const router = useRouter();
   const { mutateAsync } = useAuthLogout();
   const { toast } = useToast();
+
+  const { email, fullname, roles } = useGetUserData();
 
   const onLogout = useCallback(async () => {
     await mutateAsync();
@@ -44,7 +48,7 @@ export function UserButton({ classNames }: UserButtonProps): JSX.Element {
         >
           <Avatar className="w-8 h-8">
             <AvatarImage alt="@shadcn" src="https://github.com/shadcn.png" />
-            <AvatarFallback>CN</AvatarFallback>
+            <AvatarFallback>{getInitial(fullname)}</AvatarFallback>
           </Avatar>
           <div
             className={cn(
@@ -52,8 +56,8 @@ export function UserButton({ classNames }: UserButtonProps): JSX.Element {
               !isLeftBarOpen && "flex sm:hidden",
             )}
           >
-            <p className="text-sm">Nona Perma</p>
-            <p className="text-muted-foreground text-xs">nonaperma@gmail.com</p>
+            <p className="text-sm">{fullname}</p>
+            <p className="text-muted-foreground text-xs">{email}</p>
           </div>
           <Button
             className={cn("p-1 h-fit transition", !isLeftBarOpen && "hidden")}
@@ -66,8 +70,10 @@ export function UserButton({ classNames }: UserButtonProps): JSX.Element {
 
       <PopoverContent className="p-0 py-1">
         <div className="flex flex-col px-4 py-2 border-b">
-          <p className="text-sm">Nona Perma - Owner</p>
-          <p className="text-muted-foreground text-xs">nonaperma@gmail.com</p>
+          <p className="text-sm">
+            {fullname} - {formalizeWord(roles)}
+          </p>
+          <p className="text-muted-foreground text-xs">{email}</p>
         </div>
         <Button
           className="w-full flex justify-start items-center gap-2 px-4 py-2 cursor-pointer hover:bg-muted-foreground/10 transition rounded-none"

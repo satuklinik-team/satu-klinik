@@ -18,3 +18,9 @@ export const getInitial = (string?: string): string => {
 
   return firstLetter + secondLetter;
 };
+
+export const formalizeWord = (string?: string): string => {
+  if (!string) return "";
+
+  return string[0].toUpperCase() + string.slice(1, string.length).toLowerCase();
+};

@@ -53,12 +53,12 @@ var T = a.object({
     temperature: a.coerce.number(),
     pain: a.string(),
   }),
-  B = "3KSdeXxfLi2zDhRcyoZ7",
+  B = "8fz2OXYAoVW3hao5SN8k",
   M = ({
     onSubmit: c,
     onError: F,
-    onSuccess: L,
-    defaultValues: z,
+    onSuccess: z,
+    defaultValues: L,
     onAction: D,
     formProps: x,
   }) => {
@@ -73,10 +73,10 @@ var T = a.object({
       C,
       {
         id: B,
-        defaultValues: z,
+        defaultValues: L,
         onSubmit: S,
         onError: F,
-        onSuccess: L,
+        onSuccess: z,
         zodSchema: T,
         mode: "onSubmit",
         children: (n) =>

@@ -12,8 +12,8 @@ import {
   Divider as S,
   PhoneNumberInput as k,
   TextArea as y,
-  Spacer as B,
-  Button as v,
+  Spacer as v,
+  Button as B,
 } from "@lezzform/react";
 import * as c from "react";
 import { jsx as o, jsxs as a } from "react/jsx-runtime";
@@ -37,14 +37,14 @@ var P = n.object({
     clinicAddress: n.string(),
     clinicCode: n.string(),
   }),
-  C = "oLcnCBIJcDop0MwcxriQ",
+  C = "JcOKagWcuo8LfqelVcGH",
   E = ({
     onSubmit: u,
     onError: b,
     onSuccess: R,
     defaultValues: z,
-    onAction: w,
-    formProps: q,
+    onAction: q,
+    formProps: w,
   }) => {
     let d = c.useRef();
     c.useEffect(() => {
@@ -283,8 +283,8 @@ var P = n.object({
                     ],
                   }),
               }),
-              o(B, { styles: { root: {} }, size: 16 }),
-              o(v, {
+              o(v, { styles: { root: {} }, size: 16 }),
+              o(B, {
                 type: "submit",
                 className: "w-full",
                 disabled: r.formState.isSubmitting,
