@@ -5,22 +5,22 @@ import {
   FormItem as c,
   FormLabel as i,
   FormControl as z,
-  FormMessage as F,
+  FormMessage as d,
   EmailInput as b,
   PasswordInput as R,
-  Spacer as L,
-  Button as w,
+  Spacer as y,
+  Button as L,
 } from "@lezzform/react";
 import * as n from "react";
 import { jsx as r, jsxs as s } from "react/jsx-runtime";
-var P = a.object({ email: a.string().email(), password: a.string() }),
-  d = "8Mrp3Kzx2FTS9SEoukFq",
+var w = a.object({ email: a.string().email(), password: a.string() }),
+  f = "yulEMH53ryZ0lUNdhfy6",
   E = ({
     onSubmit: m,
     onError: p,
-    onSuccess: f,
+    onSuccess: F,
     defaultValues: S,
-    onAction: y,
+    onAction: P,
     formProps: g,
   }) => {
     let t = n.useRef();
@@ -33,12 +33,12 @@ var P = a.object({ email: a.string().email(), password: a.string() }),
     return r(
       u,
       {
-        id: d,
+        id: f,
         defaultValues: S,
         onSubmit: h,
         onError: p,
-        onSuccess: f,
-        zodSchema: P,
+        onSuccess: F,
+        zodSchema: w,
         mode: "onSubmit",
         children: (e) =>
           s(u.Container, {
@@ -63,7 +63,7 @@ var P = a.object({ email: a.string().email(), password: a.string() }),
                           styles: { root: {} },
                         }),
                       }),
-                      r(F, {}),
+                      r(d, {}),
                     ],
                   }),
               }),
@@ -87,12 +87,12 @@ var P = a.object({ email: a.string().email(), password: a.string() }),
                           styles: { root: {} },
                         }),
                       }),
-                      r(F, {}),
+                      r(d, {}),
                     ],
                   }),
               }),
-              r(L, { styles: { root: {} }, size: 16 }),
-              r(w, {
+              r(y, { styles: { root: {} }, size: 16 }),
+              r(L, {
                 type: "submit",
                 className: "w-full",
                 disabled: e.formState.isSubmitting,
@@ -103,7 +103,7 @@ var P = a.object({ email: a.string().email(), password: a.string() }),
             ],
           }),
       },
-      d,
+      f,
     );
   };
 export { E as Form };

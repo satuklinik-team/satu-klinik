@@ -119,9 +119,9 @@ export function ClinicDoctorTable(): JSX.Element {
                     <Link
                       href={`/clinic/${clinicId as string}/mr/${
                         row.mr[0]?.id
-                      }/diagnose`}
+                      }/diagnose?patientId=${row.id}`}
                     >
-                      <TooltipTrigger className="h-min p-2">
+                      <TooltipTrigger className="h-min p-2 hover:bg-muted-foreground/10 rounded-md transition">
                         <Stethoscope size={20} />
                       </TooltipTrigger>
                     </Link>

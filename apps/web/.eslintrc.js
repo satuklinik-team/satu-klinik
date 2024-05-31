@@ -10,5 +10,7 @@ module.exports = {
     "tailwind.config.js",
     "postcss.config.js",
     "components/ui/*",
+    "lezzform/_generated/*",
+    "lezztable/_generated/*",
   ],
 };

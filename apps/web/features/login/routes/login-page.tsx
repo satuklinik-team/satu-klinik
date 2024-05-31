@@ -21,11 +21,19 @@ export function LoginPage(): JSX.Element {
         password: dto.password as string,
       };
 
-      await mutateAsync(formattedData);
+      const data = await mutateAsync(formattedData);
+
       toast({ title: "Berhasil Masuk!", variant: "success" });
-      router.replace("/members");
+
+      if (data.user.roles === "OWNER") {
+        router.replace("/members");
+      }
+
+      if (data.user.roles !== "OWNER") {
+        router.replace(`/clinic/${data.clinic.id}`);
+      }
     },
-    [mutateAsync, router, toast]
+    [mutateAsync, router, toast],
   );
 
   return (

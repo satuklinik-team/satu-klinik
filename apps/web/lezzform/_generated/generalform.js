@@ -36,14 +36,14 @@ var f = n.object({
     address: n.string(),
     price: n.coerce.number(),
   }),
-  h = "3Uvdejiq5Bo4LounINtI",
-  D = ({
+  h = "8zM3DcolJeI883mzuhW1",
+  A = ({
     onSubmit: m,
     onError: F,
-    onSuccess: g,
-    defaultValues: z,
+    onSuccess: z,
+    defaultValues: g,
     onAction: k,
-    formProps: v,
+    formProps: P,
   }) => {
     let b = c.useRef();
     c.useEffect(() => {
@@ -56,10 +56,10 @@ var f = n.object({
       p,
       {
         id: h,
-        defaultValues: z,
+        defaultValues: g,
         onSubmit: R,
         onError: F,
-        onSuccess: g,
+        onSuccess: z,
         zodSchema: f,
         mode: "onSubmit",
         children: (r) =>
@@ -239,4 +239,4 @@ var f = n.object({
       h,
     );
   };
-export { D as Form };
+export { A as Form };

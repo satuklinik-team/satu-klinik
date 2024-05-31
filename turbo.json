@@ -4,7 +4,8 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": [".next/**", "!.next/cache/**"]
+      "outputs": [".next/**", "!.next/cache/**"],
+      "env": ["NEXT_PUBLIC_BACKEND_URL"]
     },
     "lint": {
       "dependsOn": ["^lint"]
@@ -14,6 +15,10 @@
       "persistent": true
     },
     "start:dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "start:migrate:prod": {
       "cache": false,
       "persistent": true
     }

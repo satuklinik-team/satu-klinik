@@ -1,8 +1,8 @@
 import { z as a } from "zod";
 import {
   Lezzform as F,
-  FormField as t,
-  FormItem as m,
+  FormField as m,
+  FormItem as t,
   FormLabel as l,
   FormControl as s,
   FormMessage as u,
@@ -22,7 +22,7 @@ import {
 } from "lucide-react";
 import * as c from "react";
 import { jsx as e, jsxs as n } from "react/jsx-runtime";
-var f = a.object({
+var q = a.object({
     medicalNumber: a.string().optional(),
     nik: a.string(),
     fullname: a.string(),
@@ -41,14 +41,14 @@ var f = a.object({
       ),
     address: a.string(),
   }),
-  z = "u5ifAoyJMPYi7sCvsoAM",
-  K = ({
+  z = "ugWZdUdYGhZ5DDTpqmRG",
+  G = ({
     onSubmit: i,
     onError: h,
     onSuccess: R,
     defaultValues: y,
     onAction: I,
-    formProps: q,
+    formProps: f,
   }) => {
     let d = c.useRef();
     c.useEffect(() => {
@@ -65,17 +65,17 @@ var f = a.object({
         onSubmit: v,
         onError: h,
         onSuccess: R,
-        zodSchema: f,
+        zodSchema: q,
         mode: "onSubmit",
         children: (r) =>
           n(F.Container, {
             children: [
-              e(t, {
+              e(m, {
                 control: r.control,
                 name: "medicalNumber",
                 disabled: !0,
                 render: ({ field: o }) =>
-                  n(m, {
+                  n(t, {
                     children: [
                       e(l, { children: "Nomor Rekam Medis" }),
                       e(s, {
@@ -97,11 +97,11 @@ var f = a.object({
                     ],
                   }),
               }),
-              e(t, {
+              e(m, {
                 control: r.control,
                 name: "nik",
                 render: ({ field: o }) =>
-                  n(m, {
+                  n(t, {
                     children: [
                       e(l, { isRequired: !0, children: "NIK" }),
                       e(s, {
@@ -124,11 +124,11 @@ var f = a.object({
                     ],
                   }),
               }),
-              e(t, {
+              e(m, {
                 control: r.control,
                 name: "fullname",
                 render: ({ field: o }) =>
-                  n(m, {
+                  n(t, {
                     children: [
                       e(l, { isRequired: !0, children: "Nama" }),
                       e(s, {
@@ -151,11 +151,11 @@ var f = a.object({
                     ],
                   }),
               }),
-              e(t, {
+              e(m, {
                 control: r.control,
                 name: "sex",
                 render: ({ field: o }) =>
-                  n(m, {
+                  n(t, {
                     children: [
                       e(l, { isRequired: !0, children: "Jenis Kelamin" }),
                       e(s, {
@@ -177,11 +177,11 @@ var f = a.object({
                     ],
                   }),
               }),
-              e(t, {
+              e(m, {
                 control: r.control,
                 name: "blood",
                 render: ({ field: o }) =>
-                  n(m, {
+                  n(t, {
                     children: [
                       e(l, { isRequired: !0, children: "Golongan Darah" }),
                       e(s, {
@@ -206,11 +206,11 @@ var f = a.object({
                     ],
                   }),
               }),
-              e(t, {
+              e(m, {
                 control: r.control,
                 name: "birthAt",
                 render: ({ field: o }) =>
-                  n(m, {
+                  n(t, {
                     children: [
                       e(l, { isRequired: !0, children: "Tanggal Lahir" }),
                       e(s, {
@@ -233,11 +233,11 @@ var f = a.object({
                     ],
                   }),
               }),
-              e(t, {
+              e(m, {
                 control: r.control,
                 name: "phone",
                 render: ({ field: o }) =>
-                  n(m, {
+                  n(t, {
                     children: [
                       e(l, { isRequired: !0, children: "Nomor Telepon" }),
                       e(s, {
@@ -260,11 +260,11 @@ var f = a.object({
                     ],
                   }),
               }),
-              e(t, {
+              e(m, {
                 control: r.control,
                 name: "address",
                 render: ({ field: o }) =>
-                  n(m, {
+                  n(t, {
                     children: [
                       e(l, { isRequired: !0, children: "Alamat" }),
                       e(s, {
@@ -309,4 +309,4 @@ var f = a.object({
       z,
     );
   };
-export { K as Form };
+export { G as Form };

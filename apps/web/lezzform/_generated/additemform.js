@@ -1,80 +1,80 @@
 import { z as t } from "zod";
 import {
-  Lezzform as d,
+  Lezzform as F,
   FormField as a,
   FormItem as m,
   FormLabel as l,
   FormControl as u,
-  FormMessage as c,
-  Attachment as v,
+  FormMessage as s,
+  Attachment as R,
   Dropdown as L,
-  Input as P,
-  NumberInput as h,
-  TwoColumn as k,
-  Button as z,
+  Input as v,
+  NumberInput as d,
+  TwoColumn as I,
+  Button as h,
 } from "@lezzform/react";
-import { ChevronDown as w } from "lucide-react";
-import * as s from "react";
+import { ChevronDown as P } from "lucide-react";
+import * as c from "react";
 import { jsx as e, jsxs as n } from "react/jsx-runtime";
-var B = t.object({
-    "attachment-1713877181989": t.string(),
-    category: t.string(),
+var k = t.object({
+    image: t.string(),
+    categoryId: t.string(),
     title: t.string(),
     price: t.coerce.number().optional(),
-    quantity: t.coerce.number(),
+    stock: t.coerce.number(),
     discount: t.coerce.number().optional(),
   }),
-  C = "ZZsO9eU2L3SIxInp1Tzx",
-  T = ({
-    onSubmit: b,
-    onError: g,
-    onSuccess: y,
-    defaultValues: S,
-    onAction: i,
-    formProps: I,
+  g = "mlaWKpLoB8PgH2OzIcqf",
+  E = ({
+    onSubmit: i,
+    onError: z,
+    onSuccess: C,
+    defaultValues: y,
+    onAction: w,
+    formProps: B,
   }) => {
-    let p = s.useRef();
-    s.useEffect(() => {
-      b && (p.current = b);
-    }, [b]);
-    let R = s.useCallback(async (r, o) => {
-      if (p.current) return p.current(r, o);
+    let b = c.useRef();
+    c.useEffect(() => {
+      i && (b.current = i);
+    }, [i]);
+    let S = c.useCallback(async (r, o) => {
+      if (b.current) return b.current(r, o);
     }, []);
     return e(
-      d,
+      F,
       {
-        id: C,
-        defaultValues: S,
-        onSubmit: R,
-        onError: g,
-        onSuccess: y,
-        zodSchema: B,
+        id: g,
+        defaultValues: y,
+        onSubmit: S,
+        onError: z,
+        onSuccess: C,
+        zodSchema: k,
         mode: "onSubmit",
         children: (r) =>
-          n(d.Container, {
+          n(F.Container, {
             children: [
               e(a, {
                 control: r.control,
-                name: "attachment-1713877181989",
+                name: "image",
                 render: ({ field: o }) =>
                   n(m, {
                     children: [
-                      e(l, { isRequired: !0, children: "Main Picture" }),
+                      e(l, { isRequired: !0, children: "Image" }),
                       e(u, {
-                        children: e(v, {
-                          label: "Main Picture",
+                        children: e(R, {
+                          label: "Image",
                           name: o.name,
                           value: o.value,
-                          onChange: (F) => {
-                            o.onChange(F), r.clearErrors(o.name);
+                          onChange: (p) => {
+                            o.onChange(p), r.clearErrors(o.name);
                           },
                           disabled: o.disabled,
                           placeholder: "",
                           acceptedFormats: ["image/jpeg", "image/png"],
                           maxSize: 2048,
                           headers: [],
-                          onError: (F) => {
-                            r.setError(o.name, { message: F });
+                          onError: (p) => {
+                            r.setError(o.name, { message: p });
                           },
                           path: { value: "" },
                           url: "",
@@ -82,13 +82,13 @@ var B = t.object({
                           styles: { root: {} },
                         }),
                       }),
-                      e(c, {}),
+                      e(s, {}),
                     ],
                   }),
               }),
               e(a, {
                 control: r.control,
-                name: "category",
+                name: "categoryId",
                 render: ({ field: o }) =>
                   n(m, {
                     children: [
@@ -99,6 +99,7 @@ var B = t.object({
                           name: o.name,
                           value: o.value,
                           onChange: o.onChange,
+                          placeholder: "Category",
                           items: [
                             { label: "Option 1", value: "option1" },
                             { label: "Option 2", value: "option2" },
@@ -108,11 +109,11 @@ var B = t.object({
                           disabled: o.disabled,
                           styles: { root: {} },
                           suffixAdornment: {
-                            icon: e(w, { size: 18, color: "#000000" }),
+                            icon: e(P, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
-                      e(c, {}),
+                      e(s, {}),
                     ],
                   }),
               }),
@@ -124,7 +125,7 @@ var B = t.object({
                     children: [
                       e(l, { isRequired: !0, children: "Title" }),
                       e(u, {
-                        children: e(P, {
+                        children: e(v, {
                           label: "Title",
                           name: o.name,
                           value: o.value ?? "",
@@ -136,7 +137,7 @@ var B = t.object({
                           styles: { root: {} },
                         }),
                       }),
-                      e(c, {}),
+                      e(s, {}),
                     ],
                   }),
               }),
@@ -148,7 +149,7 @@ var B = t.object({
                     children: [
                       e(l, { children: "Price" }),
                       e(u, {
-                        children: e(h, {
+                        children: e(d, {
                           label: "Price",
                           name: o.name,
                           value: o.value ?? 0,
@@ -159,19 +160,19 @@ var B = t.object({
                           styles: { root: {} },
                         }),
                       }),
-                      e(c, {}),
+                      e(s, {}),
                     ],
                   }),
               }),
               e(a, {
                 control: r.control,
-                name: "quantity",
+                name: "stock",
                 render: ({ field: o }) =>
                   n(m, {
                     children: [
                       e(l, { isRequired: !0, children: "Quantity" }),
                       e(u, {
-                        children: e(h, {
+                        children: e(d, {
                           label: "Quantity",
                           name: o.name,
                           value: o.value ?? 0,
@@ -183,7 +184,7 @@ var B = t.object({
                           styles: { root: {} },
                         }),
                       }),
-                      e(c, {}),
+                      e(s, {}),
                     ],
                   }),
               }),
@@ -195,7 +196,7 @@ var B = t.object({
                     children: [
                       e(l, { children: "Discount" }),
                       e(u, {
-                        children: e(h, {
+                        children: e(d, {
                           label: "Discount",
                           name: o.name,
                           value: o.value ?? 0,
@@ -206,39 +207,33 @@ var B = t.object({
                           styles: { root: {} },
                         }),
                       }),
-                      e(c, {}),
+                      e(s, {}),
                     ],
                   }),
               }),
-              n(k, {
+              n(I, {
                 styles: { root: {} },
                 children: [
-                  e(z, {
-                    type: "button",
+                  e(h, {
+                    type: "reset",
                     className: "w-full",
-                    onClick: () => {
-                      i?.["button-1713876963119"] &&
-                        i?.["button-1713876963119"](r);
-                    },
-                    styles: { root: { backgroundColor: "#2E584F" } },
-                    children: "Submit",
-                  }),
-                  e(z, {
-                    type: "button",
-                    className: "w-full",
-                    onClick: () => {
-                      i?.["button-1713876964678"] &&
-                        i?.["button-1713876964678"](r);
-                    },
                     styles: { root: { backgroundColor: "rgb(239, 68, 68)" } },
                     children: "Reset",
+                  }),
+                  e(h, {
+                    type: "submit",
+                    className: "w-full",
+                    disabled: r.formState.isSubmitting,
+                    isLoading: r.formState.isSubmitting,
+                    styles: { root: { backgroundColor: "#2E584F" } },
+                    children: "Submit",
                   }),
                 ],
               }),
             ],
           }),
       },
-      C,
+      g,
     );
   };
-export { T as Form };
+export { E as Form };

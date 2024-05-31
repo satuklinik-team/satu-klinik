@@ -6,6 +6,7 @@ declare const zodFormSchema: z.ZodObject<
     fullname: z.ZodString;
     email: z.ZodString;
     phone: z.ZodString;
+    nik: z.ZodString;
     address: z.ZodString;
     role: z.ZodString;
     password: z.ZodString;
@@ -20,6 +21,7 @@ declare const zodFormSchema: z.ZodObject<
     password?: string;
     fullname?: string;
     phone?: string;
+    nik?: string;
     confirmPassword?: string;
   },
   {
@@ -29,6 +31,7 @@ declare const zodFormSchema: z.ZodObject<
     password?: string;
     fullname?: string;
     phone?: string;
+    nik?: string;
     confirmPassword?: string;
   }
 >;

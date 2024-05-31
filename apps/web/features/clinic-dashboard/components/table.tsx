@@ -2,6 +2,7 @@
 
 import { MessageCircle } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
 
 import { BaseTable } from "@/components/shared/table/base-table";
 import { Cell } from "@/components/shared/table/cell";
@@ -11,10 +12,22 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useFindUser } from "@/services/user/hooks/use-find-user";
 import type { UserEntity } from "@/services/user/types/entity";
+import type { Pagination } from "@/types";
 import { getWhatsappUrl } from "@/utils";
 
 export function ClinicDashboardUsersTable(): JSX.Element {
+  const [pagination, setPagination] = useState<Pagination>({
+    skip: 0,
+    limit: 20,
+  });
+
+  const { data, isLoading } = useFindUser({
+    ...pagination,
+    count: true,
+  });
+
   return (
     <BaseTable<UserEntity>
       columns={[
@@ -52,21 +65,12 @@ export function ClinicDashboardUsersTable(): JSX.Element {
           ),
         },
       ]}
-      // pagination={{
-      //   skip: 0,
-      //   limit: 20,
-      // }}
-      rows={[
-        {
-          id: "123121ee",
-          fullname: "Admin Demo",
-          email: "admin@demo.id",
-          phone: "082228883006",
-          role: "Admin",
-          status: "Active",
-        },
-      ]}
-      // totalRows={80}
+      isLoading={isLoading}
+      onPaginationChange={(currentPagination) => {
+        setPagination(currentPagination);
+      }}
+      rows={data?.data ?? []}
+      totalRows={data?.count}
     />
   );
 }

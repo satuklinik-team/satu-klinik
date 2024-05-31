@@ -30,7 +30,7 @@ export function UserButton({ classNames }: UserButtonProps): JSX.Element {
   const onLogout = useCallback(async () => {
     await mutateAsync();
     toast({ title: "Berhasil logout!", variant: "success" });
-    router.replace("/auth/register");
+    router.replace("/auth/login");
   }, [mutateAsync, router, toast]);
 
   return (
@@ -39,7 +39,7 @@ export function UserButton({ classNames }: UserButtonProps): JSX.Element {
         <div
           className={cn(
             "flex flex-row items-center gap-3 w-full px-5 py-2.5 border-t hover:bg-muted-foreground/10 transition",
-            classNames?.container
+            classNames?.container,
           )}
         >
           <Avatar className="w-8 h-8">
@@ -49,7 +49,7 @@ export function UserButton({ classNames }: UserButtonProps): JSX.Element {
           <div
             className={cn(
               "flex flex-col transition",
-              !isLeftBarOpen && "flex sm:hidden"
+              !isLeftBarOpen && "flex sm:hidden",
             )}
           >
             <p className="text-sm">Nona Perma</p>

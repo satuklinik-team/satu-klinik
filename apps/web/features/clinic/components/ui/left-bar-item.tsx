@@ -1,14 +1,16 @@
-import { cn } from "@/lib/utils";
-import { HTMLAttributes } from "react";
-import { LeftBarItem as ILeftBarItem } from "../../types";
 import Link from "next/link";
+import type { HTMLAttributes } from "react";
+
+import { Badge } from "@/components/ui/badge";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
+
+import { LeftBarItem as ILeftBarItem } from "../../types";
 
 interface LeftBarItemProps
   extends HTMLAttributes<HTMLDivElement>,
@@ -20,7 +22,6 @@ interface LeftBarItemProps
 export function LeftBarItem({
   isActive = false,
   isOpen = false,
-  children,
   className,
   icon,
   text,
@@ -38,14 +39,14 @@ export function LeftBarItem({
               <div
                 className={cn(
                   "relative flex flex-row justify-center items-center gap-3 px-2.5 py-2.5 cursor-pointer rounded-lg hover:bg-muted-foreground/10 transition",
-                  isActive && "bg-primary/10"
+                  isActive && "bg-primary/10",
                 )}
                 {...rest}
               >
                 <Icon
                   className={cn(
                     "text-foreground/90",
-                    isActive && "text-primary"
+                    isActive && "text-primary",
                   )}
                   size={20}
                 />
@@ -54,7 +55,7 @@ export function LeftBarItem({
                     "flex-1 text-sm text-foreground/90",
                     isActive && "text-primary",
                     !isOpen &&
-                      "block sm:hidden md:hidden lg:hidden xl:hidden 2xl:hidden"
+                      "block sm:hidden md:hidden lg:hidden xl:hidden 2xl:hidden",
                   )}
                 >
                   {text}
@@ -64,7 +65,7 @@ export function LeftBarItem({
                   className={cn(
                     "text-xs font-normal flex justify-center items-center w-5 h-5 p-0 rounded-full",
                     !isOpen &&
-                      "flex sm:hidden md:hidden lg:hidden xl:hidden 2xl:hidden"
+                      "flex sm:hidden md:hidden lg:hidden xl:hidden 2xl:hidden",
                   )}
                 >
                   2
@@ -73,7 +74,7 @@ export function LeftBarItem({
                   variant="destructive"
                   className={cn(
                     "absolute top-1.5 right-3 w-2 h-2 p-0 rounded-full hidden",
-                    !isOpen && "hidden sm:block"
+                    !isOpen && "hidden sm:block",
                   )}
                 />
               </div>
