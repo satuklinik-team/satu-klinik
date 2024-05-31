@@ -28,6 +28,7 @@ import { MinioClientModule } from './minio-client/minio-client.module';
 import { SatusehatJsonModule } from './satusehat-json/satusehat-json.module';
 import { SatusehatRawatJalanModule } from './satusehat-rawat-jalan/satusehat-rawat-jalan.module';
 import { SatusehatAdminModule } from './satusehat-admin/satusehat-admin.module';
+import { TasksModule } from './tasks-status/tasks-status.module';
 
 @Module({
   imports: [
@@ -56,6 +57,7 @@ import { SatusehatAdminModule } from './satusehat-admin/satusehat-admin.module';
     SatusehatJsonModule,
     SatusehatRawatJalanModule,
     SatusehatAdminModule,
+    TasksModule,
   ],
   providers: [{ provide: APP_GUARD, useClass: AccessTokenGuard }],
 })
