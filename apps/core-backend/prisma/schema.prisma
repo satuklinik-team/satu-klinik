@@ -264,6 +264,7 @@ model Clinics {
   organizationId      String?
   locationSatuSehatId String?
   locationName        String?
+  completeCreds       Boolean             @default(false)
   accountsId          String?             @db.Uuid
   Accounts            Accounts?           @relation(fields: [accountsId], references: [id])
   Notifications       Notifications[]
@@ -467,7 +468,7 @@ model MedicineCategory {
 
 model SatuSehatError {
   id           Int      @id @default(autoincrement())
-  url String?
+  url          String?
   requestBody  String?
   responseBody String?
   time         DateTime @default(now())
