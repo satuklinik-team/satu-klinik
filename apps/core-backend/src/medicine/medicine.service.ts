@@ -112,6 +112,7 @@ export class MedicineService {
         },
         title: {
           contains: dto.search,
+          mode: 'insensitive',
         },
       };
     }

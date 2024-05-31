@@ -120,7 +120,7 @@ export class PatientsService {
     dto: FindAllPatientsDto,
   ): Prisma.PatientFindManyArgs['where'] {
     if (!dto.search) {
-      if (dto.type == FindAllPatientTypes.ALL) {
+      if (dto.type === FindAllPatientTypes.ALL) {
         return {};
       }
       const now = new Date();
