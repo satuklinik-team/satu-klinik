@@ -26,9 +26,6 @@ export class SatusehatRawatJalanService {
 
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
   async handleCron() {
-    // return await this.satusehatJsonService.encounterCompleteJson(
-    //   '392da046-92eb-4401-bd91-c90cdb3f0232',
-    // );
     const clinics = await this.prismaService.clinics.findMany({
       where: {
         clientId: {
