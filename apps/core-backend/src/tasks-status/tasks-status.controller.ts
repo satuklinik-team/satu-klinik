@@ -19,4 +19,13 @@ export class TasksController {
       role: tokenData.role,
     });
   }
+
+  @Get('notification')
+  @Roles(Role.DOCTOR, Role.PHARMACY)
+  getNotification(@TokenData() tokenData: JwtPayload) {
+    return this.tasksService.getNotification({
+      clinicsId: tokenData.clinicsId,
+      role: tokenData.role,
+    });
+  }
 }
