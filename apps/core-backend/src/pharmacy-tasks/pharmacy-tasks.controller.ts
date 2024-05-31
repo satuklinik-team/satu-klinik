@@ -16,6 +16,7 @@ import { Role } from '@prisma/client';
 import { Roles } from 'src/utils/decorators/roles.decorator';
 import { FindPharmacyTaskByIdDto } from './dto/find-pharmacy-task-by-id.dto';
 import { CompleteTaskDto } from './dto/complete-task.dto';
+import { PractitionerOnly } from 'src/utils/decorators/practitioner-only.decorator';
 
 @Controller('pharmacy-tasks')
 export class PharmacyTasksController {
@@ -46,6 +47,7 @@ export class PharmacyTasksController {
   }
 
   @Post(':id')
+  @PractitionerOnly()
   @Roles(Role.PHARMACY)
   async completeTask(
     @Param('id', ParseIntPipe) id: number,
