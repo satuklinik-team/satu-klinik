@@ -18,8 +18,8 @@ var L = a.object({
     username: a.string(),
     password: a.string(),
   }),
-  z = "XLuXfCKhlBFuDMAvrect",
-  P = ({
+  z = "4AB5Al7OxCUwPaiNNRQX",
+  y = ({
     onSubmit: i,
     onError: b,
     onSuccess: h,
@@ -157,4 +157,4 @@ var L = a.object({
       z,
     );
   };
-export { P as Form };
+export { y as Form };

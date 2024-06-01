@@ -14,6 +14,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useGetMedicine } from "@/services/medicine/hooks/use-get-medicine";
+import { DEFAULT_MEDICINE_URL } from "@/utils";
 
 export function ClinicItemDetailPage(): JSX.Element | undefined {
   const pathname = usePathname();
@@ -31,7 +32,7 @@ export function ClinicItemDetailPage(): JSX.Element | undefined {
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink href={pathname.replace(`/${medicineData?.id}`, "")}>
+            <BreadcrumbLink href={pathname.replace(`/${medicineData.id}`, "")}>
               Data Inventori
             </BreadcrumbLink>
           </BreadcrumbItem>
@@ -44,15 +45,15 @@ export function ClinicItemDetailPage(): JSX.Element | undefined {
 
       <div className="flex flex-col sm:flex-col md:flex-row lg:flex-row xl:flex-row 2xl:flex-row items-start sm:items-start md:items-center lg:items-center xl:items-center 2xl:items-center gap-4">
         <img
-          alt={medicineData?.title}
-          className="w-full sm:w-full md:w-96 lg:w-96 xl:w-96 2xl:w-96 h-96 bg-muted-foreground/20 rounded-xl"
+          alt={medicineData.title}
+          className="w-full sm:w-full md:w-96 lg:w-96 xl:w-96 2xl:w-96 h-96 bg-muted-foreground/20 rounded-xl object-cover"
           height={400}
-          src={medicineData?.imageUrl}
+          src={medicineData.imageUrl ?? DEFAULT_MEDICINE_URL}
           width={400}
         />
         <div className="flex flex-col gap-2 w-full sm:w-full md:w-fit lg:w-fit xl:w-fit 2xl:w-fit">
           <p className="text-2xl font-semibold capitalize">
-            {medicineData?.title}
+            {medicineData.title}
           </p>
           <p className="font-light text-sm">amount of fee</p>
           <div className="flex flex-row items-center gap-2">
@@ -66,7 +67,7 @@ export function ClinicItemDetailPage(): JSX.Element | undefined {
               ))}
             </div>
             <span className="text-[13px] font-normal">
-              {medicineData?.stock} | 213 Reviews | 1,000+ orders
+              {medicineData.stock} | 213 Reviews | 1,000+ orders
             </span>
           </div>
           <Separator className="w-full sm:w-full md:w-96 lg:w-96 xl:w-96 2xl:w-96" />
@@ -75,10 +76,10 @@ export function ClinicItemDetailPage(): JSX.Element | undefined {
               IDR {discountPrice.toLocaleString()}
             </p>
             <p className="text-[10px] font-thin line-through">
-              IDR {medicineData?.price.toLocaleString()}
+              IDR {medicineData.price.toLocaleString()}
             </p>
             <Badge className="text-xs" variant="destructive">
-              {medicineData?.discount}% off
+              {medicineData.discount}% off
             </Badge>
           </div>
           <p className="text-primary text-xs font-semibold">Free Shipping</p>

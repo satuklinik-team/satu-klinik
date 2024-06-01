@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import type { MedicineEntity } from "@/services/medicine/types/entity";
+import { DEFAULT_MEDICINE_URL } from "@/utils";
 
 type ClinicItemCardProps = Omit<HTMLAttributes<HTMLDivElement>, "id"> &
   MedicineEntity & {
@@ -49,7 +50,7 @@ export function ClinicItemCard({
         alt={title}
         className="w-full h-36 bg-muted-foreground/20 rounded-t-md"
         height={144}
-        src={imageUrl}
+        src={imageUrl ?? DEFAULT_MEDICINE_URL}
         width={200}
       />
       <div className="flex flex-col gap-3 p-4">

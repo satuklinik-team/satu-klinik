@@ -8,17 +8,17 @@ import {
   FormMessage as u,
   Input as b,
   EmailInput as L,
-  TextArea as v,
-  Dropdown as w,
+  TextArea as w,
+  Dropdown as v,
   PasswordInput as F,
   Spacer as y,
   TwoColumn as P,
   Button as h,
 } from "@lezzform/react";
-import { UserRound as k, Mail as A, CreditCard as B } from "lucide-react";
+import { UserRound as k, Mail as A, CreditCard as I } from "lucide-react";
 import * as i from "react";
 import { jsx as e, jsxs as n } from "react/jsx-runtime";
-var I = a.object({
+var B = a.object({
     fullname: a.string(),
     email: a.string().email(),
     phone: a.string(),
@@ -28,7 +28,7 @@ var I = a.object({
     password: a.string().max(14).min(6),
     confirmPassword: a.string().max(14).min(6),
   }),
-  C = "08ebBXeUJkyjk8mrz4fu",
+  C = "ICrV9rkewAL3kiTFWYZP",
   D = ({
     onSubmit: c,
     onError: R,
@@ -52,7 +52,7 @@ var I = a.object({
         onSubmit: S,
         onError: R,
         onSuccess: g,
-        zodSchema: I,
+        zodSchema: B,
         mode: "onSubmit",
         children: (r) =>
           n(p.Container, {
@@ -154,7 +154,7 @@ var I = a.object({
                           isRequired: !0,
                           styles: { root: {} },
                           prefixAdornment: {
-                            icon: e(B, { size: 18, color: "#000000" }),
+                            icon: e(I, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
@@ -170,7 +170,7 @@ var I = a.object({
                     children: [
                       e(t, { isRequired: !0, children: "Alamat" }),
                       e(s, {
-                        children: e(v, {
+                        children: e(w, {
                           label: "Alamat",
                           name: o.name,
                           value: o.value ?? "",
@@ -194,7 +194,7 @@ var I = a.object({
                     children: [
                       e(t, { isRequired: !0, children: "Role" }),
                       e(s, {
-                        children: e(w.List, {
+                        children: e(v.List, {
                           label: "Role",
                           name: o.name,
                           value: o.value,
@@ -268,18 +268,18 @@ var I = a.object({
                 styles: { root: {} },
                 children: [
                   e(h, {
+                    type: "reset",
+                    className: "w-full",
+                    styles: { root: { backgroundColor: "rgb(239, 68, 68)" } },
+                    children: "Reset",
+                  }),
+                  e(h, {
                     type: "submit",
                     className: "w-full",
                     disabled: r.formState.isSubmitting,
                     isLoading: r.formState.isSubmitting,
                     styles: { root: { backgroundColor: "#2E584F" } },
                     children: "Submit",
-                  }),
-                  e(h, {
-                    type: "reset",
-                    className: "w-full",
-                    styles: { root: { backgroundColor: "rgb(239, 68, 68)" } },
-                    children: "Reset",
                   }),
                 ],
               }),

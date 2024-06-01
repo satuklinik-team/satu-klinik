@@ -8,7 +8,7 @@ import {
   FormMessage as u,
   Input as b,
   Dropdown as p,
-  DatePicker as q,
+  DatePicker as S,
   PhoneNumberInput as I,
   TextArea as R,
   Divider as A,
@@ -53,12 +53,12 @@ var T = a.object({
     temperature: a.coerce.number(),
     pain: a.string(),
   }),
-  B = "8fz2OXYAoVW3hao5SN8k",
-  M = ({
+  B = "RtSCn7H1gs45NjhQwjGM",
+  O = ({
     onSubmit: c,
     onError: F,
-    onSuccess: z,
-    defaultValues: L,
+    onSuccess: L,
+    defaultValues: z,
     onAction: D,
     formProps: x,
   }) => {
@@ -66,19 +66,19 @@ var T = a.object({
     d.useEffect(() => {
       c && (h.current = c);
     }, [c]);
-    let S = d.useCallback(async (n, e) => {
+    let q = d.useCallback(async (n, e) => {
       if (h.current) return h.current(n, e);
     }, []);
     return o(
       C,
       {
         id: B,
-        defaultValues: L,
-        onSubmit: S,
+        defaultValues: z,
+        onSubmit: q,
         onError: F,
-        onSuccess: z,
+        onSuccess: L,
         zodSchema: T,
-        mode: "onSubmit",
+        mode: "onBlur",
         children: (n) =>
           r(C.Container, {
             children: [
@@ -226,7 +226,7 @@ var T = a.object({
                     children: [
                       o(m, { isRequired: !0, children: "Tanggal Lahir" }),
                       o(s, {
-                        children: o(q, {
+                        children: o(S, {
                           label: "Tanggal Lahir",
                           name: e.name,
                           value: e.value,
@@ -553,4 +553,4 @@ var T = a.object({
       B,
     );
   };
-export { M as Form };
+export { O as Form };

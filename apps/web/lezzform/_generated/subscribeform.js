@@ -12,12 +12,12 @@ import {
   Divider as S,
   PhoneNumberInput as k,
   TextArea as y,
-  Spacer as v,
-  Button as B,
+  Spacer as P,
+  Button as v,
 } from "@lezzform/react";
 import * as c from "react";
 import { jsx as o, jsxs as a } from "react/jsx-runtime";
-var P = n.object({
+var B = n.object({
     fullname: n.string(),
     email: n.string().email(),
     password: n.string().max(14).min(6),
@@ -37,12 +37,12 @@ var P = n.object({
     clinicAddress: n.string(),
     clinicCode: n.string(),
   }),
-  C = "JcOKagWcuo8LfqelVcGH",
+  C = "lSLhgLr1UjCtzdnTP7oe",
   E = ({
     onSubmit: u,
     onError: b,
-    onSuccess: R,
-    defaultValues: z,
+    onSuccess: z,
+    defaultValues: R,
     onAction: q,
     formProps: w,
   }) => {
@@ -57,11 +57,11 @@ var P = n.object({
       h,
       {
         id: C,
-        defaultValues: z,
+        defaultValues: R,
         onSubmit: L,
         onError: b,
-        onSuccess: R,
-        zodSchema: P,
+        onSuccess: z,
+        zodSchema: B,
         mode: "onSubmit",
         children: (r) =>
           a(h.Container, {
@@ -283,8 +283,8 @@ var P = n.object({
                     ],
                   }),
               }),
-              o(v, { styles: { root: {} }, size: 16 }),
-              o(B, {
+              o(P, { styles: { root: {} }, size: 16 }),
+              o(v, {
                 type: "submit",
                 className: "w-full",
                 disabled: r.formState.isSubmitting,

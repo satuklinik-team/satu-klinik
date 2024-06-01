@@ -7,19 +7,19 @@ import {
   FormControl as i,
   FormMessage as u,
   Input as d,
-  PhoneNumberInput as C,
-  NumberInput as S,
+  PhoneNumberInput as S,
+  NumberInput as C,
   Button as I,
 } from "@lezzform/react";
 import {
   Briefcase as L,
   CreditCard as y,
   Building as B,
-  Phone as P,
+  Phone as N,
 } from "lucide-react";
 import * as c from "react";
 import { jsx as o, jsxs as a } from "react/jsx-runtime";
-var N = n.object({
+var f = n.object({
     licenseNumber: n.string(),
     clinicId: n.string(),
     clinicName: n.string(),
@@ -36,21 +36,21 @@ var N = n.object({
     address: n.string(),
     price: n.coerce.number(),
   }),
-  h = "FnaWMuPY3hBP8DT7TFue",
-  A = ({
+  h = "vUzqmgc1Hr9xjJSjRwuh",
+  D = ({
     onSubmit: m,
-    onError: b,
+    onError: F,
     onSuccess: g,
     defaultValues: z,
-    onAction: f,
-    formProps: k,
+    onAction: k,
+    formProps: v,
   }) => {
-    let F = c.useRef();
+    let b = c.useRef();
     c.useEffect(() => {
-      m && (F.current = m);
+      m && (b.current = m);
     }, [m]);
     let R = c.useCallback(async (r, e) => {
-      if (F.current) return F.current(r, e);
+      if (b.current) return b.current(r, e);
     }, []);
     return o(
       p,
@@ -58,9 +58,9 @@ var N = n.object({
         id: h,
         defaultValues: z,
         onSubmit: R,
-        onError: b,
+        onError: F,
         onSuccess: g,
-        zodSchema: N,
+        zodSchema: f,
         mode: "onSubmit",
         children: (r) =>
           a(p.Container, {
@@ -158,7 +158,7 @@ var N = n.object({
                     children: [
                       o(l, { isRequired: !0, children: "Nomor Telepon" }),
                       o(i, {
-                        children: o(C, {
+                        children: o(S, {
                           label: "Nomor Telepon",
                           name: e.name,
                           value: e.value ?? "",
@@ -169,7 +169,7 @@ var N = n.object({
                           isRequired: !0,
                           styles: { root: {} },
                           prefixAdornment: {
-                            icon: o(P, { size: 18, color: "#000000" }),
+                            icon: o(N, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
@@ -209,7 +209,7 @@ var N = n.object({
                     children: [
                       o(l, { isRequired: !0, children: "Harga Dasar" }),
                       o(i, {
-                        children: o(S, {
+                        children: o(C, {
                           label: "Harga Dasar",
                           name: e.name,
                           value: e.value ?? 0,
@@ -239,4 +239,4 @@ var N = n.object({
       h,
     );
   };
-export { A as Form };
+export { D as Form };

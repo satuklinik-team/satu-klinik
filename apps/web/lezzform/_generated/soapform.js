@@ -13,14 +13,14 @@ import {
 import * as e from "react";
 import { jsx as o, jsxs as s } from "react/jsx-runtime";
 var y = a.object({ name: a.string().optional() }),
-  u = "KFBBCr4d4c8nknP7oKBO",
-  w = ({
+  u = "XVBasW3FPJDVtpuHX4TK",
+  C = ({
     onSubmit: m,
     onError: i,
     onSuccess: l,
     defaultValues: f,
     onAction: P,
-    formProps: k,
+    formProps: g,
   }) => {
     let t = e.useRef();
     e.useEffect(() => {
@@ -80,4 +80,4 @@ var y = a.object({ name: a.string().optional() }),
       u,
     );
   };
-export { w as Form };
+export { C as Form };

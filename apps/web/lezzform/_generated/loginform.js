@@ -4,8 +4,8 @@ import {
   FormField as l,
   FormItem as c,
   FormLabel as i,
-  FormControl as d,
-  FormMessage as z,
+  FormControl as z,
+  FormMessage as d,
   EmailInput as h,
   PasswordInput as R,
   Spacer as L,
@@ -14,14 +14,14 @@ import {
 import * as n from "react";
 import { jsx as r, jsxs as s } from "react/jsx-runtime";
 var P = a.object({ email: a.string().email(), password: a.string() }),
-  f = "cetjRdAHNdrsfbuUEGpo",
+  F = "MTDziqbkFY5CNwzMYozP",
   E = ({
     onSubmit: m,
-    onError: p,
-    onSuccess: F,
+    onError: f,
+    onSuccess: p,
     defaultValues: S,
     onAction: y,
-    formProps: g,
+    formProps: C,
   }) => {
     let t = n.useRef();
     n.useEffect(() => {
@@ -33,11 +33,11 @@ var P = a.object({ email: a.string().email(), password: a.string() }),
     return r(
       u,
       {
-        id: f,
+        id: F,
         defaultValues: S,
         onSubmit: b,
-        onError: p,
-        onSuccess: F,
+        onError: f,
+        onSuccess: p,
         zodSchema: P,
         mode: "onSubmit",
         children: (e) =>
@@ -50,7 +50,7 @@ var P = a.object({ email: a.string().email(), password: a.string() }),
                   s(c, {
                     children: [
                       r(i, { isRequired: !0, children: "Email" }),
-                      r(d, {
+                      r(z, {
                         children: r(h, {
                           label: "Email",
                           name: o.name,
@@ -63,7 +63,7 @@ var P = a.object({ email: a.string().email(), password: a.string() }),
                           styles: { root: {} },
                         }),
                       }),
-                      r(z, {}),
+                      r(d, {}),
                     ],
                   }),
               }),
@@ -74,7 +74,7 @@ var P = a.object({ email: a.string().email(), password: a.string() }),
                   s(c, {
                     children: [
                       r(i, { isRequired: !0, children: "Password" }),
-                      r(d, {
+                      r(z, {
                         children: r(R, {
                           label: "Password",
                           name: o.name,
@@ -87,7 +87,7 @@ var P = a.object({ email: a.string().email(), password: a.string() }),
                           styles: { root: {} },
                         }),
                       }),
-                      r(z, {}),
+                      r(d, {}),
                     ],
                   }),
               }),
@@ -103,7 +103,7 @@ var P = a.object({ email: a.string().email(), password: a.string() }),
             ],
           }),
       },
-      f,
+      F,
     );
   };
 export { E as Form };

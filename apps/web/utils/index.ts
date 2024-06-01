@@ -1,5 +1,7 @@
 export const API_WHATSAPP_URL = "https://api.whatsapp.com/send/?";
 
+export const DEFAULT_MEDICINE_URL = "/medicine-placeholder.jpeg";
+
 export const getWhatsappUrl = (phoneNumber?: string, text?: string): string => {
   return `${API_WHATSAPP_URL}phone=${phoneNumber}&text=${text ?? ""}`;
 };
