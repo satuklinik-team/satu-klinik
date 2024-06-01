@@ -56,7 +56,7 @@ var f = n.object({
       F,
       {
         id: h,
-        defaultValues: z,
+        defaultValues: g,
         onSubmit: R,
         onError: p,
         onSuccess: g,
@@ -239,4 +239,4 @@ var f = n.object({
       h,
     );
   };
-export { D as Form };
+export { A as Form };

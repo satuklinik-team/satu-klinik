@@ -21,7 +21,7 @@ var L = a.object({
   z = "16qzYTH2bcQbSaqawtmK",
   P = ({
     onSubmit: i,
-    onError: p,
+    onError: b,
     onSuccess: h,
     defaultValues: S,
     onAction: f,
@@ -40,7 +40,7 @@ var L = a.object({
         id: z,
         defaultValues: S,
         onSubmit: R,
-        onError: p,
+        onError: b,
         onSuccess: h,
         zodSchema: L,
         mode: "onSubmit",
@@ -157,4 +157,4 @@ var L = a.object({
       z,
     );
   };
-export { P as Form };
+export { y as Form };
