@@ -2,6 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
+import { useDebounce } from "@uidotdev/usehooks";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
@@ -75,12 +76,17 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
 
   const [isIcd10Open, setIsIcd10Open] = useState(false);
   const [icd10Search, setIcd10Search] = useState("");
-  const { data: icd10Data } = useFindIcd10({ search: icd10Search, limit: 20 });
+  const debouncedicd10Search = useDebounce(icd10Search, 300);
+  const { data: icd10Data } = useFindIcd10({
+    search: debouncedicd10Search,
+    limit: 20,
+  });
 
   const [isIcd9CMOpen, setIsIcd9CMOpen] = useState(false);
   const [icd9CMSearch, setIcd9CMSearch] = useState("");
+  const debouncedicd9CMSearch = useDebounce(icd9CMSearch, 300);
   const { data: icd9CMData } = useFindIcd9CM({
-    search: icd9CMSearch,
+    search: debouncedicd9CMSearch,
     limit: 20,
   });
 
@@ -110,7 +116,7 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
 
       router.push(`/clinic/${clinicId as string}/doctor`);
     },
-    [clinicId, mutateAsync, queryClient, router, toast],
+    [clinicId, mutateAsync, queryClient, router, toast]
   );
 
   useEffect(() => {
@@ -185,7 +191,7 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
                 : [];
 
               const label = options.find(
-                (disease) => disease.code === value,
+                (disease) => disease.code === value
               )?.strt;
 
               return (
@@ -221,10 +227,7 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
                                 onSelect={(currentValue) => {
                                   onChange(
                                     currentValue.slice(0, 1).toUpperCase() +
-                                      currentValue.slice(
-                                        1,
-                                        currentValue.length,
-                                      ),
+                                      currentValue.slice(1, currentValue.length)
                                   );
                                   setIsIcd10Open(false);
                                 }}
@@ -235,7 +238,7 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
                                     "mr-2 h-4 w-4",
                                     value === item.code
                                       ? "opacity-100"
-                                      : "opacity-0",
+                                      : "opacity-0"
                                   )}
                                 />
                                 <span className="font-semibold mr-1">
@@ -277,7 +280,7 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
             name="icd9CMCode"
             render={({ field: { value, onChange } }) => {
               const label = icd9CMData?.data.find(
-                (action) => action.code === value,
+                (action) => action.code === value
               )?.str;
 
               return (
@@ -321,7 +324,7 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
                                     "mr-2 h-4 w-4",
                                     value === item.code
                                       ? "opacity-100"
-                                      : "opacity-0",
+                                      : "opacity-0"
                                   )}
                                 />
                                 <span className="font-semibold mr-1">
@@ -396,7 +399,7 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
 
             if (onEditPrescription) {
               const currentIndex = prescriptions.findIndex(
-                (item) => item.medicine?.id === newPrescription.medicine?.id,
+                (item) => item.medicine?.id === newPrescription.medicine?.id
               );
               update(currentIndex, newPrescription);
               setOnEditPrescription(undefined);
