@@ -112,7 +112,7 @@ export function ClinicDiagnosePatientPrescriptionForm({
                               <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                             </Button>
                           </PopoverTrigger>
-                          <PopoverContent className="w-[200px] max-h-[300px] overflow-y-auto p-0">
+                          <PopoverContent className="w-96 sm:w-96 md:w-96 lg:w-96 xl:w-96 2xl:w-96 max-h-[300px] overflow-y-auto p-0">
                             <Command shouldFilter={false}>
                               <CommandInput
                                 onValueChange={(commandValue) => {

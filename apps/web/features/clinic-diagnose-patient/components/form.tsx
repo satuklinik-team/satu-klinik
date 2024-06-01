@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { Check, ChevronsUpDown } from "lucide-react";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 
@@ -49,7 +49,8 @@ import { ClinicDiagnosePatientPrescriptionTable } from "./prescription-table";
 export function ClinicDiagnosePatientForm(): JSX.Element {
   const queryClient = useQueryClient();
   const { toast } = useToast();
-  const { mrId } = useParams();
+  const { clinicId, mrId } = useParams();
+  const router = useRouter();
   const searchParams = useSearchParams();
   const patientId = searchParams.get("patientId");
 
@@ -64,6 +65,7 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
     fields: prescriptions,
     remove,
     insert,
+    update,
   } = useFieldArray({
     control: form.control,
     name: "prescriptions",
@@ -99,12 +101,16 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
           })) ?? []),
         ],
       });
+
       toast({ title: "Berhasil Membuat Diagnosa!", variant: "success" });
+
       await queryClient.invalidateQueries({
         queryKey: new PharmacyTaskQueryKeyFactory().lists(),
       });
+
+      router.push(`/clinic/${clinicId as string}/doctor`);
     },
-    [mutateAsync, queryClient, toast],
+    [clinicId, mutateAsync, queryClient, router, toast],
   );
 
   useEffect(() => {
@@ -174,12 +180,9 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
             control={form.control}
             name="icd10Code"
             render={({ field: { value, onChange } }) => {
-              console.log(icd10Data?.data);
               const options = Array.isArray(icd10Data?.data)
                 ? icd10Data.data
                 : [];
-
-              console.log({ options });
 
               const label = options.find(
                 (disease) => disease.code === value,
@@ -201,7 +204,7 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
                           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                         </Button>
                       </PopoverTrigger>
-                      <PopoverContent className="w-full max-h-[300px] overflow-y-auto p-0">
+                      <PopoverContent className="max-h-[300px] overflow-y-auto p-0">
                         <Command shouldFilter={false}>
                           <CommandInput
                             onValueChange={(commandValue) => {
@@ -212,7 +215,7 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
                           />
                           <CommandEmpty>No diseases found.</CommandEmpty>
                           <CommandGroup>
-                            {options?.map((item) => (
+                            {options.map((item) => (
                               <CommandItem
                                 key={item.code}
                                 onSelect={(currentValue) => {
@@ -235,7 +238,10 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
                                       : "opacity-0",
                                   )}
                                 />
-                                {item.strt}
+                                <span className="font-semibold mr-1">
+                                  {item.code}
+                                </span>
+                                - {item.strt}
                               </CommandItem>
                             ))}
                           </CommandGroup>
@@ -290,7 +296,7 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
                           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                         </Button>
                       </PopoverTrigger>
-                      <PopoverContent className="w-[200px] max-h-[300px] overflow-y-auto p-0">
+                      <PopoverContent className="max-h-[300px] overflow-y-auto p-0">
                         <Command shouldFilter={false}>
                           <CommandInput
                             onValueChange={(commandValue) => {
@@ -318,7 +324,10 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
                                       : "opacity-0",
                                   )}
                                 />
-                                {item.str}
+                                <span className="font-semibold mr-1">
+                                  {item.code}
+                                </span>
+                                - {item.str}
                               </CommandItem>
                             ))}
                           </CommandGroup>
@@ -361,30 +370,42 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
           </div>
         </form>
       </Form>
-      <ClinicDiagnosePatientPrescriptionForm
-        defaultValues={onEditPrescription}
-        onOpenChange={(open) => {
-          if (!open) {
-            setOnAddPrescription(undefined);
-            setOnEditPrescription(undefined);
-          }
-        }}
-        onSubmit={(prescription) => {
-          insert(prescriptions.length, {
-            ...prescription,
-            medicineId: prescription.medicine?.id,
-            totalQuantity:
-              prescription.supplyDuration *
-              prescription.frequency *
-              prescription.doseQuantity,
-          });
+      {(Boolean(onAddPrescription) || Boolean(onEditPrescription)) && (
+        <ClinicDiagnosePatientPrescriptionForm
+          defaultValues={onEditPrescription}
+          onOpenChange={(open) => {
+            if (!open) {
+              setOnAddPrescription(undefined);
+              setOnEditPrescription(undefined);
+            }
+          }}
+          onSubmit={(prescription) => {
+            const newPrescription = {
+              ...prescription,
+              medicineId: prescription.medicine?.id,
+              totalQuantity:
+                prescription.supplyDuration *
+                prescription.frequency *
+                prescription.doseQuantity,
+            };
 
-          setOnAddPrescription(undefined);
-          setOnEditPrescription(undefined);
-        }}
-        open={Boolean(onAddPrescription) || Boolean(onEditPrescription)}
-        title={onAddPrescription ? "Add Prescription" : "Edit Prescription"}
-      />
+            if (onAddPrescription) {
+              insert(prescriptions.length, newPrescription);
+              setOnAddPrescription(undefined);
+            }
+
+            if (onEditPrescription) {
+              const currentIndex = prescriptions.findIndex(
+                (item) => item.medicine?.id === newPrescription.medicine?.id,
+              );
+              update(currentIndex, newPrescription);
+              setOnEditPrescription(undefined);
+            }
+          }}
+          open={Boolean(onAddPrescription) || Boolean(onEditPrescription)}
+          title={onAddPrescription ? "Add Prescription" : "Edit Prescription"}
+        />
+      )}
     </>
   );
 }

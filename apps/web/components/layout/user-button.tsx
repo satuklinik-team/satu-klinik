@@ -2,7 +2,7 @@ import { Ellipsis, LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
   Popover,
@@ -47,8 +47,9 @@ export function UserButton({ classNames }: UserButtonProps): JSX.Element {
           )}
         >
           <Avatar className="w-8 h-8">
-            <AvatarImage alt="@shadcn" src="https://github.com/shadcn.png" />
-            <AvatarFallback>{getInitial(fullname)}</AvatarFallback>
+            <AvatarFallback className="text-sm">
+              {getInitial(fullname)}
+            </AvatarFallback>
           </Avatar>
           <div
             className={cn(
@@ -68,7 +69,7 @@ export function UserButton({ classNames }: UserButtonProps): JSX.Element {
         </div>
       </PopoverTrigger>
 
-      <PopoverContent className="p-0 py-1">
+      <PopoverContent className="w-72 sm:w-72 md:w-72 lg:w-72 xl:w-72 2xl:w-72 p-0 py-1">
         <div className="flex flex-col px-4 py-2 border-b">
           <p className="text-sm">
             {fullname} - {formalizeWord(roles)}

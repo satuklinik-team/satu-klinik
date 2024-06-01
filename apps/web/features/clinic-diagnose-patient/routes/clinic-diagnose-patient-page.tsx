@@ -23,6 +23,8 @@ export function ClinicDiagnosePatientPage(): JSX.Element {
           </TabsList>
           <TabsContent value="soap">
             <ClinicDiagnosePatientForm />
+          </TabsContent>
+          <TabsContent value="history">
             <ClinicDiagnoseHistory />
           </TabsContent>
         </Tabs>

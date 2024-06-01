@@ -37,7 +37,11 @@ export function RegisterPage(): JSX.Element {
         router.replace("/members");
       }
 
-      if (data.user.roles !== "OWNER") {
+      if (data.user.roles === "PHARMACY") {
+        router.replace(`/clinic/${data.clinic.id}/pharmacy`);
+      }
+
+      if (data.user.roles !== "OWNER" && data.user.roles !== "PHARMACY") {
         router.replace(`/clinic/${data.clinic.id}`);
       }
     },
