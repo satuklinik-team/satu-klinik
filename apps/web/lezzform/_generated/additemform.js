@@ -10,13 +10,13 @@ import {
   Dropdown as L,
   Input as v,
   NumberInput as d,
-  TwoColumn as I,
+  TwoColumn as k,
   Button as h,
 } from "@lezzform/react";
-import { ChevronDown as P } from "lucide-react";
+import { ChevronDown as I } from "lucide-react";
 import * as c from "react";
 import { jsx as e, jsxs as n } from "react/jsx-runtime";
-var k = t.object({
+var w = t.object({
     image: t.string(),
     categoryId: t.string(),
     title: t.string(),
@@ -24,31 +24,31 @@ var k = t.object({
     stock: t.coerce.number(),
     discount: t.coerce.number().optional(),
   }),
-  g = "mlaWKpLoB8PgH2OzIcqf",
+  g = "kLizZpRgSM6MXxUpRNcj",
   E = ({
     onSubmit: i,
     onError: z,
     onSuccess: C,
-    defaultValues: y,
-    onAction: w,
+    defaultValues: S,
+    onAction: P,
     formProps: B,
   }) => {
     let b = c.useRef();
     c.useEffect(() => {
       i && (b.current = i);
     }, [i]);
-    let S = c.useCallback(async (r, o) => {
+    let y = c.useCallback(async (r, o) => {
       if (b.current) return b.current(r, o);
     }, []);
     return e(
       F,
       {
         id: g,
-        defaultValues: y,
-        onSubmit: S,
+        defaultValues: S,
+        onSubmit: y,
         onError: z,
         onSuccess: C,
-        zodSchema: k,
+        zodSchema: w,
         mode: "onSubmit",
         children: (r) =>
           n(F.Container, {
@@ -109,7 +109,7 @@ var k = t.object({
                           disabled: o.disabled,
                           styles: { root: {} },
                           suffixAdornment: {
-                            icon: e(P, { size: 18, color: "#000000" }),
+                            icon: e(I, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
@@ -211,7 +211,7 @@ var k = t.object({
                     ],
                   }),
               }),
-              n(I, {
+              n(k, {
                 styles: { root: {} },
                 children: [
                   e(h, {

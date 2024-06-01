@@ -2,9 +2,10 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
+import { useDebounce } from "@uidotdev/usehooks";
 import { Check, ChevronsUpDown } from "lucide-react";
-import { useParams } from "next/navigation";
-import { useCallback, useState } from "react";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
@@ -33,6 +34,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { cn } from "@/lib/utils";
 import { useFindIcd9CM } from "@/services/icd/hooks/use-find-icd-9cm";
 import { useFindIcd10 } from "@/services/icd/hooks/use-find-icd-10";
+import { useGetPatient } from "@/services/patient/hooks/use-get-patient";
 import { useCreatePatientAssessment } from "@/services/patient-assessment/hooks/use-create-patient-assessment";
 import type {
   CreatePatientAssessmentDto,
@@ -48,7 +50,12 @@ import { ClinicDiagnosePatientPrescriptionTable } from "./prescription-table";
 export function ClinicDiagnosePatientForm(): JSX.Element {
   const queryClient = useQueryClient();
   const { toast } = useToast();
-  const { mrId } = useParams();
+  const { clinicId, mrId } = useParams();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const patientId = searchParams.get("patientId");
+
+  const { data: patientData } = useGetPatient(String(patientId));
 
   const form = useForm<CreatePatientAssessmentSchema>({
     resolver: zodResolver(createPatientAssessmentSchema),
@@ -59,6 +66,7 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
     fields: prescriptions,
     remove,
     insert,
+    update,
   } = useFieldArray({
     control: form.control,
     name: "prescriptions",
@@ -68,12 +76,17 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
 
   const [isIcd10Open, setIsIcd10Open] = useState(false);
   const [icd10Search, setIcd10Search] = useState("");
-  const { data: icd10Data } = useFindIcd10({ search: icd10Search, limit: 20 });
+  const debouncedicd10Search = useDebounce(icd10Search, 300);
+  const { data: icd10Data } = useFindIcd10({
+    search: debouncedicd10Search,
+    limit: 20,
+  });
 
   const [isIcd9CMOpen, setIsIcd9CMOpen] = useState(false);
   const [icd9CMSearch, setIcd9CMSearch] = useState("");
+  const debouncedicd9CMSearch = useDebounce(icd9CMSearch, 300);
   const { data: icd9CMData } = useFindIcd9CM({
-    search: icd9CMSearch,
+    search: debouncedicd9CMSearch,
     limit: 20,
   });
 
@@ -94,13 +107,25 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
           })) ?? []),
         ],
       });
+
       toast({ title: "Berhasil Membuat Diagnosa!", variant: "success" });
+
       await queryClient.invalidateQueries({
         queryKey: new PharmacyTaskQueryKeyFactory().lists(),
       });
+
+      router.push(`/clinic/${clinicId as string}/doctor`);
     },
-    [mutateAsync, queryClient, toast],
+    [clinicId, mutateAsync, queryClient, router, toast]
   );
+
+  useEffect(() => {
+    const defaultSubjective = patientData?.mr[0].vitalSign[0].pain;
+
+    if (defaultSubjective) {
+      form.setValue("subjective", defaultSubjective);
+    }
+  }, [form, patientData?.mr]);
 
   return (
     <>
@@ -161,10 +186,12 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
             control={form.control}
             name="icd10Code"
             render={({ field: { value, onChange } }) => {
-              const options = icd10Data?.data ?? [];
+              const options = Array.isArray(icd10Data?.data)
+                ? icd10Data.data
+                : [];
 
               const label = options.find(
-                (disease) => disease.code === value,
+                (disease) => disease.code === value
               )?.strt;
 
               return (
@@ -183,7 +210,7 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
                           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                         </Button>
                       </PopoverTrigger>
-                      <PopoverContent className="w-[200px] max-h-[300px] overflow-y-auto p-0">
+                      <PopoverContent className="max-h-[300px] overflow-y-auto p-0">
                         <Command shouldFilter={false}>
                           <CommandInput
                             onValueChange={(commandValue) => {
@@ -200,10 +227,7 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
                                 onSelect={(currentValue) => {
                                   onChange(
                                     currentValue.slice(0, 1).toUpperCase() +
-                                      currentValue.slice(
-                                        1,
-                                        currentValue.length,
-                                      ),
+                                      currentValue.slice(1, currentValue.length)
                                   );
                                   setIsIcd10Open(false);
                                 }}
@@ -214,10 +238,13 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
                                     "mr-2 h-4 w-4",
                                     value === item.code
                                       ? "opacity-100"
-                                      : "opacity-0",
+                                      : "opacity-0"
                                   )}
                                 />
-                                {item.strt}
+                                <span className="font-semibold mr-1">
+                                  {item.code}
+                                </span>
+                                - {item.strt}
                               </CommandItem>
                             ))}
                           </CommandGroup>
@@ -253,7 +280,7 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
             name="icd9CMCode"
             render={({ field: { value, onChange } }) => {
               const label = icd9CMData?.data.find(
-                (action) => action.code === value,
+                (action) => action.code === value
               )?.str;
 
               return (
@@ -272,7 +299,7 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
                           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                         </Button>
                       </PopoverTrigger>
-                      <PopoverContent className="w-[200px] max-h-[300px] overflow-y-auto p-0">
+                      <PopoverContent className="max-h-[300px] overflow-y-auto p-0">
                         <Command shouldFilter={false}>
                           <CommandInput
                             onValueChange={(commandValue) => {
@@ -297,10 +324,13 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
                                     "mr-2 h-4 w-4",
                                     value === item.code
                                       ? "opacity-100"
-                                      : "opacity-0",
+                                      : "opacity-0"
                                   )}
                                 />
-                                {item.str}
+                                <span className="font-semibold mr-1">
+                                  {item.code}
+                                </span>
+                                - {item.str}
                               </CommandItem>
                             ))}
                           </CommandGroup>
@@ -343,30 +373,42 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
           </div>
         </form>
       </Form>
-      <ClinicDiagnosePatientPrescriptionForm
-        defaultValues={onEditPrescription}
-        onOpenChange={(open) => {
-          if (!open) {
-            setOnAddPrescription(undefined);
-            setOnEditPrescription(undefined);
-          }
-        }}
-        onSubmit={(prescription) => {
-          insert(prescriptions.length, {
-            ...prescription,
-            medicineId: prescription.medicine?.id,
-            totalQuantity:
-              prescription.supplyDuration *
-              prescription.frequency *
-              prescription.doseQuantity,
-          });
+      {(Boolean(onAddPrescription) || Boolean(onEditPrescription)) && (
+        <ClinicDiagnosePatientPrescriptionForm
+          defaultValues={onEditPrescription}
+          onOpenChange={(open) => {
+            if (!open) {
+              setOnAddPrescription(undefined);
+              setOnEditPrescription(undefined);
+            }
+          }}
+          onSubmit={(prescription) => {
+            const newPrescription = {
+              ...prescription,
+              medicineId: prescription.medicine?.id,
+              totalQuantity:
+                prescription.supplyDuration *
+                prescription.frequency *
+                prescription.doseQuantity,
+            };
 
-          setOnAddPrescription(undefined);
-          setOnEditPrescription(undefined);
-        }}
-        open={Boolean(onAddPrescription) || Boolean(onEditPrescription)}
-        title={onAddPrescription ? "Add Prescription" : "Edit Prescription"}
-      />
+            if (onAddPrescription) {
+              insert(prescriptions.length, newPrescription);
+              setOnAddPrescription(undefined);
+            }
+
+            if (onEditPrescription) {
+              const currentIndex = prescriptions.findIndex(
+                (item) => item.medicine?.id === newPrescription.medicine?.id
+              );
+              update(currentIndex, newPrescription);
+              setOnEditPrescription(undefined);
+            }
+          }}
+          open={Boolean(onAddPrescription) || Boolean(onEditPrescription)}
+          title={onAddPrescription ? "Add Prescription" : "Edit Prescription"}
+        />
+      )}
     </>
   );
 }

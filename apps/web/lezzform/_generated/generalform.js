@@ -7,8 +7,8 @@ import {
   FormControl as i,
   FormMessage as u,
   Input as d,
-  PhoneNumberInput as C,
-  NumberInput as S,
+  PhoneNumberInput as S,
+  NumberInput as C,
   Button as I,
 } from "@lezzform/react";
 import {
@@ -36,14 +36,14 @@ var f = n.object({
     address: n.string(),
     price: n.coerce.number(),
   }),
-  h = "8zM3DcolJeI883mzuhW1",
-  A = ({
+  h = "vUzqmgc1Hr9xjJSjRwuh",
+  D = ({
     onSubmit: m,
     onError: F,
-    onSuccess: z,
-    defaultValues: g,
+    onSuccess: g,
+    defaultValues: z,
     onAction: k,
-    formProps: P,
+    formProps: v,
   }) => {
     let b = c.useRef();
     c.useEffect(() => {
@@ -56,10 +56,10 @@ var f = n.object({
       p,
       {
         id: h,
-        defaultValues: g,
+        defaultValues: z,
         onSubmit: R,
         onError: F,
-        onSuccess: z,
+        onSuccess: g,
         zodSchema: f,
         mode: "onSubmit",
         children: (r) =>
@@ -158,7 +158,7 @@ var f = n.object({
                     children: [
                       o(l, { isRequired: !0, children: "Nomor Telepon" }),
                       o(i, {
-                        children: o(C, {
+                        children: o(S, {
                           label: "Nomor Telepon",
                           name: e.name,
                           value: e.value ?? "",
@@ -209,7 +209,7 @@ var f = n.object({
                     children: [
                       o(l, { isRequired: !0, children: "Harga Dasar" }),
                       o(i, {
-                        children: o(S, {
+                        children: o(C, {
                           label: "Harga Dasar",
                           name: e.name,
                           value: e.value ?? 0,
@@ -239,4 +239,4 @@ var f = n.object({
       h,
     );
   };
-export { A as Form };
+export { D as Form };

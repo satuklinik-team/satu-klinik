@@ -6,39 +6,39 @@ import {
   FormLabel as i,
   FormControl as z,
   FormMessage as d,
-  EmailInput as b,
+  EmailInput as h,
   PasswordInput as R,
-  Spacer as y,
-  Button as L,
+  Spacer as L,
+  Button as w,
 } from "@lezzform/react";
 import * as n from "react";
 import { jsx as r, jsxs as s } from "react/jsx-runtime";
-var w = a.object({ email: a.string().email(), password: a.string() }),
-  f = "yulEMH53ryZ0lUNdhfy6",
+var P = a.object({ email: a.string().email(), password: a.string() }),
+  F = "MTDziqbkFY5CNwzMYozP",
   E = ({
     onSubmit: m,
-    onError: p,
-    onSuccess: F,
+    onError: f,
+    onSuccess: p,
     defaultValues: S,
-    onAction: P,
-    formProps: g,
+    onAction: y,
+    formProps: C,
   }) => {
     let t = n.useRef();
     n.useEffect(() => {
       m && (t.current = m);
     }, [m]);
-    let h = n.useCallback(async (e, o) => {
+    let b = n.useCallback(async (e, o) => {
       if (t.current) return t.current(e, o);
     }, []);
     return r(
       u,
       {
-        id: f,
+        id: F,
         defaultValues: S,
-        onSubmit: h,
-        onError: p,
-        onSuccess: F,
-        zodSchema: w,
+        onSubmit: b,
+        onError: f,
+        onSuccess: p,
+        zodSchema: P,
         mode: "onSubmit",
         children: (e) =>
           s(u.Container, {
@@ -51,7 +51,7 @@ var w = a.object({ email: a.string().email(), password: a.string() }),
                     children: [
                       r(i, { isRequired: !0, children: "Email" }),
                       r(z, {
-                        children: r(b, {
+                        children: r(h, {
                           label: "Email",
                           name: o.name,
                           value: o.value ?? "",
@@ -91,8 +91,8 @@ var w = a.object({ email: a.string().email(), password: a.string() }),
                     ],
                   }),
               }),
-              r(y, { styles: { root: {} }, size: 16 }),
-              r(L, {
+              r(L, { styles: { root: {} }, size: 16 }),
+              r(w, {
                 type: "submit",
                 className: "w-full",
                 disabled: e.formState.isSubmitting,
@@ -103,7 +103,7 @@ var w = a.object({ email: a.string().email(), password: a.string() }),
             ],
           }),
       },
-      f,
+      F,
     );
   };
 export { E as Form };

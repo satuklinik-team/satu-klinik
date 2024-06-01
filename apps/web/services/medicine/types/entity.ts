@@ -4,7 +4,7 @@ export interface MedicineEntity {
   price: number;
   stock: number;
   discount: number;
-  imageUrl: string;
+  imageUrl?: string;
   kfaCode: string;
   categoryId: number;
 }

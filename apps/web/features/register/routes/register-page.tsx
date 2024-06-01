@@ -31,11 +31,17 @@ export function RegisterPage(): JSX.Element {
 
       toast({ title: "Akun berhasil dibuat!", variant: "success" });
 
+      localStorage.setItem("user", JSON.stringify(data.user));
+
       if (data.user.roles === "OWNER") {
         router.replace("/members");
       }
 
-      if (data.user.roles !== "OWNER") {
+      if (data.user.roles === "PHARMACY") {
+        router.replace(`/clinic/${data.clinic.id}/pharmacy`);
+      }
+
+      if (data.user.roles !== "OWNER" && data.user.roles !== "PHARMACY") {
         router.replace(`/clinic/${data.clinic.id}`);
       }
     },
@@ -48,6 +54,9 @@ export function RegisterPage(): JSX.Element {
       title="Register"
     >
       <RegisterForm onSubmit={onSubmit} />
+      <a className="text-sm text-primary -mt-1" href="/auth/login">
+        Sudah ada akun? Login disini
+      </a>
     </AuthFormWrapper>
   );
 }
