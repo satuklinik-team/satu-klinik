@@ -27,7 +27,7 @@ export function ClinicPatientActionsCell(row: PatientEntity): JSX.Element {
           <TooltipContent>Kontak WA</TooltipContent>
         </Tooltip>
         <Tooltip>
-          <Link href={`/clinic/${clinicId as string}/patient/${row.norm}`}>
+          <Link href={`/clinic/${clinicId as string}/patient/${row.id}`}>
             <TooltipTrigger className="h-min p-2">
               <Eye size={20} />
             </TooltipTrigger>
@@ -35,7 +35,7 @@ export function ClinicPatientActionsCell(row: PatientEntity): JSX.Element {
           <TooltipContent>Lihat Detail</TooltipContent>
         </Tooltip>
         <Tooltip>
-          <Link href={`/clinic/${clinicId as string}/patient/${row.norm}/edit`}>
+          <Link href={`/clinic/${clinicId as string}/patient/${row.id}/edit`}>
             <TooltipTrigger className="h-min p-2">
               <Edit size={20} />
             </TooltipTrigger>

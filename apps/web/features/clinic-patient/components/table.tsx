@@ -21,6 +21,7 @@ export function ClinicPatientTable(): JSX.Element {
     count: true,
   });
 
+  console.log(data?.data);
   const columns = useMemo(() => {
     return [
       {

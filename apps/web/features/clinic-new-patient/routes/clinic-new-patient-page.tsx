@@ -2,7 +2,7 @@
 
 import { useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
-import { usePathname } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import { useCallback } from "react";
 
 import {
@@ -21,8 +21,11 @@ import { PatientQueryKeyFactory } from "@/services/patient/utils/query-key.facto
 
 export function ClinicNewPatientPage(): JSX.Element {
   const queryClient = useQueryClient();
+  const router = useRouter();
   const pathname = usePathname();
   const { toast } = useToast();
+
+  const { clinicId } = useParams();
 
   const { mutateAsync } = useCreatePatient();
 
@@ -43,8 +46,9 @@ export function ClinicNewPatientPage(): JSX.Element {
         queryKey: new PatientQueryKeyFactory().lists(),
       });
       toast({ title: "Berhasil Membuat Pasien!", variant: "success" });
+      router.push(`/clinic/${clinicId as string}/patient`);
     },
-    [mutateAsync, queryClient, toast]
+    [clinicId, mutateAsync, queryClient, router, toast],
   );
 
   return (
