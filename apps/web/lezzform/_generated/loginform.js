@@ -6,7 +6,7 @@ import {
   FormLabel as i,
   FormControl as z,
   FormMessage as d,
-  EmailInput as h,
+  EmailInput as b,
   PasswordInput as R,
   Spacer as L,
   Button as w,
@@ -14,20 +14,20 @@ import {
 import * as n from "react";
 import { jsx as r, jsxs as s } from "react/jsx-runtime";
 var P = a.object({ email: a.string().email(), password: a.string() }),
-  F = "MTDziqbkFY5CNwzMYozP",
+  F = "Gw0KtEdMUFUJq65SRmhB",
   E = ({
     onSubmit: m,
     onError: f,
     onSuccess: p,
     defaultValues: S,
     onAction: y,
-    formProps: C,
+    formProps: g,
   }) => {
     let t = n.useRef();
     n.useEffect(() => {
       m && (t.current = m);
     }, [m]);
-    let b = n.useCallback(async (e, o) => {
+    let h = n.useCallback(async (e, o) => {
       if (t.current) return t.current(e, o);
     }, []);
     return r(
@@ -35,7 +35,7 @@ var P = a.object({ email: a.string().email(), password: a.string() }),
       {
         id: F,
         defaultValues: S,
-        onSubmit: b,
+        onSubmit: h,
         onError: f,
         onSuccess: p,
         zodSchema: P,
@@ -51,7 +51,7 @@ var P = a.object({ email: a.string().email(), password: a.string() }),
                     children: [
                       r(i, { isRequired: !0, children: "Email" }),
                       r(z, {
-                        children: r(h, {
+                        children: r(b, {
                           label: "Email",
                           name: o.name,
                           value: o.value ?? "",

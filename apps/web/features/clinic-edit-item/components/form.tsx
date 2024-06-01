@@ -38,7 +38,7 @@ import type {
 import { updateMedicineSchema } from "@/services/medicine/types/dto";
 import type { MedicineEntity } from "@/services/medicine/types/entity";
 import { MedicineQueryKeyFactory } from "@/services/medicine/utils/query-key.factory";
-import { useFindMedicineCategory } from "@/services/medicine-category/hooks/use-find-medicine";
+import { useFindMedicineCategory } from "@/services/medicine-category/hooks/use-find-medicine-category";
 
 interface ClinicEditItemFormProps {
   defaultValues: MedicineEntity;

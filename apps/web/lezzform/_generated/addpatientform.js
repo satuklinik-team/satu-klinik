@@ -53,8 +53,8 @@ var T = a.object({
     temperature: a.coerce.number(),
     pain: a.string(),
   }),
-  B = "RtSCn7H1gs45NjhQwjGM",
-  O = ({
+  B = "LbMhlar6HOFlIqWdRJfU",
+  G = ({
     onSubmit: c,
     onError: F,
     onSuccess: L,
@@ -553,4 +553,4 @@ var T = a.object({
       B,
     );
   };
-export { O as Form };
+export { G as Form };

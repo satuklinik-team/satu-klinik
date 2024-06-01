@@ -13,6 +13,19 @@ import type { MedicineCategoryEntity } from "./types/entity";
 class MedicineCategoryApi {
   api: AxiosInstance = api;
 
+  async getMedicineCategory(
+    id: string,
+    dto?: object,
+  ): Promise<MedicineCategoryEntity> {
+    const queryParams = stringify(dto);
+
+    const { data } = await this.api.get<MedicineCategoryEntity>(
+      `/medicine-category/${id}?count=true&${queryParams}`,
+    );
+
+    return data;
+  }
+
   async findMedicineCategory(
     dto?: object,
   ): Promise<BaseFindConnectionResponse<MedicineCategoryEntity>> {
@@ -40,7 +53,7 @@ class MedicineCategoryApi {
     id: string,
     values?: UpdateMedicineCategoryDto,
   ): Promise<MedicineCategoryEntity> {
-    const { data } = await this.api.post<MedicineCategoryEntity>(
+    const { data } = await this.api.patch<MedicineCategoryEntity>(
       `/medicine-category/${id}`,
       values,
     );

@@ -15,7 +15,7 @@ import {
   TwoColumn as P,
   Button as h,
 } from "@lezzform/react";
-import { UserRound as k, Mail as A, CreditCard as I } from "lucide-react";
+import { UserRound as A, Mail as k, CreditCard as q } from "lucide-react";
 import * as i from "react";
 import { jsx as e, jsxs as n } from "react/jsx-runtime";
 var B = a.object({
@@ -28,13 +28,13 @@ var B = a.object({
     password: a.string().max(14).min(6),
     confirmPassword: a.string().max(14).min(6),
   }),
-  C = "ICrV9rkewAL3kiTFWYZP",
-  D = ({
+  C = "AuVKyo8wWbcquLF0DZ2V",
+  K = ({
     onSubmit: c,
     onError: R,
     onSuccess: g,
     defaultValues: z,
-    onAction: q,
+    onAction: I,
     formProps: N,
   }) => {
     let d = i.useRef();
@@ -76,7 +76,7 @@ var B = a.object({
                           isRequired: !0,
                           styles: { root: {} },
                           prefixAdornment: {
-                            icon: e(k, { size: 18, color: "#000000" }),
+                            icon: e(A, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
@@ -103,7 +103,7 @@ var B = a.object({
                           isRequired: !0,
                           styles: { root: {} },
                           prefixAdornment: {
-                            icon: e(A, { size: 18, color: "#000000" }),
+                            icon: e(k, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
@@ -154,7 +154,7 @@ var B = a.object({
                           isRequired: !0,
                           styles: { root: {} },
                           prefixAdornment: {
-                            icon: e(I, { size: 18, color: "#000000" }),
+                            icon: e(q, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
@@ -289,4 +289,4 @@ var B = a.object({
       C,
     );
   };
-export { D as Form };
+export { K as Form };
