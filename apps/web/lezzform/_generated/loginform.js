@@ -13,14 +13,14 @@ import {
 } from "@lezzform/react";
 import * as n from "react";
 import { jsx as r, jsxs as s } from "react/jsx-runtime";
-var w = a.object({ email: a.string().email(), password: a.string() }),
-  f = "yulEMH53ryZ0lUNdhfy6",
+var P = a.object({ email: a.string().email(), password: a.string() }),
+  F = "Gw0KtEdMUFUJq65SRmhB",
   E = ({
     onSubmit: m,
     onError: p,
     onSuccess: F,
     defaultValues: S,
-    onAction: P,
+    onAction: y,
     formProps: g,
   }) => {
     let t = n.useRef();

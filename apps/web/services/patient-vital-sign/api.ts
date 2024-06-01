@@ -18,6 +18,17 @@ class PatientVitalSignApi {
 
     return data;
   }
+
+  async createNewPatientVitalSign(
+    values?: CreatePatientVitalSignDto
+  ): Promise<PatientEntity> {
+    const { data } = await this.api.post<PatientEntity>(
+      "/patients-vital-signs/new-patient",
+      values
+    );
+
+    return data;
+  }
 }
 
 export const patientVitalSignApi = new PatientVitalSignApi();

@@ -1,6 +1,6 @@
 import { z as n } from "zod";
 import {
-  Lezzform as p,
+  Lezzform as F,
   FormField as t,
   FormItem as s,
   FormLabel as l,
@@ -36,14 +36,14 @@ var f = n.object({
     address: n.string(),
     price: n.coerce.number(),
   }),
-  h = "8zM3DcolJeI883mzuhW1",
-  A = ({
+  h = "MyvnapgTaaqgnYGCz1W4",
+  D = ({
     onSubmit: m,
-    onError: F,
-    onSuccess: z,
-    defaultValues: g,
+    onError: p,
+    onSuccess: g,
+    defaultValues: z,
     onAction: k,
-    formProps: P,
+    formProps: v,
   }) => {
     let b = c.useRef();
     c.useEffect(() => {
@@ -53,17 +53,17 @@ var f = n.object({
       if (b.current) return b.current(r, e);
     }, []);
     return o(
-      p,
+      F,
       {
         id: h,
         defaultValues: g,
         onSubmit: R,
-        onError: F,
-        onSuccess: z,
+        onError: p,
+        onSuccess: g,
         zodSchema: f,
         mode: "onSubmit",
         children: (r) =>
-          a(p.Container, {
+          a(F.Container, {
             children: [
               o(t, {
                 control: r.control,

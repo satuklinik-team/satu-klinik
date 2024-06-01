@@ -10,19 +10,19 @@ import {
   Dropdown as p,
   DatePicker as L,
   PhoneNumberInput as S,
-  TextArea as A,
-  TwoColumn as k,
+  TextArea as k,
+  TwoColumn as A,
   Button as g,
 } from "@lezzform/react";
 import {
   CreditCard as C,
-  User as B,
-  Calendar as N,
-  Phone as P,
+  User as N,
+  Calendar as B,
+  Phone as I,
 } from "lucide-react";
 import * as c from "react";
 import { jsx as e, jsxs as n } from "react/jsx-runtime";
-var q = a.object({
+var P = a.object({
     medicalNumber: a.string().optional(),
     nik: a.string(),
     fullname: a.string(),
@@ -41,13 +41,13 @@ var q = a.object({
       ),
     address: a.string(),
   }),
-  z = "ugWZdUdYGhZ5DDTpqmRG",
-  G = ({
+  z = "MrbjkDqxirgnteIuKN8d",
+  K = ({
     onSubmit: i,
     onError: h,
     onSuccess: R,
     defaultValues: y,
-    onAction: I,
+    onAction: q,
     formProps: f,
   }) => {
     let d = c.useRef();
@@ -65,7 +65,7 @@ var q = a.object({
         onSubmit: v,
         onError: h,
         onSuccess: R,
-        zodSchema: q,
+        zodSchema: P,
         mode: "onSubmit",
         children: (r) =>
           n(F.Container, {
@@ -143,7 +143,7 @@ var q = a.object({
                           isRequired: !0,
                           styles: { root: {} },
                           prefixAdornment: {
-                            icon: e(B, { size: 18, color: "#000000" }),
+                            icon: e(N, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
@@ -225,7 +225,7 @@ var q = a.object({
                           styles: { root: {} },
                           disabled: o.disabled,
                           prefixAdornment: {
-                            icon: e(N, { size: 18, color: "#000000" }),
+                            icon: e(B, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
@@ -252,7 +252,7 @@ var q = a.object({
                           isRequired: !0,
                           styles: { root: {} },
                           prefixAdornment: {
-                            icon: e(P, { size: 18, color: "#000000" }),
+                            icon: e(I, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
@@ -268,7 +268,7 @@ var q = a.object({
                     children: [
                       e(l, { isRequired: !0, children: "Alamat" }),
                       e(s, {
-                        children: e(A, {
+                        children: e(k, {
                           label: "Alamat",
                           name: o.name,
                           value: o.value ?? "",
@@ -284,7 +284,7 @@ var q = a.object({
                     ],
                   }),
               }),
-              n(k, {
+              n(A, {
                 styles: { root: {} },
                 children: [
                   e(g, {
@@ -309,4 +309,4 @@ var q = a.object({
       z,
     );
   };
-export { G as Form };
+export { K as Form };

@@ -1,5 +1,7 @@
 export const API_WHATSAPP_URL = "https://api.whatsapp.com/send/?";
 
+export const DEFAULT_MEDICINE_URL = "/medicine-placeholder.jpeg";
+
 export const getWhatsappUrl = (phoneNumber?: string, text?: string): string => {
   return `${API_WHATSAPP_URL}phone=${phoneNumber}&text=${text ?? ""}`;
 };
@@ -17,4 +19,10 @@ export const getInitial = (string?: string): string => {
   const secondLetter = arrayOfWords[1][0].toUpperCase();
 
   return firstLetter + secondLetter;
+};
+
+export const formalizeWord = (string?: string): string => {
+  if (!string) return "";
+
+  return string[0].toUpperCase() + string.slice(1, string.length).toLowerCase();
 };

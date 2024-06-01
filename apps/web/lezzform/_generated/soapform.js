@@ -1,20 +1,20 @@
 import { z as a } from "zod";
 import {
   Lezzform as c,
-  FormField as F,
-  FormItem as S,
+  FormField as S,
+  FormItem as F,
   FormLabel as p,
   FormControl as h,
-  FormMessage as b,
-  Text as d,
+  FormMessage as d,
+  Text as b,
   Input as L,
   Button as y,
 } from "@lezzform/react";
 import * as e from "react";
 import { jsx as o, jsxs as s } from "react/jsx-runtime";
 var R = a.object({ name: a.string().optional() }),
-  u = "1Wy7YbC0mUUx4yfIFHRv",
-  w = ({
+  u = "iuz73fgsKUB3syAaooS9",
+  A = ({
     onSubmit: m,
     onError: i,
     onSuccess: l,
@@ -42,12 +42,12 @@ var R = a.object({ name: a.string().optional() }),
         children: (n) =>
           s(c.Container, {
             children: [
-              o(d.Heading2, { styles: { root: {} }, children: "SOAPForm" }),
-              o(F, {
+              o(b.Heading2, { styles: { root: {} }, children: "SOAPForm" }),
+              o(S, {
                 control: n.control,
                 name: "name",
                 render: ({ field: r }) =>
-                  s(S, {
+                  s(F, {
                     children: [
                       o(p, { children: "Name" }),
                       o(h, {
@@ -62,7 +62,7 @@ var R = a.object({ name: a.string().optional() }),
                           styles: { root: {} },
                         }),
                       }),
-                      o(b, {}),
+                      o(d, {}),
                     ],
                   }),
               }),
@@ -80,4 +80,4 @@ var R = a.object({ name: a.string().optional() }),
       u,
     );
   };
-export { w as Form };
+export { A as Form };

@@ -7,13 +7,13 @@ import {
   FormControl as u,
   FormMessage as s,
   Attachment as R,
-  Dropdown as L,
-  Input as v,
-  NumberInput as d,
+  Dropdown as v,
+  Input as L,
+  NumberInput as p,
   TwoColumn as I,
   Button as h,
 } from "@lezzform/react";
-import { ChevronDown as P } from "lucide-react";
+import { ChevronDown as w } from "lucide-react";
 import * as c from "react";
 import { jsx as e, jsxs as n } from "react/jsx-runtime";
 var k = t.object({
@@ -24,7 +24,7 @@ var k = t.object({
     stock: t.coerce.number(),
     discount: t.coerce.number().optional(),
   }),
-  g = "mlaWKpLoB8PgH2OzIcqf",
+  g = "5I0yNaiAFhdj5MwTWjdd",
   E = ({
     onSubmit: i,
     onError: z,
@@ -65,16 +65,16 @@ var k = t.object({
                           label: "Image",
                           name: o.name,
                           value: o.value,
-                          onChange: (p) => {
-                            o.onChange(p), r.clearErrors(o.name);
+                          onChange: (d) => {
+                            o.onChange(d), r.clearErrors(o.name);
                           },
                           disabled: o.disabled,
                           placeholder: "",
                           acceptedFormats: ["image/jpeg", "image/png"],
                           maxSize: 2048,
                           headers: [],
-                          onError: (p) => {
-                            r.setError(o.name, { message: p });
+                          onError: (d) => {
+                            r.setError(o.name, { message: d });
                           },
                           path: { value: "" },
                           url: "",
@@ -94,7 +94,7 @@ var k = t.object({
                     children: [
                       e(l, { isRequired: !0, children: "Category" }),
                       e(u, {
-                        children: e(L, {
+                        children: e(v, {
                           label: "Category",
                           name: o.name,
                           value: o.value,
@@ -109,7 +109,7 @@ var k = t.object({
                           disabled: o.disabled,
                           styles: { root: {} },
                           suffixAdornment: {
-                            icon: e(P, { size: 18, color: "#000000" }),
+                            icon: e(w, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
@@ -125,7 +125,7 @@ var k = t.object({
                     children: [
                       e(l, { isRequired: !0, children: "Title" }),
                       e(u, {
-                        children: e(v, {
+                        children: e(L, {
                           label: "Title",
                           name: o.name,
                           value: o.value ?? "",
@@ -149,7 +149,7 @@ var k = t.object({
                     children: [
                       e(l, { children: "Price" }),
                       e(u, {
-                        children: e(d, {
+                        children: e(p, {
                           label: "Price",
                           name: o.name,
                           value: o.value ?? 0,
@@ -172,7 +172,7 @@ var k = t.object({
                     children: [
                       e(l, { isRequired: !0, children: "Quantity" }),
                       e(u, {
-                        children: e(d, {
+                        children: e(p, {
                           label: "Quantity",
                           name: o.name,
                           value: o.value ?? 0,
@@ -196,7 +196,7 @@ var k = t.object({
                     children: [
                       e(l, { children: "Discount" }),
                       e(u, {
-                        children: e(d, {
+                        children: e(p, {
                           label: "Discount",
                           name: o.name,
                           value: o.value ?? 0,

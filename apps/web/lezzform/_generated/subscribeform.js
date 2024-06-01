@@ -9,11 +9,11 @@ import {
   Input as F,
   EmailInput as p,
   PasswordInput as g,
-  Divider as S,
-  PhoneNumberInput as k,
+  Divider as k,
+  PhoneNumberInput as L,
   TextArea as y,
-  Spacer as B,
-  Button as v,
+  Spacer as v,
+  Button as B,
 } from "@lezzform/react";
 import * as c from "react";
 import { jsx as o, jsxs as a } from "react/jsx-runtime";
@@ -37,20 +37,20 @@ var P = n.object({
     clinicAddress: n.string(),
     clinicCode: n.string(),
   }),
-  C = "oLcnCBIJcDop0MwcxriQ",
-  E = ({
+  C = "qrcTmZ1sKdvN66J9Y2Fu",
+  N = ({
     onSubmit: u,
     onError: b,
     onSuccess: R,
     defaultValues: z,
-    onAction: w,
-    formProps: q,
+    onAction: q,
+    formProps: w,
   }) => {
     let d = c.useRef();
     c.useEffect(() => {
       u && (d.current = u);
     }, [u]);
-    let L = c.useCallback(async (r, e) => {
+    let S = c.useCallback(async (r, e) => {
       if (d.current) return d.current(r, e);
     }, []);
     return o(
@@ -58,7 +58,7 @@ var P = n.object({
       {
         id: C,
         defaultValues: z,
-        onSubmit: L,
+        onSubmit: S,
         onError: b,
         onSuccess: R,
         zodSchema: P,
@@ -162,7 +162,7 @@ var P = n.object({
                     ],
                   }),
               }),
-              o(S.Solid, { styles: { root: {} }, size: 1, color: "#c7c7c7" }),
+              o(k.Solid, { styles: { root: {} }, size: 1, color: "#c7c7c7" }),
               o(m, {
                 control: r.control,
                 name: "clinicName",
@@ -219,7 +219,7 @@ var P = n.object({
                     children: [
                       o(t, { isRequired: !0, children: "No Telp. Klinik" }),
                       o(s, {
-                        children: o(k, {
+                        children: o(L, {
                           label: "No Telp. Klinik",
                           name: e.name,
                           value: e.value ?? "",
@@ -283,8 +283,8 @@ var P = n.object({
                     ],
                   }),
               }),
-              o(B, { styles: { root: {} }, size: 16 }),
-              o(v, {
+              o(v, { styles: { root: {} }, size: 16 }),
+              o(B, {
                 type: "submit",
                 className: "w-full",
                 disabled: r.formState.isSubmitting,
@@ -298,4 +298,4 @@ var P = n.object({
       C,
     );
   };
-export { E as Form };
+export { N as Form };

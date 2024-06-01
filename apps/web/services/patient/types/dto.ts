@@ -7,3 +7,5 @@ export interface CreatePatientDto {
   phone: string;
   birthAt: string;
 }
+
+export type UpdatePatientDto = Partial<CreatePatientDto>;

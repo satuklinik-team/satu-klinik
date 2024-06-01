@@ -35,7 +35,7 @@ import {
 import { useDeleteMedicine } from "@/services/medicine/hooks/use-delete-medicine";
 import { useFindMedicineByCategory } from "@/services/medicine/hooks/use-find-medicine-by-category";
 import { MedicineQueryKeyFactory } from "@/services/medicine/utils/query-key.factory";
-import { useFindMedicineCategory } from "@/services/medicine-category/hooks/use-find-medicine";
+import { useFindMedicineCategory } from "@/services/medicine-category/hooks/use-find-medicine-category";
 
 import { ClinicItemCard } from "../components/shared/card";
 

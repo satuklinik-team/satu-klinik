@@ -2,8 +2,9 @@
 
 import Image from "next/image";
 import { useParams, usePathname } from "next/navigation";
-import type { HTMLAttributes } from "react";
+import { type HTMLAttributes, useMemo } from "react";
 
+import { useGetUserData } from "@/hooks/use-get-user-data";
 import { cn } from "@/lib/utils";
 
 import { UserButton } from "../../../../components/layout/user-button";
@@ -17,17 +18,24 @@ type LeftBarProps = HTMLAttributes<HTMLDivElement>;
 
 export function LeftBar({ className, ...rest }: LeftBarProps): JSX.Element {
   const { isLeftBarOpen } = useClinicLayoutStore();
-
   const pathname = usePathname();
   const { clinicId } = useParams();
+  const { roles } = useGetUserData();
 
   const reducedPathname = pathname.replace(`clinic/${clinicId as string}`, "");
+
+  const authorizedleftBarGroups = useMemo(() => {
+    if (roles === "PHARMACY")
+      return leftBarGroups.filter((item) => item.id === "3");
+
+    return leftBarGroups;
+  }, [roles]);
 
   return (
     <div
       className={cn(
         "flex flex-col justify-between h-screen border-r",
-        className
+        className,
       )}
       {...rest}
     >
@@ -50,7 +58,7 @@ export function LeftBar({ className, ...rest }: LeftBarProps): JSX.Element {
       </div>
 
       <div className="flex-1 overflow-x-auto">
-        {leftBarGroups.map((group, index) => (
+        {authorizedleftBarGroups.map((group, index) => (
           <LeftBarGroup
             className={cn(index === 0 && "border-t-0")}
             isOpen={isLeftBarOpen}

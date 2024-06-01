@@ -38,7 +38,7 @@ import type {
 import { updateMedicineSchema } from "@/services/medicine/types/dto";
 import type { MedicineEntity } from "@/services/medicine/types/entity";
 import { MedicineQueryKeyFactory } from "@/services/medicine/utils/query-key.factory";
-import { useFindMedicineCategory } from "@/services/medicine-category/hooks/use-find-medicine";
+import { useFindMedicineCategory } from "@/services/medicine-category/hooks/use-find-medicine-category";
 
 interface ClinicEditItemFormProps {
   defaultValues: MedicineEntity;
@@ -163,7 +163,7 @@ export function ClinicEditItemForm({
                         <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                       </Button>
                     </PopoverTrigger>
-                    <PopoverContent className="w-[200px] max-h-[300px] overflow-y-auto p-0">
+                    <PopoverContent className="max-h-[300px] overflow-y-auto p-0">
                       <Command shouldFilter={false}>
                         <CommandInput
                           onValueChange={(inputValue) => {
