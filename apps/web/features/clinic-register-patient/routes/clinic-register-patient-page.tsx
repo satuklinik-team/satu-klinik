@@ -30,6 +30,7 @@ import { useFindPatient } from "@/services/patient/hooks/use-find-patient";
 import type { CreatePatientDto } from "@/services/patient/types/dto";
 import type { PatientEntity } from "@/services/patient/types/entity";
 import { PatientQueryKeyFactory } from "@/services/patient/utils/query-key.factory";
+// import { useCreateNewPatientVitalSign } from "@/services/patient-vital-sign/hooks/use-create-new-patient";
 import { useCreatePatientVitalSign } from "@/services/patient-vital-sign/hooks/use-create-patient";
 import type { CreatePatientVitalSignDto } from "@/services/patient-vital-sign/types/dto";
 
@@ -72,7 +73,7 @@ export function ClinicRegisterPatientPage(): JSX.Element {
     };
   }, [selectedPatient]);
 
-  console.log({ defaultPatient });
+  defaultPatient;
 
   const { data } = useFindPatient({
     skip: 0,
@@ -82,6 +83,8 @@ export function ClinicRegisterPatientPage(): JSX.Element {
   });
 
   const { mutateAsync: createPatient } = useCreatePatient();
+  // const { mutateAsync: createNewPatient } = useCreateNewPatientVitalSign();
+
   const { mutateAsync: createPatientVitalSign } = useCreatePatientVitalSign();
 
   const onSubmit = useCallback(
@@ -198,7 +201,7 @@ export function ClinicRegisterPatientPage(): JSX.Element {
             title="Daftar Pasien"
           >
             <AddPatientForm
-              defaultValues={defaultPatient}
+              // defaultValues={defaultPatient}
               onSubmit={onSubmit}
             />
           </ClinicCard>
