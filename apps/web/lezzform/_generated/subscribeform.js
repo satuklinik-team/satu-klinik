@@ -9,15 +9,15 @@ import {
   Input as F,
   EmailInput as p,
   PasswordInput as g,
-  Divider as S,
-  PhoneNumberInput as k,
+  Divider as k,
+  PhoneNumberInput as L,
   TextArea as y,
-  Spacer as P,
-  Button as v,
+  Spacer as v,
+  Button as B,
 } from "@lezzform/react";
 import * as c from "react";
 import { jsx as o, jsxs as a } from "react/jsx-runtime";
-var B = n.object({
+var P = n.object({
     fullname: n.string(),
     email: n.string().email(),
     password: n.string().max(14).min(6),
@@ -37,12 +37,12 @@ var B = n.object({
     clinicAddress: n.string(),
     clinicCode: n.string(),
   }),
-  C = "lSLhgLr1UjCtzdnTP7oe",
-  E = ({
+  C = "qrcTmZ1sKdvN66J9Y2Fu",
+  N = ({
     onSubmit: u,
     onError: b,
-    onSuccess: z,
-    defaultValues: R,
+    onSuccess: R,
+    defaultValues: z,
     onAction: q,
     formProps: w,
   }) => {
@@ -50,18 +50,18 @@ var B = n.object({
     c.useEffect(() => {
       u && (d.current = u);
     }, [u]);
-    let L = c.useCallback(async (r, e) => {
+    let S = c.useCallback(async (r, e) => {
       if (d.current) return d.current(r, e);
     }, []);
     return o(
       h,
       {
         id: C,
-        defaultValues: R,
-        onSubmit: L,
+        defaultValues: z,
+        onSubmit: S,
         onError: b,
-        onSuccess: z,
-        zodSchema: B,
+        onSuccess: R,
+        zodSchema: P,
         mode: "onSubmit",
         children: (r) =>
           a(h.Container, {
@@ -162,7 +162,7 @@ var B = n.object({
                     ],
                   }),
               }),
-              o(S.Solid, { styles: { root: {} }, size: 1, color: "#c7c7c7" }),
+              o(k.Solid, { styles: { root: {} }, size: 1, color: "#c7c7c7" }),
               o(m, {
                 control: r.control,
                 name: "clinicName",
@@ -219,7 +219,7 @@ var B = n.object({
                     children: [
                       o(t, { isRequired: !0, children: "No Telp. Klinik" }),
                       o(s, {
-                        children: o(k, {
+                        children: o(L, {
                           label: "No Telp. Klinik",
                           name: e.name,
                           value: e.value ?? "",
@@ -283,8 +283,8 @@ var B = n.object({
                     ],
                   }),
               }),
-              o(P, { styles: { root: {} }, size: 16 }),
-              o(v, {
+              o(v, { styles: { root: {} }, size: 16 }),
+              o(B, {
                 type: "submit",
                 className: "w-full",
                 disabled: r.formState.isSubmitting,
@@ -298,4 +298,4 @@ var B = n.object({
       C,
     );
   };
-export { E as Form };
+export { N as Form };

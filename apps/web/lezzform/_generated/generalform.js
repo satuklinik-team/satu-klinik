@@ -1,14 +1,14 @@
 import { z as n } from "zod";
 import {
-  Lezzform as p,
+  Lezzform as F,
   FormField as t,
   FormItem as s,
   FormLabel as l,
   FormControl as i,
   FormMessage as u,
   Input as d,
-  PhoneNumberInput as S,
-  NumberInput as C,
+  PhoneNumberInput as C,
+  NumberInput as S,
   Button as I,
 } from "@lezzform/react";
 import {
@@ -36,10 +36,10 @@ var f = n.object({
     address: n.string(),
     price: n.coerce.number(),
   }),
-  h = "vUzqmgc1Hr9xjJSjRwuh",
+  h = "MyvnapgTaaqgnYGCz1W4",
   D = ({
     onSubmit: m,
-    onError: F,
+    onError: p,
     onSuccess: g,
     defaultValues: z,
     onAction: k,
@@ -53,17 +53,17 @@ var f = n.object({
       if (b.current) return b.current(r, e);
     }, []);
     return o(
-      p,
+      F,
       {
         id: h,
         defaultValues: z,
         onSubmit: R,
-        onError: F,
+        onError: p,
         onSuccess: g,
         zodSchema: f,
         mode: "onSubmit",
         children: (r) =>
-          a(p.Container, {
+          a(F.Container, {
             children: [
               o(t, {
                 control: r.control,
@@ -158,7 +158,7 @@ var f = n.object({
                     children: [
                       o(l, { isRequired: !0, children: "Nomor Telepon" }),
                       o(i, {
-                        children: o(S, {
+                        children: o(C, {
                           label: "Nomor Telepon",
                           name: e.name,
                           value: e.value ?? "",
@@ -209,7 +209,7 @@ var f = n.object({
                     children: [
                       o(l, { isRequired: !0, children: "Harga Dasar" }),
                       o(i, {
-                        children: o(C, {
+                        children: o(S, {
                           label: "Harga Dasar",
                           name: e.name,
                           value: e.value ?? 0,

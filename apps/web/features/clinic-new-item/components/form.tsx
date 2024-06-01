@@ -38,7 +38,7 @@ import type {
 } from "@/services/medicine/types/dto";
 import { createMedicineSchema } from "@/services/medicine/types/dto";
 import { MedicineQueryKeyFactory } from "@/services/medicine/utils/query-key.factory";
-import { useFindMedicineCategory } from "@/services/medicine-category/hooks/use-find-medicine";
+import { useFindMedicineCategory } from "@/services/medicine-category/hooks/use-find-medicine-category";
 
 export function ClinicNewItemForm(): JSX.Element {
   const router = useRouter();

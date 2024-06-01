@@ -1,6 +1,7 @@
 import {
   Activity,
   Bookmark,
+  Boxes,
   CirclePlus,
   Home,
   Pill,
@@ -34,6 +35,7 @@ export const leftBarGroups: LeftBarGroup[] = [
     category: "Apotek",
     items: [
       { icon: Store, text: "Tugas", path: "/pharmacy" },
+      { icon: Boxes, text: "Kategori", path: "/categories" },
       { icon: Pill, text: "Inventori", path: "/items" },
     ],
   },
