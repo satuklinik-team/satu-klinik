@@ -7,6 +7,7 @@ import { JwtPayload } from 'src/auth/types';
 import { TokenData } from 'src/utils';
 import { Roles } from 'src/utils/decorators/roles.decorator';
 import { Role } from '@prisma/client';
+import { PractitionerOnly } from 'src/utils/decorators/practitioner-only.decorator';
 
 @Controller('patient-assessment')
 export class PatientAssessmentController {
@@ -15,6 +16,7 @@ export class PatientAssessmentController {
   ) {}
 
   @Post()
+  @PractitionerOnly()
   @Roles(Role.DOCTOR)
   async create(
     @Body() createPatientAssessmentDto: CreatePatientAssessmentDto,

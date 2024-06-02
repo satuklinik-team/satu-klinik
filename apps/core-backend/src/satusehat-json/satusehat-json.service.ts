@@ -76,7 +76,7 @@ export class SatusehatJsonService {
     };
   }
 
-  async encounterJson(mrid: string) {
+  async encounterKunjunganBaruJson(mrid: string) {
     const patientMR =
       await this.prismaService.patient_medical_records.findFirst({
         where: {
@@ -107,12 +107,6 @@ export class SatusehatJsonService {
         },
       });
 
-    const pharmacyTask = await this.prismaService.pharmacy_Task.findFirst({
-      where: {
-        assessmentReffId: mrid,
-      },
-    });
-
     return {
       resource: {
         resourceType: 'Encounter',
@@ -122,30 +116,7 @@ export class SatusehatJsonService {
             value: patientMR.queue,
           },
         ],
-        status: 'finished',
-        statusHistory: [
-          {
-            status: 'arrived',
-            period: {
-              start: patientMR.visitAt,
-              end: patientMR.visitAt,
-            },
-          },
-          {
-            status: 'in-progress',
-            period: {
-              start: patientMR.visitAt,
-              end: pharmacyTask.doneAt,
-            },
-          },
-          {
-            status: 'finished',
-            period: {
-              start: pharmacyTask.doneAt,
-              end: pharmacyTask.doneAt,
-            },
-          },
-        ],
+        status: 'arrived',
         class: {
           system: 'http://terminology.hl7.org/CodeSystem/v3-ActCode',
           code: 'AMB',
@@ -177,10 +148,16 @@ export class SatusehatJsonService {
         ],
         period: {
           start: patientMR.visitAt,
-          end: pharmacyTask.doneAt,
         },
         location: [
           {
+            location: {
+              reference: `Location/${patientMR.Patient.Clinics.locationSatuSehatId}`,
+              display: patientMR.Patient.Clinics.locationName,
+            },
+            period: {
+              start: patientMR.visitAt,
+            },
             extension: [
               {
                 extension: [
@@ -201,10 +178,11 @@ export class SatusehatJsonService {
                 url: 'https://fhir.kemkes.go.id/r4/StructureDefinition/ServiceClass',
               },
             ],
-            location: {
-              reference: `Location/${patientMR.Patient.Clinics.locationSatuSehatId}`,
-              display: patientMR.Patient.Clinics.locationName,
-            },
+          },
+        ],
+        statusHistory: [
+          {
+            status: 'arrived',
             period: {
               start: patientMR.visitAt,
             },
@@ -555,9 +533,11 @@ export class SatusehatJsonService {
             isActive: true,
             strength: {
               numerator: {
-                value: parseInt(ingredient.kekuatan_zat_aktif[0]),
+                value: parseInt(
+                  ingredient.kekuatan_zat_aktif.split('/')[0].split(' ')[0],
+                ),
                 system: 'http://unitsofmeasure.org',
-                code: ingredient.kekuatan_zat_aktif[1].split('/')[0],
+                code: ingredient.kekuatan_zat_aktif.split('/')[0].split(' ')[1],
               },
               denominator: {
                 value: 1,
@@ -660,7 +640,7 @@ export class SatusehatJsonService {
           },
           {
             use: 'official',
-            system: 'http://sys-ids.kemkes.go.id/prescription-item/{{Org_id}}',
+            system: `http://sys-ids.kemkes.go.id/prescription-item/${clinics.organizationId}`,
             value:
               prescription.Patient_medical_records.assessment[0].id.toString(),
           },
@@ -963,6 +943,201 @@ export class SatusehatJsonService {
       request: {
         method: 'POST',
         url: 'MedicationDispense',
+      },
+    };
+  }
+
+  async encounterCompleteJson(mrid: string) {
+    const patientMR =
+      await this.prismaService.patient_medical_records.findFirst({
+        where: {
+          id: mrid,
+        },
+        select: {
+          encounterId: true,
+          queue: true,
+          visitAt: true,
+          Patient: {
+            select: {
+              satuSehatId: true,
+              fullname: true,
+              Clinics: {
+                select: {
+                  organizationId: true,
+                  locationSatuSehatId: true,
+                  locationName: true,
+                },
+              },
+            },
+          },
+          Practitioner: {
+            select: {
+              satuSehatId: true,
+              fullname: true,
+            },
+          },
+          assessment: {
+            take: 1,
+          },
+        },
+      });
+
+    const pharmacyTask = await this.prismaService.pharmacy_Task.findFirst({
+      where: {
+        assessmentReffId: mrid,
+      },
+    });
+
+    let doneAt: Date;
+    if (pharmacyTask) {
+      doneAt = pharmacyTask.doneAt;
+    } else {
+      const patientAssessment =
+        await this.prismaService.patient_assessment.findFirst({
+          where: {
+            patient_medical_recordsId: mrid,
+          },
+        });
+
+      doneAt = patientAssessment.createdAt;
+    }
+
+    return {
+      resource: {
+        resourceType: 'Encounter',
+        id: patientMR.encounterId,
+        identifier: [
+          {
+            system: `http://sys-ids.kemkes.go.id/encounter/${patientMR.Patient.Clinics.organizationId}`,
+            value: patientMR.queue,
+          },
+        ],
+        status: 'finished',
+        statusHistory: [
+          {
+            status: 'arrived',
+            period: {
+              start: patientMR.visitAt,
+              end: patientMR.visitAt,
+            },
+          },
+          {
+            status: 'in-progress',
+            period: {
+              start: patientMR.visitAt,
+              end: doneAt,
+            },
+          },
+          {
+            status: 'finished',
+            period: {
+              start: doneAt,
+              end: doneAt,
+            },
+          },
+        ],
+        class: {
+          system: 'http://terminology.hl7.org/CodeSystem/v3-ActCode',
+          code: 'AMB',
+          display: 'ambulatory',
+        },
+        subject: {
+          reference: `Patient/${patientMR.Patient.satuSehatId}`,
+          display: patientMR.Patient.fullname,
+        },
+        participant: [
+          {
+            type: [
+              {
+                coding: [
+                  {
+                    system:
+                      'http://terminology.hl7.org/CodeSystem/v3-ParticipationType',
+                    code: 'ATND',
+                    display: 'attender',
+                  },
+                ],
+              },
+            ],
+            individual: {
+              reference: `Practitioner/${patientMR.Practitioner.satuSehatId}`,
+              display: patientMR.Practitioner.fullname,
+            },
+          },
+        ],
+        period: {
+          start: patientMR.visitAt,
+          end: doneAt,
+        },
+        diagnosis: [
+          {
+            condition: {
+              reference: `Condition/${patientMR.assessment[0].conditionId}`,
+              display: `Condition on ${patientMR.Patient.fullname} at ${patientMR.assessment[0].createdAt}`,
+            },
+            use: {
+              coding: [
+                {
+                  system:
+                    'http://terminology.hl7.org/CodeSystem/diagnosis-role',
+                  code: 'DD',
+                  display: 'Discharge diagnosis',
+                },
+              ],
+            },
+            rank: 1,
+          },
+        ],
+        hospitalization: {
+          dischargeDisposition: {
+            coding: [
+              {
+                system:
+                  'http://terminology.hl7.org/CodeSystem/discharge-disposition',
+                code: 'home',
+                display: 'Home',
+              },
+            ],
+          },
+        },
+        location: [
+          {
+            extension: [
+              {
+                extension: [
+                  {
+                    url: 'value',
+                    valueCodeableConcept: {
+                      coding: [
+                        {
+                          system:
+                            'http://terminology.kemkes.go.id/CodeSystem/locationServiceClass-Outpatient',
+                          code: 'reguler',
+                          display: 'Kelas Reguler',
+                        },
+                      ],
+                    },
+                  },
+                ],
+                url: 'https://fhir.kemkes.go.id/r4/StructureDefinition/ServiceClass',
+              },
+            ],
+            location: {
+              reference: `Location/${patientMR.Patient.Clinics.locationSatuSehatId}`,
+              display: patientMR.Patient.Clinics.locationName,
+            },
+            period: {
+              start: patientMR.visitAt,
+            },
+          },
+        ],
+        serviceProvider: {
+          reference: `Organization/${patientMR.Patient.Clinics.organizationId}`,
+        },
+      },
+      request: {
+        method: 'PUT',
+        url: `Encounter/${patientMR.encounterId}`,
       },
     };
   }

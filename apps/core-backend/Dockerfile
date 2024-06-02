@@ -50,5 +50,5 @@ USER nestjs
 COPY --from=installer /app .
 
 # Run
-# CMD node apps/core-backend/dist/main.js
+# CMD node apps/core-backend/dist/src/main.js
 CMD yarn core:start:migrate:prod

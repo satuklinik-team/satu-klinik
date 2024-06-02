@@ -18,7 +18,7 @@ export class UsersService {
   async create(dto: CreateUserDto, context?: ServiceContext) {
     if (await this._isEmailUsed(dto.email)) throw new EmailUsedException();
 
-    const password = await this._getHashedPassword(dto.password);
+    const password = await this.getHashedPassword(dto.password);
     const prisma = this._initPrisma(context?.tx);
     const data = await prisma.users.create({
       data: {
@@ -78,7 +78,7 @@ export class UsersService {
     return !!userCount;
   }
 
-  private async _getHashedPassword(password: string) {
+  private async getHashedPassword(password: string) {
     const hashedPassword = await this.cryptoService.hash(password);
     return hashedPassword;
   }

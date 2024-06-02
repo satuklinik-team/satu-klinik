@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
-import { BadRequestErrorMessages, UnauthorizedErrorMessages } from '../messages';
+import { BadRequestErrorMessages } from '../messages';
 
 export class IncorrectPrescriptionIdException extends HttpException {
   constructor() {

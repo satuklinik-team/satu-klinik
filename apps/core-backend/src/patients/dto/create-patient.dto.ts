@@ -1,13 +1,11 @@
 import { Type } from 'class-transformer';
 import {
   IsDateString,
-  IsInt,
   IsNotEmpty,
   IsNumber,
   IsOptional,
   IsString,
 } from 'class-validator';
-import { JwtPayload } from 'src/auth/types';
 
 export class CreatePatientDto {
   @IsString()

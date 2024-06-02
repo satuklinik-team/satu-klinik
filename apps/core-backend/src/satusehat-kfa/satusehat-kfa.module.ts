@@ -4,6 +4,7 @@ import { HttpModule } from '@nestjs/axios';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import configuration from 'src/config/configuration';
 import { SatusehatOauthModule } from 'src/satusehat-oauth/satusehat-oauth.module';
+import { SatusehatKfaController } from './satusehat-kfa.controller';
 
 @Module({
   providers: [SatusehatKfaService],
@@ -20,5 +21,6 @@ import { SatusehatOauthModule } from 'src/satusehat-oauth/satusehat-oauth.module
     }),
   ],
   exports: [SatusehatKfaService],
+  controllers: [SatusehatKfaController],
 })
 export class SatusehatKfaModule {}
