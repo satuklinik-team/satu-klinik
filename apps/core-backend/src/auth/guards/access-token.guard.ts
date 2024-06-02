@@ -5,6 +5,7 @@ import { Role } from '@prisma/client';
 import { Observable } from 'rxjs';
 import { RoleNotAuthorizedException } from 'src/exceptions/unauthorized/role-not-authorized';
 import { IS_PUBLIC_KEY } from 'src/utils';
+import { PRACTITIONER_ONLY_KEY } from 'src/utils/decorators/practitioner-only.decorator';
 import { ROLES_KEY } from 'src/utils/decorators/roles.decorator';
 
 @Injectable()
@@ -25,11 +26,16 @@ export class AccessTokenGuard extends AuthGuard('jwt-access-token') {
       context.getClass(),
     ]);
 
+    const practitionerOnly = this.reflector.getAllAndOverride<boolean>(
+      PRACTITIONER_ONLY_KEY,
+      [context.getHandler(), context.getClass()],
+    );
+
     if (
       roles &&
       !roles.includes(user.role) &&
-      user.role !== Role.OWNER &&
-      user.role !== Role.SUPERADMIN
+      ((user.role !== Role.OWNER && user.role !== Role.SUPERADMIN) ||
+        practitionerOnly)
     ) {
       throw new RoleNotAuthorizedException();
     }

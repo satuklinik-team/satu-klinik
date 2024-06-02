@@ -1,5 +1,6 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable, Logger } from '@nestjs/common';
+import { Cron, CronExpression } from '@nestjs/schedule';
 import { Role } from '@prisma/client';
 import { AxiosError } from 'axios';
 import { firstValueFrom, catchError } from 'rxjs';
@@ -13,6 +14,9 @@ import { v4 as uuidv4 } from 'uuid';
 export class SatusehatRawatJalanService {
   private logger: Logger = new Logger(SatusehatRawatJalanService.name);
 
+  PATIENT_OCP_JSON_LENGTH = 7;
+  PATIENT_OBSERVATION_JSON_OFFSET = 5;
+
   constructor(
     private readonly prismaService: PrismaService,
     private httpService: HttpService,
@@ -20,74 +24,166 @@ export class SatusehatRawatJalanService {
     private readonly satusehatJsonService: SatusehatJsonService,
   ) {}
 
-  async post(mrid: string) {
-    const patientMR =
-      await this.prismaService.patient_medical_records.findFirst({
+  @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
+  async handleCron() {
+    const clinics = await this.prismaService.clinics.findMany({
+      where: {
+        clientId: {
+          not: null,
+        },
+        clientSecret: {
+          not: null,
+        },
+        organizationId: {
+          not: null,
+        },
+        locationSatuSehatId: {
+          not: null,
+        },
+        locationName: {
+          not: null,
+        },
+      },
+    });
+
+    const satusehatResponseBodyJsonArray = [];
+
+    for (const clinic of clinics) {
+      satusehatResponseBodyJsonArray.push({
+        clinic,
+        clinicResponseBody: await this.postSatuSehatForClinic(clinic.id),
+      });
+    }
+
+    return satusehatResponseBodyJsonArray;
+  }
+
+  async postSatuSehatForClinic(clinicsId: string) {
+    const medicalRecords =
+      await this.prismaService.patient_medical_records.findMany({
         where: {
-          id: mrid,
+          encounterId: null,
         },
         select: {
-          Patient: {
-            select: {
-              clinicsId: true,
-            },
-          },
+          id: true,
         },
       });
 
-    await this.ensurePatientSatuSehatId(mrid);
-    await this.ensurePractitionerSatuSehatId(mrid);
-    await this.ensureDoctorSatuSehatId(patientMR.Patient.clinicsId, mrid);
-    await this.ensurePharmacySatuSehatId(patientMR.Patient.clinicsId, mrid);
+    const completedMedicalRecords = await Promise.all(
+      medicalRecords.filter(async (mr) => {
+        const medicalRecord =
+          await this.prismaService.patient_medical_records.findFirst({
+            where: {
+              id: mr.id,
+            },
+            select: {
+              prescription: true,
+            },
+          });
 
-    const encounter = await this.postBundle(patientMR.Patient.clinicsId, [
-      await this.satusehatJsonService.encounterJson(mrid),
-    ]);
+        if (medicalRecord.prescription.length === 0) {
+          return true;
+        }
 
-    await this.prismaService.patient_medical_records.update({
-      where: {
-        id: mrid,
-      },
-      data: {
-        encounterId: encounter.responseBody[0].response.resourceID,
-      },
+        const pharmacyTask = await this.prismaService.pharmacy_Task.findFirst({
+          where: {
+            assessmentReffId: mr.id,
+          },
+        });
+
+        if (pharmacyTask.status === 'Done') {
+          return true;
+        }
+
+        return false;
+      }),
+    );
+
+    const mridList = completedMedicalRecords.map((mr) => {
+      return { mrid: mr.id };
     });
 
-    const observationConditionProcedure = await this.postBundle(
-      patientMR.Patient.clinicsId,
-      [
+    const encounterKunjunganBaruJsonArray = [];
+
+    for (const { mrid } of mridList) {
+      await this.ensurePatientSatuSehatId(mrid);
+      await this.ensurePractitionerSatuSehatId(mrid);
+      await this.ensureDoctorSatuSehatId(clinicsId, mrid);
+      await this.ensurePharmacySatuSehatId(clinicsId, mrid);
+
+      encounterKunjunganBaruJsonArray.push(
+        await this.satusehatJsonService.encounterKunjunganBaruJson(mrid),
+      );
+    }
+
+    const encounterKunjunganBaruResponseBody = await this.postBundle(
+      clinicsId,
+      encounterKunjunganBaruJsonArray,
+    );
+
+    for (const [index, { mrid }] of mridList.entries()) {
+      await this.prismaService.patient_medical_records.update({
+        where: {
+          id: mrid,
+        },
+        data: {
+          encounterId:
+            encounterKunjunganBaruResponseBody[index].response.resourceID,
+        },
+      });
+    }
+
+    const ocpJsonArray = [];
+
+    for (const { mrid } of mridList) {
+      const mridJson = [
         ...(await this.observationHttpBodyList(mrid)),
         await this.satusehatJsonService.conditionJson(mrid),
         await this.satusehatJsonService.procedureJson(mrid),
-      ],
+      ];
+
+      ocpJsonArray.push(...mridJson);
+    }
+
+    const ocpResponseBody = await this.postBundle(clinicsId, ocpJsonArray);
+
+    for (const [index, { mrid }] of mridList.entries()) {
+      await this.prismaService.patient_assessment.updateMany({
+        where: {
+          patient_medical_recordsId: mrid,
+        },
+        data: {
+          conditionId:
+            ocpResponseBody[
+              this.PATIENT_OCP_JSON_LENGTH * index +
+                this.PATIENT_OBSERVATION_JSON_OFFSET
+            ].response.resourceID,
+        },
+      });
+    }
+
+    await this.ensureMedicationsSatuSehatId(clinicsId);
+
+    const medicationRequestJsonArray = [];
+
+    for (const { mrid } of mridList) {
+      const medicationRequestJson = await this.medicationRequestBundle(
+        clinicsId,
+        mrid,
+      );
+
+      medicationRequestJsonArray.push(...medicationRequestJson);
+    }
+
+    const medicationRequestResponseBody = await this.postBundle(
+      clinicsId,
+      medicationRequestJsonArray.map((value: any) => value.requestBody),
     );
 
-    await this.prismaService.patient_assessment.updateMany({
-      where: {
-        patient_medical_recordsId: mrid,
-      },
-      data: {
-        conditionId:
-          observationConditionProcedure.responseBody[5].response.resourceID,
-      },
-    });
-
-    await this.ensureMedicationsSatuSehatId(patientMR.Patient.clinicsId);
-
-    const medicationRequestBundle = await this.medicationRequestBundle(
-      patientMR.Patient.clinicsId,
-      mrid,
-    );
-
-    const medicationRequest = await this.postBundle(
-      patientMR.Patient.clinicsId,
-      medicationRequestBundle.map((value: any) => value.requestBody),
-    );
-
-    for (const [index, value] of medicationRequest.responseBody.entries()) {
+    for (const [index, value] of medicationRequestResponseBody.entries()) {
       await this.prismaService.patient_prescription.update({
         where: {
-          id: medicationRequestBundle[index].id,
+          id: medicationRequestJsonArray[index].id,
         },
         data: {
           satuSehatId: value.response.resourceID,
@@ -95,21 +191,28 @@ export class SatusehatRawatJalanService {
       });
     }
 
-    const medicationDispenseBundle = await this.medicationDispenseBundle(
-      patientMR.Patient.clinicsId,
-      mrid,
-    );
+    const mdEcJsonArray = [];
 
-    const medicationDispense = await this.postBundle(
-      patientMR.Patient.clinicsId,
-      medicationDispenseBundle.map((value: any) => value.requestBody),
-    );
+    for (const { mrid } of mridList) {
+      const medicationDispenseJson = await this.medicationDispenseBundle(
+        clinicsId,
+        mrid,
+      );
+
+      mdEcJsonArray.push(...medicationDispenseJson);
+
+      mdEcJsonArray.push(
+        await this.satusehatJsonService.encounterCompleteJson(mrid),
+      );
+    }
+
+    const mdEcResponseBody = await this.postBundle(clinicsId, mdEcJsonArray);
 
     return {
-      encounter,
-      observationConditionProcedure,
-      medicationRequest,
-      medicationDispense,
+      encounterKunjunganBaruResponseBody,
+      ocpResponseBody,
+      medicationRequestResponseBody,
+      mdEcResponseBody,
     };
   }
 
@@ -143,18 +246,14 @@ export class SatusehatRawatJalanService {
           },
         })
         .pipe(
-          catchError((error: AxiosError) => {
-            this.logger.error(error.message);
-            this.logger.error(JSON.stringify(error.response.data, null, 2));
+          catchError(async (error: AxiosError) => {
+            await this.showSatuSehatError(requestBody, error);
             throw new SatuSehatErrorException(error.response.status);
           }),
         ),
     );
 
-    return {
-      requestBody,
-      responseBody: responseBody.data.entry,
-    };
+    return responseBody.data.entry;
   }
 
   async observationHttpBodyList(mrid: string) {
@@ -208,6 +307,11 @@ export class SatusehatRawatJalanService {
       await this.prismaService.patient_prescription.findMany({
         where: {
           patient_medical_recordsId: mrid,
+          Medicine: {
+            kfaCode: {
+              not: null,
+            },
+          },
         },
       });
 
@@ -229,18 +333,20 @@ export class SatusehatRawatJalanService {
       await this.prismaService.patient_prescription.findMany({
         where: {
           patient_medical_recordsId: mrid,
+          Medicine: {
+            kfaCode: {
+              not: null,
+            },
+          },
           bought: true,
         },
       });
 
     const transformedValues = prescriptions.map(async (value) => {
-      return {
-        id: value.id,
-        requestBody: await this.satusehatJsonService.medicationDispenseJson(
-          clinicsId,
-          value.id,
-        ),
-      };
+      return await this.satusehatJsonService.medicationDispenseJson(
+        clinicsId,
+        value.id,
+      );
     });
 
     return await Promise.all(transformedValues);
@@ -280,9 +386,8 @@ export class SatusehatRawatJalanService {
             headers: { Authorization: `Bearer ${token}` },
           })
           .pipe(
-            catchError((error: AxiosError) => {
-              this.logger.error(error.message);
-              this.logger.error(JSON.stringify(error.response.data, null, 2));
+            catchError(async (error: AxiosError) => {
+              await this.showSatuSehatError(queryParams, error);
               throw new SatuSehatErrorException(error.response.status);
             }),
           ),
@@ -304,9 +409,8 @@ export class SatusehatRawatJalanService {
               },
             })
             .pipe(
-              catchError((error: AxiosError) => {
-                this.logger.error(error.message);
-                this.logger.error(JSON.stringify(error.response.data, null, 2));
+              catchError(async (error: AxiosError) => {
+                await this.showSatuSehatError(body, error);
                 throw new SatuSehatErrorException(error.response.status);
               }),
             ),
@@ -378,9 +482,8 @@ export class SatusehatRawatJalanService {
               },
             })
             .pipe(
-              catchError((error: AxiosError) => {
-                this.logger.error(error.message);
-                this.logger.error(JSON.stringify(error.response.data, null, 2));
+              catchError(async (error: AxiosError) => {
+                await this.showSatuSehatError(queryParams, error);
                 throw new SatuSehatErrorException(error.response.status);
               }),
             ),
@@ -435,9 +538,8 @@ export class SatusehatRawatJalanService {
             },
           })
           .pipe(
-            catchError((error: AxiosError) => {
-              this.logger.error(error.message);
-              this.logger.error(JSON.stringify(error.response.data, null, 2));
+            catchError(async (error: AxiosError) => {
+              await this.showSatuSehatError(queryParams, error);
               throw new SatuSehatErrorException(error.response.status);
             }),
           ),
@@ -464,6 +566,10 @@ export class SatusehatRawatJalanService {
       },
     });
 
+    if (!pharmacyTask) {
+      return;
+    }
+
     const pharmacist = await this.prismaService.users.findFirst({
       where: {
         id: pharmacyTask.pharmacist,
@@ -486,9 +592,8 @@ export class SatusehatRawatJalanService {
             },
           })
           .pipe(
-            catchError((error: AxiosError) => {
-              this.logger.error(error.message);
-              this.logger.error(JSON.stringify(error.response.data, null, 2));
+            catchError(async (error: AxiosError) => {
+              await this.showSatuSehatError(queryParams, error);
               throw new SatuSehatErrorException(error.response.status);
             }),
           ),
@@ -537,9 +642,20 @@ export class SatusehatRawatJalanService {
           id: value.id,
         },
         data: {
-          satuSehatId: medications.responseBody[index].response.resourceID,
+          satuSehatId: medications[index].response.resourceID,
         },
       });
     }
+  }
+
+  async showSatuSehatError(requestBody: any, error: AxiosError) {
+    this.logger.error(error.message);
+    await this.prismaService.satuSehatError.create({
+      data: {
+        url: error.request._redirectable._currentUrl,
+        requestBody: JSON.stringify(requestBody),
+        responseBody: JSON.stringify(error.response.data),
+      },
+    });
   }
 }

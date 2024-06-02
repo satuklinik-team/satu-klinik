@@ -12,15 +12,23 @@ export class PatientsVitalSignsService {
     private readonly patientService: PatientsService,
   ) {}
 
-  async create(dto: CreateVitalSignDto) {
+  async create(dto: any) {
     const now = new Date();
 
-    await this.patientService.canModifyPatient(dto.patientId, dto.clinicsId);
+    if (dto.patientId) {
+      await this.patientService.canModifyPatient(dto.patientId, dto.clinicsId);
+    }
 
     const data = await this.prismaService.$transaction(async (tx) => {
+      let patient: any;
+      if (!dto.patientId) {
+        patient = await this.patientService.create(dto, { tx });
+        dto.patientId = patient.id;
+      }
+
       const queue = await this._getQueueNo(dto.clinicsId, { tx });
 
-      const data = await this.prismaService.patient_medical_records.create({
+      const data = await tx.patient_medical_records.create({
         data: {
           patientId: dto.patientId,
           visitAt: now,
@@ -50,7 +58,13 @@ export class PatientsVitalSignsService {
         },
       });
 
-      return data;
+      if (patient === undefined) {
+        return data;
+      }
+      return {
+        patient,
+        patientVitalSign: data,
+      };
     });
 
     return data;

@@ -11,6 +11,7 @@ import { DeletePatientDto } from './dto/delete-patient.dto';
 import { JwtPayload } from 'src/auth/types';
 import { FindAllService } from 'src/find-all/find-all.service';
 import { GetPatientByIdDto } from './dto/get-patient-by-id-dto';
+import { ServiceContext } from 'src/utils/types';
 
 @Injectable()
 export class PatientsService {
@@ -19,8 +20,10 @@ export class PatientsService {
     private readonly findAllService: FindAllService,
   ) {}
 
-  async create(dto: CreatePatientDto) {
-    const data = await this.prismaService.patient.create({
+  async create(dto: CreatePatientDto, context?: ServiceContext) {
+    const prisma = this._initPrisma(context?.tx);
+
+    const data = await prisma.patient.create({
       data: {
         norm: await this.generateMedicalRecordNorm(dto.clinicsId),
         nik: dto.nik,
@@ -120,8 +123,8 @@ export class PatientsService {
     dto: FindAllPatientsDto,
   ): Prisma.PatientFindManyArgs['where'] {
     if (!dto.search) {
-      if (dto.type == FindAllPatientTypes.ALL) {
-        return {};
+      if (dto.type === FindAllPatientTypes.ALL) {
+        return { clinicsId: dto.clinicsId };
       }
       const now = new Date();
       const status = dto.type.at(0).toLowerCase() + '1';
@@ -141,27 +144,32 @@ export class PatientsService {
       OR: [
         {
           nik: {
-            startsWith: dto.search,
+            contains: dto.search,
+            mode: 'insensitive',
           },
         },
         {
           fullname: {
-            startsWith: dto.search,
+            contains: dto.search,
+            mode: 'insensitive',
           },
         },
         {
           norm: {
-            startsWith: dto.search,
+            contains: dto.search,
+            mode: 'insensitive',
           },
         },
         {
           address: {
-            startsWith: dto.search,
+            contains: dto.search,
+            mode: 'insensitive',
           },
         },
         {
           phone: {
-            startsWith: dto.search,
+            contains: dto.search,
+            mode: 'insensitive',
           },
         },
       ],
@@ -180,6 +188,7 @@ export class PatientsService {
       phone: true,
       address: true,
       clinicsId: true,
+      satuSehatId: true,
       mr: {
         orderBy: { visitAt: 'desc' },
         take: 1,
@@ -191,5 +200,12 @@ export class PatientsService {
         },
       },
     };
+  }
+
+  private _initPrisma(tx?: ServiceContext['tx']) {
+    if (tx) {
+      return tx;
+    }
+    return this.prismaService;
   }
 }

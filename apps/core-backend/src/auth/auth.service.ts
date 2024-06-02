@@ -121,9 +121,25 @@ export class AuthService {
     if (await this._isPasswordNotMatch(user.password, dto.password))
       throw new IncorrectEmailPasswordException();
 
-    const clinic = await this.prismaService.clinics.findUnique({
+    let clinic = await this.prismaService.clinics.findUnique({
       where: { id: user.clinicsId },
     });
+
+    if (
+      !clinic.completeCreds &&
+      clinic.clientId &&
+      clinic.clientSecret &&
+      clinic.organizationId &&
+      clinic.locationName &&
+      clinic.locationSatuSehatId
+    ) {
+      clinic = await this.prismaService.clinics.update({
+        where: { id: user.clinicsId },
+        data: {
+          completeCreds: true,
+        },
+      });
+    }
 
     return { user: exclude(user, ['password']), clinic };
   }

@@ -184,6 +184,7 @@ enum Role {
   SUPERADMIN
   DOCTOR
   PHARMACY
+  SATUKLINIKADMIN
 }
 
 model Users {
@@ -192,7 +193,7 @@ model Users {
   nik                      String?
   satuSehatId              String?
   email                    String                    @unique
-  fullname                 String
+  fullname                 String?
   address                  String?
   phone                    String?
   photo                    String?                   @default("/images/user.png")
@@ -263,6 +264,7 @@ model Clinics {
   organizationId      String?
   locationSatuSehatId String?
   locationName        String?
+  completeCreds       Boolean             @default(false)
   accountsId          String?             @db.Uuid
   Accounts            Accounts?           @relation(fields: [accountsId], references: [id])
   Notifications       Notifications[]
@@ -462,6 +464,14 @@ model MedicineCategory {
   clinicsId String?    @db.Uuid
   clinics   Clinics?   @relation(fields: [clinicsId], references: [id])
   Medicine  Medicine[]
+}
+
+model SatuSehatError {
+  id           Int      @id @default(autoincrement())
+  url          String?
+  requestBody  String?
+  responseBody String?
+  time         DateTime @default(now())
 }
 
 model ICD10 {
