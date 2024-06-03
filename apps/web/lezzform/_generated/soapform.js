@@ -8,19 +8,19 @@ import {
   FormMessage as d,
   Text as b,
   Input as L,
-  Button as y,
+  Button as R,
 } from "@lezzform/react";
 import * as e from "react";
 import { jsx as o, jsxs as s } from "react/jsx-runtime";
-var R = a.object({ name: a.string().optional() }),
-  u = "iuz73fgsKUB3syAaooS9",
-  A = ({
+var y = a.object({ name: a.string().optional() }),
+  u = "S5NcuaKklp4snwf1n2HM",
+  C = ({
     onSubmit: m,
     onError: i,
     onSuccess: l,
     defaultValues: f,
     onAction: P,
-    formProps: g,
+    formProps: k,
   }) => {
     let t = e.useRef();
     e.useEffect(() => {
@@ -37,7 +37,7 @@ var R = a.object({ name: a.string().optional() }),
         onSubmit: z,
         onError: i,
         onSuccess: l,
-        zodSchema: R,
+        zodSchema: y,
         mode: "onSubmit",
         children: (n) =>
           s(c.Container, {
@@ -66,7 +66,7 @@ var R = a.object({ name: a.string().optional() }),
                     ],
                   }),
               }),
-              o(y, {
+              o(R, {
                 type: "submit",
                 className: "w-full",
                 disabled: n.formState.isSubmitting,
@@ -77,7 +77,7 @@ var R = a.object({ name: a.string().optional() }),
             ],
           }),
       },
-      u,
+      u
     );
   };
-export { A as Form };
+export { C as Form };

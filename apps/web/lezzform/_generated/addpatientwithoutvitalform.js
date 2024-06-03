@@ -1,8 +1,8 @@
 import { z as a } from "zod";
 import {
   Lezzform as F,
-  FormField as t,
-  FormItem as m,
+  FormField as m,
+  FormItem as t,
   FormLabel as l,
   FormControl as s,
   FormMessage as u,
@@ -10,19 +10,19 @@ import {
   Dropdown as p,
   DatePicker as L,
   PhoneNumberInput as S,
-  TextArea as k,
-  TwoColumn as A,
+  TextArea as A,
+  TwoColumn as k,
   Button as g,
 } from "@lezzform/react";
 import {
   CreditCard as C,
   User as N,
   Calendar as B,
-  Phone as I,
+  Phone as P,
 } from "lucide-react";
 import * as c from "react";
 import { jsx as e, jsxs as n } from "react/jsx-runtime";
-var P = a.object({
+var I = a.object({
     medicalNumber: a.string().optional(),
     nik: a.string(),
     fullname: a.string(),
@@ -37,18 +37,18 @@ var P = a.object({
         (i) =>
           !i ||
           /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/.test(i),
-        { message: "Invalid phone number format" },
+        { message: "Invalid phone number format" }
       ),
     address: a.string(),
   }),
-  z = "MrbjkDqxirgnteIuKN8d",
+  z = "Xeow21m25SCNUbHYVgaa",
   K = ({
     onSubmit: i,
     onError: h,
     onSuccess: R,
     defaultValues: y,
-    onAction: q,
-    formProps: f,
+    onAction: f,
+    formProps: q,
   }) => {
     let d = c.useRef();
     c.useEffect(() => {
@@ -65,17 +65,17 @@ var P = a.object({
         onSubmit: v,
         onError: h,
         onSuccess: R,
-        zodSchema: P,
+        zodSchema: I,
         mode: "onSubmit",
         children: (r) =>
           n(F.Container, {
             children: [
-              e(t, {
+              e(m, {
                 control: r.control,
                 name: "medicalNumber",
                 disabled: !0,
                 render: ({ field: o }) =>
-                  n(m, {
+                  n(t, {
                     children: [
                       e(l, { children: "Nomor Rekam Medis" }),
                       e(s, {
@@ -97,11 +97,11 @@ var P = a.object({
                     ],
                   }),
               }),
-              e(t, {
+              e(m, {
                 control: r.control,
                 name: "nik",
                 render: ({ field: o }) =>
-                  n(m, {
+                  n(t, {
                     children: [
                       e(l, { isRequired: !0, children: "NIK" }),
                       e(s, {
@@ -124,11 +124,11 @@ var P = a.object({
                     ],
                   }),
               }),
-              e(t, {
+              e(m, {
                 control: r.control,
                 name: "fullname",
                 render: ({ field: o }) =>
-                  n(m, {
+                  n(t, {
                     children: [
                       e(l, { isRequired: !0, children: "Nama" }),
                       e(s, {
@@ -151,11 +151,11 @@ var P = a.object({
                     ],
                   }),
               }),
-              e(t, {
+              e(m, {
                 control: r.control,
                 name: "sex",
                 render: ({ field: o }) =>
-                  n(m, {
+                  n(t, {
                     children: [
                       e(l, { isRequired: !0, children: "Jenis Kelamin" }),
                       e(s, {
@@ -177,11 +177,11 @@ var P = a.object({
                     ],
                   }),
               }),
-              e(t, {
+              e(m, {
                 control: r.control,
                 name: "blood",
                 render: ({ field: o }) =>
-                  n(m, {
+                  n(t, {
                     children: [
                       e(l, { isRequired: !0, children: "Golongan Darah" }),
                       e(s, {
@@ -206,11 +206,11 @@ var P = a.object({
                     ],
                   }),
               }),
-              e(t, {
+              e(m, {
                 control: r.control,
                 name: "birthAt",
                 render: ({ field: o }) =>
-                  n(m, {
+                  n(t, {
                     children: [
                       e(l, { isRequired: !0, children: "Tanggal Lahir" }),
                       e(s, {
@@ -233,11 +233,11 @@ var P = a.object({
                     ],
                   }),
               }),
-              e(t, {
+              e(m, {
                 control: r.control,
                 name: "phone",
                 render: ({ field: o }) =>
-                  n(m, {
+                  n(t, {
                     children: [
                       e(l, { isRequired: !0, children: "Nomor Telepon" }),
                       e(s, {
@@ -252,7 +252,7 @@ var P = a.object({
                           isRequired: !0,
                           styles: { root: {} },
                           prefixAdornment: {
-                            icon: e(I, { size: 18, color: "#000000" }),
+                            icon: e(P, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
@@ -260,15 +260,15 @@ var P = a.object({
                     ],
                   }),
               }),
-              e(t, {
+              e(m, {
                 control: r.control,
                 name: "address",
                 render: ({ field: o }) =>
-                  n(m, {
+                  n(t, {
                     children: [
                       e(l, { isRequired: !0, children: "Alamat" }),
                       e(s, {
-                        children: e(k, {
+                        children: e(A, {
                           label: "Alamat",
                           name: o.name,
                           value: o.value ?? "",
@@ -284,7 +284,7 @@ var P = a.object({
                     ],
                   }),
               }),
-              n(A, {
+              n(k, {
                 styles: { root: {} },
                 children: [
                   e(g, {
@@ -306,7 +306,7 @@ var P = a.object({
             ],
           }),
       },
-      z,
+      z
     );
   };
 export { K as Form };

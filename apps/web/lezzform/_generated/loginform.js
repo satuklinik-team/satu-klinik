@@ -9,19 +9,19 @@ import {
   EmailInput as b,
   PasswordInput as R,
   Spacer as L,
-  Button as w,
+  Button as P,
 } from "@lezzform/react";
 import * as n from "react";
 import { jsx as r, jsxs as s } from "react/jsx-runtime";
-var P = a.object({ email: a.string().email(), password: a.string() }),
-  F = "Gw0KtEdMUFUJq65SRmhB",
+var w = a.object({ email: a.string().email(), password: a.string() }),
+  F = "E51Oj7PdFD6rZzxIANCx",
   E = ({
     onSubmit: m,
     onError: f,
     onSuccess: p,
     defaultValues: S,
     onAction: y,
-    formProps: g,
+    formProps: C,
   }) => {
     let t = n.useRef();
     n.useEffect(() => {
@@ -38,7 +38,7 @@ var P = a.object({ email: a.string().email(), password: a.string() }),
         onSubmit: h,
         onError: f,
         onSuccess: p,
-        zodSchema: P,
+        zodSchema: w,
         mode: "onSubmit",
         children: (e) =>
           s(u.Container, {
@@ -92,7 +92,7 @@ var P = a.object({ email: a.string().email(), password: a.string() }),
                   }),
               }),
               r(L, { styles: { root: {} }, size: 16 }),
-              r(w, {
+              r(P, {
                 type: "submit",
                 className: "w-full",
                 disabled: e.formState.isSubmitting,
@@ -103,7 +103,7 @@ var P = a.object({ email: a.string().email(), password: a.string() }),
             ],
           }),
       },
-      F,
+      F
     );
   };
 export { E as Form };

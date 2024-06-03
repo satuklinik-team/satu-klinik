@@ -5,7 +5,7 @@ import { useDebounce } from "@uidotdev/usehooks";
 import dayjs from "dayjs";
 import { Check } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
-import { useCallback, useMemo, useState } from "react";
+import { ComponentProps, useCallback, useMemo, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -30,7 +30,6 @@ import { useFindPatient } from "@/services/patient/hooks/use-find-patient";
 import type { CreatePatientDto } from "@/services/patient/types/dto";
 import type { PatientEntity } from "@/services/patient/types/entity";
 import { PatientQueryKeyFactory } from "@/services/patient/utils/query-key.factory";
-// import { useCreateNewPatientVitalSign } from "@/services/patient-vital-sign/hooks/use-create-new-patient";
 import { useCreatePatientVitalSign } from "@/services/patient-vital-sign/hooks/use-create-patient";
 import type { CreatePatientVitalSignDto } from "@/services/patient-vital-sign/types/dto";
 
@@ -73,8 +72,6 @@ export function ClinicRegisterPatientPage(): JSX.Element {
     };
   }, [selectedPatient]);
 
-  defaultPatient;
-
   const { data } = useFindPatient({
     skip: 0,
     limit: 20,
@@ -87,8 +84,11 @@ export function ClinicRegisterPatientPage(): JSX.Element {
 
   const { mutateAsync: createPatientVitalSign } = useCreatePatientVitalSign();
 
-  const onSubmit = useCallback(
-    async (_form: object, dto: Record<string, unknown>) => {
+  const onSubmit = useCallback<
+    ComponentProps<typeof AddPatientForm>["onSubmit"]
+  >(
+    async (_form, dto) => {
+      return console.log({ dto });
       const formattedPatientData: CreatePatientDto = {
         nik: dto.nik as string,
         fullname: dto.fullname as string,
@@ -201,7 +201,7 @@ export function ClinicRegisterPatientPage(): JSX.Element {
             title="Daftar Pasien"
           >
             <AddPatientForm
-              // defaultValues={defaultPatient}
+              defaultValues={defaultPatient}
               onSubmit={onSubmit}
             />
           </ClinicCard>

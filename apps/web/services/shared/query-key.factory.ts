@@ -2,7 +2,7 @@ import type { QueryKey } from "@tanstack/react-query";
 import { stringify } from "qs";
 
 export class QueryKeyFactory {
-  private endpoint: string;
+  protected endpoint: string;
 
   constructor(endpoint: string) {
     this.endpoint = endpoint;

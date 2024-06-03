@@ -7,26 +7,26 @@ import {
   FormControl as d,
   FormMessage as h,
   Input as b,
-  Button as R,
+  Button as L,
 } from "@lezzform/react";
 import * as e from "react";
 import { jsx as r, jsxs as s } from "react/jsx-runtime";
-var L = a.object({ name: a.string() }),
-  c = "aqkUuX9WpZREexfuwk3U",
-  w = ({
-    onSubmit: m,
+var R = a.object({ name: a.string() }),
+  c = "mN52yC40BDiG2fVkudN5",
+  g = ({
+    onSubmit: n,
     onError: i,
     onSuccess: f,
     defaultValues: l,
-    onAction: k,
-    formProps: y,
+    onAction: y,
+    formProps: k,
   }) => {
     let t = e.useRef();
     e.useEffect(() => {
-      m && (t.current = m);
-    }, [m]);
-    let z = e.useCallback(async (n, o) => {
-      if (t.current) return t.current(n, o);
+      n && (t.current = n);
+    }, [n]);
+    let z = e.useCallback(async (m, o) => {
+      if (t.current) return t.current(m, o);
     }, []);
     return r(
       u,
@@ -36,13 +36,13 @@ var L = a.object({ name: a.string() }),
         onSubmit: z,
         onError: i,
         onSuccess: f,
-        zodSchema: L,
+        zodSchema: R,
         mode: "onSubmit",
-        children: (n) =>
+        children: (m) =>
           s(u.Container, {
             children: [
               r(F, {
-                control: n.control,
+                control: m.control,
                 name: "name",
                 render: ({ field: o }) =>
                   s(S, {
@@ -65,18 +65,18 @@ var L = a.object({ name: a.string() }),
                     ],
                   }),
               }),
-              r(R, {
+              r(L, {
                 type: "submit",
                 className: "w-full",
-                disabled: n.formState.isSubmitting,
-                isLoading: n.formState.isSubmitting,
+                disabled: m.formState.isSubmitting,
+                isLoading: m.formState.isSubmitting,
                 styles: { root: { backgroundColor: "#2E584F" } },
                 children: "Submit",
               }),
             ],
           }),
       },
-      c,
+      c
     );
   };
-export { w as Form };
+export { g as Form };

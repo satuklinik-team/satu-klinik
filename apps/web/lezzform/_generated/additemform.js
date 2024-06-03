@@ -9,14 +9,14 @@ import {
   Attachment as R,
   Dropdown as v,
   Input as L,
-  NumberInput as p,
+  NumberInput as d,
   TwoColumn as I,
   Button as h,
 } from "@lezzform/react";
-import { ChevronDown as w } from "lucide-react";
+import { ChevronDown as k } from "lucide-react";
 import * as c from "react";
 import { jsx as e, jsxs as n } from "react/jsx-runtime";
-var k = t.object({
+var B = t.object({
     image: t.string(),
     categoryId: t.string(),
     title: t.string(),
@@ -24,14 +24,14 @@ var k = t.object({
     stock: t.coerce.number(),
     discount: t.coerce.number().optional(),
   }),
-  g = "5I0yNaiAFhdj5MwTWjdd",
-  E = ({
+  g = "E2DbBI71VYlTc7DokB2x",
+  A = ({
     onSubmit: i,
     onError: z,
     onSuccess: C,
     defaultValues: y,
-    onAction: P,
-    formProps: B,
+    onAction: w,
+    formProps: P,
   }) => {
     let b = c.useRef();
     c.useEffect(() => {
@@ -48,7 +48,7 @@ var k = t.object({
         onSubmit: S,
         onError: z,
         onSuccess: C,
-        zodSchema: k,
+        zodSchema: B,
         mode: "onSubmit",
         children: (r) =>
           n(F.Container, {
@@ -65,16 +65,16 @@ var k = t.object({
                           label: "Image",
                           name: o.name,
                           value: o.value,
-                          onChange: (d) => {
-                            o.onChange(d), r.clearErrors(o.name);
+                          onChange: (p) => {
+                            o.onChange(p), r.clearErrors(o.name);
                           },
                           disabled: o.disabled,
                           placeholder: "",
                           acceptedFormats: ["image/jpeg", "image/png"],
                           maxSize: 2048,
                           headers: [],
-                          onError: (d) => {
-                            r.setError(o.name, { message: d });
+                          onError: (p) => {
+                            r.setError(o.name, { message: p });
                           },
                           path: { value: "" },
                           url: "",
@@ -109,7 +109,7 @@ var k = t.object({
                           disabled: o.disabled,
                           styles: { root: {} },
                           suffixAdornment: {
-                            icon: e(w, { size: 18, color: "#000000" }),
+                            icon: e(k, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
@@ -149,7 +149,7 @@ var k = t.object({
                     children: [
                       e(l, { children: "Price" }),
                       e(u, {
-                        children: e(p, {
+                        children: e(d, {
                           label: "Price",
                           name: o.name,
                           value: o.value ?? 0,
@@ -172,7 +172,7 @@ var k = t.object({
                     children: [
                       e(l, { isRequired: !0, children: "Quantity" }),
                       e(u, {
-                        children: e(p, {
+                        children: e(d, {
                           label: "Quantity",
                           name: o.name,
                           value: o.value ?? 0,
@@ -196,7 +196,7 @@ var k = t.object({
                     children: [
                       e(l, { children: "Discount" }),
                       e(u, {
-                        children: e(p, {
+                        children: e(d, {
                           label: "Discount",
                           name: o.name,
                           value: o.value ?? 0,
@@ -233,7 +233,7 @@ var k = t.object({
             ],
           }),
       },
-      g,
+      g
     );
   };
-export { E as Form };
+export { A as Form };

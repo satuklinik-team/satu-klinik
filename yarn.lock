@@ -1120,10 +1120,10 @@
     typescript "^5.3.3"
     zod "^3.22.4"
 
-"@lezzform/react@*":
-  version "0.2.72"
-  resolved "https://registry.yarnpkg.com/@lezzform/react/-/react-0.2.72.tgz#19018b4ad00b0419903bb47fe83b45217d82ef4a"
-  integrity sha512-iGB40LdUDoO8Jm3Ss2v+jthsJndVHkw0OhglLnLmDayp33k+8aBQrH9t9IFLChhZlj6U4qDpwpJ2McrauM4rJQ==
+"@lezzform/react@^0.2.74":
+  version "0.2.74"
+  resolved "https://registry.yarnpkg.com/@lezzform/react/-/react-0.2.74.tgz#5d76cf26a12cc4254f6e59b4e0f90ed5e1c150f2"
+  integrity sha512-GMMz6ea+V2hybeu44ig5ChLNHPiMOIQeMaYyvW5QnvOQ6GS37sqYicWbun5nEa99k03M+9dxDyJn68EejczXtg==
   dependencies:
     "@hookform/resolvers" "^3.3.4"
     "@lezzform/types" "*"

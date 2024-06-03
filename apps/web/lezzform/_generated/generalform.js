@@ -31,19 +31,19 @@ var f = n.object({
         (m) =>
           !m ||
           /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/.test(m),
-        { message: "Invalid phone number format" },
+        { message: "Invalid phone number format" }
       ),
     address: n.string(),
     price: n.coerce.number(),
   }),
-  h = "MyvnapgTaaqgnYGCz1W4",
+  h = "ssHsBR7bOdopK6WXWZE3",
   D = ({
     onSubmit: m,
     onError: p,
     onSuccess: g,
     defaultValues: z,
     onAction: k,
-    formProps: v,
+    formProps: P,
   }) => {
     let b = c.useRef();
     c.useEffect(() => {
@@ -236,7 +236,7 @@ var f = n.object({
             ],
           }),
       },
-      h,
+      h
     );
   };
 export { D as Form };

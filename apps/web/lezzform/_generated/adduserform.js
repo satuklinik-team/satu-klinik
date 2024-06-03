@@ -8,8 +8,8 @@ import {
   FormMessage as u,
   Input as b,
   EmailInput as L,
-  TextArea as w,
-  Dropdown as v,
+  TextArea as v,
+  Dropdown as w,
   PasswordInput as F,
   Spacer as y,
   TwoColumn as P,
@@ -28,8 +28,8 @@ var B = a.object({
     password: a.string().max(14).min(6),
     confirmPassword: a.string().max(14).min(6),
   }),
-  C = "AuVKyo8wWbcquLF0DZ2V",
-  K = ({
+  C = "hZ93R5zQ9XuFi3J0ZtqX",
+  D = ({
     onSubmit: c,
     onError: R,
     onSuccess: g,
@@ -170,7 +170,7 @@ var B = a.object({
                     children: [
                       e(t, { isRequired: !0, children: "Alamat" }),
                       e(s, {
-                        children: e(w, {
+                        children: e(v, {
                           label: "Alamat",
                           name: o.name,
                           value: o.value ?? "",
@@ -194,7 +194,7 @@ var B = a.object({
                     children: [
                       e(t, { isRequired: !0, children: "Role" }),
                       e(s, {
-                        children: e(v.List, {
+                        children: e(w.List, {
                           label: "Role",
                           name: o.name,
                           value: o.value,
@@ -286,7 +286,7 @@ var B = a.object({
             ],
           }),
       },
-      C,
+      C
     );
   };
-export { K as Form };
+export { D as Form };

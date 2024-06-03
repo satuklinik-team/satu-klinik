@@ -13,13 +13,13 @@ import {
   TextArea as R,
   Divider as A,
   TwoColumn as g,
-  ThreeColumn as N,
+  ThreeColumn as k,
   Button as y,
   NumberInput as i,
 } from "@lezzform/react";
 import {
   CreditCard as v,
-  User as k,
+  User as N,
   Calendar as w,
   Phone as P,
 } from "lucide-react";
@@ -40,7 +40,7 @@ var T = a.object({
         (c) =>
           !c ||
           /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/.test(c),
-        { message: "Invalid phone number format" },
+        { message: "Invalid phone number format" }
       ),
     address: a.string(),
     height: a.coerce.number(),
@@ -53,7 +53,7 @@ var T = a.object({
     temperature: a.coerce.number(),
     pain: a.string(),
   }),
-  B = "LbMhlar6HOFlIqWdRJfU",
+  B = "wgIws7wulWvM69kCMYqP",
   G = ({
     onSubmit: c,
     onError: F,
@@ -78,7 +78,7 @@ var T = a.object({
         onError: F,
         onSuccess: L,
         zodSchema: T,
-        mode: "onBlur",
+        mode: "onTouched",
         children: (n) =>
           r(C.Container, {
             children: [
@@ -155,7 +155,7 @@ var T = a.object({
                           isRequired: !0,
                           styles: { root: {} },
                           prefixAdornment: {
-                            icon: o(k, { size: 18, color: "#000000" }),
+                            icon: o(N, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
@@ -427,7 +427,7 @@ var T = a.object({
                   }),
                 ],
               }),
-              r(N, {
+              r(k, {
                 styles: { root: {} },
                 children: [
                   o(l, {
@@ -550,7 +550,7 @@ var T = a.object({
             ],
           }),
       },
-      B,
+      B
     );
   };
 export { G as Form };

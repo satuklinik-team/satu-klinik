@@ -7,6 +7,7 @@ import { type HTMLAttributes, useMemo } from "react";
 import { useGetUserData } from "@/hooks/use-get-user-data";
 import { cn } from "@/lib/utils";
 
+// import { useGetNotification } from "@/services/tasks-status/services/use-get-notification";
 import { UserButton } from "../../../../components/layout/user-button";
 import { useClinicLayoutStore } from "../../stores/use-clinic-layout-store";
 import { leftBarGroups } from "../../utils";
@@ -20,6 +21,8 @@ export function LeftBar({ className, ...rest }: LeftBarProps): JSX.Element {
   const { isLeftBarOpen } = useClinicLayoutStore();
   const pathname = usePathname();
   const { clinicId } = useParams();
+
+  // const { data: notificationData } = useGetNotification();
   const { roles } = useGetUserData();
 
   const reducedPathname = pathname.replace(`clinic/${clinicId as string}`, "");
@@ -35,7 +38,7 @@ export function LeftBar({ className, ...rest }: LeftBarProps): JSX.Element {
     <div
       className={cn(
         "flex flex-col justify-between h-screen border-r",
-        className,
+        className
       )}
       {...rest}
     >
