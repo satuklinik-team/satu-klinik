@@ -7,4 +7,5 @@ export interface UserEntity {
   phone: string;
   roles: UserRole;
   isActive: boolean;
+  satuSehatId?: string;
 }

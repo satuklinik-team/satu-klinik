@@ -30,6 +30,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { useToast } from "@/components/ui/use-toast";
+import { useGetUserData } from "@/hooks/use-get-user-data";
 import { cn } from "@/lib/utils";
 import { useCreateMedicine } from "@/services/medicine/hooks/use-create-medicine";
 import type {
@@ -43,6 +44,7 @@ import { useFindMedicineCategory } from "@/services/medicine-category/hooks/use-
 export function ClinicNewItemForm(): JSX.Element {
   const router = useRouter();
   const { clinicId } = useParams();
+  const { satuSehatId } = useGetUserData();
   const [search, setSearch] = useState<string>("");
 
   const { data: medicineCategoryData } = useFindMedicineCategory({
@@ -198,19 +200,21 @@ export function ClinicNewItemForm(): JSX.Element {
           }}
         />
 
-        <FormField
-          control={form.control}
-          name="title"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Title</FormLabel>
-              <FormControl>
-                <Input placeholder="Title" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        {!satuSehatId && (
+          <FormField
+            control={form.control}
+            name="title"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Title</FormLabel>
+                <FormControl>
+                  <Input placeholder="Title" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
 
         <FormField
           control={form.control}
