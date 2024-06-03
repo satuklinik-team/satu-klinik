@@ -11,7 +11,7 @@ declare const zodFormSchema: z.ZodObject<
     clinicEmail: z.ZodString;
     clinicPhone: z.ZodEffects<z.ZodString, string, string>;
     clinicAddress: z.ZodString;
-    clinicCode: z.ZodString;
+    clinicCode: z.ZodOptional<z.ZodString>;
   },
   "strip",
   z.ZodTypeAny,

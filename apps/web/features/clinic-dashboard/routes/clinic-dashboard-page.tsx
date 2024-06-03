@@ -5,10 +5,13 @@ import { ClinicCard } from "@/features/clinic/components/ui/card";
 import { QueueCard } from "@/features/clinic-patient/components/shared/queue-card";
 import { useFindPatient } from "@/services/patient/hooks/use-find-patient";
 
+// import { useGetTasksStatus } from "@/services/tasks-status/services/use-get-tasks-status";
 import { ClinicDashboardUsersTable } from "../components/table";
 // import { ClinicServicesCard } from "@/features/clinic/components/ui/services-card";
 
 export function ClinicDashboardPage(): JSX.Element {
+  // const { data: tasksStatusData } = useGetTasksStatus({ type: "GENERAL" });
+
   const { data } = useFindPatient({
     skip: 0,
     limit: 20,

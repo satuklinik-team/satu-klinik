@@ -1,8 +1,8 @@
 import { z as a } from "zod";
 import {
   Lezzform as c,
-  FormField as S,
-  FormItem as F,
+  FormField as F,
+  FormItem as S,
   FormLabel as p,
   FormControl as h,
   FormMessage as d,
@@ -13,8 +13,8 @@ import {
 import * as e from "react";
 import { jsx as o, jsxs as s } from "react/jsx-runtime";
 var R = a.object({ name: a.string().optional() }),
-  u = "iuz73fgsKUB3syAaooS9",
-  A = ({
+  u = "01gwyd2XrJnQ5bF2l3Gi",
+  C = ({
     onSubmit: m,
     onError: i,
     onSuccess: l,
@@ -43,11 +43,11 @@ var R = a.object({ name: a.string().optional() }),
           s(c.Container, {
             children: [
               o(b.Heading2, { styles: { root: {} }, children: "SOAPForm" }),
-              o(S, {
+              o(F, {
                 control: n.control,
                 name: "name",
                 render: ({ field: r }) =>
-                  s(F, {
+                  s(S, {
                     children: [
                       o(p, { children: "Name" }),
                       o(h, {
@@ -80,4 +80,4 @@ var R = a.object({ name: a.string().optional() }),
       u,
     );
   };
-export { A as Form };
+export { C as Form };

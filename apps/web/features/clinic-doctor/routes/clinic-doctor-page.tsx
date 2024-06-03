@@ -1,11 +1,14 @@
 "use client";
 
 import { ClinicCard } from "@/features/clinic/components/ui/card";
+import { useGetTasksStatus } from "@/services/tasks-status/services/use-get-tasks-status";
 
 import { ClinicDoctorTable } from "../components/table";
 // import { ClinicServicesCard } from "@/features/clinic/components/ui/services-card";
 
 export function ClinicDoctorPage(): JSX.Element {
+  const { data: tasksStatusData } = useGetTasksStatus({ type: "DOCTOR" });
+
   return (
     <div className="h-full">
       <div className="mb-6 flex flex-col gap-2">
@@ -21,7 +24,7 @@ export function ClinicDoctorPage(): JSX.Element {
           className="border-sky-500"
           title="To Do"
         >
-          0
+          {tasksStatusData?.todo}
         </ClinicCard>
 
         <ClinicCard
@@ -29,7 +32,7 @@ export function ClinicDoctorPage(): JSX.Element {
           className="border-green-500"
           title="Done"
         >
-          0
+          {tasksStatusData?.completed}
         </ClinicCard>
 
         <ClinicCard
@@ -37,7 +40,7 @@ export function ClinicDoctorPage(): JSX.Element {
           className="border-red-500"
           title="Total"
         >
-          0
+          {tasksStatusData?.total}
         </ClinicCard>
       </div>
 

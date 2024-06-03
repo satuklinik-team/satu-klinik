@@ -6,6 +6,7 @@ import { type HTMLAttributes, useMemo } from "react";
 
 import { useGetUserData } from "@/hooks/use-get-user-data";
 import { cn } from "@/lib/utils";
+import { useGetNotification } from "@/services/tasks-status/services/use-get-notification";
 
 import { UserButton } from "../../../../components/layout/user-button";
 import { useClinicLayoutStore } from "../../stores/use-clinic-layout-store";
@@ -20,6 +21,8 @@ export function LeftBar({ className, ...rest }: LeftBarProps): JSX.Element {
   const { isLeftBarOpen } = useClinicLayoutStore();
   const pathname = usePathname();
   const { clinicId } = useParams();
+
+  const { data: notificationData } = useGetNotification();
   const { roles } = useGetUserData();
 
   const reducedPathname = pathname.replace(`clinic/${clinicId as string}`, "");
@@ -67,15 +70,29 @@ export function LeftBar({ className, ...rest }: LeftBarProps): JSX.Element {
             <LeftBarTitle isOpen={isLeftBarOpen}>{group.category}</LeftBarTitle>
             {group.items.map((item) => {
               let isActive;
+              let isNotified;
 
               if (item.path !== "/")
                 isActive = reducedPathname.includes(item.path);
 
               if (item.path === "/") isActive = item.path === reducedPathname;
 
+              if (
+                item.path === "/doctor" &&
+                Boolean(notificationData?.doctorTask)
+              )
+                isNotified = true;
+
+              if (
+                item.path === "/pharmacy" &&
+                Boolean(notificationData?.pharmacyTask)
+              )
+                isNotified = true;
+
               return (
                 <LeftBarItem
                   isActive={isActive}
+                  isNotified={isNotified}
                   isOpen={isLeftBarOpen}
                   key={item.text}
                   {...item}
