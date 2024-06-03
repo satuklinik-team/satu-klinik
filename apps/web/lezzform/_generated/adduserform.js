@@ -15,10 +15,10 @@ import {
   TwoColumn as P,
   Button as h,
 } from "@lezzform/react";
-import { UserRound as A, Mail as k, CreditCard as q } from "lucide-react";
+import { UserRound as A, Mail as B, CreditCard as k } from "lucide-react";
 import * as i from "react";
 import { jsx as e, jsxs as n } from "react/jsx-runtime";
-var B = a.object({
+var I = a.object({
     fullname: a.string(),
     email: a.string().email(),
     phone: a.string(),
@@ -28,13 +28,13 @@ var B = a.object({
     password: a.string().max(14).min(6),
     confirmPassword: a.string().max(14).min(6),
   }),
-  C = "hZ93R5zQ9XuFi3J0ZtqX",
-  D = ({
+  C = "xD461eMs1a5bnrFFjGMB",
+  M = ({
     onSubmit: c,
     onError: R,
     onSuccess: g,
     defaultValues: z,
-    onAction: I,
+    onAction: q,
     formProps: N,
   }) => {
     let d = i.useRef();
@@ -52,7 +52,7 @@ var B = a.object({
         onSubmit: S,
         onError: R,
         onSuccess: g,
-        zodSchema: B,
+        zodSchema: I,
         mode: "onSubmit",
         children: (r) =>
           n(p.Container, {
@@ -103,7 +103,7 @@ var B = a.object({
                           isRequired: !0,
                           styles: { root: {} },
                           prefixAdornment: {
-                            icon: e(k, { size: 18, color: "#000000" }),
+                            icon: e(B, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
@@ -154,7 +154,7 @@ var B = a.object({
                           isRequired: !0,
                           styles: { root: {} },
                           prefixAdornment: {
-                            icon: e(q, { size: 18, color: "#000000" }),
+                            icon: e(k, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
@@ -286,7 +286,7 @@ var B = a.object({
             ],
           }),
       },
-      C
+      C,
     );
   };
-export { D as Form };
+export { M as Form };

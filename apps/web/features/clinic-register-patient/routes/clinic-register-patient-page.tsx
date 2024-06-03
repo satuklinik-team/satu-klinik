@@ -5,7 +5,7 @@ import { useDebounce } from "@uidotdev/usehooks";
 import dayjs from "dayjs";
 import { Check } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
-import { ComponentProps, useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -32,6 +32,7 @@ import type { PatientEntity } from "@/services/patient/types/entity";
 import { PatientQueryKeyFactory } from "@/services/patient/utils/query-key.factory";
 import { useCreatePatientVitalSign } from "@/services/patient-vital-sign/hooks/use-create-patient";
 import type { CreatePatientVitalSignDto } from "@/services/patient-vital-sign/types/dto";
+import { TasksStatusQueryKeyFactory } from "@/services/tasks-status/utils/query-key.factory";
 
 export function ClinicRegisterPatientPage(): JSX.Element {
   const queryClient = useQueryClient();
@@ -61,8 +62,8 @@ export function ClinicRegisterPatientPage(): JSX.Element {
       sex: selectedPatient.sex,
       blood: selectedPatient.blood,
       phone: selectedPatient.phone,
-      birthAt: selectedPatient.birthAt,
-      ...selectedPatient.mr[0].vitalSign[0],
+      birthAt: new Date(selectedPatient.birthAt),
+      ...selectedPatient.mr[0]?.vitalSign[0],
       deletedAt: undefined,
       id: undefined,
       patient_medical_recordsId: undefined,
@@ -84,11 +85,8 @@ export function ClinicRegisterPatientPage(): JSX.Element {
 
   const { mutateAsync: createPatientVitalSign } = useCreatePatientVitalSign();
 
-  const onSubmit = useCallback<
-    ComponentProps<typeof AddPatientForm>["onSubmit"]
-  >(
-    async (_form, dto) => {
-      return console.log({ dto });
+  const onSubmit = useCallback(
+    async (_form: object, dto: Record<string, unknown>) => {
       const formattedPatientData: CreatePatientDto = {
         nik: dto.nik as string,
         fullname: dto.fullname as string,
@@ -120,6 +118,10 @@ export function ClinicRegisterPatientPage(): JSX.Element {
         queryKey: new PatientQueryKeyFactory().lists(),
       });
 
+      await queryClient.invalidateQueries({
+        queryKey: new TasksStatusQueryKeyFactory().notifications(),
+      });
+
       toast({ title: "Berhasil Membuat Pasien!", variant: "success" });
 
       router.push(`/clinic/${clinicId as string}/doctor`);
@@ -131,7 +133,7 @@ export function ClinicRegisterPatientPage(): JSX.Element {
       queryClient,
       router,
       toast,
-    ]
+    ],
   );
 
   return (
@@ -185,7 +187,7 @@ export function ClinicRegisterPatientPage(): JSX.Element {
                           "mr-2 h-4 w-4",
                           selectedPatient?.id === item.id
                             ? "opacity-100"
-                            : "opacity-0"
+                            : "opacity-0",
                         )}
                       />
                       {item.fullname}

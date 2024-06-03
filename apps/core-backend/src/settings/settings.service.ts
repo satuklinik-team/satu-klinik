@@ -27,7 +27,7 @@ export class SettingsService {
           name: 'SERVICEFEE',
         },
         data: {
-          value: dto.serviceFee.toString(),
+          value: dto.serviceFee?.toString(),
         },
       });
 

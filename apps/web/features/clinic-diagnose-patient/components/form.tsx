@@ -43,6 +43,7 @@ import type {
 import { createPatientAssessmentSchema } from "@/services/patient-assessment/types/dto";
 import { PharmacyTaskQueryKeyFactory } from "@/services/pharmacy-task/utils/query-key.factory";
 import type { PrescriptionEntity } from "@/services/prescription/types/entity";
+import { TasksStatusQueryKeyFactory } from "@/services/tasks-status/utils/query-key.factory";
 
 import { ClinicDiagnosePatientPrescriptionForm } from "./prescription-form";
 import { ClinicDiagnosePatientPrescriptionTable } from "./prescription-table";
@@ -110,13 +111,21 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
 
       toast({ title: "Berhasil Membuat Diagnosa!", variant: "success" });
 
-      await queryClient.invalidateQueries({
-        queryKey: new PharmacyTaskQueryKeyFactory().lists(),
-      });
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: new PharmacyTaskQueryKeyFactory().lists(),
+        }),
+        queryClient.invalidateQueries({
+          queryKey: new TasksStatusQueryKeyFactory().notifications(),
+        }),
+        queryClient.invalidateQueries({
+          queryKey: new TasksStatusQueryKeyFactory().list({ type: "DOCTOR" }),
+        }),
+      ]);
 
       router.push(`/clinic/${clinicId as string}/doctor`);
     },
-    [clinicId, mutateAsync, queryClient, router, toast]
+    [clinicId, mutateAsync, queryClient, router, toast],
   );
 
   useEffect(() => {
@@ -191,7 +200,7 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
                 : [];
 
               const label = options.find(
-                (disease) => disease.code === value
+                (disease) => disease.code === value,
               )?.strt;
 
               return (
@@ -227,7 +236,10 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
                                 onSelect={(currentValue) => {
                                   onChange(
                                     currentValue.slice(0, 1).toUpperCase() +
-                                      currentValue.slice(1, currentValue.length)
+                                      currentValue.slice(
+                                        1,
+                                        currentValue.length,
+                                      ),
                                   );
                                   setIsIcd10Open(false);
                                 }}
@@ -238,7 +250,7 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
                                     "mr-2 h-4 w-4",
                                     value === item.code
                                       ? "opacity-100"
-                                      : "opacity-0"
+                                      : "opacity-0",
                                   )}
                                 />
                                 <span className="font-semibold mr-1">
@@ -280,7 +292,7 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
             name="icd9CMCode"
             render={({ field: { value, onChange } }) => {
               const label = icd9CMData?.data.find(
-                (action) => action.code === value
+                (action) => action.code === value,
               )?.str;
 
               return (
@@ -324,7 +336,7 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
                                     "mr-2 h-4 w-4",
                                     value === item.code
                                       ? "opacity-100"
-                                      : "opacity-0"
+                                      : "opacity-0",
                                   )}
                                 />
                                 <span className="font-semibold mr-1">
@@ -399,7 +411,7 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
 
             if (onEditPrescription) {
               const currentIndex = prescriptions.findIndex(
-                (item) => item.medicine?.id === newPrescription.medicine?.id
+                (item) => item.medicine?.id === newPrescription.medicine?.id,
               );
               update(currentIndex, newPrescription);
               setOnEditPrescription(undefined);

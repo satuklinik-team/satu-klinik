@@ -77,7 +77,21 @@ export class PharmacyTasksService {
             clinicsId: true,
           },
         },
-        prescription: true,
+        prescription: {
+          select: {
+            id: true,
+            createdAt: true,
+            frequency: true,
+            period: true,
+            doseQuantity: true,
+            totalQuantity: true,
+            supplyDuration: true,
+            notes: true,
+            deletedAt: true,
+            bought: true,
+            Medicine: true,
+          },
+        },
       },
     });
 

@@ -1,11 +1,9 @@
 import { Type } from 'class-transformer';
-import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsString, IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
+import { CreatePatientDto } from 'src/patients/dto/create-patient.dto';
+import { CreateUserDto } from 'src/users/dto';
 
-export class CreateVitalSignDto {
-  @IsString()
-  @IsNotEmpty()
-  patientId: string;
-
+export class CreateNewPatientVitalSignDto extends CreatePatientDto {
   @IsNumber()
   @Type(() => Number)
   @IsNotEmpty()

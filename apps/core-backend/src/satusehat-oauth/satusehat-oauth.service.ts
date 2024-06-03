@@ -6,6 +6,7 @@ import { AxiosError } from 'axios';
 import { Cache } from 'cache-manager';
 import { catchError, firstValueFrom } from 'rxjs';
 import { SatuSehatErrorException } from 'src/exceptions/bad-request/satusehat-error-exception';
+import { IncompleteSatuSehatCreds } from 'src/exceptions/not-found/incomplete-satusehat-creds';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
@@ -26,6 +27,10 @@ export class SatusehatOauthService {
       where: { id: clinicsId },
     });
 
+    if (!clinic.clientId || !clinic.clientSecret) {
+      throw new IncompleteSatuSehatCreds();
+    }
+
     const formData = {
       client_id: clinic.clientId,
       client_secret: clinic.clientSecret,
@@ -37,8 +42,15 @@ export class SatusehatOauthService {
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         })
         .pipe(
-          catchError((error: AxiosError) => {
+          catchError(async (error: AxiosError) => {
             this.logger.error(error.message);
+            await this.prismaService.satuSehatError.create({
+              data: {
+                url: error.request._redirectable._currentUrl,
+                requestBody: JSON.stringify(formData),
+                responseBody: JSON.stringify(error.response.data),
+              },
+            });
             throw new SatuSehatErrorException(error.response.status);
           }),
         ),

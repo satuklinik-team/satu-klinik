@@ -17,9 +17,6 @@ export default () => ({
     timeout: 5000,
     max_redirects: 5,
   },
-  oauth: {
-    access_token: '',
-  },
   minio: {
     endpoint: process.env.MINIO_ENDPOINT,
     public_endpoint: process.env.MINIO_PUBLIC_ENDPOINT,

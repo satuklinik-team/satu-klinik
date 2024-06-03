@@ -1,14 +1,14 @@
 import { z as a } from "zod";
 import {
   Lezzform as F,
-  FormField as m,
-  FormItem as t,
+  FormField as t,
+  FormItem as m,
   FormLabel as l,
   FormControl as s,
   FormMessage as u,
   Input as b,
   Dropdown as p,
-  DatePicker as L,
+  DatePicker as v,
   PhoneNumberInput as S,
   TextArea as A,
   TwoColumn as k,
@@ -37,11 +37,11 @@ var I = a.object({
         (i) =>
           !i ||
           /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/.test(i),
-        { message: "Invalid phone number format" }
+        { message: "Invalid phone number format" },
       ),
     address: a.string(),
   }),
-  z = "Xeow21m25SCNUbHYVgaa",
+  z = "iRPJIyLRwONlLKt6MGyM",
   K = ({
     onSubmit: i,
     onError: h,
@@ -54,7 +54,7 @@ var I = a.object({
     c.useEffect(() => {
       i && (d.current = i);
     }, [i]);
-    let v = c.useCallback(async (r, o) => {
+    let L = c.useCallback(async (r, o) => {
       if (d.current) return d.current(r, o);
     }, []);
     return e(
@@ -62,7 +62,7 @@ var I = a.object({
       {
         id: z,
         defaultValues: y,
-        onSubmit: v,
+        onSubmit: L,
         onError: h,
         onSuccess: R,
         zodSchema: I,
@@ -70,12 +70,12 @@ var I = a.object({
         children: (r) =>
           n(F.Container, {
             children: [
-              e(m, {
+              e(t, {
                 control: r.control,
                 name: "medicalNumber",
                 disabled: !0,
                 render: ({ field: o }) =>
-                  n(t, {
+                  n(m, {
                     children: [
                       e(l, { children: "Nomor Rekam Medis" }),
                       e(s, {
@@ -97,11 +97,11 @@ var I = a.object({
                     ],
                   }),
               }),
-              e(m, {
+              e(t, {
                 control: r.control,
                 name: "nik",
                 render: ({ field: o }) =>
-                  n(t, {
+                  n(m, {
                     children: [
                       e(l, { isRequired: !0, children: "NIK" }),
                       e(s, {
@@ -124,11 +124,11 @@ var I = a.object({
                     ],
                   }),
               }),
-              e(m, {
+              e(t, {
                 control: r.control,
                 name: "fullname",
                 render: ({ field: o }) =>
-                  n(t, {
+                  n(m, {
                     children: [
                       e(l, { isRequired: !0, children: "Nama" }),
                       e(s, {
@@ -151,11 +151,11 @@ var I = a.object({
                     ],
                   }),
               }),
-              e(m, {
+              e(t, {
                 control: r.control,
                 name: "sex",
                 render: ({ field: o }) =>
-                  n(t, {
+                  n(m, {
                     children: [
                       e(l, { isRequired: !0, children: "Jenis Kelamin" }),
                       e(s, {
@@ -177,11 +177,11 @@ var I = a.object({
                     ],
                   }),
               }),
-              e(m, {
+              e(t, {
                 control: r.control,
                 name: "blood",
                 render: ({ field: o }) =>
-                  n(t, {
+                  n(m, {
                     children: [
                       e(l, { isRequired: !0, children: "Golongan Darah" }),
                       e(s, {
@@ -206,15 +206,15 @@ var I = a.object({
                     ],
                   }),
               }),
-              e(m, {
+              e(t, {
                 control: r.control,
                 name: "birthAt",
                 render: ({ field: o }) =>
-                  n(t, {
+                  n(m, {
                     children: [
                       e(l, { isRequired: !0, children: "Tanggal Lahir" }),
                       e(s, {
-                        children: e(L, {
+                        children: e(v, {
                           label: "Tanggal Lahir",
                           name: o.name,
                           value: o.value,
@@ -233,11 +233,11 @@ var I = a.object({
                     ],
                   }),
               }),
-              e(m, {
+              e(t, {
                 control: r.control,
                 name: "phone",
                 render: ({ field: o }) =>
-                  n(t, {
+                  n(m, {
                     children: [
                       e(l, { isRequired: !0, children: "Nomor Telepon" }),
                       e(s, {
@@ -260,11 +260,11 @@ var I = a.object({
                     ],
                   }),
               }),
-              e(m, {
+              e(t, {
                 control: r.control,
                 name: "address",
                 render: ({ field: o }) =>
-                  n(t, {
+                  n(m, {
                     children: [
                       e(l, { isRequired: !0, children: "Alamat" }),
                       e(s, {
@@ -306,7 +306,7 @@ var I = a.object({
             ],
           }),
       },
-      z
+      z,
     );
   };
 export { K as Form };

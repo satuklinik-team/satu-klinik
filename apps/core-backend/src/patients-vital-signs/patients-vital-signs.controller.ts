@@ -5,6 +5,7 @@ import { TokenData } from 'src/utils';
 import { JwtPayload } from 'src/auth/types';
 import { Role } from '@prisma/client';
 import { Roles } from 'src/utils/decorators/roles.decorator';
+import { CreateNewPatientVitalSignDto } from './dto/create-new-patient-vital-sign.dto';
 
 @Controller('patients-vital-signs')
 export class PatientsVitalSignsController {
@@ -14,7 +15,7 @@ export class PatientsVitalSignsController {
 
   @Post()
   @Roles(Role.ADMIN)
-  createVitalSign(
+  createExistingPatientVitalSign(
     @Body() dto: CreateVitalSignDto,
     @TokenData() tokenData: JwtPayload,
   ) {
@@ -22,6 +23,20 @@ export class PatientsVitalSignsController {
       ...dto,
       clinicsId: tokenData.clinicsId,
       usersId: tokenData.sub,
+    });
+  }
+
+  @Post('new-patient')
+  @Roles(Role.ADMIN)
+  createNewPatientVitalSign(
+    @Body() dto: CreateNewPatientVitalSignDto,
+    @TokenData() tokenData: JwtPayload,
+  ) {
+    return this.patientVitalSignService.create({
+      ...dto,
+      clinicsId: tokenData.clinicsId,
+      usersId: tokenData.sub,
+      patientId: null,
     });
   }
 }

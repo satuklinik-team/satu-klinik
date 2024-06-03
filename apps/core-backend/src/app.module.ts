@@ -12,7 +12,6 @@ import { PatientsVitalSignsModule } from './patients-vital-signs/patients-vital-
 import { PatientsModule } from './patients/patients.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { SatusehatOauthModule } from './satusehat-oauth/satusehat-oauth.module';
-import { SatusehatOrganizationModule } from './satusehat-organization/satusehat-organization.module';
 import { TokenModule } from './token/token.module';
 import { UsersModule } from './users/users.module';
 import { PatientAssessmentModule } from './patient-assessment/patient-assessment.module';
@@ -28,7 +27,8 @@ import { MedicineCategoryModule } from './medicine-category/medicine-category.mo
 import { MinioClientModule } from './minio-client/minio-client.module';
 import { SatusehatJsonModule } from './satusehat-json/satusehat-json.module';
 import { SatusehatRawatJalanModule } from './satusehat-rawat-jalan/satusehat-rawat-jalan.module';
-import { SatusehatTestModule } from './satusehat-test/satusehat-test.module';
+import { SatusehatAdminModule } from './satusehat-admin/satusehat-admin.module';
+import { TasksModule } from './tasks-status/tasks-status.module';
 
 @Module({
   imports: [
@@ -39,7 +39,6 @@ import { SatusehatTestModule } from './satusehat-test/satusehat-test.module';
     TokenModule,
     CryptoModule,
     UsersModule,
-    SatusehatOrganizationModule,
     ClinicsModule,
     SatusehatOauthModule,
     PatientsModule,
@@ -57,7 +56,8 @@ import { SatusehatTestModule } from './satusehat-test/satusehat-test.module';
     MinioClientModule,
     SatusehatJsonModule,
     SatusehatRawatJalanModule,
-    SatusehatTestModule,
+    SatusehatAdminModule,
+    TasksModule,
   ],
   providers: [{ provide: APP_GUARD, useClass: AccessTokenGuard }],
 })

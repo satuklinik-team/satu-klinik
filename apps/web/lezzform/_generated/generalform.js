@@ -1,25 +1,25 @@
 import { z as n } from "zod";
 import {
-  Lezzform as F,
+  Lezzform as p,
   FormField as t,
   FormItem as s,
   FormLabel as l,
   FormControl as i,
   FormMessage as u,
   Input as d,
-  PhoneNumberInput as C,
-  NumberInput as S,
-  Button as I,
+  PhoneNumberInput as S,
+  NumberInput as C,
+  Button as L,
 } from "@lezzform/react";
 import {
-  Briefcase as L,
+  Briefcase as I,
   CreditCard as y,
   Building as B,
   Phone as N,
 } from "lucide-react";
 import * as c from "react";
 import { jsx as o, jsxs as a } from "react/jsx-runtime";
-var f = n.object({
+var k = n.object({
     licenseNumber: n.string(),
     clinicId: n.string(),
     clinicName: n.string(),
@@ -31,18 +31,18 @@ var f = n.object({
         (m) =>
           !m ||
           /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/.test(m),
-        { message: "Invalid phone number format" }
+        { message: "Invalid phone number format" },
       ),
     address: n.string(),
     price: n.coerce.number(),
   }),
-  h = "ssHsBR7bOdopK6WXWZE3",
+  h = "LL12jlS0NmYVkSS1erxy",
   D = ({
     onSubmit: m,
-    onError: p,
+    onError: F,
     onSuccess: g,
     defaultValues: z,
-    onAction: k,
+    onAction: f,
     formProps: P,
   }) => {
     let b = c.useRef();
@@ -53,17 +53,17 @@ var f = n.object({
       if (b.current) return b.current(r, e);
     }, []);
     return o(
-      F,
+      p,
       {
         id: h,
         defaultValues: z,
         onSubmit: R,
-        onError: p,
+        onError: F,
         onSuccess: g,
-        zodSchema: f,
+        zodSchema: k,
         mode: "onSubmit",
         children: (r) =>
-          a(F.Container, {
+          a(p.Container, {
             children: [
               o(t, {
                 control: r.control,
@@ -88,7 +88,7 @@ var f = n.object({
                           isRequired: !0,
                           styles: { root: {} },
                           prefixAdornment: {
-                            icon: o(L, { size: 18, color: "#000000" }),
+                            icon: o(I, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
@@ -158,7 +158,7 @@ var f = n.object({
                     children: [
                       o(l, { isRequired: !0, children: "Nomor Telepon" }),
                       o(i, {
-                        children: o(C, {
+                        children: o(S, {
                           label: "Nomor Telepon",
                           name: e.name,
                           value: e.value ?? "",
@@ -209,7 +209,7 @@ var f = n.object({
                     children: [
                       o(l, { isRequired: !0, children: "Harga Dasar" }),
                       o(i, {
-                        children: o(S, {
+                        children: o(C, {
                           label: "Harga Dasar",
                           name: e.name,
                           value: e.value ?? 0,
@@ -225,7 +225,7 @@ var f = n.object({
                     ],
                   }),
               }),
-              o(I, {
+              o(L, {
                 type: "submit",
                 className: "w-full",
                 disabled: r.formState.isSubmitting,
@@ -236,7 +236,7 @@ var f = n.object({
             ],
           }),
       },
-      h
+      h,
     );
   };
 export { D as Form };
