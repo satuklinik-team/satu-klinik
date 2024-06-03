@@ -25,13 +25,13 @@ import { ClinicCard } from "@/features/clinic/components/ui/card";
 import { QueueCard } from "@/features/clinic-patient/components/shared/queue-card";
 import { Form as AddPatientForm } from "@/lezzform/_generated/addpatientform";
 import { cn } from "@/lib/utils";
-import { useCreatePatient } from "@/services/patient/hooks/use-create-patient";
 import { useFindPatient } from "@/services/patient/hooks/use-find-patient";
 import type { CreatePatientDto } from "@/services/patient/types/dto";
 import type { PatientEntity } from "@/services/patient/types/entity";
 import { PatientQueryKeyFactory } from "@/services/patient/utils/query-key.factory";
+import { useCreateNewPatientVitalSign } from "@/services/patient-vital-sign/hooks/use-create-new-patient";
 import { useCreatePatientVitalSign } from "@/services/patient-vital-sign/hooks/use-create-patient";
-import type { CreatePatientVitalSignDto } from "@/services/patient-vital-sign/types/dto";
+import type { CreateNewPatientVitalSignDto } from "@/services/patient-vital-sign/types/dto";
 import { TasksStatusQueryKeyFactory } from "@/services/tasks-status/utils/query-key.factory";
 
 export function ClinicRegisterPatientPage(): JSX.Element {
@@ -80,10 +80,9 @@ export function ClinicRegisterPatientPage(): JSX.Element {
     type: "ENTRY",
   });
 
-  const { mutateAsync: createPatient } = useCreatePatient();
-  // const { mutateAsync: createNewPatient } = useCreateNewPatientVitalSign();
-
   const { mutateAsync: createPatientVitalSign } = useCreatePatientVitalSign();
+  const { mutateAsync: createNewPatientVitalSign } =
+    useCreateNewPatientVitalSign();
 
   const onSubmit = useCallback(
     async (_form: object, dto: Record<string, unknown>) => {
@@ -97,9 +96,7 @@ export function ClinicRegisterPatientPage(): JSX.Element {
         birthAt: dayjs(dto.birthAt as string).format("YYYY-MM-DD"),
       };
 
-      const { id } = await createPatient(formattedPatientData);
-
-      const formattedVitalSignData: CreatePatientVitalSignDto = {
+      const formattedVitalSignData: CreateNewPatientVitalSignDto = {
         height: dto.height as number,
         weight: dto.weight as number,
         allergic: dto.allergic as string,
@@ -109,18 +106,30 @@ export function ClinicRegisterPatientPage(): JSX.Element {
         respiration: dto.respiration as number,
         pulse: dto.pulse as number,
         pain: dto.pain as string,
-        patientId: id,
       };
 
-      await createPatientVitalSign(formattedVitalSignData);
+      if (selectedPatient) {
+        await createPatientVitalSign({
+          ...formattedVitalSignData,
+          patientId: selectedPatient.id,
+        });
+      }
 
-      await queryClient.invalidateQueries({
-        queryKey: new PatientQueryKeyFactory().lists(),
-      });
+      if (!selectedPatient) {
+        await createNewPatientVitalSign({
+          ...formattedVitalSignData,
+          ...formattedPatientData,
+        });
+      }
 
-      await queryClient.invalidateQueries({
-        queryKey: new TasksStatusQueryKeyFactory().notifications(),
-      });
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: new PatientQueryKeyFactory().lists(),
+        }),
+        queryClient.invalidateQueries({
+          queryKey: new TasksStatusQueryKeyFactory().notifications(),
+        }),
+      ]);
 
       toast({ title: "Berhasil Membuat Pasien!", variant: "success" });
 
@@ -128,10 +137,11 @@ export function ClinicRegisterPatientPage(): JSX.Element {
     },
     [
       clinicId,
-      createPatient,
+      createNewPatientVitalSign,
       createPatientVitalSign,
       queryClient,
       router,
+      selectedPatient,
       toast,
     ],
   );
