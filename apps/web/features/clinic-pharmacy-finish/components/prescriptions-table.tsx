@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { ClinicCard } from "@/features/clinic/components/ui/card";
+import type { MedicineEntity } from "@/services/medicine/types/entity";
 import { useCompletePharmacyTask } from "@/services/pharmacy-task/hooks/use-complete-pharmacy-task";
 import { useGetPharmacyTask } from "@/services/pharmacy-task/hooks/use-get-pharmacy-task";
 import type { PrescriptionEntity } from "@/services/prescription/types/entity";
@@ -74,14 +75,21 @@ export function ClinicPharmacyFinishPrescriptionsTable():
             {
               key: "name",
               name: "Nama",
-              renderCell: (row) => (
-                <Cell>
-                  {/* <p>{row.medicine?.title}</p> */}
-                  <p>
-                    Total: <b>{row.totalQuantity} pcs</b>
-                  </p>
-                </Cell>
-              ),
+              renderCell: (row) => {
+                const typeRow = row as unknown as Omit<
+                  PrescriptionEntity,
+                  "medicine"
+                > & { Medicine: MedicineEntity };
+
+                return (
+                  <Cell className="flex flex-col items-start gap-0">
+                    <p className="text-base font-semibold">
+                      {typeRow.Medicine.title}
+                    </p>
+                    <p>Total: {row.totalQuantity} pcs</p>
+                  </Cell>
+                );
+              },
             },
             {
               key: "procedure",
