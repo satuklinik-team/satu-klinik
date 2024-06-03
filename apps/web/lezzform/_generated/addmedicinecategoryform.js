@@ -1,23 +1,23 @@
 import { z as a } from "zod";
 import {
   Lezzform as u,
-  FormField as F,
-  FormItem as S,
+  FormField as S,
+  FormItem as F,
   FormLabel as p,
   FormControl as d,
   FormMessage as h,
   Input as b,
-  Button as R,
+  Button as L,
 } from "@lezzform/react";
 import * as e from "react";
 import { jsx as r, jsxs as s } from "react/jsx-runtime";
-var L = a.object({ name: a.string() }),
-  c = "aqkUuX9WpZREexfuwk3U",
-  w = ({
+var R = a.object({ name: a.string() }),
+  c = "1Bp6P4kq6HvKeNp4SV1u",
+  C = ({
     onSubmit: m,
     onError: i,
-    onSuccess: f,
-    defaultValues: l,
+    onSuccess: l,
+    defaultValues: f,
     onAction: k,
     formProps: y,
   }) => {
@@ -32,20 +32,20 @@ var L = a.object({ name: a.string() }),
       u,
       {
         id: c,
-        defaultValues: l,
+        defaultValues: f,
         onSubmit: z,
         onError: i,
-        onSuccess: f,
-        zodSchema: L,
+        onSuccess: l,
+        zodSchema: R,
         mode: "onSubmit",
         children: (n) =>
           s(u.Container, {
             children: [
-              r(F, {
+              r(S, {
                 control: n.control,
                 name: "name",
                 render: ({ field: o }) =>
-                  s(S, {
+                  s(F, {
                     children: [
                       r(p, { isRequired: !0, children: "Name" }),
                       r(d, {
@@ -65,7 +65,7 @@ var L = a.object({ name: a.string() }),
                     ],
                   }),
               }),
-              r(R, {
+              r(L, {
                 type: "submit",
                 className: "w-full",
                 disabled: n.formState.isSubmitting,
@@ -79,4 +79,4 @@ var L = a.object({ name: a.string() }),
       c,
     );
   };
-export { w as Form };
+export { C as Form };

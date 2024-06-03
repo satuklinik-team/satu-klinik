@@ -1,5 +1,8 @@
 import type { VitalSignEntity } from "./entity";
 
-export interface CreatePatientVitalSignDto extends VitalSignEntity {
+export type CreateNewPatientVitalSignDto = VitalSignEntity;
+
+export interface CreatePatientVitalSignDto
+  extends CreateNewPatientVitalSignDto {
   patientId: string;
 }

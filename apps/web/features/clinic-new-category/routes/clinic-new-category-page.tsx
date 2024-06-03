@@ -17,6 +17,7 @@ import { Form as AddMedicineCategoryForm } from "@/lezzform/_generated/addmedici
 import { useCreateMedicineCategory } from "@/services/medicine-category/hooks/use-create-medicine-category";
 import type { CreateMedicineCategoryDto } from "@/services/medicine-category/types/dto";
 import { MedicineCategoryQueryKeyFactory } from "@/services/medicine-category/utils/query-key.factory";
+import { TasksStatusQueryKeyFactory } from "@/services/tasks-status/utils/query-key.factory";
 
 export function ClinicNewCategoryPage(): JSX.Element {
   const queryClient = useQueryClient();
@@ -36,6 +37,9 @@ export function ClinicNewCategoryPage(): JSX.Element {
       await mutateAsync(formattedData);
       await queryClient.invalidateQueries({
         queryKey: new MedicineCategoryQueryKeyFactory().lists(),
+      });
+      await queryClient.invalidateQueries({
+        queryKey: new TasksStatusQueryKeyFactory().notifications(),
       });
       toast({ title: "Berhasil Membuat Kategori!", variant: "success" });
       router.push(`/clinic/${clinicId as string}/categories`);
@@ -66,7 +70,7 @@ export function ClinicNewCategoryPage(): JSX.Element {
         <p className="text-muted-foreground">detail category information</p>
       </div>
 
-      <ClinicCard title="Add New Patient">
+      <ClinicCard title="Add New Category">
         <AddMedicineCategoryForm onSubmit={onSubmit} />
       </ClinicCard>
     </div>

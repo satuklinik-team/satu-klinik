@@ -1,6 +1,6 @@
 import { z as a } from "zod";
 import {
-  Lezzform as b,
+  Lezzform as p,
   FormField as t,
   FormItem as s,
   FormLabel as u,
@@ -8,23 +8,23 @@ import {
   FormMessage as c,
   Input as F,
   PasswordInput as g,
-  Button as C,
+  Button as f,
 } from "@lezzform/react";
 import * as n from "react";
 import { jsx as e, jsxs as m } from "react/jsx-runtime";
-var L = a.object({
+var C = a.object({
     id: a.string(),
     token: a.string(),
     username: a.string(),
     password: a.string(),
   }),
-  z = "16qzYTH2bcQbSaqawtmK",
+  z = "fzp4TF5wROW5XcRj1eic",
   P = ({
     onSubmit: i,
     onError: b,
     onSuccess: h,
     defaultValues: S,
-    onAction: f,
+    onAction: L,
     formProps: k,
   }) => {
     let d = n.useRef();
@@ -35,17 +35,17 @@ var L = a.object({
       if (d.current) return d.current(r, o);
     }, []);
     return e(
-      b,
+      p,
       {
         id: z,
         defaultValues: S,
         onSubmit: R,
         onError: b,
         onSuccess: h,
-        zodSchema: L,
+        zodSchema: C,
         mode: "onSubmit",
         children: (r) =>
-          m(b.Container, {
+          m(p.Container, {
             children: [
               e(t, {
                 control: r.control,
@@ -143,7 +143,7 @@ var L = a.object({
                     ],
                   }),
               }),
-              e(C, {
+              e(f, {
                 type: "submit",
                 className: "w-full",
                 disabled: r.formState.isSubmitting,
@@ -157,4 +157,4 @@ var L = a.object({
       z,
     );
   };
-export { y as Form };
+export { P as Form };
