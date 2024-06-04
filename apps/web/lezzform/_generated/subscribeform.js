@@ -37,8 +37,8 @@ var P = n.object({
     clinicAddress: n.string(),
     clinicCode: n.string().optional(),
   }),
-  C = "kEgZxzyQnpaSHiHomMum",
-  E = ({
+  C = "DJuovsyJgxBxgSTJJOmN",
+  N = ({
     onSubmit: u,
     onError: b,
     onSuccess: z,
@@ -62,7 +62,7 @@ var P = n.object({
         onError: b,
         onSuccess: z,
         zodSchema: P,
-        mode: "onSubmit",
+        mode: "onTouched",
         children: (r) =>
           a(h.Container, {
             children: [
@@ -297,4 +297,4 @@ var P = n.object({
       C,
     );
   };
-export { E as Form };
+export { N as Form };
