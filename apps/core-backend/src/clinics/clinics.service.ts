@@ -5,7 +5,7 @@ import { ServiceContext } from 'src/utils/types';
 import { FindAllClinicsDto } from './dto/find-all-clinics-dto';
 import { Prisma } from '@prisma/client';
 import { FindAllService } from 'src/find-all/find-all.service';
-import { CreateUserDto, UpdateUserDto } from 'src/users/dto';
+import { CreateUserDto } from 'src/users/dto';
 import { UsersService } from 'src/users/users.service';
 import { ClinicNotFoundException } from 'src/exceptions/not-found/clinic-not-found.exception';
 import { Role } from '@prisma/client';
@@ -15,6 +15,7 @@ import { UserNotFoundException } from 'src/exceptions';
 import { UpdateClinicUserDto } from './dto/update-clinic-user.dto';
 import { FindClinicUsersDto } from './dto/find-clinic-users-dto';
 import { ConfigService } from '@nestjs/config';
+import { MedicineCategory } from 'src/medicine-category/entities/medicine-category.entity';
 
 @Injectable()
 export class ClinicsService {
@@ -72,7 +73,24 @@ export class ClinicsService {
       },
     });
 
-    return data;
+    const obatCategory = await prisma.medicineCategory.create({
+      data: {
+        clinicsId: data.id,
+        name: 'Obat',
+      },
+    });
+
+    const vitaminCategory = await prisma.medicineCategory.create({
+      data: {
+        clinicsId: data.id,
+        name: 'Vitamin',
+      },
+    });
+
+    return {
+      ...data,
+      medicineCategory: [{ ...obatCategory }, { ...vitaminCategory }],
+    };
   }
 
   async findAll(dto: FindAllClinicsDto) {

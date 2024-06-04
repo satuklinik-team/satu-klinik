@@ -54,16 +54,23 @@ export class PatientsVitalSignsService {
           id: true,
           status: true,
           queue: true,
+          visitAt: true,
+          visitLabel: true,
           vitalSign: { orderBy: { id: 'desc' }, take: 1 },
         },
       });
 
+      const result = {
+        ...data,
+        visitAt: data.visitAt.toLocaleString(),
+      };
+
       if (patient === undefined) {
-        return data;
+        return result;
       }
       return {
         patient,
-        patientVitalSign: data,
+        patientVitalSign: result,
       };
     });
 

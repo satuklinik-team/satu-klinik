@@ -7,6 +7,8 @@ import { Prisma } from '@prisma/client';
 import { FindAllService } from 'src/find-all/find-all.service';
 import { MedicineCategoryService } from 'src/medicine-category/medicine-category.service';
 import { MedicineService } from 'src/medicine/medicine.service';
+import { RevenueService } from 'src/revenue/revenue.service';
+import { UpdatePatientAssessmentDto } from './dto/update-patient-assessment.dto';
 
 @Injectable()
 export class PatientAssessmentService {
@@ -15,23 +17,23 @@ export class PatientAssessmentService {
     private readonly patientsService: PatientsService,
     private readonly findAllService: FindAllService,
     private readonly medicineService: MedicineService,
+    private readonly revenueService: RevenueService,
   ) {}
 
   async create(dto: CreatePatientAssessmentDto) {
     const data = await this.prismaService.$transaction(async (tx) => {
-      const patientMR =
-        await this.prismaService.patient_medical_records.findFirst({
-          where: { id: dto.mrid },
-          select: {
-            Patient: {
-              select: {
-                id: true,
-                norm: true,
-                clinicsId: true,
-              },
+      const patientMR = await tx.patient_medical_records.findFirst({
+        where: { id: dto.mrid },
+        select: {
+          Patient: {
+            select: {
+              id: true,
+              norm: true,
+              clinicsId: true,
             },
           },
-        });
+        },
+      });
 
       await this.patientsService.canModifyPatient(
         patientMR.Patient.id,
@@ -80,7 +82,7 @@ export class PatientAssessmentService {
         });
       }
 
-      const medicalRecord = this.prismaService.patient_medical_records.update({
+      const medicalRecord = tx.patient_medical_records.update({
         where: {
           id: dto.mrid,
         },
@@ -89,9 +91,21 @@ export class PatientAssessmentService {
         },
       });
 
+      const serviceFee = await tx.setting.findFirst({
+        where: {
+          clinicsId: dto.clinicsId,
+          name: 'SERVICEFEE',
+        },
+      });
+
+      await this.revenueService.increaseRevenue(
+        { value: parseInt(serviceFee.value), clinicsId: dto.clinicsId },
+        { tx },
+      );
+
       let pharmacyTask = null;
       if (prescriptionsDto.length !== 0) {
-        pharmacyTask = this.prismaService.pharmacy_Task.create({
+        pharmacyTask = tx.pharmacy_Task.create({
           data: {
             norm: patientMR.Patient.norm,
             assessmentReffId: dto.mrid,
@@ -108,6 +122,45 @@ export class PatientAssessmentService {
         medicalRecord: await medicalRecord,
         pharmacyTask: await pharmacyTask,
       };
+    });
+
+    return data;
+  }
+
+  async update(dto: UpdatePatientAssessmentDto) {
+    const patientMR =
+      await this.prismaService.patient_medical_records.findFirst({
+        where: { id: dto.mrid },
+        select: {
+          Patient: {
+            select: {
+              id: true,
+              norm: true,
+              clinicsId: true,
+            },
+          },
+        },
+      });
+
+    await this.patientsService.canModifyPatient(
+      patientMR.Patient.id,
+      dto.clinicsId,
+    );
+
+    const data = await this.prismaService.patient_assessment.update({
+      where: {
+        id: dto.id,
+      },
+      data: {
+        patient_medical_recordsId: dto.mrid,
+        doctorId: dto.usersId,
+        subjective: dto.subjective,
+        objective: dto.objective,
+        assessment: dto.assessment,
+        plan: dto.plan,
+        icd10Code: dto.icd10Code,
+        icd9CMCode: dto.icd9CMCode,
+      },
     });
 
     return data;

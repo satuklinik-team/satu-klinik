@@ -7,6 +7,7 @@ import { DeleteMedicineCategoryDto } from './dto/delete-medicine-category.dto';
 import { FindAllService } from 'src/find-all/find-all.service';
 import { Prisma } from '@prisma/client';
 import { FindAllMedicineCategoriesDto } from './dto/find-all-medicine-categories-dto';
+import { GetCategoryByIdDto } from './dto/get-category-by-id';
 
 @Injectable()
 export class MedicineCategoryService {
@@ -35,6 +36,16 @@ export class MedicineCategoryService {
       table: this.prismaService.medicineCategory,
       ...args,
       ...dto,
+    });
+  }
+
+  async findById(dto: GetCategoryByIdDto) {
+    await this.canModifyMedicineCategory(dto.id, dto.clinicsId);
+
+    return await this.prismaService.medicineCategory.findFirst({
+      where: {
+        id: dto.id,
+      },
     });
   }
 
