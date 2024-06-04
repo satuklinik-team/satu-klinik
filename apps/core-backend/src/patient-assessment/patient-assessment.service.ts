@@ -8,6 +8,7 @@ import { FindAllService } from 'src/find-all/find-all.service';
 import { MedicineCategoryService } from 'src/medicine-category/medicine-category.service';
 import { MedicineService } from 'src/medicine/medicine.service';
 import { RevenueService } from 'src/revenue/revenue.service';
+import { UpdatePatientAssessmentDto } from './dto/update-patient-assessment.dto';
 
 @Injectable()
 export class PatientAssessmentService {
@@ -121,6 +122,45 @@ export class PatientAssessmentService {
         medicalRecord: await medicalRecord,
         pharmacyTask: await pharmacyTask,
       };
+    });
+
+    return data;
+  }
+
+  async update(dto: UpdatePatientAssessmentDto) {
+    const patientMR =
+      await this.prismaService.patient_medical_records.findFirst({
+        where: { id: dto.mrid },
+        select: {
+          Patient: {
+            select: {
+              id: true,
+              norm: true,
+              clinicsId: true,
+            },
+          },
+        },
+      });
+
+    await this.patientsService.canModifyPatient(
+      patientMR.Patient.id,
+      dto.clinicsId,
+    );
+
+    const data = await this.prismaService.patient_assessment.update({
+      where: {
+        id: dto.id,
+      },
+      data: {
+        patient_medical_recordsId: dto.mrid,
+        doctorId: dto.usersId,
+        subjective: dto.subjective,
+        objective: dto.objective,
+        assessment: dto.assessment,
+        plan: dto.plan,
+        icd10Code: dto.icd10Code,
+        icd9CMCode: dto.icd9CMCode,
+      },
     });
 
     return data;

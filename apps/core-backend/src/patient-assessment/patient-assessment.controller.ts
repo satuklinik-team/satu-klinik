@@ -1,4 +1,12 @@
-import { Controller, Post, Body, Param, Get, Query } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Param,
+  Get,
+  Query,
+  Patch,
+} from '@nestjs/common';
 import { PatientAssessmentService } from './patient-assessment.service';
 import { CreatePatientAssessmentDto } from './dto/create-patient-assessment.dto';
 import { FindAllPatientAssessmentDto } from './dto/find-all-patient-assessment.dto';
@@ -8,6 +16,7 @@ import { TokenData } from 'src/utils';
 import { Roles } from 'src/utils/decorators/roles.decorator';
 import { Role } from '@prisma/client';
 import { PractitionerOnly } from 'src/utils/decorators/practitioner-only.decorator';
+import { UpdatePatientAssessmentDto } from './dto/update-patient-assessment.dto';
 
 @Controller('patient-assessment')
 export class PatientAssessmentController {
@@ -19,11 +28,25 @@ export class PatientAssessmentController {
   @PractitionerOnly()
   @Roles(Role.DOCTOR)
   async create(
-    @Body() createPatientAssessmentDto: CreatePatientAssessmentDto,
+    @Body() dto: CreatePatientAssessmentDto,
     @TokenData() tokenData: JwtPayload,
   ) {
     return await this.patientAssessmentService.create({
-      ...createPatientAssessmentDto,
+      ...dto,
+      usersId: tokenData.sub,
+      clinicsId: tokenData.clinicsId,
+    });
+  }
+
+  @Patch()
+  @PractitionerOnly()
+  @Roles(Role.DOCTOR)
+  async update(
+    @Body() dto: UpdatePatientAssessmentDto,
+    @TokenData() tokenData: JwtPayload,
+  ) {
+    return await this.patientAssessmentService.update({
+      ...dto,
       usersId: tokenData.sub,
       clinicsId: tokenData.clinicsId,
     });

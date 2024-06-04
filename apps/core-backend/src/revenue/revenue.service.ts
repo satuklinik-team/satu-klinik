@@ -24,7 +24,7 @@ export class RevenueService {
       },
     });
 
-    if (!updatedRevenue) {
+    if (updatedRevenue.count === 0) {
       await prisma.revenue.create({
         data: {
           date,
