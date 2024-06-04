@@ -13,69 +13,10 @@ export class TasksService {
   constructor(private readonly prismaService: PrismaService) {}
 
   async get(dto: GetTasksStatusDto) {
-    let todo: number, completed: number, total: number;
     if (dto.type === GetTasksStatusTypes.GENERAL) {
       return await this.getGeneralTaskStatus(dto);
-    } else if (dto.type === GetTasksStatusTypes.DOCTOR) {
-      if (dto.role === Role.PHARMACY) {
-        throw new RoleNotAuthorizedException();
-      }
-      todo = await this.getCount(
-        {
-          status: 'e1',
-        },
-        dto.clinicsId,
-      );
-
-      completed = await this.getCount(
-        {
-          OR: [
-            {
-              status: 'd1',
-            },
-            {
-              status: 'p1',
-            },
-          ],
-        },
-        dto.clinicsId,
-      );
-    } else if (dto.type === GetTasksStatusTypes.PHARMACY) {
-      if (dto.role === Role.DOCTOR) {
-        throw new RoleNotAuthorizedException();
-      }
-
-      todo = await this.getCount(
-        {
-          status: 'd1',
-          assessment: {
-            some: {},
-          },
-        },
-        dto.clinicsId,
-      );
-
-      completed = await this.getCount(
-        {
-          OR: [
-            {
-              status: 'p1',
-            },
-          ],
-        },
-        dto.clinicsId,
-      );
     }
-
-    if (total === undefined) {
-      total = todo + completed;
-    }
-
-    return {
-      todo,
-      completed,
-      total,
-    };
+    return await this.getDoctorPharmacyTaskStatus(dto);
   }
 
   async getGeneralTaskStatus(dto: GetTasksStatusDto) {
@@ -169,11 +110,7 @@ export class TasksService {
 
       completed = await this.getCount(
         {
-          OR: [
-            {
-              status: 'p1',
-            },
-          ],
+          status: 'p1',
         },
         dto.clinicsId,
       );

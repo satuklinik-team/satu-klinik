@@ -124,7 +124,7 @@ export class PharmacyTasksService {
         throw new CannotAccessClinicException();
       }
 
-      await this.prismaService.patient_medical_records.update({
+      await tx.patient_medical_records.update({
         where: {
           id: pharmacyTask.assessmentReffId,
         },
@@ -202,13 +202,20 @@ export class PharmacyTasksService {
             Medicine: {
               select: {
                 price: true,
+                discount: true,
               },
             },
           },
         });
 
         await this.revenueService.increaseRevenue(
-          { value: prescription.Medicine.price, clinicsId: dto.clinicsId },
+          {
+            value:
+              (prescription.Medicine.price *
+                (100 - prescription.Medicine.discount)) /
+              100,
+            clinicsId: dto.clinicsId,
+          },
           { tx },
         );
       }

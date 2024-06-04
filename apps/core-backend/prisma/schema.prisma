@@ -181,7 +181,6 @@ model Queue_history {
 enum Role {
   OWNER
   ADMIN
-  SUPERADMIN
   DOCTOR
   PHARMACY
   SATUKLINIKADMIN
@@ -470,7 +469,7 @@ model MedicineCategory {
 model Revenue {
   id        String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   date      String
-  total     Int
+  total     Decimal
   clinicsId String  @db.Uuid
   clinics   Clinics @relation(fields: [clinicsId], references: [id])
 }
