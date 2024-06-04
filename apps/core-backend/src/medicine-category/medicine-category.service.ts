@@ -7,7 +7,7 @@ import { DeleteMedicineCategoryDto } from './dto/delete-medicine-category.dto';
 import { FindAllService } from 'src/find-all/find-all.service';
 import { Prisma } from '@prisma/client';
 import { FindAllMedicineCategoriesDto } from './dto/find-all-medicine-categories-dto';
-import { GetCategoryByIdDto } from './dto/update-medicine-category.dto copy';
+import { GetCategoryByIdDto } from './dto/get-category-by-id';
 
 @Injectable()
 export class MedicineCategoryService {
