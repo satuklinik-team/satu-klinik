@@ -15,6 +15,7 @@ import { UserNotFoundException } from 'src/exceptions';
 import { UpdateClinicUserDto } from './dto/update-clinic-user.dto';
 import { FindClinicUsersDto } from './dto/find-clinic-users-dto';
 import { ConfigService } from '@nestjs/config';
+import { MedicineCategory } from 'src/medicine-category/entities/medicine-category.entity';
 
 @Injectable()
 export class ClinicsService {
@@ -72,21 +73,24 @@ export class ClinicsService {
       },
     });
 
-    await prisma.medicineCategory.create({
+    const obatCategory = await prisma.medicineCategory.create({
       data: {
         clinicsId: data.id,
         name: 'Obat',
       },
     });
 
-    await prisma.medicineCategory.create({
+    const vitaminCategory = await prisma.medicineCategory.create({
       data: {
         clinicsId: data.id,
         name: 'Vitamin',
       },
     });
 
-    return data;
+    return {
+      ...data,
+      medicineCategory: [{ ...obatCategory }, { ...vitaminCategory }],
+    };
   }
 
   async findAll(dto: FindAllClinicsDto) {
