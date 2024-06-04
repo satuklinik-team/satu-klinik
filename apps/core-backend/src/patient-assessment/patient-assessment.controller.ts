@@ -6,6 +6,7 @@ import {
   Get,
   Query,
   Patch,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { PatientAssessmentService } from './patient-assessment.service';
 import { CreatePatientAssessmentDto } from './dto/create-patient-assessment.dto';
@@ -38,15 +39,17 @@ export class PatientAssessmentController {
     });
   }
 
-  @Patch()
-  @PractitionerOnly()
+  @Patch(':id')
+  // @PractitionerOnly()
   @Roles(Role.DOCTOR)
   async update(
+    @Param('id', ParseIntPipe) id: number,
     @Body() dto: UpdatePatientAssessmentDto,
     @TokenData() tokenData: JwtPayload,
   ) {
     return await this.patientAssessmentService.update({
       ...dto,
+      id,
       usersId: tokenData.sub,
       clinicsId: tokenData.clinicsId,
     });
