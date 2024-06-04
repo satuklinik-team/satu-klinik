@@ -1,3 +1,10 @@
+export interface GeneralTasksStatusEntity {
+  todayPatient: number;
+  todayRevenue: number;
+  todayPrescription: number;
+  totalPatient: number;
+}
+
 export interface TasksStatusEntity {
   todo: number;
   completed: number;

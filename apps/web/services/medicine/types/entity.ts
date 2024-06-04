@@ -5,6 +5,6 @@ export interface MedicineEntity {
   stock: number;
   discount: number;
   imageUrl?: string;
-  kfaCode: string;
+  kfaCode?: string;
   categoryId: number;
 }

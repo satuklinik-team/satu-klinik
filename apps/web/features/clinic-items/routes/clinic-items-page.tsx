@@ -32,6 +32,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useToast } from "@/components/ui/use-toast";
 import { useDeleteMedicine } from "@/services/medicine/hooks/use-delete-medicine";
 import { useFindMedicineByCategory } from "@/services/medicine/hooks/use-find-medicine-by-category";
 import { MedicineQueryKeyFactory } from "@/services/medicine/utils/query-key.factory";
@@ -40,6 +41,7 @@ import { useFindMedicineCategory } from "@/services/medicine-category/hooks/use-
 import { ClinicItemCard } from "../components/shared/card";
 
 export function ClinicItemsPage(): JSX.Element {
+  const { toast } = useToast();
   const queryClient = useQueryClient();
   const pathname = usePathname();
 
@@ -155,6 +157,10 @@ export function ClinicItemsPage(): JSX.Element {
                   queryKey: new MedicineQueryKeyFactory().lists(),
                 });
                 setToBeDeletedId("");
+                toast({
+                  title: "Berhasil Menghapus Obat!",
+                  variant: "success",
+                });
               }}
               variant="ghost"
             >

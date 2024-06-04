@@ -11,12 +11,10 @@ import type {
 class TasksStatusApi {
   api: AxiosInstance = api;
 
-  async getTasksStatus(dto?: object): Promise<TasksStatusEntity> {
+  async getTasksStatus<T = TasksStatusEntity>(dto?: object): Promise<T> {
     const queryParams = stringify(dto);
 
-    const { data } = await this.api.get<TasksStatusEntity>(
-      `/tasks-status?&${queryParams}`
-    );
+    const { data } = await this.api.get<T>(`/tasks-status?&${queryParams}`);
 
     return data;
   }
@@ -25,7 +23,7 @@ class TasksStatusApi {
     const queryParams = stringify(dto);
 
     const { data } = await this.api.get<TasksStatusNotificationEntity>(
-      `/tasks-status/notification?&${queryParams}`
+      `/tasks-status/notification?&${queryParams}`,
     );
 
     return data;
