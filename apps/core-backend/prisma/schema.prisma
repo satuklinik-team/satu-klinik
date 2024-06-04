@@ -278,6 +278,7 @@ model Clinics {
   operationalHours    regularHours[]
   Departments         Departments[]
   MedicineCategory    MedicineCategory[]
+  Revenue             Revenue[]
 }
 
 model regularHours {
@@ -464,6 +465,14 @@ model MedicineCategory {
   clinicsId String?    @db.Uuid
   clinics   Clinics?   @relation(fields: [clinicsId], references: [id])
   Medicine  Medicine[]
+}
+
+model Revenue {
+  id        String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  date      String
+  total     Int
+  clinicsId String  @db.Uuid
+  clinics   Clinics @relation(fields: [clinicsId], references: [id])
 }
 
 model SatuSehatError {
