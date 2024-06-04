@@ -131,7 +131,7 @@ export class SatusehatRawatJalanService {
     }
 
     const ocpJsonArray = [];
-    const observationIndexes = [];
+    const procedureIndexes = [];
 
     for (const { mrid } of mridList) {
       const mridJson = [
@@ -152,23 +152,25 @@ export class SatusehatRawatJalanService {
         });
 
       if (patientAssessment.icd9CMCode) {
+        procedureIndexes.push(ocpJsonArray.length);
         ocpJsonArray.push(await this.satusehatJsonService.procedureJson(mrid));
       } else {
-        observationIndexes.push(null);
+        procedureIndexes.push(null);
       }
     }
 
     const ocpResponseBody = await this.postBundle(clinicsId, ocpJsonArray);
 
     for (const [index, { mrid }] of mridList.entries()) {
-      if (!ocpJsonArray[index]) continue;
+      if (!procedureIndexes[index]) continue;
 
       await this.prismaService.patient_assessment.updateMany({
         where: {
           patient_medical_recordsId: mrid,
         },
         data: {
-          conditionId: ocpResponseBody[ocpJsonArray[index]].response.resourceID,
+          conditionId:
+            ocpResponseBody[procedureIndexes[index]].response.resourceID,
         },
       });
     }
