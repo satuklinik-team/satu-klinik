@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { CryptoService } from 'src/crypto/crypto.service';
 import { EmailUsedException } from 'src/exceptions';
 import { CountUsersDto, CreateUserDto } from './dto';
@@ -49,26 +48,10 @@ export class UsersService {
     return data;
   }
 
-  findAll() {
-    return `This action returns all users`;
-  }
-
   async count(dto: CountUsersDto) {
     const data = await this.prismaService.users.count({ where: dto.where });
 
     return data;
-  }
-
-  findOne(id: string) {
-    return `This action returns a #${id} user`;
-  }
-
-  update(id: string, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
-  }
-
-  remove(id: string) {
-    return `This action removes a #${id} user`;
   }
 
   private async _isEmailUsed(email: string) {

@@ -14,7 +14,7 @@ model Patient {
   satuSehatId String?
   nik         String?
   fullname    String
-  parentname  String?
+  parentname  String?                   @default("-")
   address     String
   phone       String?
   email       String?

@@ -10,6 +10,8 @@ export class SatusehatAdminController {
 
   @Get()
   async satuSehatIntegration() {
+    const x = null;
+    return `${x}T00:00:00.000Z`;
     return await this.satusehatRawatJalanService.handleCron();
   }
 }

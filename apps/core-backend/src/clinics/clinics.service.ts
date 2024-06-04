@@ -5,7 +5,7 @@ import { ServiceContext } from 'src/utils/types';
 import { FindAllClinicsDto } from './dto/find-all-clinics-dto';
 import { Prisma } from '@prisma/client';
 import { FindAllService } from 'src/find-all/find-all.service';
-import { CreateUserDto, UpdateUserDto } from 'src/users/dto';
+import { CreateUserDto } from 'src/users/dto';
 import { UsersService } from 'src/users/users.service';
 import { ClinicNotFoundException } from 'src/exceptions/not-found/clinic-not-found.exception';
 import { Role } from '@prisma/client';

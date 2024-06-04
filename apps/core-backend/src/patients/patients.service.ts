@@ -12,6 +12,7 @@ import { JwtPayload } from 'src/auth/types';
 import { FindAllService } from 'src/find-all/find-all.service';
 import { GetPatientByIdDto } from './dto/get-patient-by-id-dto';
 import { ServiceContext } from 'src/utils/types';
+import { UpdatePatientDto } from './dto/update-patient-dto';
 
 @Injectable()
 export class PatientsService {
@@ -26,20 +27,39 @@ export class PatientsService {
     const data = await prisma.patient.create({
       data: {
         norm: await this.generateMedicalRecordNorm(dto.clinicsId),
-        nik: dto.nik,
-        fullname: dto.fullname,
-        parentname: dto.parentname || '-',
-        address: dto.address,
-        phone: dto.phone,
-        age: dto.age,
-        sex: dto.sex,
-        blood: dto.blood,
-        birthAt: `${dto.birthAt}T00:00:00.000Z`,
-        clinicsId: dto.clinicsId,
+        ...this._createPatientData(dto),
       },
     });
 
     return data;
+  }
+
+  async updatePatientById(dto: UpdatePatientDto) {
+    const data = await this.prismaService.patient.update({
+      where: {
+        id: dto.id,
+      },
+      data: {
+        ...this._createPatientData(dto),
+      },
+    });
+
+    return data;
+  }
+
+  private _createPatientData(dto: UpdatePatientDto) {
+    return {
+      nik: dto.nik,
+      fullname: dto.fullname,
+      parentname: dto.parentname,
+      address: dto.address,
+      phone: dto.phone,
+      age: dto.age,
+      sex: dto.sex,
+      blood: dto.blood,
+      ...(dto.birthAt && { birthAt: `${dto.birthAt}T00:00:00.000Z` }),
+      clinicsId: dto.clinicsId,
+    };
   }
 
   async findAll(dto: FindAllPatientsDto) {
