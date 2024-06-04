@@ -14,9 +14,6 @@ import { v4 as uuidv4 } from 'uuid';
 export class SatusehatRawatJalanService {
   private logger: Logger = new Logger(SatusehatRawatJalanService.name);
 
-  PATIENT_OCP_JSON_LENGTH = 7;
-  PATIENT_OBSERVATION_JSON_OFFSET = 5;
-
   constructor(
     private readonly prismaService: PrismaService,
     private httpService: HttpService,
@@ -134,30 +131,44 @@ export class SatusehatRawatJalanService {
     }
 
     const ocpJsonArray = [];
+    const observationIndexes = [];
 
     for (const { mrid } of mridList) {
       const mridJson = [
         ...(await this.observationHttpBodyList(mrid)),
         await this.satusehatJsonService.conditionJson(mrid),
-        await this.satusehatJsonService.procedureJson(mrid),
       ];
 
       ocpJsonArray.push(...mridJson);
+
+      const patientAssessment =
+        await this.prismaService.patient_assessment.findFirst({
+          where: {
+            patient_medical_recordsId: mrid,
+          },
+          select: {
+            icd9CMCode: true,
+          },
+        });
+
+      if (patientAssessment.icd9CMCode) {
+        ocpJsonArray.push(await this.satusehatJsonService.procedureJson(mrid));
+      } else {
+        observationIndexes.push(null);
+      }
     }
 
     const ocpResponseBody = await this.postBundle(clinicsId, ocpJsonArray);
 
     for (const [index, { mrid }] of mridList.entries()) {
+      if (!ocpJsonArray[index]) continue;
+
       await this.prismaService.patient_assessment.updateMany({
         where: {
           patient_medical_recordsId: mrid,
         },
         data: {
-          conditionId:
-            ocpResponseBody[
-              this.PATIENT_OCP_JSON_LENGTH * index +
-                this.PATIENT_OBSERVATION_JSON_OFFSET
-            ].response.resourceID,
+          conditionId: ocpResponseBody[ocpJsonArray[index]].response.resourceID,
         },
       });
     }
