@@ -49,6 +49,18 @@ export class MedicineCategoryController {
     });
   }
 
+  @Get(':id')
+  @Roles(Role.PHARMACY)
+  findById(
+    @Param('id', ParseIntPipe) id: number,
+    @TokenData() tokenData: JwtPayload,
+  ) {
+    return this.medicineCategoryService.findById({
+      id,
+      clinicsId: tokenData.clinicsId,
+    });
+  }
+
   @Patch(':id')
   @Roles(Role.PHARMACY)
   update(

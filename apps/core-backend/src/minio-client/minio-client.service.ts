@@ -54,7 +54,7 @@ export class MinioClientService {
       return {
         url: `${this.configService.get(
           'minio.public_endpoint',
-        )}:${this.configService.get('minio.port')}/${baseBucket}/${filename}`,
+        )}/${baseBucket}/${filename}`,
       };
     } catch (err) {
       this.logger.error('Error uploading file', err);

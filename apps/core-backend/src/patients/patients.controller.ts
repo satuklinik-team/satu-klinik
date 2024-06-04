@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
   Query,
 } from '@nestjs/common';
@@ -15,6 +16,7 @@ import { TokenData } from 'src/utils';
 import { FindAllReturn } from 'src/utils/types';
 import { Role } from '@prisma/client';
 import { Roles } from 'src/utils/decorators/roles.decorator';
+import { UpdatePatientDto } from './dto/update-patient-dto';
 
 @Controller('patients')
 export class PatientsController {
@@ -39,6 +41,19 @@ export class PatientsController {
   ): Promise<FindAllReturn<object>> {
     return this.patientService.findAll({
       ...dto,
+      clinicsId: tokenData.clinicsId,
+    });
+  }
+
+  @Patch(':id')
+  async updatePatientById(
+    @Param('id') id: string,
+    @TokenData() tokenData: JwtPayload,
+    @Body() dto: UpdatePatientDto,
+  ) {
+    return await this.patientService.updatePatientById({
+      ...dto,
+      id,
       clinicsId: tokenData.clinicsId,
     });
   }

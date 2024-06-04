@@ -7,12 +7,14 @@ import { Prisma } from '@prisma/client';
 import { FindAllService } from 'src/find-all/find-all.service';
 import { FindPharmacyTaskByIdDto } from './dto/find-pharmacy-task-by-id.dto';
 import { IncorrectPrescriptionIdException } from 'src/exceptions/bad-request/incorrect-prescription-id-exception';
+import { RevenueService } from 'src/revenue/revenue.service';
 
 @Injectable()
 export class PharmacyTasksService {
   constructor(
     private readonly prismaService: PrismaService,
     private readonly findAllService: FindAllService,
+    private readonly revenueService: RevenueService,
   ) {}
 
   async findAll(dto: FindAllPharmacyTaskDto) {
@@ -122,6 +124,15 @@ export class PharmacyTasksService {
         throw new CannotAccessClinicException();
       }
 
+      await this.prismaService.patient_medical_records.update({
+        where: {
+          id: pharmacyTask.assessmentReffId,
+        },
+        data: {
+          status: 'p1',
+        },
+      });
+
       const patientPrescriptions = await tx.patient_prescription.findMany({
         where: {
           patient_medical_recordsId: pharmacyTask.assessmentReffId,
@@ -182,6 +193,24 @@ export class PharmacyTasksService {
             bought: true,
           },
         });
+
+        const prescription = await tx.patient_prescription.findFirst({
+          where: {
+            id: prescriptionId,
+          },
+          select: {
+            Medicine: {
+              select: {
+                price: true,
+              },
+            },
+          },
+        });
+
+        await this.revenueService.increaseRevenue(
+          { value: prescription.Medicine.price, clinicsId: dto.clinicsId },
+          { tx },
+        );
       }
 
       return pharmacyTask;

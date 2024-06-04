@@ -29,6 +29,7 @@ import { SatusehatJsonModule } from './satusehat-json/satusehat-json.module';
 import { SatusehatRawatJalanModule } from './satusehat-rawat-jalan/satusehat-rawat-jalan.module';
 import { SatusehatAdminModule } from './satusehat-admin/satusehat-admin.module';
 import { TasksModule } from './tasks-status/tasks-status.module';
+import { RevenueModule } from './revenue/revenue.module';
 
 @Module({
   imports: [
@@ -58,6 +59,7 @@ import { TasksModule } from './tasks-status/tasks-status.module';
     SatusehatRawatJalanModule,
     SatusehatAdminModule,
     TasksModule,
+    RevenueModule,
   ],
   providers: [{ provide: APP_GUARD, useClass: AccessTokenGuard }],
 })

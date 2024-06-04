@@ -15,30 +15,7 @@ export class TasksService {
   async get(dto: GetTasksStatusDto) {
     let todo: number, completed: number, total: number;
     if (dto.type === GetTasksStatusTypes.GENERAL) {
-      if (dto.role === Role.PHARMACY || dto.role === Role.DOCTOR) {
-        throw new RoleNotAuthorizedException();
-      }
-
-      completed = await this.getCount(
-        {
-          OR: [
-            {
-              status: 'd1',
-              assessment: {
-                none: {},
-              },
-            },
-            {
-              status: 'p1',
-            },
-          ],
-        },
-        dto.clinicsId,
-      );
-
-      total = await this.getCount({}, dto.clinicsId);
-
-      todo = total - completed;
+      return await this.getGeneralTaskStatus(dto);
     } else if (dto.type === GetTasksStatusTypes.DOCTOR) {
       if (dto.role === Role.PHARMACY) {
         throw new RoleNotAuthorizedException();
@@ -101,6 +78,112 @@ export class TasksService {
     };
   }
 
+  async getGeneralTaskStatus(dto: GetTasksStatusDto) {
+    const date = new Date().toLocaleDateString();
+
+    const todayPatient =
+      await this.prismaService.patient_medical_records.aggregate({
+        where: {
+          visitLabel: date,
+          Patient: {
+            clinicsId: dto.clinicsId,
+          },
+        },
+        _count: true,
+      });
+
+    const todayRevenue = await this.prismaService.revenue.findFirst({
+      where: {
+        clinicsId: dto.clinicsId,
+        date,
+      },
+    });
+
+    const todayPrescription = await this.prismaService.pharmacy_Task.aggregate({
+      where: {
+        createdDate: date,
+        clinicsId: dto.clinicsId,
+      },
+      _count: true,
+    });
+
+    const totalPatient = await this.prismaService.patient.aggregate({
+      where: {
+        clinicsId: dto.clinicsId,
+      },
+      _count: true,
+    });
+
+    return {
+      todayPatient: todayPatient._count,
+      todayRevenue: todayRevenue?.total ?? 0,
+      todayPrescription: todayPrescription._count,
+      totalPatient: totalPatient._count,
+    };
+  }
+
+  async getDoctorPharmacyTaskStatus(dto: GetTasksStatusDto) {
+    let todo: number, completed: number;
+    if (dto.type === GetTasksStatusTypes.DOCTOR) {
+      if (dto.role === Role.PHARMACY) {
+        throw new RoleNotAuthorizedException();
+      }
+      todo = await this.getCount(
+        {
+          status: 'e1',
+        },
+        dto.clinicsId,
+      );
+
+      completed = await this.getCount(
+        {
+          OR: [
+            {
+              status: 'd1',
+            },
+            {
+              status: 'p1',
+            },
+          ],
+        },
+        dto.clinicsId,
+      );
+    } else if (dto.type === GetTasksStatusTypes.PHARMACY) {
+      if (dto.role === Role.DOCTOR) {
+        throw new RoleNotAuthorizedException();
+      }
+
+      todo = await this.getCount(
+        {
+          status: 'd1',
+          assessment: {
+            some: {},
+          },
+        },
+        dto.clinicsId,
+      );
+
+      completed = await this.getCount(
+        {
+          OR: [
+            {
+              status: 'p1',
+            },
+          ],
+        },
+        dto.clinicsId,
+      );
+    }
+
+    const total = todo + completed;
+
+    return {
+      todo,
+      completed,
+      total,
+    };
+  }
+
   async getNotification(dto: GetNotificationDto) {
     let response = {};
 
@@ -109,7 +192,7 @@ export class TasksService {
         ...response,
         doctorTask:
           (
-            await this.get({
+            await this.getDoctorPharmacyTaskStatus({
               ...dto,
               type: GetTasksStatusTypes.DOCTOR,
             })
@@ -122,7 +205,7 @@ export class TasksService {
         ...response,
         pharmacyTask:
           (
-            await this.get({
+            await this.getDoctorPharmacyTaskStatus({
               ...dto,
               type: GetTasksStatusTypes.PHARMACY,
             })
