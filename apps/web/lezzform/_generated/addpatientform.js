@@ -1,13 +1,13 @@
 import { z as a } from "zod";
 import {
-  Lezzform as C,
+  Lezzform as p,
   FormField as l,
   FormItem as t,
   FormLabel as m,
   FormControl as s,
   FormMessage as u,
   Input as b,
-  Dropdown as p,
+  Dropdown as C,
   DatePicker as S,
   PhoneNumberInput as I,
   TextArea as R,
@@ -20,12 +20,12 @@ import {
 import {
   CreditCard as v,
   User as k,
-  Calendar as w,
-  Phone as P,
+  Calendar as T,
+  Phone as w,
 } from "lucide-react";
 import * as d from "react";
 import { jsx as o, jsxs as r } from "react/jsx-runtime";
-var T = a.object({
+var P = a.object({
     name: a.string().optional(),
     nik: a.string(),
     fullname: a.string(),
@@ -53,8 +53,8 @@ var T = a.object({
     temperature: a.coerce.number(),
     pain: a.string(),
   }),
-  B = "LbMhlar6HOFlIqWdRJfU",
-  G = ({
+  B = "BcOMihidULtpmN3riG68",
+  M = ({
     onSubmit: c,
     onError: F,
     onSuccess: L,
@@ -70,17 +70,17 @@ var T = a.object({
       if (h.current) return h.current(n, e);
     }, []);
     return o(
-      C,
+      p,
       {
         id: B,
         defaultValues: z,
         onSubmit: q,
         onError: F,
         onSuccess: L,
-        zodSchema: T,
-        mode: "onBlur",
+        zodSchema: P,
+        mode: "onTouched",
         children: (n) =>
-          r(C.Container, {
+          r(p.Container, {
             children: [
               o(l, {
                 control: n.control,
@@ -171,7 +171,7 @@ var T = a.object({
                     children: [
                       o(m, { isRequired: !0, children: "Jenis Kelamin" }),
                       o(s, {
-                        children: o(p.List, {
+                        children: o(C.List, {
                           label: "Jenis Kelamin",
                           name: e.name,
                           value: e.value,
@@ -197,7 +197,7 @@ var T = a.object({
                     children: [
                       o(m, { isRequired: !0, children: "Golongan Darah" }),
                       o(s, {
-                        children: o(p.List, {
+                        children: o(C.List, {
                           label: "Golongan Darah",
                           name: e.name,
                           value: e.value,
@@ -237,7 +237,7 @@ var T = a.object({
                           styles: { root: {} },
                           disabled: e.disabled,
                           prefixAdornment: {
-                            icon: o(w, { size: 18, color: "#000000" }),
+                            icon: o(T, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
@@ -264,7 +264,7 @@ var T = a.object({
                           isRequired: !0,
                           styles: { root: {} },
                           prefixAdornment: {
-                            icon: o(P, { size: 18, color: "#000000" }),
+                            icon: o(w, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),

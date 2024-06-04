@@ -4,19 +4,19 @@ import {
   FormField as a,
   FormItem as m,
   FormLabel as l,
-  FormControl as u,
-  FormMessage as s,
+  FormControl as s,
+  FormMessage as u,
   Attachment as R,
   Dropdown as v,
   Input as L,
-  NumberInput as p,
+  NumberInput as d,
   TwoColumn as I,
   Button as h,
 } from "@lezzform/react";
-import { ChevronDown as w } from "lucide-react";
+import { ChevronDown as k } from "lucide-react";
 import * as c from "react";
 import { jsx as e, jsxs as n } from "react/jsx-runtime";
-var k = t.object({
+var w = t.object({
     image: t.string(),
     categoryId: t.string(),
     title: t.string(),
@@ -24,31 +24,31 @@ var k = t.object({
     stock: t.coerce.number(),
     discount: t.coerce.number().optional(),
   }),
-  g = "5I0yNaiAFhdj5MwTWjdd",
+  g = "DAsoZA3J5Fm48OCSKb9T",
   E = ({
     onSubmit: i,
     onError: z,
     onSuccess: C,
-    defaultValues: y,
-    onAction: w,
+    defaultValues: S,
+    onAction: P,
     formProps: B,
   }) => {
     let b = c.useRef();
     c.useEffect(() => {
       i && (b.current = i);
     }, [i]);
-    let S = c.useCallback(async (r, o) => {
+    let y = c.useCallback(async (r, o) => {
       if (b.current) return b.current(r, o);
     }, []);
     return e(
       F,
       {
         id: g,
-        defaultValues: y,
-        onSubmit: S,
+        defaultValues: S,
+        onSubmit: y,
         onError: z,
         onSuccess: C,
-        zodSchema: k,
+        zodSchema: w,
         mode: "onSubmit",
         children: (r) =>
           n(F.Container, {
@@ -60,21 +60,21 @@ var k = t.object({
                   n(m, {
                     children: [
                       e(l, { isRequired: !0, children: "Image" }),
-                      e(u, {
+                      e(s, {
                         children: e(R, {
                           label: "Image",
                           name: o.name,
                           value: o.value,
-                          onChange: (d) => {
-                            o.onChange(d), r.clearErrors(o.name);
+                          onChange: (p) => {
+                            o.onChange(p), r.clearErrors(o.name);
                           },
                           disabled: o.disabled,
                           placeholder: "",
                           acceptedFormats: ["image/jpeg", "image/png"],
                           maxSize: 2048,
                           headers: [],
-                          onError: (d) => {
-                            r.setError(o.name, { message: d });
+                          onError: (p) => {
+                            r.setError(o.name, { message: p });
                           },
                           path: { value: "" },
                           url: "",
@@ -82,7 +82,7 @@ var k = t.object({
                           styles: { root: {} },
                         }),
                       }),
-                      e(s, {}),
+                      e(u, {}),
                     ],
                   }),
               }),
@@ -93,7 +93,7 @@ var k = t.object({
                   n(m, {
                     children: [
                       e(l, { isRequired: !0, children: "Category" }),
-                      e(u, {
+                      e(s, {
                         children: e(v, {
                           label: "Category",
                           name: o.name,
@@ -109,11 +109,11 @@ var k = t.object({
                           disabled: o.disabled,
                           styles: { root: {} },
                           suffixAdornment: {
-                            icon: e(w, { size: 18, color: "#000000" }),
+                            icon: e(k, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
-                      e(s, {}),
+                      e(u, {}),
                     ],
                   }),
               }),
@@ -124,7 +124,7 @@ var k = t.object({
                   n(m, {
                     children: [
                       e(l, { isRequired: !0, children: "Title" }),
-                      e(u, {
+                      e(s, {
                         children: e(L, {
                           label: "Title",
                           name: o.name,
@@ -137,7 +137,7 @@ var k = t.object({
                           styles: { root: {} },
                         }),
                       }),
-                      e(s, {}),
+                      e(u, {}),
                     ],
                   }),
               }),
@@ -148,8 +148,8 @@ var k = t.object({
                   n(m, {
                     children: [
                       e(l, { children: "Price" }),
-                      e(u, {
-                        children: e(p, {
+                      e(s, {
+                        children: e(d, {
                           label: "Price",
                           name: o.name,
                           value: o.value ?? 0,
@@ -160,7 +160,7 @@ var k = t.object({
                           styles: { root: {} },
                         }),
                       }),
-                      e(s, {}),
+                      e(u, {}),
                     ],
                   }),
               }),
@@ -171,8 +171,8 @@ var k = t.object({
                   n(m, {
                     children: [
                       e(l, { isRequired: !0, children: "Quantity" }),
-                      e(u, {
-                        children: e(p, {
+                      e(s, {
+                        children: e(d, {
                           label: "Quantity",
                           name: o.name,
                           value: o.value ?? 0,
@@ -184,7 +184,7 @@ var k = t.object({
                           styles: { root: {} },
                         }),
                       }),
-                      e(s, {}),
+                      e(u, {}),
                     ],
                   }),
               }),
@@ -195,8 +195,8 @@ var k = t.object({
                   n(m, {
                     children: [
                       e(l, { children: "Discount" }),
-                      e(u, {
-                        children: e(p, {
+                      e(s, {
+                        children: e(d, {
                           label: "Discount",
                           name: o.name,
                           value: o.value ?? 0,
@@ -207,7 +207,7 @@ var k = t.object({
                           styles: { root: {} },
                         }),
                       }),
-                      e(s, {}),
+                      e(u, {}),
                     ],
                   }),
               }),

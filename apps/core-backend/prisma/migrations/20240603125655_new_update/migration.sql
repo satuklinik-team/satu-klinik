@@ -274,6 +274,7 @@ CREATE TABLE "Clinics" (
     "organizationId" TEXT,
     "locationSatuSehatId" TEXT,
     "locationName" TEXT,
+    "completeCreds" BOOLEAN NOT NULL DEFAULT false,
     "accountsId" UUID,
 
     CONSTRAINT "Clinics_pkey" PRIMARY KEY ("id")

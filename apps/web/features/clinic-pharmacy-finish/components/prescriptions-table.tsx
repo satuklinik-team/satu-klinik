@@ -10,10 +10,11 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { ClinicCard } from "@/features/clinic/components/ui/card";
+import type { MedicineEntity } from "@/services/medicine/types/entity";
 import { useCompletePharmacyTask } from "@/services/pharmacy-task/hooks/use-complete-pharmacy-task";
 import { useGetPharmacyTask } from "@/services/pharmacy-task/hooks/use-get-pharmacy-task";
-import { PharmacyTaskQueryKeyFactory } from "@/services/pharmacy-task/utils/query-key.factory";
 import type { PrescriptionEntity } from "@/services/prescription/types/entity";
+import { TasksStatusQueryKeyFactory } from "@/services/tasks-status/utils/query-key.factory";
 
 export function ClinicPharmacyFinishPrescriptionsTable():
   | JSX.Element
@@ -42,9 +43,14 @@ export function ClinicPharmacyFinishPrescriptionsTable():
 
     toast({ title: "Berhasil Menyelesaikan Tugas!", variant: "success" });
 
-    await queryClient.invalidateQueries({
-      queryKey: new PharmacyTaskQueryKeyFactory().lists(),
-    });
+    await Promise.all([
+      queryClient.invalidateQueries({
+        queryKey: new TasksStatusQueryKeyFactory().notifications(),
+      }),
+      queryClient.invalidateQueries({
+        queryKey: new TasksStatusQueryKeyFactory().list({ type: "PHARMACY" }),
+      }),
+    ]);
 
     router.push(`/clinic/${clinicId as string}/pharmacy`);
   }, [
@@ -69,14 +75,21 @@ export function ClinicPharmacyFinishPrescriptionsTable():
             {
               key: "name",
               name: "Nama",
-              renderCell: (row) => (
-                <Cell>
-                  {/* <p>{row.medicine?.title}</p> */}
-                  <p>
-                    Total: <b>{row.totalQuantity} pcs</b>
-                  </p>
-                </Cell>
-              ),
+              renderCell: (row) => {
+                const typeRow = row as unknown as Omit<
+                  PrescriptionEntity,
+                  "medicine"
+                > & { Medicine: MedicineEntity };
+
+                return (
+                  <Cell className="flex flex-col items-start gap-0">
+                    <p className="text-base font-semibold">
+                      {typeRow.Medicine.title}
+                    </p>
+                    <p>Total: {row.totalQuantity} pcs</p>
+                  </Cell>
+                );
+              },
             },
             {
               key: "procedure",
