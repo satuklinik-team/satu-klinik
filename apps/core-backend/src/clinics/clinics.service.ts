@@ -72,6 +72,20 @@ export class ClinicsService {
       },
     });
 
+    await prisma.medicineCategory.create({
+      data: {
+        clinicsId: data.id,
+        name: 'Obat',
+      },
+    });
+
+    await prisma.medicineCategory.create({
+      data: {
+        clinicsId: data.id,
+        name: 'Vitamin',
+      },
+    });
+
     return data;
   }
 
