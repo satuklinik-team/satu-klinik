@@ -49,6 +49,12 @@ class PatientApi {
 
     return data;
   }
+
+  async deletePatient(id: string): Promise<PatientEntity> {
+    const { data } = await this.api.delete<PatientEntity>(`/patients/${id}`);
+
+    return data;
+  }
 }
 
 export const patientApi = new PatientApi();

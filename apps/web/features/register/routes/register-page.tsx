@@ -35,15 +35,20 @@ export function RegisterPage(): JSX.Element {
 
       if (data.user.roles === "OWNER") {
         router.replace("/members");
+        return;
       }
 
       if (data.user.roles === "PHARMACY") {
         router.replace(`/clinic/${data.clinic.id}/pharmacy`);
+        return;
       }
 
-      if (data.user.roles !== "OWNER" && data.user.roles !== "PHARMACY") {
-        router.replace(`/clinic/${data.clinic.id}`);
+      if (data.user.roles === "DOCTOR") {
+        router.replace(`/clinic/${data.clinic.id}/doctor`);
+        return;
       }
+
+      router.replace(`/clinic/${data.clinic.id}`);
     },
     [mutateAsync, router, toast],
   );
