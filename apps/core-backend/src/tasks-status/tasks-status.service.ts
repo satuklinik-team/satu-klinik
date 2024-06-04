@@ -79,6 +79,10 @@ export class TasksService {
   }
 
   async getGeneralTaskStatus(dto: GetTasksStatusDto) {
+    if (dto.role === Role.PHARMACY) {
+      throw new RoleNotAuthorizedException();
+    }
+
     const date = new Date().toLocaleDateString();
 
     const todayPatient =
