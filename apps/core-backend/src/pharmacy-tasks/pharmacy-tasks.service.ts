@@ -122,6 +122,15 @@ export class PharmacyTasksService {
         throw new CannotAccessClinicException();
       }
 
+      await this.prismaService.patient_medical_records.update({
+        where: {
+          id: pharmacyTask.assessmentReffId,
+        },
+        data: {
+          status: 'p1',
+        },
+      });
+
       const patientPrescriptions = await tx.patient_prescription.findMany({
         where: {
           patient_medical_recordsId: pharmacyTask.assessmentReffId,
