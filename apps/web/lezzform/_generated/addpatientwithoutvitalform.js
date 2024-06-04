@@ -2,13 +2,13 @@ import { z as a } from "zod";
 import {
   Lezzform as F,
   FormField as t,
-  FormItem as m,
-  FormLabel as l,
+  FormItem as l,
+  FormLabel as m,
   FormControl as s,
   FormMessage as u,
   Input as b,
   Dropdown as p,
-  DatePicker as v,
+  DatePicker as y,
   PhoneNumberInput as S,
   TextArea as A,
   TwoColumn as k,
@@ -41,12 +41,12 @@ var I = a.object({
       ),
     address: a.string(),
   }),
-  z = "iRPJIyLRwONlLKt6MGyM",
+  z = "5SSnPk0nRl8Lp9NhoaJU",
   K = ({
     onSubmit: i,
     onError: h,
     onSuccess: R,
-    defaultValues: y,
+    defaultValues: L,
     onAction: f,
     formProps: q,
   }) => {
@@ -54,19 +54,19 @@ var I = a.object({
     c.useEffect(() => {
       i && (d.current = i);
     }, [i]);
-    let L = c.useCallback(async (r, o) => {
+    let v = c.useCallback(async (r, o) => {
       if (d.current) return d.current(r, o);
     }, []);
     return e(
       F,
       {
         id: z,
-        defaultValues: y,
-        onSubmit: L,
+        defaultValues: L,
+        onSubmit: v,
         onError: h,
         onSuccess: R,
         zodSchema: I,
-        mode: "onSubmit",
+        mode: "onTouched",
         children: (r) =>
           n(F.Container, {
             children: [
@@ -75,9 +75,9 @@ var I = a.object({
                 name: "medicalNumber",
                 disabled: !0,
                 render: ({ field: o }) =>
-                  n(m, {
+                  n(l, {
                     children: [
-                      e(l, { children: "Nomor Rekam Medis" }),
+                      e(m, { children: "Nomor Rekam Medis" }),
                       e(s, {
                         children: e(b, {
                           label: "Nomor Rekam Medis",
@@ -101,9 +101,9 @@ var I = a.object({
                 control: r.control,
                 name: "nik",
                 render: ({ field: o }) =>
-                  n(m, {
+                  n(l, {
                     children: [
-                      e(l, { isRequired: !0, children: "NIK" }),
+                      e(m, { isRequired: !0, children: "NIK" }),
                       e(s, {
                         children: e(b, {
                           label: "NIK",
@@ -128,9 +128,9 @@ var I = a.object({
                 control: r.control,
                 name: "fullname",
                 render: ({ field: o }) =>
-                  n(m, {
+                  n(l, {
                     children: [
-                      e(l, { isRequired: !0, children: "Nama" }),
+                      e(m, { isRequired: !0, children: "Nama" }),
                       e(s, {
                         children: e(b, {
                           label: "Nama",
@@ -155,9 +155,9 @@ var I = a.object({
                 control: r.control,
                 name: "sex",
                 render: ({ field: o }) =>
-                  n(m, {
+                  n(l, {
                     children: [
-                      e(l, { isRequired: !0, children: "Jenis Kelamin" }),
+                      e(m, { isRequired: !0, children: "Jenis Kelamin" }),
                       e(s, {
                         children: e(p.List, {
                           label: "Jenis Kelamin",
@@ -181,9 +181,9 @@ var I = a.object({
                 control: r.control,
                 name: "blood",
                 render: ({ field: o }) =>
-                  n(m, {
+                  n(l, {
                     children: [
-                      e(l, { isRequired: !0, children: "Golongan Darah" }),
+                      e(m, { isRequired: !0, children: "Golongan Darah" }),
                       e(s, {
                         children: e(p.List, {
                           label: "Golongan Darah",
@@ -191,7 +191,7 @@ var I = a.object({
                           value: o.value,
                           onChange: o.onChange,
                           items: [
-                            { label: "empty", value: "N/A" },
+                            { label: "N/A", value: "N/A" },
                             { label: "A", value: "a" },
                             { label: "B", value: "b" },
                             { label: "AB", value: "ab" },
@@ -210,11 +210,11 @@ var I = a.object({
                 control: r.control,
                 name: "birthAt",
                 render: ({ field: o }) =>
-                  n(m, {
+                  n(l, {
                     children: [
-                      e(l, { isRequired: !0, children: "Tanggal Lahir" }),
+                      e(m, { isRequired: !0, children: "Tanggal Lahir" }),
                       e(s, {
-                        children: e(v, {
+                        children: e(y, {
                           label: "Tanggal Lahir",
                           name: o.name,
                           value: o.value,
@@ -237,9 +237,9 @@ var I = a.object({
                 control: r.control,
                 name: "phone",
                 render: ({ field: o }) =>
-                  n(m, {
+                  n(l, {
                     children: [
-                      e(l, { isRequired: !0, children: "Nomor Telepon" }),
+                      e(m, { isRequired: !0, children: "Nomor Telepon" }),
                       e(s, {
                         children: e(S, {
                           label: "Nomor Telepon",
@@ -264,9 +264,9 @@ var I = a.object({
                 control: r.control,
                 name: "address",
                 render: ({ field: o }) =>
-                  n(m, {
+                  n(l, {
                     children: [
-                      e(l, { isRequired: !0, children: "Alamat" }),
+                      e(m, { isRequired: !0, children: "Alamat" }),
                       e(s, {
                         children: e(A, {
                           label: "Alamat",

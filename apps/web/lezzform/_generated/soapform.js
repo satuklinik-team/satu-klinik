@@ -8,12 +8,12 @@ import {
   FormMessage as d,
   Text as b,
   Input as L,
-  Button as y,
+  Button as R,
 } from "@lezzform/react";
 import * as e from "react";
 import { jsx as o, jsxs as s } from "react/jsx-runtime";
-var R = a.object({ name: a.string().optional() }),
-  u = "01gwyd2XrJnQ5bF2l3Gi",
+var y = a.object({ name: a.string().optional() }),
+  u = "0wVoMjXQVXf5XPE4Y4Ql",
   C = ({
     onSubmit: m,
     onError: i,
@@ -37,8 +37,8 @@ var R = a.object({ name: a.string().optional() }),
         onSubmit: z,
         onError: i,
         onSuccess: l,
-        zodSchema: R,
-        mode: "onSubmit",
+        zodSchema: y,
+        mode: "onTouched",
         children: (n) =>
           s(c.Container, {
             children: [
@@ -66,7 +66,7 @@ var R = a.object({ name: a.string().optional() }),
                     ],
                   }),
               }),
-              o(y, {
+              o(R, {
                 type: "submit",
                 className: "w-full",
                 disabled: n.formState.isSubmitting,

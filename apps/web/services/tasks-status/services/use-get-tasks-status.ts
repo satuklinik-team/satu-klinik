@@ -6,11 +6,11 @@ import { tasksStatusApi } from "../api";
 import type { TasksStatusEntity } from "../types/entity";
 import { TasksStatusQueryKeyFactory } from "../utils/query-key.factory";
 
-export const useGetTasksStatus = (dto?: object) => {
+export const useGetTasksStatus = <T = TasksStatusEntity>(dto?: object) => {
   const queryKeyFactory = new TasksStatusQueryKeyFactory();
 
-  return useQuery<TasksStatusEntity>({
-    queryFn: () => tasksStatusApi.getTasksStatus(dto),
+  return useQuery<T>({
+    queryFn: () => tasksStatusApi.getTasksStatus<T>(dto),
     queryKey: queryKeyFactory.list(dto),
   });
 };

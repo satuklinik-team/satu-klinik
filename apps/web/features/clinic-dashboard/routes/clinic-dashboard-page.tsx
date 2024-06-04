@@ -1,16 +1,16 @@
 "use client";
 
-// import ReactApexChart from "react-apexcharts";
 import { ClinicCard } from "@/features/clinic/components/ui/card";
 import { QueueCard } from "@/features/clinic-patient/components/shared/queue-card";
 import { useFindPatient } from "@/services/patient/hooks/use-find-patient";
+import { useGetTasksStatus } from "@/services/tasks-status/services/use-get-tasks-status";
+import type { GeneralTasksStatusEntity } from "@/services/tasks-status/types/entity";
 
-// import { useGetTasksStatus } from "@/services/tasks-status/services/use-get-tasks-status";
 import { ClinicDashboardUsersTable } from "../components/table";
-// import { ClinicServicesCard } from "@/features/clinic/components/ui/services-card";
 
 export function ClinicDashboardPage(): JSX.Element {
-  // const { data: tasksStatusData } = useGetTasksStatus({ type: "GENERAL" });
+  const { data: tasksStatusData } =
+    useGetTasksStatus<GeneralTasksStatusEntity>();
 
   const { data } = useFindPatient({
     skip: 0,
@@ -30,13 +30,13 @@ export function ClinicDashboardPage(): JSX.Element {
         </p>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-4 gap-4 mb-4">
         <ClinicCard
           borderPosition="bottom"
           className="border-sky-500"
           title="Today's Patient"
         >
-          0
+          {tasksStatusData?.todayPatient}
         </ClinicCard>
 
         <ClinicCard
@@ -44,7 +44,7 @@ export function ClinicDashboardPage(): JSX.Element {
           className="border-red-500"
           title="Today's Revenue"
         >
-          0
+          {tasksStatusData?.todayRevenue}
         </ClinicCard>
 
         <ClinicCard
@@ -52,7 +52,7 @@ export function ClinicDashboardPage(): JSX.Element {
           className="border-green-500"
           title="Today's Prescription"
         >
-          0
+          {tasksStatusData?.todayPrescription}
         </ClinicCard>
 
         <ClinicCard
@@ -60,16 +60,16 @@ export function ClinicDashboardPage(): JSX.Element {
           className="border-orange-500"
           title="Total Patient"
         >
-          7
+          {tasksStatusData?.totalPatient}
         </ClinicCard>
       </div>
 
-      <ClinicCard
+      {/* <ClinicCard
         borderPosition="left"
         className="my-4 border-sky-500"
         title="Overview"
-      >
-        {/* <ReactApexChart
+      > */}
+      {/* <ReactApexChart
           height="25rem"
           options={{
             chart: {
@@ -124,7 +124,7 @@ export function ClinicDashboardPage(): JSX.Element {
           type="line"
           width="100%"
         /> */}
-      </ClinicCard>
+      {/* </ClinicCard> */}
 
       {/* <ClinicServicesCard /> */}
 

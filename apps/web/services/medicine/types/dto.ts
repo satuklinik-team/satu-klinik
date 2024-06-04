@@ -16,6 +16,7 @@ export const updateMedicineSchema = z.object({
   stock: z.number().optional(),
   discount: z.number().optional(),
   categoryId: z.number().optional(),
+  kfaCode: z.string().optional(),
 });
 
 export type CreateMedicineSchema = z.infer<typeof createMedicineSchema>;

@@ -22,6 +22,12 @@ class UserApi {
     return data;
   }
 
+  async deleteUser(id: string): Promise<UserEntity> {
+    const { data } = await this.api.delete<UserEntity>(`/clinics/users/${id}`);
+
+    return data;
+  }
+
   async createUser(values?: CreateUserDto): Promise<UserEntity> {
     const { data } = await this.api.post<UserEntity>("/clinics/users", values);
 

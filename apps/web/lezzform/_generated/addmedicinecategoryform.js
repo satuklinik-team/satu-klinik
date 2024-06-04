@@ -1,34 +1,34 @@
 import { z as a } from "zod";
 import {
   Lezzform as u,
-  FormField as S,
-  FormItem as F,
+  FormField as F,
+  FormItem as S,
   FormLabel as p,
   FormControl as d,
   FormMessage as h,
   Input as b,
   Button as L,
 } from "@lezzform/react";
-import * as e from "react";
-import { jsx as r, jsxs as s } from "react/jsx-runtime";
+import * as r from "react";
+import { jsx as e, jsxs as s } from "react/jsx-runtime";
 var R = a.object({ name: a.string() }),
-  c = "1Bp6P4kq6HvKeNp4SV1u",
-  C = ({
+  c = "V0EIdlmlQ0MGgn9e1pfC",
+  P = ({
     onSubmit: m,
     onError: i,
     onSuccess: l,
     defaultValues: f,
-    onAction: k,
-    formProps: y,
+    onAction: y,
+    formProps: g,
   }) => {
-    let t = e.useRef();
-    e.useEffect(() => {
+    let t = r.useRef();
+    r.useEffect(() => {
       m && (t.current = m);
     }, [m]);
-    let z = e.useCallback(async (n, o) => {
+    let z = r.useCallback(async (n, o) => {
       if (t.current) return t.current(n, o);
     }, []);
-    return r(
+    return e(
       u,
       {
         id: c,
@@ -37,19 +37,19 @@ var R = a.object({ name: a.string() }),
         onError: i,
         onSuccess: l,
         zodSchema: R,
-        mode: "onSubmit",
+        mode: "onTouched",
         children: (n) =>
           s(u.Container, {
             children: [
-              r(S, {
+              e(F, {
                 control: n.control,
                 name: "name",
                 render: ({ field: o }) =>
-                  s(F, {
+                  s(S, {
                     children: [
-                      r(p, { isRequired: !0, children: "Name" }),
-                      r(d, {
-                        children: r(b, {
+                      e(p, { isRequired: !0, children: "Name" }),
+                      e(d, {
+                        children: e(b, {
                           label: "Name",
                           name: o.name,
                           value: o.value ?? "",
@@ -61,11 +61,11 @@ var R = a.object({ name: a.string() }),
                           styles: { root: {} },
                         }),
                       }),
-                      r(h, {}),
+                      e(h, {}),
                     ],
                   }),
               }),
-              r(L, {
+              e(L, {
                 type: "submit",
                 className: "w-full",
                 disabled: n.formState.isSubmitting,
@@ -79,4 +79,4 @@ var R = a.object({ name: a.string() }),
       c,
     );
   };
-export { C as Form };
+export { P as Form };

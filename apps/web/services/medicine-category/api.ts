@@ -20,7 +20,7 @@ class MedicineCategoryApi {
     const queryParams = stringify(dto);
 
     const { data } = await this.api.get<MedicineCategoryEntity>(
-      `/medicine-category/${id}?count=true&${queryParams}`,
+      `/medicine-category/${id}?${queryParams}`,
     );
 
     return data;

@@ -4,18 +4,18 @@ import {
   FormField as l,
   FormItem as c,
   FormLabel as i,
-  FormControl as z,
-  FormMessage as d,
-  EmailInput as h,
+  FormControl as d,
+  FormMessage as z,
+  EmailInput as b,
   PasswordInput as L,
   Spacer as R,
-  Button as w,
+  Button as P,
 } from "@lezzform/react";
 import * as n from "react";
 import { jsx as r, jsxs as s } from "react/jsx-runtime";
-var P = a.object({ email: a.string().email(), password: a.string() }),
-  f = "w1JqYeciTBblLOocqMio",
-  B = ({
+var w = a.object({ email: a.string().email(), password: a.string() }),
+  f = "xPLI5NflONAEMxsJLrd2",
+  E = ({
     onSubmit: m,
     onError: p,
     onSuccess: F,
@@ -27,7 +27,7 @@ var P = a.object({ email: a.string().email(), password: a.string() }),
     n.useEffect(() => {
       m && (t.current = m);
     }, [m]);
-    let b = n.useCallback(async (e, o) => {
+    let h = n.useCallback(async (e, o) => {
       if (t.current) return t.current(e, o);
     }, []);
     return r(
@@ -35,11 +35,11 @@ var P = a.object({ email: a.string().email(), password: a.string() }),
       {
         id: f,
         defaultValues: S,
-        onSubmit: b,
+        onSubmit: h,
         onError: p,
         onSuccess: F,
-        zodSchema: P,
-        mode: "onSubmit",
+        zodSchema: w,
+        mode: "onTouched",
         children: (e) =>
           s(u.Container, {
             children: [
@@ -50,8 +50,8 @@ var P = a.object({ email: a.string().email(), password: a.string() }),
                   s(c, {
                     children: [
                       r(i, { isRequired: !0, children: "Email" }),
-                      r(z, {
-                        children: r(h, {
+                      r(d, {
+                        children: r(b, {
                           label: "Email",
                           name: o.name,
                           value: o.value ?? "",
@@ -63,7 +63,7 @@ var P = a.object({ email: a.string().email(), password: a.string() }),
                           styles: { root: {} },
                         }),
                       }),
-                      r(d, {}),
+                      r(z, {}),
                     ],
                   }),
               }),
@@ -74,7 +74,7 @@ var P = a.object({ email: a.string().email(), password: a.string() }),
                   s(c, {
                     children: [
                       r(i, { isRequired: !0, children: "Password" }),
-                      r(z, {
+                      r(d, {
                         children: r(L, {
                           label: "Password",
                           name: o.name,
@@ -87,12 +87,12 @@ var P = a.object({ email: a.string().email(), password: a.string() }),
                           styles: { root: {} },
                         }),
                       }),
-                      r(d, {}),
+                      r(z, {}),
                     ],
                   }),
               }),
               r(R, { styles: { root: {} }, size: 16 }),
-              r(w, {
+              r(P, {
                 type: "submit",
                 className: "w-full",
                 disabled: e.formState.isSubmitting,
@@ -106,4 +106,4 @@ var P = a.object({ email: a.string().email(), password: a.string() }),
       f,
     );
   };
-export { B as Form };
+export { E as Form };

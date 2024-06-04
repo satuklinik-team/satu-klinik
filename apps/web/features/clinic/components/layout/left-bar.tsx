@@ -31,6 +31,9 @@ export function LeftBar({ className, ...rest }: LeftBarProps): JSX.Element {
     if (roles === "PHARMACY")
       return leftBarGroups.filter((item) => item.id === "3");
 
+    if (roles === "DOCTOR")
+      return leftBarGroups.filter((item) => item.id === "2");
+
     return leftBarGroups;
   }, [roles]);
 

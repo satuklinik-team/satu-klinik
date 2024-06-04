@@ -14,7 +14,7 @@ import {
 import { useToast } from "@/components/ui/use-toast";
 import { ClinicCard } from "@/features/clinic/components/ui/card";
 import { Form as AddUserForm } from "@/lezzform/_generated/adduserform";
-import { useCreateUser } from "@/services/user/hooks/use-create-patient";
+import { useCreateUser } from "@/services/user/hooks/use-create-user";
 import type { CreateUserDto } from "@/services/user/types/dto";
 import type { UserRole } from "@/services/user/types/entity";
 import { UserQueryKeyFactory } from "@/services/user/utils/query-key.factory";
