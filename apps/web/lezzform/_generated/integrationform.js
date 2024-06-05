@@ -3,8 +3,8 @@ import {
   Lezzform as p,
   FormField as t,
   FormItem as s,
-  FormLabel as l,
-  FormControl as u,
+  FormLabel as u,
+  FormControl as l,
   FormMessage as c,
   Input as F,
   PasswordInput as g,
@@ -18,10 +18,10 @@ var L = a.object({
     username: a.string(),
     password: a.string(),
   }),
-  z = "ArmHq9lsD20Nls3dmd2c",
+  b = "XDFmkpeZJdxC1jKy2oby",
   P = ({
     onSubmit: i,
-    onError: b,
+    onError: z,
     onSuccess: h,
     defaultValues: S,
     onAction: f,
@@ -37,10 +37,10 @@ var L = a.object({
     return e(
       p,
       {
-        id: z,
+        id: b,
         defaultValues: S,
         onSubmit: R,
-        onError: b,
+        onError: z,
         onSuccess: h,
         zodSchema: L,
         mode: "onSubmit",
@@ -53,8 +53,8 @@ var L = a.object({
                 render: ({ field: o }) =>
                   m(s, {
                     children: [
-                      e(l, { isRequired: !0, children: "ID" }),
-                      e(u, {
+                      e(u, { isRequired: !0, children: "ID" }),
+                      e(l, {
                         children: e(F, {
                           label: "ID",
                           name: o.name,
@@ -77,8 +77,8 @@ var L = a.object({
                 render: ({ field: o }) =>
                   m(s, {
                     children: [
-                      e(l, { isRequired: !0, children: "Token" }),
-                      e(u, {
+                      e(u, { isRequired: !0, children: "Token" }),
+                      e(l, {
                         children: e(F, {
                           label: "Token",
                           name: o.name,
@@ -101,8 +101,8 @@ var L = a.object({
                 render: ({ field: o }) =>
                   m(s, {
                     children: [
-                      e(l, { isRequired: !0, children: "Username" }),
-                      e(u, {
+                      e(u, { isRequired: !0, children: "Username" }),
+                      e(l, {
                         children: e(F, {
                           label: "Username",
                           name: o.name,
@@ -125,8 +125,8 @@ var L = a.object({
                 render: ({ field: o }) =>
                   m(s, {
                     children: [
-                      e(l, { isRequired: !0, children: "Password" }),
-                      e(u, {
+                      e(u, { isRequired: !0, children: "Password" }),
+                      e(l, {
                         children: e(g, {
                           label: "Password",
                           name: o.name,
@@ -154,7 +154,7 @@ var L = a.object({
             ],
           }),
       },
-      z,
+      b,
     );
   };
 export { P as Form };

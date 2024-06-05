@@ -15,7 +15,7 @@ import {
   TwoColumn as P,
   Button as h,
 } from "@lezzform/react";
-import { UserRound as k, Mail as A, CreditCard as B } from "lucide-react";
+import { UserRound as A, Mail as B, CreditCard as k } from "lucide-react";
 import * as i from "react";
 import { jsx as e, jsxs as n } from "react/jsx-runtime";
 var I = a.object({
@@ -28,10 +28,10 @@ var I = a.object({
     password: a.string().max(14).min(6),
     confirmPassword: a.string().max(14).min(6),
   }),
-  C = "nbbmTzaK2yLknyCRCCW8",
-  K = ({
+  R = "P3JBRNWp2YGf6UhNRRzm",
+  D = ({
     onSubmit: c,
-    onError: R,
+    onError: C,
     onSuccess: g,
     defaultValues: z,
     onAction: q,
@@ -47,10 +47,10 @@ var I = a.object({
     return e(
       p,
       {
-        id: C,
+        id: R,
         defaultValues: z,
         onSubmit: S,
-        onError: R,
+        onError: C,
         onSuccess: g,
         zodSchema: I,
         mode: "onTouched",
@@ -76,7 +76,7 @@ var I = a.object({
                           isRequired: !0,
                           styles: { root: {} },
                           prefixAdornment: {
-                            icon: e(k, { size: 18, color: "#000000" }),
+                            icon: e(A, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
@@ -103,7 +103,7 @@ var I = a.object({
                           isRequired: !0,
                           styles: { root: {} },
                           prefixAdornment: {
-                            icon: e(A, { size: 18, color: "#000000" }),
+                            icon: e(B, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
@@ -154,7 +154,7 @@ var I = a.object({
                           isRequired: !0,
                           styles: { root: {} },
                           prefixAdornment: {
-                            icon: e(B, { size: 18, color: "#000000" }),
+                            icon: e(k, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
@@ -286,7 +286,7 @@ var I = a.object({
             ],
           }),
       },
-      C,
+      R,
     );
   };
-export { K as Form };
+export { D as Form };

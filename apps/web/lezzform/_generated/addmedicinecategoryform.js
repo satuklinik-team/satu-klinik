@@ -9,11 +9,11 @@ import {
   Input as b,
   Button as L,
 } from "@lezzform/react";
-import * as r from "react";
-import { jsx as e, jsxs as s } from "react/jsx-runtime";
+import * as e from "react";
+import { jsx as r, jsxs as s } from "react/jsx-runtime";
 var R = a.object({ name: a.string() }),
-  c = "V0EIdlmlQ0MGgn9e1pfC",
-  P = ({
+  c = "vAuq7HO5xyGFAg7XdlK5",
+  C = ({
     onSubmit: m,
     onError: i,
     onSuccess: l,
@@ -21,14 +21,14 @@ var R = a.object({ name: a.string() }),
     onAction: y,
     formProps: g,
   }) => {
-    let t = r.useRef();
-    r.useEffect(() => {
+    let t = e.useRef();
+    e.useEffect(() => {
       m && (t.current = m);
     }, [m]);
-    let z = r.useCallback(async (n, o) => {
+    let z = e.useCallback(async (n, o) => {
       if (t.current) return t.current(n, o);
     }, []);
-    return e(
+    return r(
       u,
       {
         id: c,
@@ -41,15 +41,15 @@ var R = a.object({ name: a.string() }),
         children: (n) =>
           s(u.Container, {
             children: [
-              e(F, {
+              r(F, {
                 control: n.control,
                 name: "name",
                 render: ({ field: o }) =>
                   s(S, {
                     children: [
-                      e(p, { isRequired: !0, children: "Name" }),
-                      e(d, {
-                        children: e(b, {
+                      r(p, { isRequired: !0, children: "Name" }),
+                      r(d, {
+                        children: r(b, {
                           label: "Name",
                           name: o.name,
                           value: o.value ?? "",
@@ -61,11 +61,11 @@ var R = a.object({ name: a.string() }),
                           styles: { root: {} },
                         }),
                       }),
-                      e(h, {}),
+                      r(h, {}),
                     ],
                   }),
               }),
-              e(L, {
+              r(L, {
                 type: "submit",
                 className: "w-full",
                 disabled: n.formState.isSubmitting,
@@ -79,4 +79,4 @@ var R = a.object({ name: a.string() }),
       c,
     );
   };
-export { P as Form };
+export { C as Form };
