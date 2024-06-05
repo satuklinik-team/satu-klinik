@@ -4,8 +4,8 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useDebounce } from "@uidotdev/usehooks";
 import dayjs from "dayjs";
 import { Check } from "lucide-react";
-import { useParams, useRouter } from "next/navigation";
 import { useCallback, useMemo, useState } from "react";
+import type { UseFormReturn } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -36,8 +36,6 @@ import { TasksStatusQueryKeyFactory } from "@/services/tasks-status/utils/query-
 
 export function ClinicRegisterPatientPage(): JSX.Element {
   const queryClient = useQueryClient();
-  const router = useRouter();
-  const { clinicId } = useParams();
 
   const { toast } = useToast();
 
@@ -63,7 +61,6 @@ export function ClinicRegisterPatientPage(): JSX.Element {
       blood: selectedPatient.blood,
       phone: selectedPatient.phone,
       birthAt: new Date(selectedPatient.birthAt),
-      ...selectedPatient.mr[0]?.vitalSign[0],
       deletedAt: undefined,
       id: undefined,
       patient_medical_recordsId: undefined,
@@ -85,7 +82,11 @@ export function ClinicRegisterPatientPage(): JSX.Element {
     useCreateNewPatientVitalSign();
 
   const onSubmit = useCallback(
-    async (_form: object, dto: Record<string, unknown>) => {
+    async (rawForm: object, dto: Record<string, unknown>) => {
+      const form = rawForm as UseFormReturn<
+        CreatePatientDto & CreateNewPatientVitalSignDto
+      >;
+
       const formattedPatientData: CreatePatientDto = {
         nik: dto.nik as string,
         fullname: dto.fullname as string,
@@ -133,14 +134,29 @@ export function ClinicRegisterPatientPage(): JSX.Element {
 
       toast({ title: "Berhasil Membuat Pasien!", variant: "success" });
 
-      router.push(`/clinic/${clinicId as string}/doctor`);
+      form.reset({
+        nik: undefined,
+        fullname: undefined,
+        address: undefined,
+        sex: undefined,
+        blood: undefined,
+        phone: undefined,
+        birthAt: undefined,
+        height: undefined,
+        weight: undefined,
+        allergic: undefined,
+        systole: undefined,
+        diastole: undefined,
+        temperature: undefined,
+        respiration: undefined,
+        pulse: undefined,
+        pain: undefined,
+      });
     },
     [
-      clinicId,
       createNewPatientVitalSign,
       createPatientVitalSign,
       queryClient,
-      router,
       selectedPatient,
       toast,
     ],
@@ -200,7 +216,14 @@ export function ClinicRegisterPatientPage(): JSX.Element {
                             : "opacity-0",
                         )}
                       />
-                      {item.fullname}
+                      <div className="text-xs">
+                        <p className="text-sm font-semibold">{item.fullname}</p>
+                        <p>{item.norm}</p>
+                        <p>{item.nik}</p>
+                        <p>{item.birthAt}</p>
+                        <p>{item.phone}</p>
+                        <p>{item.address}</p>
+                      </div>
                     </CommandItem>
                   ))}
                 </CommandGroup>

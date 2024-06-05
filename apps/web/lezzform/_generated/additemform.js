@@ -13,10 +13,10 @@ import {
   TwoColumn as I,
   Button as h,
 } from "@lezzform/react";
-import { ChevronDown as k } from "lucide-react";
+import { ChevronDown as P } from "lucide-react";
 import * as c from "react";
 import { jsx as e, jsxs as n } from "react/jsx-runtime";
-var w = t.object({
+var k = t.object({
     image: t.string(),
     categoryId: t.string(),
     title: t.string(),
@@ -24,31 +24,31 @@ var w = t.object({
     stock: t.coerce.number(),
     discount: t.coerce.number().optional(),
   }),
-  g = "pxgGLTOKnzeZars5C88r",
+  g = "Sppz9VlS9msYALPII1b8",
   E = ({
     onSubmit: i,
     onError: z,
     onSuccess: C,
-    defaultValues: y,
-    onAction: P,
+    defaultValues: S,
+    onAction: w,
     formProps: B,
   }) => {
     let b = c.useRef();
     c.useEffect(() => {
       i && (b.current = i);
     }, [i]);
-    let S = c.useCallback(async (r, o) => {
+    let y = c.useCallback(async (r, o) => {
       if (b.current) return b.current(r, o);
     }, []);
     return e(
       F,
       {
         id: g,
-        defaultValues: y,
-        onSubmit: S,
+        defaultValues: S,
+        onSubmit: y,
         onError: z,
         onSuccess: C,
-        zodSchema: w,
+        zodSchema: k,
         mode: "onTouched",
         children: (r) =>
           n(F.Container, {
@@ -109,7 +109,7 @@ var w = t.object({
                           disabled: o.disabled,
                           styles: { root: {} },
                           suffixAdornment: {
-                            icon: e(k, { size: 18, color: "#000000" }),
+                            icon: e(P, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),

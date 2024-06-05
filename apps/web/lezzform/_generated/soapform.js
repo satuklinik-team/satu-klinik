@@ -10,10 +10,10 @@ import {
   Input as L,
   Button as R,
 } from "@lezzform/react";
-import * as e from "react";
+import * as r from "react";
 import { jsx as o, jsxs as s } from "react/jsx-runtime";
 var y = a.object({ name: a.string().optional() }),
-  u = "0wVoMjXQVXf5XPE4Y4Ql",
+  u = "DXGlmNYpZn3VPeFO66aG",
   C = ({
     onSubmit: m,
     onError: i,
@@ -22,12 +22,12 @@ var y = a.object({ name: a.string().optional() }),
     onAction: P,
     formProps: g,
   }) => {
-    let t = e.useRef();
-    e.useEffect(() => {
+    let t = r.useRef();
+    r.useEffect(() => {
       m && (t.current = m);
     }, [m]);
-    let z = e.useCallback(async (n, r) => {
-      if (t.current) return t.current(n, r);
+    let z = r.useCallback(async (n, e) => {
+      if (t.current) return t.current(n, e);
     }, []);
     return o(
       c,
@@ -46,19 +46,19 @@ var y = a.object({ name: a.string().optional() }),
               o(F, {
                 control: n.control,
                 name: "name",
-                render: ({ field: r }) =>
+                render: ({ field: e }) =>
                   s(S, {
                     children: [
                       o(p, { children: "Name" }),
                       o(h, {
                         children: o(L, {
                           label: "Name",
-                          name: r.name,
-                          value: r.value ?? "",
-                          onBlur: r.onBlur,
-                          onChange: r.onChange,
+                          name: e.name,
+                          value: e.value ?? "",
+                          onBlur: e.onBlur,
+                          onChange: e.onChange,
                           placeholder: "",
-                          disabled: r.disabled,
+                          disabled: e.disabled,
                           styles: { root: {} },
                         }),
                       }),
