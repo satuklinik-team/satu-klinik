@@ -48,6 +48,7 @@ export class PharmacyTasksController {
 
   @Post(':id')
   @Roles(Role.PHARMACY)
+  @PractitionerOnly()
   async completeTask(
     @Param('id', ParseIntPipe) id: number,
     @Body() dto: CompleteTaskDto,
