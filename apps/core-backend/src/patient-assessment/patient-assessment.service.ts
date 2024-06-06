@@ -9,6 +9,7 @@ import { MedicineCategoryService } from 'src/medicine-category/medicine-category
 import { MedicineService } from 'src/medicine/medicine.service';
 import { RevenueService } from 'src/revenue/revenue.service';
 import { UpdatePatientAssessmentDto } from './dto/update-patient-assessment.dto';
+import { DifferentPractitionerException } from 'src/exceptions/bad-request/different-practitioner-exception';
 
 @Injectable()
 export class PatientAssessmentService {
@@ -110,7 +111,7 @@ export class PatientAssessmentService {
             norm: patientMR.Patient.norm,
             assessmentReffId: dto.mrid,
             clinicsId: patientMR.Patient.clinicsId,
-            createdDate: new Date().toLocaleDateString(),
+            createdDate: new Date().toLocaleDateString('en-GB'),
             status: 'Todo',
           },
         });
@@ -147,20 +148,26 @@ export class PatientAssessmentService {
       dto.clinicsId,
     );
 
-    const data = await this.prismaService.patient_assessment.update({
-      where: {
-        id: dto.id,
-      },
-      data: {
-        patient_medical_recordsId: dto.mrid,
-        doctorId: dto.usersId,
-        subjective: dto.subjective,
-        objective: dto.objective,
-        assessment: dto.assessment,
-        plan: dto.plan,
-        icd10Code: dto.icd10Code,
-        icd9CMCode: dto.icd9CMCode,
-      },
+    const data = await this.prismaService.$transaction(async (tx) => {
+      const data = await tx.patient_assessment.update({
+        where: {
+          id: dto.id,
+        },
+        data: {
+          patient_medical_recordsId: dto.mrid,
+          subjective: dto.subjective,
+          objective: dto.objective,
+          assessment: dto.assessment,
+          plan: dto.plan,
+          icd10Code: dto.icd10Code,
+          icd9CMCode: dto.icd9CMCode,
+          syncedWithSatuSehat: false,
+        },
+      });
+
+      if (data.doctorId !== dto.usersId) {
+        throw new DifferentPractitionerException();
+      }
     });
 
     return data;

@@ -131,15 +131,17 @@ export class SatusehatRawatJalanService {
     }
 
     const ocpJsonArray = [];
+    const conditionIndexes = [];
     const procedureIndexes = [];
 
     for (const { mrid } of mridList) {
       const mridJson = [
         ...(await this.observationHttpBodyList(mrid)),
-        await this.satusehatJsonService.conditionJson(mrid),
+        await this.satusehatJsonService.conditionJson('POST', mrid),
       ];
 
       ocpJsonArray.push(...mridJson);
+      conditionIndexes.push(ocpJsonArray.length - 1);
 
       const patientAssessment =
         await this.prismaService.patient_assessment.findFirst({
@@ -152,8 +154,10 @@ export class SatusehatRawatJalanService {
         });
 
       if (patientAssessment.icd9CMCode) {
-        procedureIndexes.push(ocpJsonArray.length);
-        ocpJsonArray.push(await this.satusehatJsonService.procedureJson(mrid));
+        ocpJsonArray.push(
+          await this.satusehatJsonService.procedureJson('POST', mrid),
+        );
+        procedureIndexes.push(ocpJsonArray.length - 1);
       } else {
         procedureIndexes.push(null);
       }
@@ -162,15 +166,73 @@ export class SatusehatRawatJalanService {
     const ocpResponseBody = await this.postBundle(clinicsId, ocpJsonArray);
 
     for (const [index, { mrid }] of mridList.entries()) {
-      if (!procedureIndexes[index]) continue;
-
       await this.prismaService.patient_assessment.updateMany({
         where: {
           patient_medical_recordsId: mrid,
         },
         data: {
           conditionId:
-            ocpResponseBody[procedureIndexes[index]].response.resourceID,
+            ocpResponseBody[conditionIndexes[index]].response.resourceID,
+          ...(procedureIndexes[index] && {
+            procedureId:
+              ocpResponseBody[procedureIndexes[index]].response.resourceID,
+          }),
+          syncedWithSatuSehat: true,
+        },
+      });
+    }
+
+    const notSyncAssJsonArray = [];
+
+    const notSyncedAssessment =
+      await this.prismaService.patient_assessment.findMany({
+        where: {
+          syncedWithSatuSehat: false,
+        },
+        select: {
+          id: true,
+          patient_medical_recordsId: true,
+          icd9CM: true,
+        },
+      });
+
+    for (const { patient_medical_recordsId, icd9CM } of notSyncedAssessment) {
+      const mrid = patient_medical_recordsId;
+      notSyncAssJsonArray.push(
+        await this.satusehatJsonService.conditionJson('PUT', mrid),
+      );
+
+      if (icd9CM) {
+        notSyncAssJsonArray.push(
+          await this.satusehatJsonService.procedureJson('PUT', mrid),
+        );
+      }
+    }
+
+    const notSyncAssResponseBody = await this.postBundle(
+      clinicsId,
+      notSyncAssJsonArray,
+    );
+
+    let notSyncAssIndex = 0;
+    for (const { id, icd9CM } of notSyncedAssessment) {
+      const conditionId =
+        notSyncAssResponseBody[notSyncAssIndex].response.resourceID;
+      notSyncAssIndex++;
+
+      let procedureId: string;
+      if (icd9CM) {
+        procedureId =
+          notSyncAssResponseBody[notSyncAssIndex].response.resourceID;
+      }
+
+      await this.prismaService.patient_assessment.update({
+        where: {
+          id,
+        },
+        data: {
+          conditionId,
+          procedureId,
         },
       });
     }
@@ -224,6 +286,7 @@ export class SatusehatRawatJalanService {
     return {
       encounterKunjunganBaruResponseBody,
       ocpResponseBody,
+      notSyncedAssessmentResponseBody: notSyncAssResponseBody,
       medicationRequestResponseBody,
       mdEcResponseBody,
     };

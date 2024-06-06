@@ -154,7 +154,7 @@ export class PatientsService {
         mr: {
           some: {
             status,
-            visitLabel: now.toLocaleDateString(),
+            visitLabel: now.toLocaleDateString('en-GB'),
           },
         },
       };
@@ -216,7 +216,7 @@ export class PatientsService {
           id: true,
           queue: true,
           status: true,
-          vitalSign: { orderBy: { id: 'desc' }, take: 1 },
+          vitalSign: true,
         },
       },
     };

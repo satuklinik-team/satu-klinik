@@ -74,6 +74,8 @@ model Patient_assessment {
   id                        Int                              @id @default(autoincrement())
   createdAt                 DateTime                         @default(now())
   conditionId               String?
+  procedureId               String?
+  syncedWithSatuSehat       Boolean                          @default(false)
   doctorId                  String?                          @db.Uuid
   Doctor                    Users?                           @relation(fields: [doctorId], references: [id])
   subjective                String                           @default("none")

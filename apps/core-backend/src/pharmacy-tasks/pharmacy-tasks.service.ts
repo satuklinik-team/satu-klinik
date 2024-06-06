@@ -18,7 +18,7 @@ export class PharmacyTasksService {
   ) {}
 
   async findAll(dto: FindAllPharmacyTaskDto) {
-    const today = new Date().toLocaleDateString();
+    const today = new Date().toLocaleDateString('en-GB');
 
     const args: Prisma.Pharmacy_TaskFindManyArgs = {
       where: {

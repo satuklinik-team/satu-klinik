@@ -24,7 +24,7 @@ export class TasksService {
       throw new RoleNotAuthorizedException();
     }
 
-    const date = new Date().toLocaleDateString();
+    const date = new Date().toLocaleDateString('en-GB');
 
     const todayPatient =
       await this.prismaService.patient_medical_records.aggregate({
@@ -168,7 +168,7 @@ export class TasksService {
         Patient: {
           clinicsId,
         },
-        visitLabel: now.toLocaleDateString(),
+        visitLabel: now.toLocaleDateString('en-GB'),
         ...arg,
       },
     });

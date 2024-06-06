@@ -287,7 +287,7 @@ export class SatusehatJsonService {
     };
   }
 
-  async conditionJson(mrid: string) {
+  async conditionJson(method: string, mrid: string) {
     const patientAssessment =
       await this.prismaService.patient_assessment.findFirst({
         where: {
@@ -318,12 +318,14 @@ export class SatusehatJsonService {
               satuSehatId: true,
             },
           },
+          conditionId: true,
         },
       });
 
     return {
       resource: {
         resourceType: 'Condition',
+        ...(method === 'PUT' && { id: patientAssessment.conditionId }),
         clinicalStatus: {
           coding: [
             {
@@ -369,13 +371,16 @@ export class SatusehatJsonService {
         },
       },
       request: {
-        method: 'POST',
-        url: 'Condition',
+        method,
+        url:
+          method === 'PUT'
+            ? `Condition/${patientAssessment.conditionId}`
+            : 'Condition',
       },
     };
   }
 
-  async procedureJson(mrid: string) {
+  async procedureJson(method: string, mrid: string) {
     const patientAssessment =
       await this.prismaService.patient_assessment.findFirst({
         where: {
@@ -406,12 +411,14 @@ export class SatusehatJsonService {
             },
           },
           createdAt: true,
+          procedureId: true,
         },
       });
 
     return {
       resource: {
         resourceType: 'Procedure',
+        ...(method === 'PUT' && { id: patientAssessment.procedureId }),
         status: 'completed',
         category: {
           coding: [
@@ -453,8 +460,11 @@ export class SatusehatJsonService {
         ],
       },
       request: {
-        method: 'POST',
-        url: 'Procedure',
+        method,
+        url:
+          method === 'PUT'
+            ? `Procedure/${patientAssessment.procedureId}`
+            : 'Procedure',
       },
     };
   }
