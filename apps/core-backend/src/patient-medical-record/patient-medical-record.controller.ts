@@ -5,6 +5,8 @@ import { JwtPayload } from 'src/auth/types';
 import { TokenData } from 'src/utils';
 import { FindAllReturn } from 'src/utils/types';
 import { GetMRByIdDto } from './dto/get-mr-by-id.dto';
+import { Role } from '@prisma/client';
+import { Roles } from 'src/utils/decorators/roles.decorator';
 
 @Controller('patient-medical-record')
 export class PatientMedicalRecordController {
@@ -13,6 +15,7 @@ export class PatientMedicalRecordController {
   ) {}
 
   @Get()
+  @Roles(Role.DOCTOR)
   async findAll(
     @Query() dto: FindAllMRDto,
     @TokenData() tokenData: JwtPayload,
@@ -24,6 +27,7 @@ export class PatientMedicalRecordController {
   }
 
   @Get(':id')
+  @Roles(Role.DOCTOR)
   async getById(@Param('id') id: string, @TokenData() tokenData: JwtPayload) {
     return this.patientMedicalRecordService.getById({
       id,
@@ -32,6 +36,7 @@ export class PatientMedicalRecordController {
   }
 
   @Delete(':id')
+  @Roles(Role.DOCTOR)
   async deleteById(
     @Param('id') id: string,
     @TokenData() tokenData: JwtPayload,

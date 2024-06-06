@@ -3,12 +3,15 @@ import { UpdateSettingsDto } from './dto/update-settings.dto';
 import { JwtPayload } from 'src/auth/types';
 import { TokenData } from 'src/utils';
 import { SettingsService } from './settings.service';
+import { Role } from '@prisma/client';
+import { Roles } from 'src/utils/decorators/roles.decorator';
 
 @Controller('settings')
 export class SettingsController {
   constructor(private readonly settingsService: SettingsService) {}
 
   @Get()
+  @Roles(Role.ADMIN)
   get(@TokenData() tokenData: JwtPayload) {
     return this.settingsService.get({
       clinicsId: tokenData.clinicsId,
@@ -16,6 +19,7 @@ export class SettingsController {
   }
 
   @Put()
+  @Roles(Role.ADMIN)
   update(@Body() dto: UpdateSettingsDto, @TokenData() tokenData: JwtPayload) {
     return this.settingsService.update({
       ...dto,

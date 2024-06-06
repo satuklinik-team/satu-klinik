@@ -26,7 +26,7 @@ export class ClinicsController {
   constructor(private readonly clinicsService: ClinicsService) {}
 
   @Get()
-  @Roles(Role.OWNER)
+  @Roles(Role.ADMIN)
   async findAll(
     @Query() dto: FindAllClinicsDto,
     @TokenData() tokenData: JwtPayload,

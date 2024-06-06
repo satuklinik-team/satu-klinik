@@ -35,6 +35,7 @@ export class PatientsController {
   }
 
   @Get()
+  @Roles(Role.ADMIN)
   async findAll(
     @Query() dto: FindAllPatientsDto,
     @TokenData() tokenData: JwtPayload,
@@ -46,6 +47,7 @@ export class PatientsController {
   }
 
   @Patch(':id')
+  @Roles(Role.ADMIN)
   async updatePatientById(
     @Param('id') id: string,
     @TokenData() tokenData: JwtPayload,
