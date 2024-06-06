@@ -20,7 +20,6 @@ export class TasksController {
   }
 
   @Get('notification')
-  @Roles(Role.DOCTOR, Role.PHARMACY)
   getNotification(@TokenData() tokenData: JwtPayload) {
     return this.tasksService.getNotification({
       clinicsId: tokenData.clinicsId,

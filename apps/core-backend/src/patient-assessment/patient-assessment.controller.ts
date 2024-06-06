@@ -27,6 +27,7 @@ export class PatientAssessmentController {
 
   @Post()
   @Roles(Role.DOCTOR)
+  @PractitionerOnly()
   async create(
     @Body() dto: CreatePatientAssessmentDto,
     @TokenData() tokenData: JwtPayload,

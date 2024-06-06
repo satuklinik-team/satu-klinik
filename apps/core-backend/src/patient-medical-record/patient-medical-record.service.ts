@@ -60,7 +60,10 @@ export class PatientMedicalRecordService {
       where: {
         id: dto.id,
       },
-      select: this._findAllSelectFactory(),
+      select: {
+        ...this._findAllSelectFactory(),
+        assessment: true,
+      },
     });
   }
 

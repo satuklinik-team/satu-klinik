@@ -26,7 +26,7 @@ export class ClinicsController {
   constructor(private readonly clinicsService: ClinicsService) {}
 
   @Get()
-  @Roles(Role.OWNER)
+  @Roles(Role.ADMIN)
   async findAll(
     @Query() dto: FindAllClinicsDto,
     @TokenData() tokenData: JwtPayload,
@@ -56,6 +56,18 @@ export class ClinicsController {
     @TokenData() tokenData: JwtPayload,
   ) {
     return await this.clinicsService.addUserOnClinic(dto, tokenData.clinicsId);
+  }
+
+  @Get('users/:id')
+  @Roles(Role.ADMIN)
+  async getUserById(
+    @TokenData() tokenData: JwtPayload,
+    @Param('id') usersId: string,
+  ) {
+    return await this.clinicsService.getUserById({
+      usersId,
+      clinicsId: tokenData.clinicsId,
+    });
   }
 
   @Patch('users/:id')
