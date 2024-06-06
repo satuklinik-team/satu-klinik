@@ -79,20 +79,6 @@ export class PharmacyTasksService {
             clinicsId: true,
           },
         },
-        prescription: {
-          select: {
-            id: true,
-            createdAt: true,
-            frequency: true,
-            period: true,
-            doseQuantity: true,
-            totalQuantity: true,
-            supplyDuration: true,
-            notes: true,
-            deletedAt: true,
-            Medicine: true,
-          },
-        },
       },
     });
 
@@ -100,9 +86,29 @@ export class PharmacyTasksService {
       throw new CannotAccessClinicException();
     }
 
+    const prescriptions =
+      await this.prismaService.patient_prescription.findMany({
+        where: {
+          patient_medical_recordsId: pharmacyTask.assessmentReffId,
+          outdated: false,
+        },
+        select: {
+          id: true,
+          createdAt: true,
+          frequency: true,
+          period: true,
+          doseQuantity: true,
+          totalQuantity: true,
+          supplyDuration: true,
+          notes: true,
+          deletedAt: true,
+          Medicine: true,
+        },
+      });
+
     return {
       ...pharmacyTask,
-      prescriptions: mr.prescription,
+      prescriptions,
     };
   }
 
@@ -135,6 +141,7 @@ export class PharmacyTasksService {
       const patientPrescriptions = await tx.patient_prescription.findMany({
         where: {
           patient_medical_recordsId: pharmacyTask.assessmentReffId,
+          outdated: false,
         },
         select: {
           id: true,
