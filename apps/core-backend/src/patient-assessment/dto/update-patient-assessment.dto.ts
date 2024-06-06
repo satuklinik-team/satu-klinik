@@ -4,7 +4,7 @@ import { CreatePatientAssessmentDto } from './create-patient-assessment.dto';
 import { OmitType, PartialType } from '@nestjs/mapped-types';
 
 export class UpdatePatientAssessmentDto extends PartialType(
-  OmitType(CreatePatientAssessmentDto, ['prescriptions'] as const),
+  CreatePatientAssessmentDto,
 ) {
   @IsNumber()
   @Type(() => Number)

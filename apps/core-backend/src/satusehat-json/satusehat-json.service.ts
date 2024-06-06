@@ -325,7 +325,7 @@ export class SatusehatJsonService {
     return {
       resource: {
         resourceType: 'Condition',
-        ...(method === 'PUT' && { id: patientAssessment.conditionId }),
+        ...(method !== 'POST' && { id: patientAssessment.conditionId }),
         clinicalStatus: {
           coding: [
             {
@@ -373,7 +373,7 @@ export class SatusehatJsonService {
       request: {
         method,
         url:
-          method === 'PUT'
+          method !== 'POST'
             ? `Condition/${patientAssessment.conditionId}`
             : 'Condition',
       },
@@ -415,10 +415,19 @@ export class SatusehatJsonService {
         },
       });
 
+    if (method === 'DELETE') {
+      return {
+        request: {
+          method,
+          url: `Procedure/${patientAssessment.procedureId}`,
+        },
+      };
+    }
+
     return {
       resource: {
         resourceType: 'Procedure',
-        ...(method === 'PUT' && { id: patientAssessment.procedureId }),
+        ...(method !== 'POST' && { id: patientAssessment.procedureId }),
         status: 'completed',
         category: {
           coding: [
@@ -462,14 +471,14 @@ export class SatusehatJsonService {
       request: {
         method,
         url:
-          method === 'PUT'
+          method !== 'POST'
             ? `Procedure/${patientAssessment.procedureId}`
             : 'Procedure',
       },
     };
   }
 
-  async medicationJson(clinicsId: string, medicineId: number) {
+  async medicationJson(method: string, clinicsId: string, medicineId: number) {
     const clinics = await this.prismaService.clinics.findFirst({
       where: {
         id: clinicsId,
@@ -486,6 +495,7 @@ export class SatusehatJsonService {
       select: {
         id: true,
         kfaCode: true,
+        satuSehatId: true,
       },
     });
 
@@ -497,6 +507,7 @@ export class SatusehatJsonService {
     return {
       resource: {
         resourceType: 'Medication',
+        ...(method !== 'POST' && { id: medicine.satuSehatId }),
         meta: {
           profile: [
             'https://fhir.kemkes.go.id/r4/StructureDefinition/Medication',
@@ -575,8 +586,11 @@ export class SatusehatJsonService {
         ],
       },
       request: {
-        method: 'POST',
-        url: 'Medication',
+        method,
+        url:
+          method !== 'POST'
+            ? `Medication/${medicine.satuSehatId}`
+            : 'Medication',
       },
     };
   }
