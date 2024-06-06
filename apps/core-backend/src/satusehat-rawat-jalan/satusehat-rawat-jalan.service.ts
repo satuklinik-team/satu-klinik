@@ -296,29 +296,22 @@ export class SatusehatRawatJalanService {
       });
     }
 
-    const mdEcJsonArray = [];
+    const ecJsonArray = [];
 
     for (const { mrid } of mridList) {
-      const medicationDispenseJson = await this.medicationDispenseBundle(
-        clinicsId,
-        mrid,
-      );
-
-      mdEcJsonArray.push(...medicationDispenseJson);
-
-      mdEcJsonArray.push(
+      ecJsonArray.push(
         await this.satusehatJsonService.encounterCompleteJson(mrid),
       );
     }
 
-    const mdEcResponseBody = await this.postBundle(clinicsId, mdEcJsonArray);
+    const ecResponseBody = await this.postBundle(clinicsId, ecJsonArray);
 
     return {
       encounterKunjunganBaruResponseBody,
       ocpResponseBody,
       syncCPResponseBody,
       medicationRequestResponseBody,
-      mdEcResponseBody,
+      ecResponseBody,
     };
   }
 
@@ -429,30 +422,6 @@ export class SatusehatRawatJalanService {
           value.id,
         ),
       };
-    });
-
-    return await Promise.all(transformedValues);
-  }
-
-  async medicationDispenseBundle(clinicsId: string, mrid: string) {
-    const prescriptions =
-      await this.prismaService.patient_prescription.findMany({
-        where: {
-          patient_medical_recordsId: mrid,
-          Medicine: {
-            kfaCode: {
-              not: null,
-            },
-          },
-          bought: true,
-        },
-      });
-
-    const transformedValues = prescriptions.map(async (value) => {
-      return await this.satusehatJsonService.medicationDispenseJson(
-        clinicsId,
-        value.id,
-      );
     });
 
     return await Promise.all(transformedValues);
@@ -734,6 +703,9 @@ export class SatusehatRawatJalanService {
         category: {
           clinicsId,
         },
+        satuSehatId: {
+          not: null,
+        },
         syncedWithSatuSehat: false,
       },
     });
@@ -768,6 +740,62 @@ export class SatusehatRawatJalanService {
         },
         data: {
           satuSehatId: medications[index].response.resourceID,
+          syncedWithSatuSehat: true,
+        },
+      });
+    }
+  }
+
+  async ensureMedicationDispenseSatuSehatId(clinicsId: string) {
+    const newMedDispenses =
+      await this.prismaService.medication_dispense.findMany({
+        where: {
+          clinicsId,
+          syncedWithSatuSehat: false,
+          satuSehatId: null,
+        },
+      });
+
+    const updMedDispenses =
+      await this.prismaService.medication_dispense.findMany({
+        where: {
+          clinicsId,
+          syncedWithSatuSehat: false,
+          satuSehatId: {
+            not: null,
+          },
+        },
+      });
+
+    const allMedDispenses = [
+      ...newMedDispenses.map((medicine) => {
+        return { method: 'POST', id: medicine.id };
+      }),
+      ...updMedDispenses.map((medicine) => {
+        return { method: 'PUT', id: medicine.id };
+      }),
+    ];
+
+    const medDispenseResponseBody = await this.postBundle(
+      clinicsId,
+      await Promise.all(
+        allMedDispenses.map(async (value) => {
+          return await this.satusehatJsonService.medicationDispenseJson(
+            value.method,
+            clinicsId,
+            value.id,
+          );
+        }),
+      ),
+    );
+
+    for (const [index, value] of medDispenseResponseBody.entries()) {
+      await this.prismaService.medication_dispense.update({
+        where: {
+          id: allMedDispenses[index].id,
+        },
+        data: {
+          satuSehatId: value.response.resourceID,
           syncedWithSatuSehat: true,
         },
       });

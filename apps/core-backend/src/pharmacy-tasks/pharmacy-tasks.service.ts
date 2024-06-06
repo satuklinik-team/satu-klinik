@@ -90,7 +90,6 @@ export class PharmacyTasksService {
             supplyDuration: true,
             notes: true,
             deletedAt: true,
-            bought: true,
             Medicine: true,
           },
         },
@@ -185,15 +184,6 @@ export class PharmacyTasksService {
       );
 
       for (const prescriptionId of boughtPrescriptionsId) {
-        await tx.patient_prescription.update({
-          where: {
-            id: prescriptionId,
-          },
-          data: {
-            bought: true,
-          },
-        });
-
         const prescription = await tx.patient_prescription.findFirst({
           where: {
             id: prescriptionId,
@@ -205,6 +195,25 @@ export class PharmacyTasksService {
                 discount: true,
               },
             },
+            id: true,
+            medicineId: true,
+            type: true,
+            frequency: true,
+            period: true,
+            doseQuantity: true,
+            totalQuantity: true,
+            supplyDuration: true,
+          },
+        });
+
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { id, Medicine, ...medicationDispense } = prescription;
+
+        await tx.medication_dispense.create({
+          data: {
+            ...medicationDispense,
+            patient_prescriptionId: prescription.id,
+            clinicsId: dto.clinicsId,
           },
         });
 
