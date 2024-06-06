@@ -18,7 +18,7 @@ class PatientAssessmentApi {
 
     const { data } = await this.api.get<
       BaseFindConnectionResponse<PatientAssessmentEntity>
-    >(`/patient-assessment?counts=true&${queryParams}`);
+    >(`/patient-assessment?count=true&${queryParams}`);
 
     return data;
   }

@@ -1,7 +1,5 @@
 "use client";
 
-import { Download } from "lucide-react";
-
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -12,12 +10,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { ClinicCard } from "@/features/clinic/components/ui/card";
 
 export function ClinicMedicalRecordPage(): JSX.Element {
@@ -48,14 +40,6 @@ export function ClinicMedicalRecordPage(): JSX.Element {
                 </SelectGroup>
               </SelectContent>
             </Select>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger className="h-fit px-3.5 py-3 border border-green-500 rounded-lg">
-                  <Download className="text-foreground" size={20} />
-                </TooltipTrigger>
-                <TooltipContent>Unduh Data Pasien</TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
           </div>
           <Input
             className="py-2 h-fit"
