@@ -58,6 +58,18 @@ export class ClinicsController {
     return await this.clinicsService.addUserOnClinic(dto, tokenData.clinicsId);
   }
 
+  @Get('users/:id')
+  @Roles(Role.ADMIN)
+  async getUserById(
+    @TokenData() tokenData: JwtPayload,
+    @Param('id') usersId: string,
+  ) {
+    return await this.clinicsService.getUserById({
+      usersId,
+      clinicsId: tokenData.clinicsId,
+    });
+  }
+
   @Patch('users/:id')
   @Roles(Role.ADMIN)
   async updateClinicUser(
