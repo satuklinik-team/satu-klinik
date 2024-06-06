@@ -11,8 +11,8 @@ declare const zodFormSchema: z.ZodObject<
     birthAt: z.ZodDate;
     phone: z.ZodEffects<z.ZodString, string, string>;
     address: z.ZodString;
-    height: z.ZodNumber;
-    weight: z.ZodNumber;
+    height: z.ZodOptional<z.ZodNumber>;
+    weight: z.ZodOptional<z.ZodNumber>;
     allergic: z.ZodString;
     systole: z.ZodNumber;
     diastole: z.ZodNumber;

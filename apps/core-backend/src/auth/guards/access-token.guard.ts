@@ -36,6 +36,7 @@ export class AccessTokenGuard extends AuthGuard('jwt-access-token') {
       !roles.includes(user.role) &&
       ((user.role !== Role.OWNER && user.role !== Role.ADMIN) ||
         practitionerOnly)
+
     ) {
       throw new RoleNotAuthorizedException();
     }

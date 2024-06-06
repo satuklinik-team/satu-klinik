@@ -7,16 +7,16 @@ import {
   FormControl as s,
   FormMessage as u,
   Attachment as R,
-  Dropdown as v,
-  Input as L,
+  Dropdown as L,
+  Input as v,
   NumberInput as d,
   TwoColumn as I,
   Button as h,
 } from "@lezzform/react";
-import { ChevronDown as k } from "lucide-react";
+import { ChevronDown as P } from "lucide-react";
 import * as c from "react";
 import { jsx as e, jsxs as n } from "react/jsx-runtime";
-var w = t.object({
+var k = t.object({
     image: t.string(),
     categoryId: t.string(),
     title: t.string(),
@@ -24,13 +24,13 @@ var w = t.object({
     stock: t.coerce.number(),
     discount: t.coerce.number().optional(),
   }),
-  g = "DAsoZA3J5Fm48OCSKb9T",
+  g = "Sppz9VlS9msYALPII1b8",
   E = ({
     onSubmit: i,
     onError: z,
     onSuccess: C,
     defaultValues: S,
-    onAction: P,
+    onAction: w,
     formProps: B,
   }) => {
     let b = c.useRef();
@@ -48,8 +48,8 @@ var w = t.object({
         onSubmit: y,
         onError: z,
         onSuccess: C,
-        zodSchema: w,
-        mode: "onSubmit",
+        zodSchema: k,
+        mode: "onTouched",
         children: (r) =>
           n(F.Container, {
             children: [
@@ -94,7 +94,7 @@ var w = t.object({
                     children: [
                       e(l, { isRequired: !0, children: "Category" }),
                       e(s, {
-                        children: e(v, {
+                        children: e(L, {
                           label: "Category",
                           name: o.name,
                           value: o.value,
@@ -109,7 +109,7 @@ var w = t.object({
                           disabled: o.disabled,
                           styles: { root: {} },
                           suffixAdornment: {
-                            icon: e(k, { size: 18, color: "#000000" }),
+                            icon: e(P, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
@@ -125,7 +125,7 @@ var w = t.object({
                     children: [
                       e(l, { isRequired: !0, children: "Title" }),
                       e(s, {
-                        children: e(L, {
+                        children: e(v, {
                           label: "Title",
                           name: o.name,
                           value: o.value ?? "",

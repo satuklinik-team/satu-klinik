@@ -1,25 +1,25 @@
 import { z as n } from "zod";
 import {
-  Lezzform as p,
+  Lezzform as F,
   FormField as t,
   FormItem as s,
   FormLabel as l,
   FormControl as i,
   FormMessage as u,
   Input as d,
-  PhoneNumberInput as S,
-  NumberInput as C,
-  Button as L,
+  PhoneNumberInput as C,
+  NumberInput as S,
+  Button as I,
 } from "@lezzform/react";
 import {
-  Briefcase as I,
+  Briefcase as L,
   CreditCard as y,
   Building as B,
   Phone as N,
 } from "lucide-react";
 import * as c from "react";
 import { jsx as o, jsxs as a } from "react/jsx-runtime";
-var k = n.object({
+var P = n.object({
     licenseNumber: n.string(),
     clinicId: n.string(),
     clinicName: n.string(),
@@ -36,14 +36,14 @@ var k = n.object({
     address: n.string(),
     price: n.coerce.number(),
   }),
-  h = "LL12jlS0NmYVkSS1erxy",
+  h = "jJtJWjd4ptrXPXrQHQbm",
   D = ({
     onSubmit: m,
-    onError: F,
+    onError: p,
     onSuccess: g,
     defaultValues: z,
     onAction: f,
-    formProps: P,
+    formProps: k,
   }) => {
     let b = c.useRef();
     c.useEffect(() => {
@@ -53,17 +53,17 @@ var k = n.object({
       if (b.current) return b.current(r, e);
     }, []);
     return o(
-      p,
+      F,
       {
         id: h,
         defaultValues: z,
         onSubmit: R,
-        onError: F,
+        onError: p,
         onSuccess: g,
-        zodSchema: k,
-        mode: "onSubmit",
+        zodSchema: P,
+        mode: "onTouched",
         children: (r) =>
-          a(p.Container, {
+          a(F.Container, {
             children: [
               o(t, {
                 control: r.control,
@@ -88,7 +88,7 @@ var k = n.object({
                           isRequired: !0,
                           styles: { root: {} },
                           prefixAdornment: {
-                            icon: o(I, { size: 18, color: "#000000" }),
+                            icon: o(L, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
@@ -158,7 +158,7 @@ var k = n.object({
                     children: [
                       o(l, { isRequired: !0, children: "Nomor Telepon" }),
                       o(i, {
-                        children: o(S, {
+                        children: o(C, {
                           label: "Nomor Telepon",
                           name: e.name,
                           value: e.value ?? "",
@@ -209,7 +209,7 @@ var k = n.object({
                     children: [
                       o(l, { isRequired: !0, children: "Harga Dasar" }),
                       o(i, {
-                        children: o(C, {
+                        children: o(S, {
                           label: "Harga Dasar",
                           name: e.name,
                           value: e.value ?? 0,
@@ -225,7 +225,7 @@ var k = n.object({
                     ],
                   }),
               }),
-              o(L, {
+              o(I, {
                 type: "submit",
                 className: "w-full",
                 disabled: r.formState.isSubmitting,

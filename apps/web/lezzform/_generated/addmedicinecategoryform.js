@@ -1,8 +1,8 @@
 import { z as a } from "zod";
 import {
   Lezzform as u,
-  FormField as S,
-  FormItem as F,
+  FormField as F,
+  FormItem as S,
   FormLabel as p,
   FormControl as d,
   FormMessage as h,
@@ -12,14 +12,14 @@ import {
 import * as e from "react";
 import { jsx as r, jsxs as s } from "react/jsx-runtime";
 var R = a.object({ name: a.string() }),
-  c = "1Bp6P4kq6HvKeNp4SV1u",
+  c = "vAuq7HO5xyGFAg7XdlK5",
   C = ({
     onSubmit: m,
     onError: i,
     onSuccess: l,
     defaultValues: f,
-    onAction: k,
-    formProps: y,
+    onAction: y,
+    formProps: g,
   }) => {
     let t = e.useRef();
     e.useEffect(() => {
@@ -37,15 +37,15 @@ var R = a.object({ name: a.string() }),
         onError: i,
         onSuccess: l,
         zodSchema: R,
-        mode: "onSubmit",
+        mode: "onTouched",
         children: (n) =>
           s(u.Container, {
             children: [
-              r(S, {
+              r(F, {
                 control: n.control,
                 name: "name",
                 render: ({ field: o }) =>
-                  s(F, {
+                  s(S, {
                     children: [
                       r(p, { isRequired: !0, children: "Name" }),
                       r(d, {

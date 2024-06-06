@@ -8,12 +8,12 @@ import {
   FormMessage as d,
   Text as b,
   Input as L,
-  Button as y,
+  Button as R,
 } from "@lezzform/react";
-import * as e from "react";
+import * as r from "react";
 import { jsx as o, jsxs as s } from "react/jsx-runtime";
-var R = a.object({ name: a.string().optional() }),
-  u = "01gwyd2XrJnQ5bF2l3Gi",
+var y = a.object({ name: a.string().optional() }),
+  u = "DXGlmNYpZn3VPeFO66aG",
   C = ({
     onSubmit: m,
     onError: i,
@@ -22,12 +22,12 @@ var R = a.object({ name: a.string().optional() }),
     onAction: P,
     formProps: g,
   }) => {
-    let t = e.useRef();
-    e.useEffect(() => {
+    let t = r.useRef();
+    r.useEffect(() => {
       m && (t.current = m);
     }, [m]);
-    let z = e.useCallback(async (n, r) => {
-      if (t.current) return t.current(n, r);
+    let z = r.useCallback(async (n, e) => {
+      if (t.current) return t.current(n, e);
     }, []);
     return o(
       c,
@@ -37,8 +37,8 @@ var R = a.object({ name: a.string().optional() }),
         onSubmit: z,
         onError: i,
         onSuccess: l,
-        zodSchema: R,
-        mode: "onSubmit",
+        zodSchema: y,
+        mode: "onTouched",
         children: (n) =>
           s(c.Container, {
             children: [
@@ -46,19 +46,19 @@ var R = a.object({ name: a.string().optional() }),
               o(F, {
                 control: n.control,
                 name: "name",
-                render: ({ field: r }) =>
+                render: ({ field: e }) =>
                   s(S, {
                     children: [
                       o(p, { children: "Name" }),
                       o(h, {
                         children: o(L, {
                           label: "Name",
-                          name: r.name,
-                          value: r.value ?? "",
-                          onBlur: r.onBlur,
-                          onChange: r.onChange,
+                          name: e.name,
+                          value: e.value ?? "",
+                          onBlur: e.onBlur,
+                          onChange: e.onChange,
                           placeholder: "",
-                          disabled: r.disabled,
+                          disabled: e.disabled,
                           styles: { root: {} },
                         }),
                       }),
@@ -66,7 +66,7 @@ var R = a.object({ name: a.string().optional() }),
                     ],
                   }),
               }),
-              o(y, {
+              o(R, {
                 type: "submit",
                 className: "w-full",
                 disabled: n.formState.isSubmitting,

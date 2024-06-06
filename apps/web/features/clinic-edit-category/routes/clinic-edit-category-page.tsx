@@ -14,11 +14,10 @@ import {
 import { useToast } from "@/components/ui/use-toast";
 import { ClinicCard } from "@/features/clinic/components/ui/card";
 import { Form as EditMedicineCategoryForm } from "@/lezzform/_generated/addmedicinecategoryform";
+import { useGetMedicineCategory } from "@/services/medicine-category/hooks/use-get-medicine-category";
 import { useUpdateMedicineCategory } from "@/services/medicine-category/hooks/use-update-medicine-category";
 import type { UpdateMedicineCategoryDto } from "@/services/medicine-category/types/dto";
 import { MedicineCategoryQueryKeyFactory } from "@/services/medicine-category/utils/query-key.factory";
-// import { useGetMedicineCategory } from "@/services/medicine-category/hooks/use-get-medicine-category";
-// import { useGetMedicine } from "@/services/medicine/hooks/use-get-medicine";
 
 export function ClinicEditCategoryPage(): JSX.Element | undefined {
   const { toast } = useToast();
@@ -46,11 +45,11 @@ export function ClinicEditCategoryPage(): JSX.Element | undefined {
     [clinicId, mutateAsync, queryClient, router, toast],
   );
 
-  //   const { data: medicineCategoryData } = useGetMedicineCategory(
-  //     categoryId as string
-  //   );
+  const { data: medicineCategoryData } = useGetMedicineCategory(
+    categoryId as string,
+  );
 
-  //   if (!medicineCategoryData) return;
+  if (!medicineCategoryData) return;
 
   return (
     <div className="flex flex-col gap-4">
@@ -80,7 +79,10 @@ export function ClinicEditCategoryPage(): JSX.Element | undefined {
       </div>
 
       <ClinicCard title="Edit Item">
-        <EditMedicineCategoryForm onSubmit={onSubmit} />
+        <EditMedicineCategoryForm
+          defaultValues={{ name: medicineCategoryData.name }}
+          onSubmit={onSubmit}
+        />
       </ClinicCard>
     </div>
   );

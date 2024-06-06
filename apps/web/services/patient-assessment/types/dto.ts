@@ -9,7 +9,7 @@ export const createPatientAssessmentSchema = z.object({
   assessment: z.string(),
   plan: z.string(),
   icd10Code: z.string(),
-  icd9CMCode: z.string(),
+  icd9CMCode: z.string().optional(),
   prescriptions: z.array(prescriptionSchema).optional(),
 });
 

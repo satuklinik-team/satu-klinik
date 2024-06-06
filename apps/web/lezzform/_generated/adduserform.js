@@ -28,10 +28,10 @@ var I = a.object({
     password: a.string().max(14).min(6),
     confirmPassword: a.string().max(14).min(6),
   }),
-  C = "xD461eMs1a5bnrFFjGMB",
-  M = ({
+  R = "P3JBRNWp2YGf6UhNRRzm",
+  D = ({
     onSubmit: c,
-    onError: R,
+    onError: C,
     onSuccess: g,
     defaultValues: z,
     onAction: q,
@@ -47,13 +47,13 @@ var I = a.object({
     return e(
       p,
       {
-        id: C,
+        id: R,
         defaultValues: z,
         onSubmit: S,
-        onError: R,
+        onError: C,
         onSuccess: g,
         zodSchema: I,
-        mode: "onSubmit",
+        mode: "onTouched",
         children: (r) =>
           n(p.Container, {
             children: [
@@ -286,7 +286,7 @@ var I = a.object({
             ],
           }),
       },
-      C,
+      R,
     );
   };
-export { M as Form };
+export { D as Form };

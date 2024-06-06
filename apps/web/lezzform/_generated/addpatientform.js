@@ -8,24 +8,24 @@ import {
   FormMessage as u,
   Input as b,
   Dropdown as C,
-  DatePicker as S,
+  DatePicker as q,
   PhoneNumberInput as I,
-  TextArea as R,
+  TextArea as y,
   Divider as A,
   TwoColumn as g,
-  ThreeColumn as N,
-  Button as y,
+  ThreeColumn as k,
+  Button as v,
   NumberInput as i,
 } from "@lezzform/react";
 import {
-  CreditCard as v,
-  User as k,
-  Calendar as T,
-  Phone as w,
+  CreditCard as R,
+  User as N,
+  Calendar as P,
+  Phone as T,
 } from "lucide-react";
 import * as d from "react";
 import { jsx as o, jsxs as r } from "react/jsx-runtime";
-var P = a.object({
+var w = a.object({
     name: a.string().optional(),
     nik: a.string(),
     fullname: a.string(),
@@ -43,8 +43,8 @@ var P = a.object({
         { message: "Invalid phone number format" },
       ),
     address: a.string(),
-    height: a.coerce.number(),
-    weight: a.coerce.number(),
+    height: a.coerce.number().optional(),
+    weight: a.coerce.number().optional(),
     allergic: a.string(),
     systole: a.coerce.number(),
     diastole: a.coerce.number(),
@@ -53,31 +53,31 @@ var P = a.object({
     temperature: a.coerce.number(),
     pain: a.string(),
   }),
-  B = "BcOMihidULtpmN3riG68",
+  B = "kTsxyuTzbPvZvquqBXPZ",
   M = ({
     onSubmit: c,
     onError: F,
-    onSuccess: L,
-    defaultValues: z,
-    onAction: D,
-    formProps: x,
+    onSuccess: z,
+    defaultValues: L,
+    onAction: x,
+    formProps: D,
   }) => {
     let h = d.useRef();
     d.useEffect(() => {
       c && (h.current = c);
     }, [c]);
-    let q = d.useCallback(async (n, e) => {
+    let S = d.useCallback(async (n, e) => {
       if (h.current) return h.current(n, e);
     }, []);
     return o(
       p,
       {
         id: B,
-        defaultValues: z,
-        onSubmit: q,
+        defaultValues: L,
+        onSubmit: S,
         onError: F,
-        onSuccess: L,
-        zodSchema: P,
+        onSuccess: z,
+        zodSchema: w,
         mode: "onTouched",
         children: (n) =>
           r(p.Container, {
@@ -101,7 +101,7 @@ var P = a.object({
                           disabled: e.disabled,
                           styles: { root: {} },
                           prefixAdornment: {
-                            icon: o(v, { size: 18, color: "#000000" }),
+                            icon: o(R, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
@@ -128,7 +128,7 @@ var P = a.object({
                           isRequired: !0,
                           styles: { root: {} },
                           prefixAdornment: {
-                            icon: o(v, { size: 18, color: "#000000" }),
+                            icon: o(R, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
@@ -155,7 +155,7 @@ var P = a.object({
                           isRequired: !0,
                           styles: { root: {} },
                           prefixAdornment: {
-                            icon: o(k, { size: 18, color: "#000000" }),
+                            icon: o(N, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
@@ -226,7 +226,7 @@ var P = a.object({
                     children: [
                       o(m, { isRequired: !0, children: "Tanggal Lahir" }),
                       o(s, {
-                        children: o(S, {
+                        children: o(q, {
                           label: "Tanggal Lahir",
                           name: e.name,
                           value: e.value,
@@ -237,7 +237,7 @@ var P = a.object({
                           styles: { root: {} },
                           disabled: e.disabled,
                           prefixAdornment: {
-                            icon: o(T, { size: 18, color: "#000000" }),
+                            icon: o(P, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
@@ -264,7 +264,7 @@ var P = a.object({
                           isRequired: !0,
                           styles: { root: {} },
                           prefixAdornment: {
-                            icon: o(w, { size: 18, color: "#000000" }),
+                            icon: o(T, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
@@ -280,14 +280,14 @@ var P = a.object({
                     children: [
                       o(m, { isRequired: !0, children: "Alamat" }),
                       o(s, {
-                        children: o(R, {
+                        children: o(y, {
                           label: "Alamat",
                           name: e.name,
                           value: e.value ?? "",
                           onBlur: e.onBlur,
                           onChange: e.onChange,
                           disabled: e.disabled,
-                          placeholder: "Nomor Telp",
+                          placeholder: "Alamat",
                           isRequired: !0,
                           styles: { root: {} },
                         }),
@@ -306,7 +306,7 @@ var P = a.object({
                     render: ({ field: e }) =>
                       r(t, {
                         children: [
-                          o(m, { isRequired: !0, children: "Tinggi" }),
+                          o(m, { children: "Tinggi" }),
                           o(s, {
                             children: o(i, {
                               label: "Tinggi",
@@ -316,7 +316,6 @@ var P = a.object({
                               onChange: e.onChange,
                               disabled: e.disabled,
                               placeholder: "Tinggi dalam cm",
-                              isRequired: !0,
                               styles: { root: {} },
                             }),
                           }),
@@ -330,7 +329,7 @@ var P = a.object({
                     render: ({ field: e }) =>
                       r(t, {
                         children: [
-                          o(m, { isRequired: !0, children: "Berat" }),
+                          o(m, { children: "Berat" }),
                           o(s, {
                             children: o(i, {
                               label: "Berat",
@@ -340,7 +339,6 @@ var P = a.object({
                               onChange: e.onChange,
                               disabled: e.disabled,
                               placeholder: "Berat dalam kg",
-                              isRequired: !0,
                               styles: { root: {} },
                             }),
                           }),
@@ -427,7 +425,7 @@ var P = a.object({
                   }),
                 ],
               }),
-              r(N, {
+              r(k, {
                 styles: { root: {} },
                 children: [
                   o(l, {
@@ -512,7 +510,7 @@ var P = a.object({
                     children: [
                       o(m, { isRequired: !0, children: "Keluhan" }),
                       o(s, {
-                        children: o(R, {
+                        children: o(y, {
                           label: "Keluhan",
                           name: e.name,
                           value: e.value ?? "",
@@ -531,13 +529,13 @@ var P = a.object({
               r(g, {
                 styles: { root: {} },
                 children: [
-                  o(y, {
+                  o(v, {
                     type: "reset",
                     className: "w-full",
                     styles: { root: { backgroundColor: "rgb(239, 68, 68)" } },
                     children: "Batalkan",
                   }),
-                  o(y, {
+                  o(v, {
                     type: "submit",
                     className: "w-full",
                     disabled: n.formState.isSubmitting,

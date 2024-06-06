@@ -3,6 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { Check, ChevronsUpDown, ImagePlusIcon } from "lucide-react";
+import { useParams, useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -47,6 +48,8 @@ interface ClinicEditItemFormProps {
 export function ClinicEditItemForm({
   defaultValues,
 }: ClinicEditItemFormProps): JSX.Element {
+  const router = useRouter();
+  const { clinicId } = useParams();
   const [search, setSearch] = useState<string>("");
 
   const { data: medicineCategoryData } = useFindMedicineCategory({
@@ -57,7 +60,7 @@ export function ClinicEditItemForm({
 
   const form = useForm<UpdateMedicineSchema>({
     resolver: zodResolver(updateMedicineSchema),
-    defaultValues,
+    defaultValues: { ...defaultValues, kfaCode: defaultValues.kfaCode ?? "-" },
   });
 
   const imageRef = form.register("image");
@@ -81,14 +84,16 @@ export function ClinicEditItemForm({
       formData.append("stock", String(dto.stock));
       formData.append("discount", String(dto.discount));
       formData.append("categoryId", String(dto.categoryId));
+      formData.append("kfaCode", dto.kfaCode ? String(dto.kfaCode) : "-");
 
       await mutateAsync(formData as unknown as UpdateMedicineDto);
       await queryClient.invalidateQueries({
         queryKey: new MedicineQueryKeyFactory().lists(),
       });
       toast({ title: "Berhasil Memperbarui Obat Baru!", variant: "success" });
+      router.push(`/clinic/${clinicId as string}/items`);
     },
-    [mutateAsync, queryClient, toast],
+    [clinicId, mutateAsync, queryClient, router, toast],
   );
 
   return (
