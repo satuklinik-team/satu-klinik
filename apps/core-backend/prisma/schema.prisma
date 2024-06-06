@@ -74,6 +74,8 @@ model Patient_assessment {
   id                        Int                              @id @default(autoincrement())
   createdAt                 DateTime                         @default(now())
   conditionId               String?
+  procedureId               String?
+  syncedWithSatuSehat       Boolean                          @default(false)
   doctorId                  String?                          @db.Uuid
   Doctor                    Users?                           @relation(fields: [doctorId], references: [id])
   subjective                String                           @default("none")
@@ -111,11 +113,34 @@ model Patient_prescription {
   totalQuantity             Int?
   supplyDuration            Int?
   notes                     String?
+  outdated                  Boolean                  @default(false)
+  syncedWithSatuSehat       Boolean                  @default(false)
   satuSehatId               String?
   deletedAt                 DateTime?
-  bought                    Boolean                  @default(false)
   patient_medical_recordsId String?                  @db.Uuid
   Patient_medical_records   Patient_medical_records? @relation(fields: [patient_medical_recordsId], references: [id])
+  Medication_dispense       Medication_dispense[]
+}
+
+model Medication_dispense {
+  id                     Int                   @id @default(autoincrement())
+  createdAt              DateTime?             @default(now()) @db.Timestamptz(6)
+  medicineId             Int?
+  Medicine               Medicine?             @relation(fields: [medicineId], references: [id])
+  type                   String?
+  frequency              Int?
+  period                 Int?
+  doseQuantity           Int?
+  totalQuantity          Int?
+  supplyDuration         Int?
+  notes                  String?
+  satuSehatId            String?
+  syncedWithSatuSehat    Boolean               @default(false)
+  deletedAt              DateTime?
+  patient_prescriptionId Int?
+  patient_prescription   Patient_prescription? @relation(fields: [patient_prescriptionId], references: [id])
+  clinicsId              String?               @db.Uuid
+  Clinics                Clinics?              @relation(fields: [clinicsId], references: [id])
 }
 
 model Pharmacy_Task {
@@ -181,7 +206,6 @@ model Queue_history {
 enum Role {
   OWNER
   ADMIN
-  SUPERADMIN
   DOCTOR
   PHARMACY
   SATUKLINIKADMIN
@@ -248,25 +272,25 @@ model Setting {
 }
 
 model Clinics {
-  id                  String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id                  String                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name                String
   email               String
-  type                CLINICTYPE          @default(PRIMARY)
-  specialist          CLINICSPECIALIST    @default(OTHER)
+  type                CLINICTYPE            @default(PRIMARY)
+  specialist          CLINICSPECIALIST      @default(OTHER)
   address             String
   phone               String
   taxId               String?
   license             String?
   dueTo               DateTime?
-  photo               String              @default("/images/clinic.png")
+  photo               String                @default("/images/clinic.png")
   clientId            String?
   clientSecret        String?
   organizationId      String?
   locationSatuSehatId String?
   locationName        String?
-  completeCreds       Boolean             @default(false)
-  accountsId          String?             @db.Uuid
-  Accounts            Accounts?           @relation(fields: [accountsId], references: [id])
+  completeCreds       Boolean               @default(false)
+  accountsId          String?               @db.Uuid
+  Accounts            Accounts?             @relation(fields: [accountsId], references: [id])
   Notifications       Notifications[]
   Patient             Patient[]
   Pharmacy_Task       Pharmacy_Task[]
@@ -279,6 +303,7 @@ model Clinics {
   Departments         Departments[]
   MedicineCategory    MedicineCategory[]
   Revenue             Revenue[]
+  Medication_dispense Medication_dispense[]
 }
 
 model regularHours {
@@ -455,8 +480,10 @@ model Medicine {
   kfaCode              String?
   satuSehatId          String?
   categoryId           Int?
+  syncedWithSatuSehat  Boolean                @default(false)
   category             MedicineCategory?      @relation(fields: [categoryId], references: [id])
   Patient_prescription Patient_prescription[]
+  Medication_dispense  Medication_dispense[]
 }
 
 model MedicineCategory {
@@ -470,7 +497,7 @@ model MedicineCategory {
 model Revenue {
   id        String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   date      String
-  total     Int
+  total     Decimal
   clinicsId String  @db.Uuid
   clinics   Clinics @relation(fields: [clinicsId], references: [id])
 }

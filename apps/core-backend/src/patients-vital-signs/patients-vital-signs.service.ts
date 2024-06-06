@@ -32,7 +32,7 @@ export class PatientsVitalSignsService {
         data: {
           patientId: dto.patientId,
           visitAt: now,
-          visitLabel: now.toLocaleDateString(),
+          visitLabel: now.toLocaleDateString('en-GB'),
           queue,
           status: 'e1',
           practitionerId: dto.usersId,
@@ -62,7 +62,7 @@ export class PatientsVitalSignsService {
 
       const result = {
         ...data,
-        visitAt: data.visitAt.toLocaleString(),
+        visitAt: data.visitAt.toLocaleString('en-GB'),
       };
 
       if (patient === undefined) {
@@ -70,7 +70,7 @@ export class PatientsVitalSignsService {
       }
       return {
         patient,
-        patientVitalSign: result,
+        patientMedicalRecord: result,
       };
     });
 
@@ -95,7 +95,7 @@ export class PatientsVitalSignsService {
     const { id } = result;
     let { counter, currentDate } = result;
 
-    const today = new Date().toLocaleDateString();
+    const today = new Date().toLocaleDateString('en-GB');
     if (today !== currentDate) {
       currentDate = today;
       counter = 0;

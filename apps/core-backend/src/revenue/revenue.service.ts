@@ -10,7 +10,7 @@ export class RevenueService {
   async increaseRevenue(dto: IncreaseRevenueDto, context?: ServiceContext) {
     const prisma = this._initPrisma(context?.tx);
     const now = new Date();
-    const date = now.toLocaleDateString();
+    const date = now.toLocaleDateString('en-GB');
 
     const updatedRevenue = await prisma.revenue.updateMany({
       where: {

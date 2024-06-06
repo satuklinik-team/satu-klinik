@@ -287,7 +287,7 @@ export class SatusehatJsonService {
     };
   }
 
-  async conditionJson(mrid: string) {
+  async conditionJson(method: string, mrid: string) {
     const patientAssessment =
       await this.prismaService.patient_assessment.findFirst({
         where: {
@@ -318,12 +318,14 @@ export class SatusehatJsonService {
               satuSehatId: true,
             },
           },
+          conditionId: true,
         },
       });
 
     return {
       resource: {
         resourceType: 'Condition',
+        ...(method !== 'POST' && { id: patientAssessment.conditionId }),
         clinicalStatus: {
           coding: [
             {
@@ -369,13 +371,16 @@ export class SatusehatJsonService {
         },
       },
       request: {
-        method: 'POST',
-        url: 'Condition',
+        method,
+        url:
+          method !== 'POST'
+            ? `Condition/${patientAssessment.conditionId}`
+            : 'Condition',
       },
     };
   }
 
-  async procedureJson(mrid: string) {
+  async procedureJson(method: string, mrid: string) {
     const patientAssessment =
       await this.prismaService.patient_assessment.findFirst({
         where: {
@@ -406,12 +411,23 @@ export class SatusehatJsonService {
             },
           },
           createdAt: true,
+          procedureId: true,
         },
       });
+
+    if (method === 'DELETE') {
+      return {
+        request: {
+          method,
+          url: `Procedure/${patientAssessment.procedureId}`,
+        },
+      };
+    }
 
     return {
       resource: {
         resourceType: 'Procedure',
+        ...(method !== 'POST' && { id: patientAssessment.procedureId }),
         status: 'completed',
         category: {
           coding: [
@@ -453,13 +469,16 @@ export class SatusehatJsonService {
         ],
       },
       request: {
-        method: 'POST',
-        url: 'Procedure',
+        method,
+        url:
+          method !== 'POST'
+            ? `Procedure/${patientAssessment.procedureId}`
+            : 'Procedure',
       },
     };
   }
 
-  async medicationJson(clinicsId: string, medicineId: number) {
+  async medicationJson(method: string, clinicsId: string, medicineId: number) {
     const clinics = await this.prismaService.clinics.findFirst({
       where: {
         id: clinicsId,
@@ -476,6 +495,7 @@ export class SatusehatJsonService {
       select: {
         id: true,
         kfaCode: true,
+        satuSehatId: true,
       },
     });
 
@@ -487,6 +507,7 @@ export class SatusehatJsonService {
     return {
       resource: {
         resourceType: 'Medication',
+        ...(method !== 'POST' && { id: medicine.satuSehatId }),
         meta: {
           profile: [
             'https://fhir.kemkes.go.id/r4/StructureDefinition/Medication',
@@ -565,8 +586,11 @@ export class SatusehatJsonService {
         ],
       },
       request: {
-        method: 'POST',
-        url: 'Medication',
+        method,
+        url:
+          method !== 'POST'
+            ? `Medication/${medicine.satuSehatId}`
+            : 'Medication',
       },
     };
   }
@@ -759,66 +783,52 @@ export class SatusehatJsonService {
     };
   }
 
-  async medicationDispenseJson(clinicsId: string, prescriptionId: number) {
+  async medicationDispenseJson(
+    method: string,
+    clinicsId: string,
+    medDispenseId: number,
+  ) {
     const clinics = await this.prismaService.clinics.findFirst({
       where: {
         id: clinicsId,
       },
     });
 
-    const prescription =
-      await this.prismaService.patient_prescription.findFirst({
-        where: {
-          id: prescriptionId,
-        },
-        select: {
-          id: true,
-          frequency: true,
-          period: true,
-          createdAt: true,
-          notes: true,
-          doseQuantity: true,
-          totalQuantity: true,
-          supplyDuration: true,
-          satuSehatId: true,
-          Medicine: {
-            select: {
-              id: true,
-              satuSehatId: true,
-              title: true,
-            },
-          },
-          Patient_medical_records: {
-            select: {
-              id: true,
-              encounterId: true,
-              assessment: {
-                take: 1,
-                select: {
-                  Doctor: {
-                    select: {
-                      fullname: true,
-                      satuSehatId: true,
-                    },
-                  },
-                  id: true,
-                  conditionId: true,
-                },
-              },
-              Patient: {
-                select: {
-                  fullname: true,
-                  satuSehatId: true,
-                },
+    const medDispense = await this.prismaService.medication_dispense.findFirst({
+      where: {
+        id: medDispenseId,
+      },
+      select: {
+        Medicine: true,
+        patient_prescription: {
+          select: {
+            id: true,
+            satuSehatId: true,
+            Patient_medical_records: {
+              select: {
+                id: true,
+                assessment: true,
+                Patient: true,
+                encounterId: true,
               },
             },
           },
         },
-      });
+        type: true,
+        frequency: true,
+        period: true,
+        doseQuantity: true,
+        totalQuantity: true,
+        supplyDuration: true,
+        notes: true,
+        satuSehatId: true,
+      },
+    });
 
     const pharmacyTask = await this.prismaService.pharmacy_Task.findFirst({
       where: {
-        assessmentReffId: prescription.Patient_medical_records.id,
+        assessmentReffId:
+          medDispense.patient_prescription.Patient_medical_records.id,
       },
     });
 
@@ -831,17 +841,18 @@ export class SatusehatJsonService {
     return {
       resource: {
         resourceType: 'MedicationDispense',
+        ...(method !== 'POST' && { id: medDispense.satuSehatId }),
         identifier: [
           {
             use: 'official',
             system: `http://sys-ids.kemkes.go.id/prescription/${clinics.organizationId}`,
-            value: prescription.id.toString(),
+            value: medDispense.patient_prescription.id.toString(),
           },
           {
             use: 'official',
             system: `http://sys-ids.kemkes.go.id/prescription-item/${clinics.organizationId}`,
             value:
-              prescription.Patient_medical_records.assessment[0].id.toString(),
+              medDispense.patient_prescription.Patient_medical_records.assessment[0].id.toString(),
           },
         ],
         status: 'completed',
@@ -856,15 +867,17 @@ export class SatusehatJsonService {
           ],
         },
         medicationReference: {
-          reference: `Medication/${prescription.Medicine.satuSehatId}`,
-          display: prescription.Medicine.title,
+          reference: `Medication/${medDispense.Medicine.satuSehatId}`,
+          display: medDispense.Medicine.title,
         },
         subject: {
-          reference: `Patient/${prescription.Patient_medical_records.Patient.satuSehatId}`,
-          display: prescription.Patient_medical_records.Patient.fullname,
+          reference: `Patient/${medDispense.patient_prescription.Patient_medical_records.Patient.satuSehatId}`,
+          display:
+            medDispense.patient_prescription.Patient_medical_records.Patient
+              .fullname,
         },
         context: {
-          reference: `Encounter/${prescription.Patient_medical_records.encounterId}`,
+          reference: `Encounter/${medDispense.patient_prescription.Patient_medical_records.encounterId}`,
         },
         performer: [
           {
@@ -880,16 +893,16 @@ export class SatusehatJsonService {
         },
         authorizingPrescription: [
           {
-            reference: `MedicationRequest/${prescription.satuSehatId}`,
+            reference: `MedicationRequest/${medDispense.patient_prescription.satuSehatId}`,
           },
         ],
         quantity: {
-          value: prescription.totalQuantity,
+          value: medDispense.totalQuantity,
           system: 'http://terminology.hl7.org/CodeSystem/v3-orderableDrugForm',
           code: 'TAB',
         },
         daysSupply: {
-          value: prescription.supplyDuration,
+          value: medDispense.supplyDuration,
           unit: 'Day',
           system: 'http://unitsofmeasure.org',
           code: 'd',
@@ -899,11 +912,11 @@ export class SatusehatJsonService {
         dosageInstruction: [
           {
             sequence: 1,
-            patientInstruction: prescription.notes,
+            patientInstruction: medDispense.notes,
             timing: {
               repeat: {
-                frequency: prescription.frequency,
-                period: prescription.period,
+                frequency: medDispense.frequency,
+                period: medDispense.period,
                 periodUnit: 'd',
               },
             },
@@ -929,7 +942,7 @@ export class SatusehatJsonService {
                   ],
                 },
                 doseQuantity: {
-                  value: prescription.doseQuantity,
+                  value: medDispense.doseQuantity,
                   unit: 'TAB',
                   system:
                     'http://terminology.hl7.org/CodeSystem/v3-orderableDrugForm',
@@ -941,8 +954,11 @@ export class SatusehatJsonService {
         ],
       },
       request: {
-        method: 'POST',
-        url: 'MedicationDispense',
+        method,
+        url:
+          method !== 'POST'
+            ? `MedicationDispense/${medDispense.satuSehatId}`
+            : 'MedicationDispense',
       },
     };
   }

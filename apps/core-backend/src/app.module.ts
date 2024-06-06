@@ -30,6 +30,7 @@ import { SatusehatRawatJalanModule } from './satusehat-rawat-jalan/satusehat-raw
 import { SatusehatAdminModule } from './satusehat-admin/satusehat-admin.module';
 import { TasksModule } from './tasks-status/tasks-status.module';
 import { RevenueModule } from './revenue/revenue.module';
+import { PatientMedicalRecordModule } from './patient-medical-record/patient-medical-record.module';
 
 @Module({
   imports: [
@@ -60,6 +61,7 @@ import { RevenueModule } from './revenue/revenue.module';
     SatusehatAdminModule,
     TasksModule,
     RevenueModule,
+    PatientMedicalRecordModule,
   ],
   providers: [{ provide: APP_GUARD, useClass: AccessTokenGuard }],
 })

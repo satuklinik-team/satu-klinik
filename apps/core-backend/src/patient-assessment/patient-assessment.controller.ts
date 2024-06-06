@@ -26,8 +26,8 @@ export class PatientAssessmentController {
   ) {}
 
   @Post()
-  @PractitionerOnly()
   @Roles(Role.DOCTOR)
+  @PractitionerOnly()
   async create(
     @Body() dto: CreatePatientAssessmentDto,
     @TokenData() tokenData: JwtPayload,
@@ -40,7 +40,6 @@ export class PatientAssessmentController {
   }
 
   @Patch(':id')
-  // @PractitionerOnly()
   @Roles(Role.DOCTOR)
   async update(
     @Param('id', ParseIntPipe) id: number,
