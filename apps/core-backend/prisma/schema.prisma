@@ -74,6 +74,8 @@ model Patient_assessment {
   id                        Int                              @id @default(autoincrement())
   createdAt                 DateTime                         @default(now())
   conditionId               String?
+  procedureId               String?
+  syncedWithSatuSehat       Boolean                          @default(false)
   doctorId                  String?                          @db.Uuid
   Doctor                    Users?                           @relation(fields: [doctorId], references: [id])
   subjective                String                           @default("none")
@@ -181,7 +183,6 @@ model Queue_history {
 enum Role {
   OWNER
   ADMIN
-  SUPERADMIN
   DOCTOR
   PHARMACY
   SATUKLINIKADMIN
@@ -470,7 +471,7 @@ model MedicineCategory {
 model Revenue {
   id        String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   date      String
-  total     Int
+  total     Decimal
   clinicsId String  @db.Uuid
   clinics   Clinics @relation(fields: [clinicsId], references: [id])
 }

@@ -26,7 +26,6 @@ export class PatientAssessmentController {
   ) {}
 
   @Post()
-  @PractitionerOnly()
   @Roles(Role.DOCTOR)
   async create(
     @Body() dto: CreatePatientAssessmentDto,
@@ -40,7 +39,6 @@ export class PatientAssessmentController {
   }
 
   @Patch(':id')
-  // @PractitionerOnly()
   @Roles(Role.DOCTOR)
   async update(
     @Param('id', ParseIntPipe) id: number,

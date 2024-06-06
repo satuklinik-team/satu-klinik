@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Revenue" ALTER COLUMN "total" SET DATA TYPE DECIMAL(65,30);

@@ -25,13 +25,13 @@ export class CreateNewPatientVitalSignDto extends CreatePatientDto {
 
   @IsNumber()
   @Type(() => Number)
-  @IsNotEmpty()
-  height: number;
+  @IsOptional()
+  height?: number;
 
   @IsNumber()
   @Type(() => Number)
-  @IsNotEmpty()
-  weight: number;
+  @IsOptional()
+  weight?: number;
 
   @IsNumber()
   @Type(() => Number)

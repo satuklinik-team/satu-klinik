@@ -11,7 +11,6 @@ export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
 
   @Get()
-  @Roles(Role.DOCTOR, Role.PHARMACY)
   get(@Query() dto: GetTasksStatusDto, @TokenData() tokenData: JwtPayload) {
     return this.tasksService.get({
       ...dto,

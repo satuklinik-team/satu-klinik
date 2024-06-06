@@ -1,3 +1,4 @@
+import { Decimal } from '@prisma/client/runtime/library';
 import { Type } from 'class-transformer';
 import { IsString, IsNotEmpty, IsNumber } from 'class-validator';
 
