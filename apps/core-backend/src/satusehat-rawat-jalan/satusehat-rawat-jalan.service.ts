@@ -296,6 +296,8 @@ export class SatusehatRawatJalanService {
       });
     }
 
+    await this.ensureMedicationDispenseSatuSehatId(clinicsId);
+
     const ecJsonArray = [];
 
     for (const { mrid } of mridList) {
