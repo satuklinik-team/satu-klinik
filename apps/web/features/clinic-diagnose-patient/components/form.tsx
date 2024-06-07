@@ -129,7 +129,7 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
   );
 
   useEffect(() => {
-    const defaultSubjective = patientData?.mr[0].vitalSign[0].pain;
+    const defaultSubjective = patientData?.mr[0]?.vitalSign[0].pain;
 
     if (defaultSubjective) {
       form.setValue("subjective", defaultSubjective);

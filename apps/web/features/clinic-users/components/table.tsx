@@ -1,8 +1,9 @@
 "use client";
 
 import { useQueryClient } from "@tanstack/react-query";
-import { MessageCircle, Trash } from "lucide-react";
+import { Eye, MessageCircle, Trash } from "lucide-react";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import { useMemo, useState } from "react";
 
 import { BaseTable as UsersTable } from "@/components/shared/table/base-table";
@@ -39,6 +40,7 @@ import { ClinicUsersStatusCell } from "./cell/status-cell";
 export function ClinicUsersTable(): JSX.Element {
   const queryClient = useQueryClient();
   const { toast } = useToast();
+  const { clinicId } = useParams();
 
   const [pagination, setPagination] = useState<Pagination>({
     skip: 0,
@@ -83,6 +85,14 @@ export function ClinicUsersTable(): JSX.Element {
                   </TooltipTrigger>
                 </Link>
                 <TooltipContent>Kontak WA</TooltipContent>
+              </Tooltip>
+              <Tooltip>
+                <Link href={`/clinic/${clinicId as string}/users/${row.id}`}>
+                  <TooltipTrigger className="h-min p-2">
+                    <Eye size={20} />
+                  </TooltipTrigger>
+                </Link>
+                <TooltipContent>Lihat Detail</TooltipContent>
               </Tooltip>
               <Tooltip>
                 <TooltipTrigger

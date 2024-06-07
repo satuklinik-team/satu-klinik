@@ -44,7 +44,7 @@ export function ClinicDashboardPage(): JSX.Element {
           className="border-red-500"
           title="Today's Revenue"
         >
-          {tasksStatusData?.todayRevenue}
+          Rp {Number(tasksStatusData?.todayRevenue).toLocaleString()}
         </ClinicCard>
 
         <ClinicCard

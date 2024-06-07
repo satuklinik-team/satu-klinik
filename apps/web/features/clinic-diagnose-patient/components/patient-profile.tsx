@@ -67,17 +67,17 @@ export function ClinicDiagnosePatientProfile(): JSX.Element | undefined {
             <div className="flex flex-col gap-2">
               <div>
                 <p className="font-semibold">Suhu</p>
-                <p>{patientData.mr[0].vitalSign[0].temperature} ℃</p>
+                <p>{patientData.mr[0]?.vitalSign[0].temperature} ℃</p>
               </div>
 
               <div>
                 <p className="font-semibold">Tinggi</p>
-                <p>{patientData.mr[0].vitalSign[0].height} cm</p>
+                <p>{patientData.mr[0]?.vitalSign[0].height} cm</p>
               </div>
 
               <div>
                 <p className="font-semibold">Berat</p>
-                <p>{patientData.mr[0].vitalSign[0].weight} kg</p>
+                <p>{patientData.mr[0]?.vitalSign[0].weight} kg</p>
               </div>
             </div>
           </div>
@@ -86,26 +86,26 @@ export function ClinicDiagnosePatientProfile(): JSX.Element | undefined {
             <div>
               <p className="font-semibold">Tekanan Darah</p>
               <p>
-                {patientData.mr[0].vitalSign[0].systole} /{" "}
-                {patientData.mr[0].vitalSign[0].diastole} mmHg
+                {patientData.mr[0]?.vitalSign[0].systole} /{" "}
+                {patientData.mr[0]?.vitalSign[0].diastole} mmHg
               </p>
             </div>
 
             <div>
               <p className="font-semibold">Denyut Nadi</p>
-              <p>{patientData.mr[0].vitalSign[0].pulse} bpm</p>
+              <p>{patientData.mr[0]?.vitalSign[0].pulse} bpm</p>
             </div>
 
             <div>
               <p className="font-semibold">Respirasi</p>
-              <p>{patientData.mr[0].vitalSign[0].respiration} bpm</p>
+              <p>{patientData.mr[0]?.vitalSign[0].respiration} bpm</p>
             </div>
           </div>
 
           <div className="flex flex-col gap-2">
             <div>
               <p className="font-semibold">Alergi</p>
-              <p>{patientData.mr[0].vitalSign[0].allergic}</p>
+              <p>{patientData.mr[0]?.vitalSign[0].allergic}</p>
             </div>
           </div>
         </div>

@@ -58,10 +58,10 @@ export function ClinicItemCard({
         <div className="flex flex-row justify-between items-start gap-2">
           <div>
             <p className="text-base font-bold">
-              IDR {discountPrice.toLocaleString()}
+              Rp {discountPrice.toLocaleString()}
             </p>
             <p className="text-[10px] font-thin line-through">
-              IDR {price.toLocaleString()}
+              Rp {price.toLocaleString()}
             </p>
           </div>
           <Badge className="text-xs px-2" variant="destructive">

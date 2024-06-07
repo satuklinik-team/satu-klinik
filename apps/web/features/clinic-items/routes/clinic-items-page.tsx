@@ -72,7 +72,7 @@ export function ClinicItemsPage(): JSX.Element {
           >
             All
           </Badge>
-          {medicineCategoryData?.data.map((item) => (
+          {medicineCategoryData.data.map((item) => (
             <Badge
               key={item.id}
               onClick={() => {
@@ -100,7 +100,7 @@ export function ClinicItemsPage(): JSX.Element {
             <SelectGroup>
               <SelectLabel>Pilih kategori</SelectLabel>
               <SelectItem value="All">All</SelectItem>
-              {medicineCategoryData?.data.map((item) => (
+              {medicineCategoryData.data.map((item) => (
                 <SelectItem key={item.id} value={String(item.id)}>
                   {item.name}
                 </SelectItem>
@@ -122,7 +122,7 @@ export function ClinicItemsPage(): JSX.Element {
       </div>
 
       <div className="grid 2xl:grid-cols-5 xl:grid-cols-5 lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-4">
-        {medicineByCategoryData?.data.map((item) => (
+        {medicineByCategoryData.data.map((item) => (
           <ClinicItemCard
             key={item.kfaCode}
             {...item}
