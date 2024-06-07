@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { FindAllPharmacyTaskDto } from './dto/find-all-pharmacy-task.dto';
-import { CompleteTaskDto } from './dto/complete-task.dto';
+import { CompletePharmacyTaskDto } from './dto/complete-pharmacy-task.dto';
 import { CannotAccessClinicException } from 'src/exceptions/unauthorized/cannot-access-clinic';
 import { Prisma } from '@prisma/client';
 import { FindAllService } from 'src/find-all/find-all.service';
@@ -86,33 +86,49 @@ export class PharmacyTasksService {
       throw new CannotAccessClinicException();
     }
 
-    const prescriptions =
+    const prescriptionSelect: Prisma.Patient_prescriptionSelect = {
+      id: true,
+      createdAt: true,
+      frequency: true,
+      period: true,
+      doseQuantity: true,
+      totalQuantity: true,
+      supplyDuration: true,
+      notes: true,
+      deletedAt: true,
+      Medicine: true,
+    };
+
+    const cancelledPrescriptions =
       await this.prismaService.patient_prescription.findMany({
         where: {
           patient_medical_recordsId: pharmacyTask.assessmentReffId,
-          outdated: false,
+          status: 'cancelled',
+          includeInPharmacyTask: true,
+          Medication_dispense: {
+            some: {},
+          },
         },
-        select: {
-          id: true,
-          createdAt: true,
-          frequency: true,
-          period: true,
-          doseQuantity: true,
-          totalQuantity: true,
-          supplyDuration: true,
-          notes: true,
-          deletedAt: true,
-          Medicine: true,
+        select: prescriptionSelect,
+      });
+
+    const newPrescriptions =
+      await this.prismaService.patient_prescription.findMany({
+        where: {
+          patient_medical_recordsId: pharmacyTask.assessmentReffId,
+          status: 'completed',
         },
+        select: prescriptionSelect,
       });
 
     return {
-      ...pharmacyTask,
-      prescriptions,
+      pharmacyTask,
+      cancelledPrescriptions,
+      newPrescriptions,
     };
   }
 
-  async completeTask(dto: CompleteTaskDto) {
+  async completeTask(dto: CompletePharmacyTaskDto) {
     const data = await this.prismaService.$transaction(async (tx) => {
       const pharmacyTask = await tx.pharmacy_Task.update({
         where: {
@@ -141,7 +157,6 @@ export class PharmacyTasksService {
       const patientPrescriptions = await tx.patient_prescription.findMany({
         where: {
           patient_medical_recordsId: pharmacyTask.assessmentReffId,
-          outdated: false,
         },
         select: {
           id: true,
@@ -152,9 +167,14 @@ export class PharmacyTasksService {
         (prescription) => prescription.id,
       );
 
-      const isSubset = dto.boughtPrescriptionsId.every((prescriptionId) =>
-        patientPrescriptionIds.includes(prescriptionId),
-      );
+      const isSubset =
+        dto.boughtPrescriptionsId.every((prescriptionId) =>
+          patientPrescriptionIds.includes(prescriptionId),
+        ) &&
+        dto.cancelledPrescriptionsId.every((prescriptionId) =>
+          patientPrescriptionIds.includes(prescriptionId),
+        );
+
       if (!isSubset) {
         throw new IncorrectPrescriptionIdException();
       }

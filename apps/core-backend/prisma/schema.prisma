@@ -113,8 +113,9 @@ model Patient_prescription {
   totalQuantity             Int?
   supplyDuration            Int?
   notes                     String?
-  outdated                  Boolean                  @default(false)
   syncedWithSatuSehat       Boolean                  @default(false)
+  status                    String                   @default("completed")
+  includeInPharmacyTask     Boolean                  @default(true)
   satuSehatId               String?
   deletedAt                 DateTime?
   patient_medical_recordsId String?                  @db.Uuid
@@ -134,6 +135,7 @@ model Medication_dispense {
   totalQuantity          Int?
   supplyDuration         Int?
   notes                  String?
+  status                 String                @default("completed")
   satuSehatId            String?
   syncedWithSatuSehat    Boolean               @default(false)
   deletedAt              DateTime?

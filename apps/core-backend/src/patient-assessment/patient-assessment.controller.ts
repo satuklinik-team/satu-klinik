@@ -32,7 +32,7 @@ export class PatientAssessmentController {
     @Body() dto: CreatePatientAssessmentDto,
     @TokenData() tokenData: JwtPayload,
   ) {
-    return await this.patientAssessmentService.create({
+    return await this.patientAssessmentService.createOrUpdate({
       ...dto,
       usersId: tokenData.sub,
       clinicsId: tokenData.clinicsId,
@@ -46,7 +46,7 @@ export class PatientAssessmentController {
     @Body() dto: UpdatePatientAssessmentDto,
     @TokenData() tokenData: JwtPayload,
   ) {
-    return await this.patientAssessmentService.update({
+    return await this.patientAssessmentService.createOrUpdate({
       ...dto,
       id,
       usersId: tokenData.sub,

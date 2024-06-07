@@ -10,7 +10,7 @@ import {
 import { JwtPayload } from 'src/auth/types';
 import { PaginationDto } from 'src/utils/classes';
 
-export class CompleteTaskDto {
+export class CompletePharmacyTaskDto {
   @IsOptional()
   @IsNumber()
   @Type(() => Number)
@@ -29,4 +29,10 @@ export class CompleteTaskDto {
   @IsNotEmpty({ each: true })
   @Type(() => Number)
   boughtPrescriptionsId: number[];
+
+  @IsArray()
+  @IsNumber({}, { each: true })
+  @IsNotEmpty({ each: true })
+  @Type(() => Number)
+  cancelledPrescriptionsId: number[];
 }
