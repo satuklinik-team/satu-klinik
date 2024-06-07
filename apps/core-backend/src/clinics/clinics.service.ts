@@ -16,6 +16,7 @@ import { UpdateClinicUserDto } from './dto/update-clinic-user.dto';
 import { FindClinicUsersDto } from './dto/find-clinic-users-dto';
 import { ConfigService } from '@nestjs/config';
 import { MedicineCategory } from 'src/medicine-category/entities/medicine-category.entity';
+import { GetUserByIdDto } from './dto/get-user-by-id.dto';
 
 @Injectable()
 export class ClinicsService {
@@ -173,6 +174,21 @@ export class ClinicsService {
     const mappedData = data.map((u: any) => exclude(u, ['password']));
 
     return { data: mappedData, count };
+  }
+
+  async getUserById(dto: GetUserByIdDto) {
+    const user = await this.prismaService.users.findFirst({
+      where: {
+        id: dto.usersId,
+        clinicsId: dto.clinicsId,
+      },
+    });
+
+    if (!user) {
+      throw new UserNotFoundException();
+    }
+
+    return exclude(user, ['password']);
   }
 
   async updateClinicUser(

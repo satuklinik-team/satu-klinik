@@ -70,7 +70,7 @@ export class PatientsVitalSignsService {
       }
       return {
         patient,
-        patientVitalSign: result,
+        patientMedicalRecord: result,
       };
     });
 

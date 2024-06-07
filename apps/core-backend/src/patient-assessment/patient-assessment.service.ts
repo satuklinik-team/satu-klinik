@@ -50,7 +50,7 @@ export class PatientAssessmentService {
           assessment: dto.assessment,
           plan: dto.plan,
           icd10Code: dto.icd10Code,
-          icd9CMCode: dto.icd9CMCode,
+          icd9CMCode: dto.icd9CMCode != undefined ? dto.icd9CMCode : null,
         },
       });
 
@@ -160,7 +160,7 @@ export class PatientAssessmentService {
           assessment: dto.assessment,
           plan: dto.plan,
           icd10Code: dto.icd10Code,
-          icd9CMCode: dto.icd9CMCode,
+          icd9CMCode: dto.icd9CMCode != undefined ? dto.icd9CMCode : null,
           syncedWithSatuSehat: false,
         },
       });
@@ -168,6 +168,8 @@ export class PatientAssessmentService {
       if (data.doctorId !== dto.usersId) {
         throw new DifferentPractitionerException();
       }
+
+      return data;
     });
 
     return data;
@@ -188,6 +190,8 @@ export class PatientAssessmentService {
         objective: true,
         assessment: true,
         plan: true,
+        icd10: true,
+        icd9CM: true,
         Patient_medical_records: {
           select: {
             id: true,
