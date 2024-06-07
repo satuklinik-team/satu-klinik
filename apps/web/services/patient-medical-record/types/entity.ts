@@ -7,5 +7,5 @@ export interface PatientMedicalRecordEntity {
   queue: string;
   Patient: PatientEntity;
   status: string;
-  vitalSign: VitalSignEntity[];
+  vitalSign?: VitalSignEntity[];
 }

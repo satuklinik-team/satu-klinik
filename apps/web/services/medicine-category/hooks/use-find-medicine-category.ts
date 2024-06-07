@@ -14,5 +14,9 @@ export const useFindMedicineCategory = (dto?: object) => {
   return useQuery<BaseFindConnectionResponse<MedicineCategoryEntity>>({
     queryFn: () => medicineCategoryApi.findMedicineCategory(dto),
     queryKey: queryKeyFactory.list(dto),
+    initialData: {
+      count: 0,
+      data: [],
+    },
   });
 };
