@@ -1,15 +1,9 @@
 "use client";
 
 import { useQueryClient } from "@tanstack/react-query";
-import {
-  Eye,
-  HeartPulse,
-  MessageCircle,
-  Stethoscope,
-  Trash,
-} from "lucide-react";
+import { useDebounce } from "@uidotdev/usehooks";
+import { HeartPulse, MessageCircle, Stethoscope, Trash } from "lucide-react";
 import Link from "next/link";
-import { useParams } from "next/navigation";
 import { useMemo, useState } from "react";
 
 import { BloodBagOutlineIcon } from "@/components/icons/blood-bag-outline";
@@ -55,25 +49,34 @@ import { PatientMedicalRecordQueryKeyFactory } from "@/services/patient-medical-
 import type { Pagination } from "@/types";
 import { getInitial, getWhatsappUrl } from "@/utils";
 
+import { timeRangeOptions } from "../utils";
+
 export function ClinicMedicalRecordPage(): JSX.Element {
   const { toast } = useToast();
 
   const queryClient = useQueryClient();
-
-  const { clinicId } = useParams();
 
   const [pagination, setPagination] = useState<Pagination>({
     skip: 0,
     limit: 20,
   });
 
+  const [search, setSearch] = useState("");
+  const debouncedSearch = useDebounce(search, 300);
+
+  const [selectedTimeRange, setSelectedTimeRange] = useState<string>("today");
+
+  const selectedTimeRangeOption = useMemo(() => {
+    return timeRangeOptions.find((item) => item.value === selectedTimeRange);
+  }, [selectedTimeRange]);
+
   const { data: patiendMedicalRecordData, isFetching } =
     useFindPatientMedicalRecord({
       ...pagination,
       count: true,
-      from: "2024-05-06",
-      to: "2024-07-07",
-      search: "",
+      from: selectedTimeRangeOption?.getFrom(),
+      to: selectedTimeRangeOption?.getTo(),
+      search: debouncedSearch,
     });
 
   const [toBeDeletedId, setToBeDeletedId] = useState<string>("");
@@ -171,16 +174,6 @@ export function ClinicMedicalRecordPage(): JSX.Element {
                 <TooltipContent>Kontak WA</TooltipContent>
               </Tooltip>
               <Tooltip>
-                <Link
-                  href={`/clinic/${clinicId as string}/mr/report/${row.id}`}
-                >
-                  <TooltipTrigger className="h-min p-2">
-                    <Eye size={20} />
-                  </TooltipTrigger>
-                </Link>
-                <TooltipContent>Lihat Detail</TooltipContent>
-              </Tooltip>
-              <Tooltip>
                 <TooltipTrigger
                   className="h-min p-2"
                   onClick={() => {
@@ -196,7 +189,7 @@ export function ClinicMedicalRecordPage(): JSX.Element {
         ),
       },
     ];
-  }, [clinicId]);
+  }, []);
 
   return (
     <div className="h-full">
@@ -210,26 +203,34 @@ export function ClinicMedicalRecordPage(): JSX.Element {
       <ClinicCard>
         <div className="flex flex-col gap-4 mb-4">
           <div className="flex flex-row items-center gap-2">
-            <Select>
+            <Select
+              onValueChange={(value) => {
+                setSelectedTimeRange(value);
+              }}
+              value={selectedTimeRange}
+            >
               <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="Pilih waktu" />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
                   <SelectLabel>Pilih waktu</SelectLabel>
-                  <SelectItem value="today">Today</SelectItem>
-                  <SelectItem value="yesterday">Yesterday</SelectItem>
-                  <SelectItem value="twoWeeksAgo">7 Days Ago</SelectItem>
-                  <SelectItem value="threeWeeksAgo">21 Days Ago</SelectItem>
-                  <SelectItem value="thisMonth">This Month</SelectItem>
-                  <SelectItem value="lastMonth">Last Month</SelectItem>
+                  {timeRangeOptions.map((item) => (
+                    <SelectItem key={item.value} value={item.value}>
+                      {item.label}
+                    </SelectItem>
+                  ))}
                 </SelectGroup>
               </SelectContent>
             </Select>
           </div>
           <Input
             className="py-2 h-fit"
+            onChange={(e) => {
+              setSearch(e.target.value);
+            }}
             placeholder="Cari berdasarkan nama, nomor rekam medis, atau tempat tinggal"
+            value={search}
           />
         </div>
 

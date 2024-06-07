@@ -10,18 +10,18 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { ClinicCard } from "@/features/clinic/components/ui/card";
-import { useGetUserData } from "@/hooks/use-get-user-data";
-// import { useGetUser } from "@/services/user/hooks/use-get-user";
+// import { useGetUserData } from "@/hooks/use-get-user-data";
+import { useGetUser } from "@/services/user/hooks/use-get-user";
 import { formalizeWord, getInitial } from "@/utils";
 
 export function ClinicUserDetailPage(): JSX.Element | undefined {
   const pathname = usePathname();
   const { userId } = useParams();
 
-  //   const { data: userData } = useGetUser(String(userId));
-  const userData = useGetUserData();
+  const { data: userData } = useGetUser(String(userId));
+  // const userData = useGetUserData();
 
-  //   if (!userData) return;
+  if (!userData) return;
 
   return (
     <div className="flex flex-col gap-4">

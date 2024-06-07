@@ -42,8 +42,12 @@ export function ClinicDiagnoseHistory(): JSX.Element {
               <p>O : {row.objective}</p>
               <p>A : {row.assessment}</p>
               <p>P : {row.plan}</p>
-              <p>ICD10 : - | -</p>
-              <p>ICD9 : - | -</p>
+              <p>
+                ICD10 : {row.icd10.code} | {row.icd10.strt}
+              </p>
+              <p>
+                ICD9 : {row.icd9CM.code} | {row.icd9CM.str}
+              </p>
             </Cell>
           );
         },

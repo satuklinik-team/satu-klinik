@@ -73,10 +73,10 @@ export function ClinicItemDetailPage(): JSX.Element | undefined {
           <Separator className="w-full sm:w-full md:w-96 lg:w-96 xl:w-96 2xl:w-96" />
           <div className="flex flex-row items-center gap-2">
             <p className="text-xl font-bold">
-              IDR {discountPrice.toLocaleString()}
+              Rp {discountPrice.toLocaleString()}
             </p>
             <p className="text-[10px] font-thin line-through">
-              IDR {medicineData.price.toLocaleString()}
+              Rp {medicineData.price.toLocaleString()}
             </p>
             <Badge className="text-xs" variant="destructive">
               {medicineData.discount}% off

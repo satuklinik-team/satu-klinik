@@ -25,7 +25,7 @@ class PatientMedicalRecordApi {
   async findPatientMedicalRecord(
     dto?: object,
   ): Promise<BaseFindConnectionResponse<PatientMedicalRecordEntity>> {
-    const queryParams = stringify(dto);
+    const queryParams = stringify(dto, { encode: false });
 
     const { data } = await this.api.get<
       BaseFindConnectionResponse<PatientMedicalRecordEntity>

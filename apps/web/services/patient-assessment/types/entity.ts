@@ -4,6 +4,14 @@ export interface PatientAssessmentEntity {
   objective: string;
   assessment: string;
   plan: string;
+  icd9CM: {
+    code: string;
+    str: string;
+  };
+  icd10: {
+    code: string;
+    strt: string;
+  };
   Patient_medical_records: {
     id: string;
     visitLabel: string;
