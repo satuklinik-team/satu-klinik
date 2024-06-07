@@ -10,6 +10,16 @@ import type { UserEntity } from "./types/entity";
 class UserApi {
   api: AxiosInstance = api;
 
+  async getUser(id: string, dto?: object): Promise<UserEntity> {
+    const queryParams = stringify(dto);
+
+    const { data } = await this.api.get<UserEntity>(
+      `/clinics/users/${id}?&${queryParams}`,
+    );
+
+    return data;
+  }
+
   async findUser(
     dto?: object,
   ): Promise<BaseFindConnectionResponse<UserEntity>> {

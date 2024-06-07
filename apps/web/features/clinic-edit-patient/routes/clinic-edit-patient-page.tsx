@@ -88,7 +88,7 @@ export function ClinicEditPatientPage(): JSX.Element | undefined {
         </p>
       </div>
 
-      <ClinicCard title="Add New Patient">
+      <ClinicCard title="Edit Patient">
         <EditPatientForm
           defaultValues={{
             ...patientData,

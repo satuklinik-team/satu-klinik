@@ -12,14 +12,14 @@ import {
 import * as e from "react";
 import { jsx as r, jsxs as s } from "react/jsx-runtime";
 var R = a.object({ name: a.string() }),
-  c = "vAuq7HO5xyGFAg7XdlK5",
+  c = "vKggsn4FifEb4PbI5VEf",
   C = ({
     onSubmit: m,
     onError: i,
-    onSuccess: l,
-    defaultValues: f,
-    onAction: y,
-    formProps: g,
+    onSuccess: f,
+    defaultValues: l,
+    onAction: g,
+    formProps: y,
   }) => {
     let t = e.useRef();
     e.useEffect(() => {
@@ -32,10 +32,10 @@ var R = a.object({ name: a.string() }),
       u,
       {
         id: c,
-        defaultValues: f,
+        defaultValues: l,
         onSubmit: z,
         onError: i,
-        onSuccess: l,
+        onSuccess: f,
         zodSchema: R,
         mode: "onTouched",
         children: (n) =>

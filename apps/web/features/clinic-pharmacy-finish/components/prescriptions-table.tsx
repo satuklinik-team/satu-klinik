@@ -67,9 +67,6 @@ export function ClinicPharmacyFinishPrescriptionsTable():
   return (
     <ClinicCard title="Prescription">
       <div className="flex flex-col gap-2">
-        <Button disabled={isPending} onClick={onCompletePharmacyTask}>
-          Selesai
-        </Button>
         <BaseTable<PrescriptionEntity>
           columns={[
             {
@@ -92,8 +89,8 @@ export function ClinicPharmacyFinishPrescriptionsTable():
               },
             },
             {
-              key: "procedure",
-              name: "How to Use",
+              key: "dosis",
+              name: "Dosis",
               renderCell: (row) => {
                 return (
                   <Cell className="gap-3">
@@ -104,10 +101,20 @@ export function ClinicPharmacyFinishPrescriptionsTable():
                 );
               },
             },
+            {
+              key: "notes",
+              name: "Notes",
+              renderCell: (row) => {
+                return <Cell className="gap-3">{row.notes ?? "-"}</Cell>;
+              },
+            },
           ]}
           isLoading={isFetching}
           rows={pharmacyTaskData.prescriptions}
         />
+        <Button disabled={isPending} onClick={onCompletePharmacyTask}>
+          Selesai
+        </Button>
       </div>
     </ClinicCard>
   );
