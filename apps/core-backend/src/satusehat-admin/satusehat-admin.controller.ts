@@ -15,9 +15,9 @@ export class SatusehatAdminController {
   @Get()
   @Roles(Role.SATUKLINIKADMIN)
   async satuSehatIntegration(@TokenData() tokenData: JwtPayload) {
-    if (tokenData.role !== Role.SATUKLINIKADMIN) {
-      throw new RoleNotAuthorizedException();
-    }
+    // if (tokenData.role !== Role.SATUKLINIKADMIN) {
+    //   throw new RoleNotAuthorizedException();
+    // }
     return await this.satusehatRawatJalanService.handleCron();
   }
 }

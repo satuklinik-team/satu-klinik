@@ -7,6 +7,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { Prisma, Role } from '@prisma/client';
 import { RoleNotAuthorizedException } from 'src/exceptions/unauthorized/role-not-authorized';
 import { GetNotificationDto } from './dto/get-notification-dto';
+import { formatDate } from 'src/utils/helpers/format-date.helper';
 
 @Injectable()
 export class TasksService {
@@ -24,7 +25,7 @@ export class TasksService {
       throw new RoleNotAuthorizedException();
     }
 
-    const date = new Date().toLocaleDateString('en-GB');
+    const date = formatDate(new Date());
 
     const todayPatient =
       await this.prismaService.patient_medical_records.aggregate({
@@ -168,7 +169,7 @@ export class TasksService {
         Patient: {
           clinicsId,
         },
-        visitLabel: now.toLocaleDateString('en-GB'),
+        visitLabel: formatDate(now),
         ...arg,
       },
     });

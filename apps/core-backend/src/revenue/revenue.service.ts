@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { ServiceContext } from 'src/utils/types';
 import { IncreaseRevenueDto } from './dto/complete-task.dto';
+import { formatDate } from 'src/utils/helpers/format-date.helper';
+import { Medicine } from '@prisma/client';
 
 @Injectable()
 export class RevenueService {
@@ -10,7 +12,7 @@ export class RevenueService {
   async increaseRevenue(dto: IncreaseRevenueDto, context?: ServiceContext) {
     const prisma = this._initPrisma(context?.tx);
     const now = new Date();
-    const date = now.toLocaleDateString('en-GB');
+    const date = formatDate(now);
 
     const updatedRevenue = await prisma.revenue.updateMany({
       where: {
@@ -35,6 +37,10 @@ export class RevenueService {
     }
 
     return;
+  }
+
+  findMedicineRevenue(medicine: Medicine) {
+    return (medicine.price * (100 - medicine.discount)) / 100;
   }
 
   private _initPrisma(tx?: ServiceContext['tx']) {

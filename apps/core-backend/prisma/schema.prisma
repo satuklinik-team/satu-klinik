@@ -34,21 +34,22 @@ model Patient {
 }
 
 model Patient_medical_records {
-  id             String                 @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  visitAt        DateTime               @default(now())
-  visitLabel     String?
-  queue          String?
-  status         String?                @default("e1")
-  patientId      String?                @db.Uuid
-  encounterId    String?
-  poliId         String?                @db.Uuid
-  practitionerId String?                @db.Uuid
-  Practitioner   Users?                 @relation(fields: [practitionerId], references: [id])
-  assessment     Patient_assessment[]
-  Patient        Patient?               @relation(fields: [patientId], references: [id])
-  poli           Poli?                  @relation(fields: [poliId], references: [id])
-  prescription   Patient_prescription[]
-  vitalSign      Patient_vital_sign[]
+  id                 String                 @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  visitAt            DateTime               @default(now())
+  visitLabel         String?
+  queue              String?
+  status             String?                @default("e1")
+  patientId          String?                @db.Uuid
+  encounterId        String?
+  satuSehatCompleted Boolean                @default(false)
+  poliId             String?                @db.Uuid
+  practitionerId     String?                @db.Uuid
+  Practitioner       Users?                 @relation(fields: [practitionerId], references: [id])
+  assessment         Patient_assessment[]
+  Patient            Patient?               @relation(fields: [patientId], references: [id])
+  poli               Poli?                  @relation(fields: [poliId], references: [id])
+  prescription       Patient_prescription[]
+  vitalSign          Patient_vital_sign[]
 }
 
 model Patient_vital_sign {
@@ -113,8 +114,9 @@ model Patient_prescription {
   totalQuantity             Int?
   supplyDuration            Int?
   notes                     String?
-  outdated                  Boolean                  @default(false)
   syncedWithSatuSehat       Boolean                  @default(false)
+  status                    String                   @default("completed")
+  includeInPharmacyTask     Boolean                  @default(true)
   satuSehatId               String?
   deletedAt                 DateTime?
   patient_medical_recordsId String?                  @db.Uuid
@@ -134,6 +136,7 @@ model Medication_dispense {
   totalQuantity          Int?
   supplyDuration         Int?
   notes                  String?
+  status                 String                @default("completed")
   satuSehatId            String?
   syncedWithSatuSehat    Boolean               @default(false)
   deletedAt              DateTime?
