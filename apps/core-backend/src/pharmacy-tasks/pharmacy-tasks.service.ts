@@ -212,10 +212,6 @@ export class PharmacyTasksService {
           where: {
             id: prescriptionId,
           },
-          select: {
-            medicineId: true,
-            totalQuantity: true,
-          },
         });
 
         await tx.medicine.update({
@@ -287,6 +283,19 @@ export class PharmacyTasksService {
           },
           select: {
             Medicine: true,
+            medicineId: true,
+            totalQuantity: true,
+          },
+        });
+
+        await tx.medicine.update({
+          where: {
+            id: prescription.medicineId,
+          },
+          data: {
+            stock: {
+              increment: prescription.totalQuantity,
+            },
           },
         });
 

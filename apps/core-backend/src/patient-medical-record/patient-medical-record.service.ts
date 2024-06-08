@@ -81,9 +81,10 @@ export class PatientMedicalRecordService {
         throw new AlreadyIntegratedException();
       }
 
-      const pharmacyTask = await this.prismaService.pharmacy_Task.findFirst({
+      const pharmacyTask = await this.prismaService.pharmacy_Task.deleteMany({
         where: {
           assessmentReffId: dto.id,
+          status: 'Todo',
         },
       });
 
