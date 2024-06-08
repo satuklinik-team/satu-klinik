@@ -1,7 +1,7 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { Role } from '@prisma/client';
+import { Prisma, Role } from '@prisma/client';
 import { AxiosError } from 'axios';
 import { firstValueFrom, catchError } from 'rxjs';
 import { SatuSehatErrorException } from 'src/exceptions/bad-request/satusehat-error-exception';
@@ -13,6 +13,8 @@ import { v4 as uuidv4 } from 'uuid';
 @Injectable()
 export class SatusehatRawatJalanService {
   private logger: Logger = new Logger(SatusehatRawatJalanService.name);
+
+  clinicSatuSehatResponseJsonArray = [];
 
   constructor(
     private readonly prismaService: PrismaService,
@@ -40,6 +42,14 @@ export class SatusehatRawatJalanService {
         locationName: {
           not: null,
         },
+        users: {
+          some: {
+            roles: Role.OWNER,
+            nik: {
+              not: 'Belum ada NIK',
+            },
+          },
+        },
       },
     });
 
@@ -56,9 +66,14 @@ export class SatusehatRawatJalanService {
   }
 
   async postSatuSehatForClinic(clinicsId: string) {
+    this.clinicSatuSehatResponseJsonArray = [];
+
     const medicalRecords =
       await this.prismaService.patient_medical_records.findMany({
         where: {
+          Patient: {
+            clinicsId,
+          },
           encounterId: null,
         },
         select: {
@@ -66,255 +81,27 @@ export class SatusehatRawatJalanService {
         },
       });
 
-    const completedMedicalRecords = await Promise.all(
-      medicalRecords.filter(async (mr) => {
-        const medicalRecord =
-          await this.prismaService.patient_medical_records.findFirst({
-            where: {
-              id: mr.id,
-            },
-            select: {
-              prescription: true,
-            },
-          });
-
-        if (medicalRecord.prescription.length === 0) {
-          return true;
-        }
-
-        const pharmacyTask = await this.prismaService.pharmacy_Task.findFirst({
-          where: {
-            assessmentReffId: mr.id,
-          },
-        });
-
-        if (pharmacyTask.status === 'Done') {
-          return true;
-        }
-
-        return false;
-      }),
-    );
-
-    const mridList = completedMedicalRecords.map((mr) => {
+    const mridList = medicalRecords.map((mr) => {
       return { mrid: mr.id };
     });
-
-    const encounterKunjunganBaruJsonArray = [];
 
     for (const { mrid } of mridList) {
       await this.ensurePatientSatuSehatId(mrid);
       await this.ensurePractitionerSatuSehatId(mrid);
       await this.ensureDoctorSatuSehatId(clinicsId, mrid);
       await this.ensurePharmacySatuSehatId(clinicsId, mrid);
-
-      encounterKunjunganBaruJsonArray.push(
-        await this.satusehatJsonService.encounterKunjunganBaruJson(mrid),
-      );
     }
 
-    const encounterKunjunganBaruResponseBody = await this.postBundle(
-      clinicsId,
-      encounterKunjunganBaruJsonArray,
-    );
-
-    for (const [index, { mrid }] of mridList.entries()) {
-      await this.prismaService.patient_medical_records.update({
-        where: {
-          id: mrid,
-        },
-        data: {
-          encounterId:
-            encounterKunjunganBaruResponseBody[index].response.resourceID,
-        },
-      });
-    }
-
-    const ocpJsonArray = [];
-    const conditionIndexes = [];
-    const procedureIndexes = [];
-
-    for (const { mrid } of mridList) {
-      const mridJson = [
-        ...(await this.observationHttpBodyList(mrid)),
-        await this.satusehatJsonService.conditionJson('POST', mrid),
-      ];
-
-      ocpJsonArray.push(...mridJson);
-      conditionIndexes.push(ocpJsonArray.length - 1);
-
-      const patientAssessment =
-        await this.prismaService.patient_assessment.findFirst({
-          where: {
-            patient_medical_recordsId: mrid,
-          },
-          select: {
-            icd9CMCode: true,
-          },
-        });
-
-      if (patientAssessment.icd9CMCode) {
-        ocpJsonArray.push(
-          await this.satusehatJsonService.procedureJson('POST', mrid),
-        );
-        procedureIndexes.push(ocpJsonArray.length - 1);
-      } else {
-        procedureIndexes.push(null);
-      }
-    }
-
-    const ocpResponseBody = await this.postBundle(clinicsId, ocpJsonArray);
-
-    for (const [index, { mrid }] of mridList.entries()) {
-      await this.prismaService.patient_assessment.updateMany({
-        where: {
-          patient_medical_recordsId: mrid,
-        },
-        data: {
-          conditionId:
-            ocpResponseBody[conditionIndexes[index]].response.resourceID,
-          ...(procedureIndexes[index] && {
-            procedureId:
-              ocpResponseBody[procedureIndexes[index]].response.resourceID,
-          }),
-          syncedWithSatuSehat: true,
-        },
-      });
-    }
-
-    const syncCPJsonArray = [];
-    const syncCIndexes = [];
-    const syncPIndexes = [];
-
-    const syncCPAssessment =
-      await this.prismaService.patient_assessment.findMany({
-        where: {
-          syncedWithSatuSehat: false,
-        },
-        select: {
-          id: true,
-          patient_medical_recordsId: true,
-          icd9CM: true,
-          procedureId: true,
-        },
-      });
-
-    for (const {
-      id,
-      patient_medical_recordsId,
-      icd9CM,
-      procedureId,
-    } of syncCPAssessment) {
-      const mrid = patient_medical_recordsId;
-      syncCPJsonArray.push(
-        await this.satusehatJsonService.conditionJson('PUT', mrid),
-      );
-      syncCIndexes.push(syncCPJsonArray.length - 1);
-
-      if (icd9CM) {
-        if (procedureId) {
-          syncCPJsonArray.push(
-            await this.satusehatJsonService.procedureJson('PUT', mrid),
-          );
-          syncPIndexes.push(syncCPJsonArray.length - 1);
-        } else {
-          syncCPJsonArray.push(
-            await this.satusehatJsonService.procedureJson('POST', mrid),
-          );
-          syncPIndexes.push(syncCPJsonArray.length - 1);
-        }
-      } else {
-        if (procedureId) {
-          syncCPJsonArray.push(
-            await this.satusehatJsonService.procedureJson('DELETE', mrid),
-          );
-          await this.prismaService.patient_assessment.update({
-            where: {
-              id,
-            },
-            data: {
-              procedureId: null,
-            },
-          });
-        }
-        syncPIndexes.push(null);
-      }
-    }
-
-    const syncCPResponseBody = await this.postBundle(
-      clinicsId,
-      syncCPJsonArray,
-    );
-
-    for (const [index, { id, icd9CM }] of syncCPAssessment.entries()) {
-      const conditionId =
-        syncCPResponseBody[syncCIndexes[index]].response.resourceID;
-
-      let procedureId: string;
-      if (icd9CM) {
-        procedureId =
-          syncCPResponseBody[syncPIndexes[index]].response.resourceID;
-      }
-
-      await this.prismaService.patient_assessment.update({
-        where: {
-          id,
-        },
-        data: {
-          conditionId,
-          procedureId,
-        },
-      });
-    }
+    await this.ensureNewEncounterSatuSehatId(clinicsId);
+    await this.ensureSoapSatuSehatId(clinicsId);
 
     await this.ensureMedicationsSatuSehatId(clinicsId);
-
-    const medicationRequestJsonArray = [];
-
-    for (const { mrid } of mridList) {
-      const medicationRequestJson = await this.medicationRequestBundle(
-        clinicsId,
-        mrid,
-      );
-
-      medicationRequestJsonArray.push(...medicationRequestJson);
-    }
-
-    const medicationRequestResponseBody = await this.postBundle(
-      clinicsId,
-      medicationRequestJsonArray.map((value: any) => value.requestBody),
-    );
-
-    for (const [index, value] of medicationRequestResponseBody.entries()) {
-      await this.prismaService.patient_prescription.update({
-        where: {
-          id: medicationRequestJsonArray[index].id,
-        },
-        data: {
-          satuSehatId: value.response.resourceID,
-        },
-      });
-    }
-
+    await this.ensureMedicationRequestSatuSehatId(clinicsId);
     await this.ensureMedicationDispenseSatuSehatId(clinicsId);
 
-    const ecJsonArray = [];
+    await this.ensureCompletedEncounterSatuSehatId(clinicsId);
 
-    for (const { mrid } of mridList) {
-      ecJsonArray.push(
-        await this.satusehatJsonService.encounterCompleteJson(mrid),
-      );
-    }
-
-    const ecResponseBody = await this.postBundle(clinicsId, ecJsonArray);
-
-    return {
-      encounterKunjunganBaruResponseBody,
-      ocpResponseBody,
-      syncCPResponseBody,
-      medicationRequestResponseBody,
-      ecResponseBody,
-    };
+    return this.clinicSatuSehatResponseJsonArray;
   }
 
   async postBundle(clinicsId: string, entry: any[]) {
@@ -353,6 +140,8 @@ export class SatusehatRawatJalanService {
           }),
         ),
     );
+
+    this.clinicSatuSehatResponseJsonArray.push(responseBody.data.entry);
 
     return responseBody.data.entry;
   }
@@ -398,32 +187,6 @@ export class SatusehatRawatJalanService {
 
     const transformedValues = valuesList.map(async (value) => {
       return await this.satusehatJsonService.observationJson(mrid, value);
-    });
-
-    return await Promise.all(transformedValues);
-  }
-
-  async medicationRequestBundle(clinicsId: string, mrid: string) {
-    const prescriptions =
-      await this.prismaService.patient_prescription.findMany({
-        where: {
-          patient_medical_recordsId: mrid,
-          Medicine: {
-            kfaCode: {
-              not: null,
-            },
-          },
-        },
-      });
-
-    const transformedValues = prescriptions.map(async (value) => {
-      return {
-        id: value.id,
-        requestBody: await this.satusehatJsonService.medicationRequestJson(
-          clinicsId,
-          value.id,
-        ),
-      };
     });
 
     return await Promise.all(transformedValues);
@@ -599,6 +362,10 @@ export class SatusehatRawatJalanService {
         },
       });
 
+    if (!patientAssessment) {
+      return;
+    }
+
     if (!patientAssessment.Doctor.satuSehatId) {
       const queryParams = {
         identifier: `https://fhir.kemkes.go.id/id/nik|${patientAssessment.Doctor.nik}`,
@@ -637,6 +404,7 @@ export class SatusehatRawatJalanService {
     const pharmacyTask = await this.prismaService.pharmacy_Task.findFirst({
       where: {
         assessmentReffId: mrid,
+        status: 'Done',
       },
       select: {
         pharmacist: true,
@@ -682,6 +450,131 @@ export class SatusehatRawatJalanService {
         },
         data: {
           satuSehatId: data.entry[0].resource.id,
+        },
+      });
+    }
+  }
+
+  async ensureNewEncounterSatuSehatId(clinicsId: string) {
+    const medicalRecords =
+      await this.prismaService.patient_medical_records.findMany({
+        where: {
+          Patient: {
+            clinicsId,
+          },
+          encounterId: null,
+        },
+        select: {
+          id: true,
+        },
+      });
+
+    const mridList = medicalRecords.map((mr) => {
+      return { mrid: mr.id };
+    });
+
+    const newEncounterJsonArray = [];
+
+    for (const { mrid } of mridList) {
+      newEncounterJsonArray.push(
+        await this.satusehatJsonService.newEncounterJson(mrid),
+      );
+    }
+
+    for (const { mrid } of mridList) {
+      newEncounterJsonArray.push(...(await this.observationHttpBodyList(mrid)));
+    }
+
+    const newEncounterResponseBody = await this.postBundle(
+      clinicsId,
+      newEncounterJsonArray,
+    );
+
+    for (const [index, { mrid }] of mridList.entries()) {
+      await this.prismaService.patient_medical_records.update({
+        where: {
+          id: mrid,
+        },
+        data: {
+          encounterId: newEncounterResponseBody[index].response.resourceID,
+        },
+      });
+    }
+  }
+
+  async ensureSoapSatuSehatId(clinicsId: string) {
+    const patientAssessments =
+      await this.prismaService.patient_assessment.findMany({
+        where: {
+          syncedWithSatuSehat: false,
+        },
+        select: {
+          patient_medical_recordsId: true,
+        },
+      });
+
+    const soapJsonArray = [];
+    const conditionIndexes = [];
+    const procedureIndexes = [];
+
+    for (const { patient_medical_recordsId } of patientAssessments) {
+      const mrid = patient_medical_recordsId;
+      const patientAssessment =
+        await this.prismaService.patient_assessment.findFirst({
+          where: {
+            patient_medical_recordsId: mrid,
+          },
+        });
+
+      soapJsonArray.push(
+        await this.satusehatJsonService.conditionJson(
+          patientAssessment.conditionId ? 'PUT' : 'POST',
+          mrid,
+        ),
+      );
+      conditionIndexes.push(soapJsonArray.length - 1);
+
+      let procedureMethod = null;
+      if (patientAssessment.icd9CMCode) {
+        if (patientAssessment.procedureId) {
+          procedureMethod = 'PUT';
+        } else {
+          procedureMethod = 'POST';
+        }
+      } else if (patientAssessment.procedureId) {
+        procedureMethod = 'DELETE';
+      }
+
+      if (procedureMethod) {
+        soapJsonArray.push(
+          await this.satusehatJsonService.procedureJson(procedureMethod, mrid),
+        );
+      }
+
+      procedureIndexes.push(procedureMethod ? soapJsonArray.length - 1 : null);
+    }
+
+    const soapResponseBody = await this.postBundle(clinicsId, soapJsonArray);
+
+    for (const [
+      index,
+      { patient_medical_recordsId },
+    ] of patientAssessments.entries()) {
+      await this.prismaService.patient_assessment.updateMany({
+        where: {
+          patient_medical_recordsId,
+        },
+        data: {
+          conditionId:
+            soapResponseBody[conditionIndexes[index]].response.resourceID,
+          ...(procedureIndexes[index] && {
+            procedureId:
+              soapResponseBody[procedureIndexes[index]].response.resourceID,
+          }),
+          ...(!procedureIndexes[index] && {
+            procedureId: null,
+          }),
+          syncedWithSatuSehat: true,
         },
       });
     }
@@ -748,12 +641,87 @@ export class SatusehatRawatJalanService {
     }
   }
 
+  async ensureMedicationRequestSatuSehatId(clinicsId: string) {
+    const args: Prisma.Patient_prescriptionFindManyArgs['where'] = {
+      Patient_medical_records: {
+        Patient: {
+          clinicsId,
+        },
+      },
+      syncedWithSatuSehat: false,
+      Medicine: {
+        satuSehatId: {
+          not: null,
+        },
+      },
+    };
+
+    const newPatPres = await this.prismaService.patient_prescription.findMany({
+      where: {
+        ...args,
+        satuSehatId: null,
+      },
+    });
+
+    const updPatPres = await this.prismaService.patient_prescription.findMany({
+      where: {
+        ...args,
+        satuSehatId: {
+          not: null,
+        },
+      },
+    });
+
+    const allPatPres = [
+      ...newPatPres.map((prescription) => {
+        return { method: 'POST', id: prescription.id };
+      }),
+      ...updPatPres.map((prescription) => {
+        return { method: 'PUT', id: prescription.id };
+      }),
+    ];
+
+    const patPresResponseBody = await this.postBundle(
+      clinicsId,
+      await Promise.all(
+        allPatPres.map(async (value) => {
+          return await this.satusehatJsonService.medicationRequestJson(
+            value.method,
+            clinicsId,
+            value.id,
+          );
+        }),
+      ),
+    );
+
+    for (const [index, value] of patPresResponseBody.entries()) {
+      await this.prismaService.patient_prescription.update({
+        where: {
+          id: allPatPres[index].id,
+        },
+        data: {
+          satuSehatId: value.response.resourceID,
+          syncedWithSatuSehat: true,
+        },
+      });
+    }
+  }
+
   async ensureMedicationDispenseSatuSehatId(clinicsId: string) {
+    const args: Prisma.Medication_dispenseFindManyArgs['where'] = {
+      clinicsId,
+      syncedWithSatuSehat: false,
+      patient_prescription: {
+        satuSehatId: {
+          not: null,
+        },
+      },
+    };
+
     const newMedDispenses =
       await this.prismaService.medication_dispense.findMany({
         where: {
-          clinicsId,
-          syncedWithSatuSehat: false,
+          ...args,
           satuSehatId: null,
         },
       });
@@ -761,8 +729,7 @@ export class SatusehatRawatJalanService {
     const updMedDispenses =
       await this.prismaService.medication_dispense.findMany({
         where: {
-          clinicsId,
-          syncedWithSatuSehat: false,
+          ...args,
           satuSehatId: {
             not: null,
           },
@@ -770,11 +737,11 @@ export class SatusehatRawatJalanService {
       });
 
     const allMedDispenses = [
-      ...newMedDispenses.map((medicine) => {
-        return { method: 'POST', id: medicine.id };
+      ...newMedDispenses.map((medDispense) => {
+        return { method: 'POST', id: medDispense.id };
       }),
-      ...updMedDispenses.map((medicine) => {
-        return { method: 'PUT', id: medicine.id };
+      ...updMedDispenses.map((medDispense) => {
+        return { method: 'PUT', id: medDispense.id };
       }),
     ];
 
@@ -799,6 +766,77 @@ export class SatusehatRawatJalanService {
         data: {
           satuSehatId: value.response.resourceID,
           syncedWithSatuSehat: true,
+        },
+      });
+    }
+  }
+
+  async ensureCompletedEncounterSatuSehatId(clinicsId: string) {
+    const medicalRecords =
+      await this.prismaService.patient_medical_records.findMany({
+        where: {
+          Patient: {
+            clinicsId,
+          },
+          encounterId: {
+            not: null,
+          },
+          satuSehatCompleted: false,
+        },
+        select: {
+          id: true,
+        },
+      });
+
+    const mridList = [];
+    for (const mr of medicalRecords) {
+      const medicalRecord =
+        await this.prismaService.patient_medical_records.findFirst({
+          where: {
+            id: mr.id,
+          },
+          select: {
+            prescription: true,
+          },
+        });
+
+      let isCompleted = false;
+      if (medicalRecord.prescription.length === 0) {
+        isCompleted = true;
+      } else {
+        const pharmacyTask = await this.prismaService.pharmacy_Task.findFirst({
+          where: {
+            assessmentReffId: mr.id,
+          },
+        });
+
+        if (pharmacyTask.status === 'Done') {
+          isCompleted = true;
+        }
+      }
+
+      if (isCompleted) {
+        mridList.push(mr.id);
+      }
+    }
+
+    const completedEncounterJsonArray = [];
+
+    for (const { mrid } of mridList) {
+      completedEncounterJsonArray.push(
+        await this.satusehatJsonService.completedEncounterJson(mrid),
+      );
+    }
+
+    await this.postBundle(clinicsId, completedEncounterJsonArray);
+
+    for (const { mrid } of mridList) {
+      await this.prismaService.patient_medical_records.update({
+        where: {
+          id: mrid,
+        },
+        data: {
+          satuSehatCompleted: true,
         },
       });
     }

@@ -76,7 +76,7 @@ export class SatusehatJsonService {
     };
   }
 
-  async encounterKunjunganBaruJson(mrid: string) {
+  async newEncounterJson(mrid: string) {
     const patientMR =
       await this.prismaService.patient_medical_records.findFirst({
         where: {
@@ -322,62 +322,57 @@ export class SatusehatJsonService {
         },
       });
 
-    return {
-      resource: {
-        resourceType: 'Condition',
-        ...(method !== 'POST' && { id: patientAssessment.conditionId }),
-        clinicalStatus: {
+    const resource = {
+      resourceType: 'Condition',
+      clinicalStatus: {
+        coding: [
+          {
+            system: 'http://terminology.hl7.org/CodeSystem/condition-clinical',
+            code: 'active',
+            display: 'Active',
+          },
+        ],
+      },
+      category: [
+        {
           coding: [
             {
               system:
-                'http://terminology.hl7.org/CodeSystem/condition-clinical',
-              code: 'active',
-              display: 'Active',
+                'http://terminology.hl7.org/CodeSystem/condition-category',
+              code: 'encounter-diagnosis',
+              display: 'Encounter Diagnosis',
             },
           ],
         },
-        category: [
+      ],
+      code: {
+        coding: [
           {
-            coding: [
-              {
-                system:
-                  'http://terminology.hl7.org/CodeSystem/condition-category',
-                code: 'encounter-diagnosis',
-                display: 'Encounter Diagnosis',
-              },
-            ],
+            system: 'http://hl7.org/fhir/sid/icd-10',
+            code: patientAssessment.icd10.code,
+            display: patientAssessment.icd10.strt,
           },
         ],
-        code: {
-          coding: [
-            {
-              system: 'http://hl7.org/fhir/sid/icd-10',
-              code: patientAssessment.icd10.code,
-              display: patientAssessment.icd10.strt,
-            },
-          ],
-        },
-        subject: {
-          reference: `Patient/${patientAssessment.Patient_medical_records.Patient.satuSehatId}`,
-          display: patientAssessment.Patient_medical_records.Patient.fullname,
-        },
-        encounter: {
-          reference: `Encounter/${patientAssessment.Patient_medical_records.encounterId}`,
-        },
-        recordedDate: patientAssessment.createdAt,
-        recorder: {
-          reference: `Practitioner/${patientAssessment.Doctor.satuSehatId}`,
-          display: patientAssessment.Doctor.fullname,
-        },
       },
-      request: {
-        method,
-        url:
-          method !== 'POST'
-            ? `Condition/${patientAssessment.conditionId}`
-            : 'Condition',
+      subject: {
+        reference: `Patient/${patientAssessment.Patient_medical_records.Patient.satuSehatId}`,
+        display: patientAssessment.Patient_medical_records.Patient.fullname,
+      },
+      encounter: {
+        reference: `Encounter/${patientAssessment.Patient_medical_records.encounterId}`,
+      },
+      recordedDate: patientAssessment.createdAt,
+      recorder: {
+        reference: `Practitioner/${patientAssessment.Doctor.satuSehatId}`,
+        display: patientAssessment.Doctor.fullname,
       },
     };
+
+    return this._createMethodJson(
+      method,
+      resource,
+      patientAssessment.conditionId,
+    );
   }
 
   async procedureJson(method: string, mrid: string) {
@@ -424,58 +419,54 @@ export class SatusehatJsonService {
       };
     }
 
-    return {
-      resource: {
-        resourceType: 'Procedure',
-        ...(method !== 'POST' && { id: patientAssessment.procedureId }),
-        status: 'completed',
-        category: {
-          coding: [
-            {
-              system: 'http://snomed.info/sct',
-              code: '103693007',
-              display: 'Diagnostic procedure',
-            },
-          ],
-          text: 'Prosedur Diagnostik',
-        },
-        code: {
-          coding: [
-            {
-              system: 'http://hl7.org/fhir/sid/icd-9-cm',
-              code: patientAssessment.icd9CM.code,
-              display: patientAssessment.icd9CM.str,
-            },
-          ],
-        },
-        subject: {
-          reference: `Patient/${patientAssessment.Patient_medical_records.Patient.satuSehatId}`,
-          display: patientAssessment.Patient_medical_records.Patient.fullname,
-        },
-        encounter: {
-          reference: `Encounter/${patientAssessment.Patient_medical_records.encounterId}`,
-        },
-        performedPeriod: {
-          start: patientAssessment.createdAt,
-          end: patientAssessment.createdAt,
-        },
-        performer: [
+    const resource = {
+      resourceType: 'Procedure',
+      status: 'completed',
+      category: {
+        coding: [
           {
-            actor: {
-              reference: `Practitioner/${patientAssessment.Doctor.satuSehatId}`,
-              display: patientAssessment.Doctor.fullname,
-            },
+            system: 'http://snomed.info/sct',
+            code: '103693007',
+            display: 'Diagnostic procedure',
+          },
+        ],
+        text: 'Prosedur Diagnostik',
+      },
+      code: {
+        coding: [
+          {
+            system: 'http://hl7.org/fhir/sid/icd-9-cm',
+            code: patientAssessment.icd9CM.code,
+            display: patientAssessment.icd9CM.str,
           },
         ],
       },
-      request: {
-        method,
-        url:
-          method !== 'POST'
-            ? `Procedure/${patientAssessment.procedureId}`
-            : 'Procedure',
+      subject: {
+        reference: `Patient/${patientAssessment.Patient_medical_records.Patient.satuSehatId}`,
+        display: patientAssessment.Patient_medical_records.Patient.fullname,
       },
+      encounter: {
+        reference: `Encounter/${patientAssessment.Patient_medical_records.encounterId}`,
+      },
+      performedPeriod: {
+        start: patientAssessment.createdAt,
+        end: patientAssessment.createdAt,
+      },
+      performer: [
+        {
+          actor: {
+            reference: `Practitioner/${patientAssessment.Doctor.satuSehatId}`,
+            display: patientAssessment.Doctor.fullname,
+          },
+        },
+      ],
     };
+
+    return this._createMethodJson(
+      method,
+      resource,
+      patientAssessment.procedureId,
+    );
   }
 
   async medicationJson(method: string, clinicsId: string, medicineId: number) {
@@ -504,98 +495,92 @@ export class SatusehatJsonService {
       medicine.kfaCode,
     );
 
-    return {
-      resource: {
-        resourceType: 'Medication',
-        ...(method !== 'POST' && { id: medicine.satuSehatId }),
-        meta: {
-          profile: [
-            'https://fhir.kemkes.go.id/r4/StructureDefinition/Medication',
-          ],
+    const resource = {
+      resourceType: 'Medication',
+      meta: {
+        profile: [
+          'https://fhir.kemkes.go.id/r4/StructureDefinition/Medication',
+        ],
+      },
+      identifier: [
+        {
+          system: `http://sys-ids.kemkes.go.id/medication/${clinics.organizationId}`,
+          use: 'official',
+          value: medicine.id.toString(),
         },
-        identifier: [
+      ],
+      code: {
+        coding: [
           {
-            system: `http://sys-ids.kemkes.go.id/medication/${clinics.organizationId}`,
-            use: 'official',
-            value: medicine.id.toString(),
+            system: 'http://sys-ids.kemkes.go.id/kfa',
+            code: medicine.kfaCode,
+            display: kfaInfo.result.name,
           },
         ],
-        code: {
+      },
+      status: 'active',
+      form: {
+        coding: [
+          {
+            system:
+              'http://terminology.kemkes.go.id/CodeSystem/medication-form',
+            code: kfaInfo.result.dosage_form.code,
+            display: kfaInfo.result.dosage_form.name,
+          },
+        ],
+      },
+      ingredient: kfaInfo.result.active_ingredients.map((ingredient: any) => ({
+        itemCodeableConcept: {
           coding: [
             {
               system: 'http://sys-ids.kemkes.go.id/kfa',
-              code: medicine.kfaCode,
-              display: kfaInfo.result.name,
+              code: ingredient.kfa_code,
+              display: ingredient.zat_aktif,
             },
           ],
         },
-        status: 'active',
-        form: {
-          coding: [
-            {
-              system:
-                'http://terminology.kemkes.go.id/CodeSystem/medication-form',
-              code: kfaInfo.result.dosage_form.code,
-              display: kfaInfo.result.dosage_form.name,
-            },
-          ],
-        },
-        ingredient: kfaInfo.result.active_ingredients.map(
-          (ingredient: any) => ({
-            itemCodeableConcept: {
-              coding: [
-                {
-                  system: 'http://sys-ids.kemkes.go.id/kfa',
-                  code: ingredient.kfa_code,
-                  display: ingredient.zat_aktif,
-                },
-              ],
-            },
-            isActive: true,
-            strength: {
-              numerator: {
-                value: parseInt(
-                  ingredient.kekuatan_zat_aktif.split('/')[0].split(' ')[0],
-                ),
-                system: 'http://unitsofmeasure.org',
-                code: ingredient.kekuatan_zat_aktif.split('/')[0].split(' ')[1],
-              },
-              denominator: {
-                value: 1,
-                system:
-                  'http://terminology.hl7.org/CodeSystem/v3-orderableDrugForm',
-                code: 'TAB',
-              },
-            },
-          }),
-        ),
-        extension: [
-          {
-            url: 'https://fhir.kemkes.go.id/r4/StructureDefinition/MedicationType',
-            valueCodeableConcept: {
-              coding: [
-                {
-                  system:
-                    'http://terminology.kemkes.go.id/CodeSystem/medication-type',
-                  code: 'NC',
-                  display: 'Non-compound',
-                },
-              ],
-            },
+        isActive: true,
+        strength: {
+          numerator: {
+            value: parseInt(
+              ingredient.kekuatan_zat_aktif.split('/')[0].split(' ')[0],
+            ),
+            system: 'http://unitsofmeasure.org',
+            code: ingredient.kekuatan_zat_aktif.split('/')[0].split(' ')[1],
           },
-        ],
-      },
-      request: {
-        method,
-        url:
-          method !== 'POST'
-            ? `Medication/${medicine.satuSehatId}`
-            : 'Medication',
-      },
+          denominator: {
+            value: 1,
+            system:
+              'http://terminology.hl7.org/CodeSystem/v3-orderableDrugForm',
+            code: 'TAB',
+          },
+        },
+      })),
+      extension: [
+        {
+          url: 'https://fhir.kemkes.go.id/r4/StructureDefinition/MedicationType',
+          valueCodeableConcept: {
+            coding: [
+              {
+                system:
+                  'http://terminology.kemkes.go.id/CodeSystem/medication-type',
+                code: 'NC',
+                display: 'Non-compound',
+              },
+            ],
+          },
+        },
+      ],
     };
+
+    return this._createMethodJson(method, resource, medicine.satuSehatId);
   }
 
-  async medicationRequestJson(clinicsId: string, prescriptionId: number) {
+  async medicationRequestJson(
+    method: string,
+    clinicsId: string,
+    prescriptionId: number,
+  ) {
     const clinics = await this.prismaService.clinics.findFirst({
       where: {
         id: clinicsId,
@@ -619,6 +604,8 @@ export class SatusehatJsonService {
           doseQuantity: true,
           totalQuantity: true,
           supplyDuration: true,
+          status: true,
+          satuSehatId: true,
           Medicine: {
             select: {
               id: true,
@@ -653,134 +640,129 @@ export class SatusehatJsonService {
         },
       });
 
-    return {
-      resource: {
-        resourceType: 'MedicationRequest',
-        identifier: [
-          {
-            use: 'official',
-            system: `http://sys-ids.kemkes.go.id/prescription/${clinics.organizationId}`,
-            value: prescription.id.toString(),
+    const resource = {
+      resourceType: 'MedicationRequest',
+      identifier: [
+        {
+          use: 'official',
+          system: `http://sys-ids.kemkes.go.id/prescription/${clinics.organizationId}`,
+          value: prescription.id.toString(),
+        },
+        {
+          use: 'official',
+          system: `http://sys-ids.kemkes.go.id/prescription-item/${clinics.organizationId}`,
+          value:
+            prescription.Patient_medical_records.assessment[0].id.toString(),
+        },
+      ],
+      status: prescription.status,
+      intent: 'order',
+      category: [
+        {
+          coding: [
+            {
+              system:
+                'http://terminology.hl7.org/CodeSystem/medicationrequest-category',
+              code: 'outpatient',
+              display: 'Outpatient',
+            },
+          ],
+        },
+      ],
+      priority: 'routine',
+      medicationReference: {
+        reference: `Medication/${prescription.Medicine.satuSehatId}`,
+        display: prescription.Medicine.title,
+      },
+      subject: {
+        reference: `Patient/${prescription.Patient_medical_records.Patient.satuSehatId}`,
+        display: prescription.Patient_medical_records.Patient.fullname,
+      },
+      encounter: {
+        reference: `Encounter/${prescription.Patient_medical_records.encounterId}`,
+      },
+      authoredOn: prescription.createdAt,
+      requester: {
+        reference: `Practitioner/${prescription.Patient_medical_records.assessment[0].Doctor.satuSehatId}`,
+        display:
+          prescription.Patient_medical_records.assessment[0].Doctor.fullname,
+      },
+      reasonReference: [
+        {
+          reference: `Condition/${prescription.Patient_medical_records.assessment[0].conditionId}`,
+          display: `Condition on ${prescription.Patient_medical_records.Patient.fullname} at ${prescription.createdAt}`,
+        },
+      ],
+      dosageInstruction: [
+        {
+          sequence: 1,
+          patientInstruction: prescription.notes,
+          timing: {
+            repeat: {
+              frequency: prescription.frequency,
+              period: prescription.period,
+              periodUnit: 'd',
+            },
           },
-          {
-            use: 'official',
-            system: `http://sys-ids.kemkes.go.id/prescription-item/${clinics.organizationId}`,
-            value:
-              prescription.Patient_medical_records.assessment[0].id.toString(),
-          },
-        ],
-        status: 'completed',
-        intent: 'order',
-        category: [
-          {
+          route: {
             coding: [
               {
+                system: 'http://www.whocc.no/atc',
+                code: 'O',
+                display: 'Oral',
+              },
+            ],
+          },
+          doseAndRate: [
+            {
+              type: {
+                coding: [
+                  {
+                    system:
+                      'http://terminology.hl7.org/CodeSystem/dose-rate-type',
+                    code: 'ordered',
+                    display: 'Ordered',
+                  },
+                ],
+              },
+              doseQuantity: {
+                value: prescription.doseQuantity,
+                unit: 'TAB',
                 system:
-                  'http://terminology.hl7.org/CodeSystem/medicationrequest-category',
-                code: 'outpatient',
-                display: 'Outpatient',
-              },
-            ],
-          },
-        ],
-        priority: 'routine',
-        medicationReference: {
-          reference: `Medication/${prescription.Medicine.satuSehatId}`,
-          display: prescription.Medicine.title,
-        },
-        subject: {
-          reference: `Patient/${prescription.Patient_medical_records.Patient.satuSehatId}`,
-          display: prescription.Patient_medical_records.Patient.fullname,
-        },
-        encounter: {
-          reference: `Encounter/${prescription.Patient_medical_records.encounterId}`,
-        },
-        authoredOn: prescription.createdAt,
-        requester: {
-          reference: `Practitioner/${prescription.Patient_medical_records.assessment[0].Doctor.satuSehatId}`,
-          display:
-            prescription.Patient_medical_records.assessment[0].Doctor.fullname,
-        },
-        reasonReference: [
-          {
-            reference: `Condition/${prescription.Patient_medical_records.assessment[0].conditionId}`,
-            display: `Condition on ${prescription.Patient_medical_records.Patient.fullname} at ${prescription.createdAt}`,
-          },
-        ],
-        dosageInstruction: [
-          {
-            sequence: 1,
-            patientInstruction: prescription.notes,
-            timing: {
-              repeat: {
-                frequency: prescription.frequency,
-                period: prescription.period,
-                periodUnit: 'd',
+                  'http://terminology.hl7.org/CodeSystem/v3-orderableDrugForm',
+                code: 'TAB',
               },
             },
-            route: {
-              coding: [
-                {
-                  system: 'http://www.whocc.no/atc',
-                  code: 'O',
-                  display: 'Oral',
-                },
-              ],
-            },
-            doseAndRate: [
-              {
-                type: {
-                  coding: [
-                    {
-                      system:
-                        'http://terminology.hl7.org/CodeSystem/dose-rate-type',
-                      code: 'ordered',
-                      display: 'Ordered',
-                    },
-                  ],
-                },
-                doseQuantity: {
-                  value: prescription.doseQuantity,
-                  unit: 'TAB',
-                  system:
-                    'http://terminology.hl7.org/CodeSystem/v3-orderableDrugForm',
-                  code: 'TAB',
-                },
-              },
-            ],
-          },
-        ],
-        dispenseRequest: {
-          dispenseInterval: {
-            value: 1,
-            unit: 'days',
-            system: 'http://unitsofmeasure.org',
-            code: 'd',
-          },
-          numberOfRepeatsAllowed: 0,
-          quantity: {
-            value: prescription.totalQuantity,
-            unit: 'TAB',
-            system:
-              'http://terminology.hl7.org/CodeSystem/v3-orderableDrugForm',
-            code: 'TAB',
-          },
-          expectedSupplyDuration: {
-            value: prescription.supplyDuration,
-            unit: 'days',
-            system: 'http://unitsofmeasure.org',
-            code: 'd',
-          },
-          performer: {
-            reference: `Organization/${clinics.organizationId}`,
-          },
+          ],
         },
-      },
-      request: {
-        method: 'POST',
-        url: 'MedicationRequest',
+      ],
+      dispenseRequest: {
+        dispenseInterval: {
+          value: 1,
+          unit: 'days',
+          system: 'http://unitsofmeasure.org',
+          code: 'd',
+        },
+        numberOfRepeatsAllowed: 0,
+        quantity: {
+          value: prescription.totalQuantity,
+          unit: 'TAB',
+          system: 'http://terminology.hl7.org/CodeSystem/v3-orderableDrugForm',
+          code: 'TAB',
+        },
+        expectedSupplyDuration: {
+          value: prescription.supplyDuration,
+          unit: 'days',
+          system: 'http://unitsofmeasure.org',
+          code: 'd',
+        },
+        performer: {
+          reference: `Organization/${clinics.organizationId}`,
+        },
       },
     };
+
+    return this._createMethodJson(method, resource, prescription.satuSehatId);
   }
 
   async medicationDispenseJson(
@@ -822,6 +804,7 @@ export class SatusehatJsonService {
         supplyDuration: true,
         notes: true,
         satuSehatId: true,
+        status: true,
       },
     });
 
@@ -838,132 +821,124 @@ export class SatusehatJsonService {
       },
     });
 
-    return {
-      resource: {
-        resourceType: 'MedicationDispense',
-        ...(method !== 'POST' && { id: medDispense.satuSehatId }),
-        identifier: [
+    const resource = {
+      resourceType: 'MedicationDispense',
+      identifier: [
+        {
+          use: 'official',
+          system: `http://sys-ids.kemkes.go.id/prescription/${clinics.organizationId}`,
+          value: medDispense.patient_prescription.id.toString(),
+        },
+        {
+          use: 'official',
+          system: `http://sys-ids.kemkes.go.id/prescription-item/${clinics.organizationId}`,
+          value:
+            medDispense.patient_prescription.Patient_medical_records.assessment[0].id.toString(),
+        },
+      ],
+      status: medDispense.status,
+      category: {
+        coding: [
           {
-            use: 'official',
-            system: `http://sys-ids.kemkes.go.id/prescription/${clinics.organizationId}`,
-            value: medDispense.patient_prescription.id.toString(),
-          },
-          {
-            use: 'official',
-            system: `http://sys-ids.kemkes.go.id/prescription-item/${clinics.organizationId}`,
-            value:
-              medDispense.patient_prescription.Patient_medical_records.assessment[0].id.toString(),
-          },
-        ],
-        status: 'completed',
-        category: {
-          coding: [
-            {
-              system:
-                'http://terminology.hl7.org/fhir/CodeSystem/medicationdispense-category',
-              code: 'outpatient',
-              display: 'Outpatient',
-            },
-          ],
-        },
-        medicationReference: {
-          reference: `Medication/${medDispense.Medicine.satuSehatId}`,
-          display: medDispense.Medicine.title,
-        },
-        subject: {
-          reference: `Patient/${medDispense.patient_prescription.Patient_medical_records.Patient.satuSehatId}`,
-          display:
-            medDispense.patient_prescription.Patient_medical_records.Patient
-              .fullname,
-        },
-        context: {
-          reference: `Encounter/${medDispense.patient_prescription.Patient_medical_records.encounterId}`,
-        },
-        performer: [
-          {
-            actor: {
-              reference: `Practitioner/${pharmacist.satuSehatId}`,
-              display: pharmacist.fullname,
-            },
+            system:
+              'http://terminology.hl7.org/fhir/CodeSystem/medicationdispense-category',
+            code: 'outpatient',
+            display: 'Outpatient',
           },
         ],
-        location: {
-          reference: `Location/${clinics.locationSatuSehatId}`,
-          display: clinics.locationName,
-        },
-        authorizingPrescription: [
-          {
-            reference: `MedicationRequest/${medDispense.patient_prescription.satuSehatId}`,
+      },
+      medicationReference: {
+        reference: `Medication/${medDispense.Medicine.satuSehatId}`,
+        display: medDispense.Medicine.title,
+      },
+      subject: {
+        reference: `Patient/${medDispense.patient_prescription.Patient_medical_records.Patient.satuSehatId}`,
+        display:
+          medDispense.patient_prescription.Patient_medical_records.Patient
+            .fullname,
+      },
+      context: {
+        reference: `Encounter/${medDispense.patient_prescription.Patient_medical_records.encounterId}`,
+      },
+      performer: [
+        {
+          actor: {
+            reference: `Practitioner/${pharmacist.satuSehatId}`,
+            display: pharmacist.fullname,
           },
-        ],
-        quantity: {
-          value: medDispense.totalQuantity,
-          system: 'http://terminology.hl7.org/CodeSystem/v3-orderableDrugForm',
-          code: 'TAB',
         },
-        daysSupply: {
-          value: medDispense.supplyDuration,
-          unit: 'Day',
-          system: 'http://unitsofmeasure.org',
-          code: 'd',
+      ],
+      location: {
+        reference: `Location/${clinics.locationSatuSehatId}`,
+        display: clinics.locationName,
+      },
+      authorizingPrescription: [
+        {
+          reference: `MedicationRequest/${medDispense.patient_prescription.satuSehatId}`,
         },
-        whenPrepared: pharmacyTask.doneAt,
-        whenHandedOver: pharmacyTask.doneAt,
-        dosageInstruction: [
-          {
-            sequence: 1,
-            patientInstruction: medDispense.notes,
-            timing: {
-              repeat: {
-                frequency: medDispense.frequency,
-                period: medDispense.period,
-                periodUnit: 'd',
-              },
+      ],
+      quantity: {
+        value: medDispense.totalQuantity,
+        system: 'http://terminology.hl7.org/CodeSystem/v3-orderableDrugForm',
+        code: 'TAB',
+      },
+      daysSupply: {
+        value: medDispense.supplyDuration,
+        unit: 'Day',
+        system: 'http://unitsofmeasure.org',
+        code: 'd',
+      },
+      whenPrepared: pharmacyTask.doneAt,
+      whenHandedOver: pharmacyTask.doneAt,
+      dosageInstruction: [
+        {
+          sequence: 1,
+          patientInstruction: medDispense.notes,
+          timing: {
+            repeat: {
+              frequency: medDispense.frequency,
+              period: medDispense.period,
+              periodUnit: 'd',
             },
-            route: {
-              coding: [
-                {
-                  system: 'http://www.whocc.no/atc',
-                  code: 'O',
-                  display: 'Oral',
-                },
-              ],
-            },
-            doseAndRate: [
+          },
+          route: {
+            coding: [
               {
-                type: {
-                  coding: [
-                    {
-                      system:
-                        'http://terminology.hl7.org/CodeSystem/dose-rate-type',
-                      code: 'ordered',
-                      display: 'Ordered',
-                    },
-                  ],
-                },
-                doseQuantity: {
-                  value: medDispense.doseQuantity,
-                  unit: 'TAB',
-                  system:
-                    'http://terminology.hl7.org/CodeSystem/v3-orderableDrugForm',
-                  code: 'TAB',
-                },
+                system: 'http://www.whocc.no/atc',
+                code: 'O',
+                display: 'Oral',
               },
             ],
           },
-        ],
-      },
-      request: {
-        method,
-        url:
-          method !== 'POST'
-            ? `MedicationDispense/${medDispense.satuSehatId}`
-            : 'MedicationDispense',
-      },
+          doseAndRate: [
+            {
+              type: {
+                coding: [
+                  {
+                    system:
+                      'http://terminology.hl7.org/CodeSystem/dose-rate-type',
+                    code: 'ordered',
+                    display: 'Ordered',
+                  },
+                ],
+              },
+              doseQuantity: {
+                value: medDispense.doseQuantity,
+                unit: 'TAB',
+                system:
+                  'http://terminology.hl7.org/CodeSystem/v3-orderableDrugForm',
+                code: 'TAB',
+              },
+            },
+          ],
+        },
+      ],
     };
+
+    return this._createMethodJson(method, resource, medDispense.satuSehatId);
   }
 
-  async encounterCompleteJson(mrid: string) {
+  async completedEncounterJson(mrid: string) {
     const patientMR =
       await this.prismaService.patient_medical_records.findFirst({
         where: {
@@ -1154,6 +1129,24 @@ export class SatusehatJsonService {
       request: {
         method: 'PUT',
         url: `Encounter/${patientMR.encounterId}`,
+      },
+    };
+  }
+
+  _createMethodJson(method: string, resource: any, resourceID: string) {
+    return {
+      ...(method !== 'DELETE' && {
+        resource: {
+          ...(method !== 'POST' && { id: resourceID }),
+          ...resource,
+        },
+      }),
+      request: {
+        method,
+        url:
+          method !== 'POST'
+            ? `${resource.resourceType}/${resourceID}`
+            : resource.resourceType,
       },
     };
   }

@@ -5,11 +5,11 @@ import { FindAllPatientAssessmentDto } from './dto/find-all-patient-assessment.d
 import { PatientsService } from 'src/patients/patients.service';
 import { Patient_assessment, Prisma } from '@prisma/client';
 import { FindAllService } from 'src/find-all/find-all.service';
-import { MedicineCategoryService } from 'src/medicine-category/medicine-category.service';
 import { MedicineService } from 'src/medicine/medicine.service';
 import { RevenueService } from 'src/revenue/revenue.service';
 import { UpdatePatientAssessmentDto } from './dto/update-patient-assessment.dto';
 import { DifferentPractitionerException } from 'src/exceptions/bad-request/different-practitioner-exception';
+import { formatDate } from 'src/utils/helpers/format-date.helper';
 
 @Injectable()
 export class PatientAssessmentService {
@@ -43,7 +43,7 @@ export class PatientAssessmentService {
         dto.clinicsId,
       );
 
-      const assessmentData = {
+      const assessmentData: Prisma.Patient_assessmentCreateArgs['data'] = {
         patient_medical_recordsId: dto.mrid,
         doctorId: dto.usersId,
         subjective: dto.subjective,
@@ -52,6 +52,7 @@ export class PatientAssessmentService {
         plan: dto.plan,
         icd10Code: dto.icd10Code,
         icd9CMCode: dto.icd9CMCode != undefined ? dto.icd9CMCode : null,
+        syncedWithSatuSehat: false,
       };
 
       let assessment: Patient_assessment;
@@ -92,11 +93,11 @@ export class PatientAssessmentService {
       const prescriptionsDto = dto.prescriptions.map((prescription) => {
         return {
           ...prescription,
-          patient_medical_recordsId: dto.mrid,
+          patient_medical_recordsId: assessment.patient_medical_recordsId,
         };
       });
 
-      const prescriptions = tx.patient_prescription.createMany({
+      const prescriptions = await tx.patient_prescription.createMany({
         data: prescriptionsDto,
       });
 
@@ -120,7 +121,7 @@ export class PatientAssessmentService {
 
       const medicalRecord = await tx.patient_medical_records.update({
         where: {
-          id: dto.mrid,
+          id: assessment.patient_medical_recordsId,
         },
         data: {
           status: 'd1',
@@ -151,9 +152,9 @@ export class PatientAssessmentService {
         pharmacyTask = await tx.pharmacy_Task.create({
           data: {
             norm: patientMR.Patient.norm,
-            assessmentReffId: dto.mrid,
+            assessmentReffId: assessment.patient_medical_recordsId,
             clinicsId: patientMR.Patient.clinicsId,
-            createdDate: new Date().toLocaleDateString('en-GB'),
+            createdDate: formatDate(new Date()),
             status: 'Todo',
           },
         });

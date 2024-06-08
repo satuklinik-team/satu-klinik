@@ -13,6 +13,7 @@ import { FindAllService } from 'src/find-all/find-all.service';
 import { GetPatientByIdDto } from './dto/get-patient-by-id-dto';
 import { ServiceContext } from 'src/utils/types';
 import { UpdatePatientDto } from './dto/update-patient-dto';
+import { formatDate } from 'src/utils/helpers/format-date.helper';
 
 @Injectable()
 export class PatientsService {
@@ -154,7 +155,7 @@ export class PatientsService {
         mr: {
           some: {
             status,
-            visitLabel: now.toLocaleDateString('en-GB'),
+            visitLabel: formatDate(now),
           },
         },
       };
