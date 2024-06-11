@@ -37,11 +37,6 @@ export class ClinicsService {
         address: dto.clinicAddress,
         phone: dto.clinicPhone,
         accountsId: dto.accountsId,
-        clientId: process.env.OAUTH_CLIENT_ID,
-        clientSecret: process.env.OAUTH_CLIENT_SECRET,
-        organizationId: process.env.ORG_ID,
-        locationSatuSehatId: process.env.LOCATION_ID,
-        locationName: process.env.LOCATION_NAME,
         Departments: {
           create: {
             name: 'main',
