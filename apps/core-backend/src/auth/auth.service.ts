@@ -12,6 +12,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { ClinicsService } from 'src/clinics/clinics.service';
 import { AccountsService } from 'src/accounts/accounts.service';
 import { Role } from '@prisma/client';
+import { JwtPayload } from './types';
 
 @Injectable()
 export class AuthService {
@@ -54,6 +55,7 @@ export class AuthService {
       sub: data.user.id,
       clinicsId: data.clinic.id,
       role: data.user.roles,
+      source: 'browser',
     });
 
     return {
@@ -75,22 +77,15 @@ export class AuthService {
     return { user: data.user, clinic: data.clinic, token };
   }
 
-  async cliLogin(dto: LoginDto) {
-    const data = await this._login(dto);
-    const token = await this.tokenService.getAuthToken(
-      {
-        sub: data.user.id,
-        clinicsId: data.clinic.id,
-        role: data.user.roles,
-        source: 'cli',
-      },
-      {
-        accessTokenExpiresIn: 60 * 60 * 24 * 7,
-        refreshTokenExpiresIn: 60 * 60 * 24 * 8,
-      },
-    );
+  async refresh(dto: JwtPayload) {
+    const token = await this.tokenService.getAuthToken({
+      sub: dto.sub,
+      clinicsId: dto.clinicsId,
+      role: dto.role,
+      source: dto.source,
+    });
 
-    return token;
+    return { token };
   }
 
   private async _isUserNotFound(email: string) {
@@ -125,14 +120,7 @@ export class AuthService {
       where: { id: user.clinicsId },
     });
 
-    if (
-      !clinic.completeCreds &&
-      clinic.clientId &&
-      clinic.clientSecret &&
-      clinic.organizationId &&
-      clinic.locationName &&
-      clinic.locationSatuSehatId
-    ) {
+    if (!clinic.completeCreds && clinic.clientId && clinic.clientSecret) {
       clinic = await this.prismaService.clinics.update({
         where: { id: user.clinicsId },
         data: {
