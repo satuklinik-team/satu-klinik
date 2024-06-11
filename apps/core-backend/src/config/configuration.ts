@@ -5,6 +5,7 @@ export default () => ({
     refresh_token: process.env.REFRESH_TOKEN_SECRET,
   },
   frontend_url: process.env.FRONTEND_PUBLIC_URL,
+  backend_url: process.env.BACKEND_URL,
   max_function_retry: 3,
   environment: process.env.ENVIRONMENT || 'development',
   satu_sehat: {
@@ -24,5 +25,9 @@ export default () => ({
     user: process.env.MINIO_USER,
     password: process.env.MINIO_PASSWORD,
     bucket: process.env.MINIO_BUCKET,
+  },
+  email: {
+    username: process.env.EMAIL_USERNAME,
+    password: process.env.EMAIL_PASSWORD,
   },
 });

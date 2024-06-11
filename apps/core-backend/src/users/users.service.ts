@@ -61,7 +61,7 @@ export class UsersService {
     return !!userCount;
   }
 
-  private async getHashedPassword(password: string) {
+  public async getHashedPassword(password: string) {
     const hashedPassword = await this.cryptoService.hash(password);
     return hashedPassword;
   }
