@@ -25,7 +25,7 @@ export class PharmacyTasksService {
       where: {
         clinicsId: dto.clinicsId,
         createdDate: today,
-        status: 'Todo',
+        OR: [{ status: 'Todo' }, { status: 'Revision' }],
       },
       select: {
         id: true,
@@ -97,6 +97,7 @@ export class PharmacyTasksService {
       supplyDuration: true,
       notes: true,
       deletedAt: true,
+      status: true,
       Medicine: true,
     };
 
@@ -191,13 +192,9 @@ export class PharmacyTasksService {
         (prescription) => prescription.id,
       );
 
-      const isSubset =
-        dto.cancelledPrescriptionsId.every((prescriptionId) =>
-          cancelledPrescriptionsId.includes(prescriptionId),
-        ) &&
-        dto.boughtPrescriptionsId.every((prescriptionId) =>
-          newPrescriptionsId.includes(prescriptionId),
-        );
+      const isSubset = dto.boughtPrescriptionsId.every((prescriptionId) =>
+        newPrescriptionsId.includes(prescriptionId),
+      );
 
       if (!isSubset) {
         throw new IncorrectPrescriptionIdException();
@@ -266,7 +263,7 @@ export class PharmacyTasksService {
         );
       }
 
-      for (const prescriptionId of dto.cancelledPrescriptionsId) {
+      for (const prescriptionId of cancelledPrescriptionsId) {
         await tx.medication_dispense.updateMany({
           where: {
             patient_prescriptionId: prescriptionId,

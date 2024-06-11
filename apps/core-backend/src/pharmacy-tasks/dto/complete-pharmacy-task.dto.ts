@@ -29,10 +29,4 @@ export class CompletePharmacyTaskDto {
   @IsNotEmpty({ each: true })
   @Type(() => Number)
   boughtPrescriptionsId: number[];
-
-  @IsArray()
-  @IsNumber({}, { each: true })
-  @IsNotEmpty({ each: true })
-  @Type(() => Number)
-  cancelledPrescriptionsId: number[];
 }
