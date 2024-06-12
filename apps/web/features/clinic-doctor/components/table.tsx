@@ -121,8 +121,8 @@ export function ClinicDoctorTable(): JSX.Element {
                         row.mr[0]?.id
                       }/diagnose?patientId=${row.id}`}
                     >
-                      <TooltipTrigger className="h-min p-2 hover:bg-muted-foreground/10 rounded-md transition">
-                        <Stethoscope size={20} />
+                      <TooltipTrigger className="h-min p-2 border border-border hover:bg-muted-foreground/10 rounded-md transition">
+                        <Stethoscope size={24} />
                       </TooltipTrigger>
                     </Link>
                     <TooltipContent>Diagnosa & Cetak Resep</TooltipContent>
