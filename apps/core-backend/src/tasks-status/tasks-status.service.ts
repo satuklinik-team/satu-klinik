@@ -8,6 +8,8 @@ import { Prisma, Role } from '@prisma/client';
 import { RoleNotAuthorizedException } from 'src/exceptions/unauthorized/role-not-authorized';
 import { GetNotificationDto } from './dto/get-notification-dto';
 import { formatDate } from 'src/utils/helpers/format-date.helper';
+import { GetMRChartDto } from './dto/get-mr-chart.dto';
+import { parse } from 'path';
 
 @Injectable()
 export class TasksService {
@@ -176,4 +178,52 @@ export class TasksService {
 
     return count;
   }
+
+  async getMRChart(dto: GetMRChartDto) {
+    const records = await this.prismaService.patient_medical_records.findMany({
+      where: {
+        visitLabel: {
+          gte: dto.from,
+          lte: dto.to,
+        },
+        Patient: {
+          clinicsId: dto.clinicsId,
+        },
+      },
+    });
+
+    const fromDate = Date.parse(dto.from);
+    const toDate = Date.parse(dto.to);
+
+    const dates = this.getDaysArray(fromDate, toDate);
+
+    const counts = {};
+    dates.forEach((date) => {
+      counts[date] = { e1: 0, d1: 0, p1: 0 };
+    });
+
+    records.forEach((record) => {
+      const { visitLabel, status } = record;
+      counts[visitLabel][status]++;
+    });
+
+    const result = Object.keys(counts).map((date) => ({
+      visitLabel: date,
+      count: counts[date],
+    }));
+
+    return result;
+  }
+
+  getDaysArray = function (start: number, end: number) {
+    const arr = [];
+    for (
+      const dt = new Date(start);
+      dt <= new Date(end);
+      dt.setDate(dt.getDate() + 1)
+    ) {
+      arr.push(formatDate(new Date(dt)));
+    }
+    return arr;
+  };
 }

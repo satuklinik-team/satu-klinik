@@ -3,4 +3,5 @@ export enum BadRequestErrorMessages {
   SATUSEHAT_ERROR = 'Something went wrong during the SatuSehat integration process.',
   ALREADY_INTEGRATED = 'The resource has already been integrated with SatuSehat.',
   DIFFERENT_PRACTITIONER = 'This resource was created by a different Practitioner.',
+  MR_ALREADY_TWO_DAYS = 'The medical record was created more than two days ago.',
 }

@@ -10,6 +10,7 @@ import { RevenueService } from 'src/revenue/revenue.service';
 import { UpdatePatientAssessmentDto } from './dto/update-patient-assessment.dto';
 import { DifferentPractitionerException } from 'src/exceptions/bad-request/different-practitioner-exception';
 import { formatDate } from 'src/utils/helpers/format-date.helper';
+import { MRAlready2DaysException } from 'src/exceptions/bad-request/mr-already-two-days-exception';
 
 @Injectable()
 export class PatientAssessmentService {
@@ -69,6 +70,14 @@ export class PatientAssessmentService {
 
         if (dto.usersId !== assessment.doctorId) {
           throw new DifferentPractitionerException();
+        }
+
+        const diffInMilliseconds = Math.abs(
+          assessment.createdAt.getTime() - new Date().getTime(),
+        );
+        const diffInDays = diffInMilliseconds / (1000 * 60 * 60 * 24);
+        if (diffInDays >= 2) {
+          throw new MRAlready2DaysException();
         }
 
         assessment = await tx.patient_assessment.update({
@@ -145,25 +154,38 @@ export class PatientAssessmentService {
       let pharmacyTask = await tx.pharmacy_Task.findFirst({
         where: {
           assessmentReffId: assessment.patient_medical_recordsId,
-          status: 'Todo',
         },
       });
-      if (!pharmacyTask && prescriptionsDto.length !== 0) {
-        pharmacyTask = await tx.pharmacy_Task.create({
-          data: {
-            norm: patientMR.Patient.norm,
-            assessmentReffId: assessment.patient_medical_recordsId,
-            clinicsId: patientMR.Patient.clinicsId,
-            createdDate: formatDate(new Date()),
-            status: 'Todo',
-          },
-        });
-      } else if (pharmacyTask && prescriptionsDto.length === 0) {
-        pharmacyTask = await tx.pharmacy_Task.delete({
-          where: {
-            id: pharmacyTask.id,
-          },
-        });
+
+      if (!pharmacyTask) {
+        if (prescriptionsDto.length !== 0) {
+          pharmacyTask = await tx.pharmacy_Task.create({
+            data: {
+              norm: patientMR.Patient.norm,
+              assessmentReffId: assessment.patient_medical_recordsId,
+              clinicsId: patientMR.Patient.clinicsId,
+              createdDate: formatDate(new Date()),
+              status: 'Todo',
+            },
+          });
+        }
+      } else {
+        if (prescriptionsDto.length === 0 && pharmacyTask.status === 'Todo') {
+          await tx.pharmacy_Task.delete({
+            where: {
+              id: pharmacyTask.id,
+            },
+          });
+        } else {
+          await tx.pharmacy_Task.update({
+            where: {
+              id: pharmacyTask.id,
+            },
+            data: {
+              status: 'Revision',
+            },
+          });
+        }
       }
 
       return {

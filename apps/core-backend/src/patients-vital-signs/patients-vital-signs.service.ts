@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { PatientAlreadyRegistedException } from 'src/exceptions/conflict/patient-already-registered.exception';
 import { CannotAccessClinicException } from 'src/exceptions/unauthorized/cannot-access-clinic';
 import { CreateVitalSignDto } from 'src/patients-vital-signs/dto/create-vital-sign.dto';
 import { PatientsService } from 'src/patients/patients.service';
@@ -25,6 +26,16 @@ export class PatientsVitalSignsService {
       if (!dto.patientId) {
         patient = await this.patientService.create(dto, { tx });
         dto.patientId = patient.id;
+      }
+
+      const latestMR = await tx.patient_medical_records.findFirst({
+        where: {},
+        orderBy: {
+          visitAt: 'desc',
+        },
+      });
+      if (latestMR.status === 'e1') {
+        throw new PatientAlreadyRegistedException();
       }
 
       const queue = await this._getQueueNo(dto.clinicsId, { tx });

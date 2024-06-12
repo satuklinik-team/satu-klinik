@@ -229,6 +229,7 @@ model Users {
   token                    String?
   email_verification_token String?
   reset_password_token     String?
+  reset_expiry_date        DateTime?
   createdAt                DateTime?                 @default(now()) @db.Timestamptz(6)
   clinicsId                String?                   @db.Uuid
   Accounts                 Accounts[]
