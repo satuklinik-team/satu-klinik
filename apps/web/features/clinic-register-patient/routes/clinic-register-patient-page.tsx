@@ -51,7 +51,15 @@ export function ClinicRegisterPatientPage(): JSX.Element {
   });
 
   const defaultPatient = useMemo(() => {
-    if (!selectedPatient) return;
+    const defaultValues = {
+      systole: 0,
+      diastole: 0,
+      pulse: 0,
+      respiration: 0,
+      temperature: 0,
+    };
+
+    if (!selectedPatient) return defaultValues;
 
     const latestMedicalRecord =
       selectedPatient.mr[selectedPatient.mr.length - 1];
@@ -59,6 +67,7 @@ export function ClinicRegisterPatientPage(): JSX.Element {
       latestMedicalRecord.vitalSign[latestMedicalRecord.vitalSign.length - 1];
 
     return {
+      ...defaultValues,
       nik: selectedPatient.nik,
       fullname: selectedPatient.fullname,
       address: selectedPatient.address,
@@ -75,6 +84,7 @@ export function ClinicRegisterPatientPage(): JSX.Element {
       height: latestVitalSign.height,
       weight: latestVitalSign.weight,
       allergic: latestVitalSign.allergic,
+      norm: selectedPatient.norm,
     };
   }, [selectedPatient]);
 
@@ -150,14 +160,14 @@ export function ClinicRegisterPatientPage(): JSX.Element {
         blood: undefined,
         phone: undefined,
         birthAt: undefined,
-        height: undefined,
-        weight: undefined,
+        height: 0,
+        weight: 0,
         allergic: undefined,
-        systole: undefined,
-        diastole: undefined,
-        temperature: undefined,
-        respiration: undefined,
-        pulse: undefined,
+        systole: 0,
+        diastole: 0,
+        temperature: 0,
+        respiration: 0,
+        pulse: 0,
         pain: undefined,
       });
     },
