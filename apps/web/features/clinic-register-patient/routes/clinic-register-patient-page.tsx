@@ -105,6 +105,15 @@ export function ClinicRegisterPatientPage(): JSX.Element {
         CreatePatientDto & CreateNewPatientVitalSignDto
       >;
 
+      if (data?.data && selectedPatient) {
+        const findPatient = data.data.find(
+          (item) => item.norm === selectedPatient.norm,
+        );
+
+        if (findPatient)
+          return toast({ title: "User sudah berada dalam antrian" });
+      }
+
       const formattedPatientData: CreatePatientDto = {
         nik: dto.nik as string,
         fullname: dto.fullname as string,
@@ -174,6 +183,7 @@ export function ClinicRegisterPatientPage(): JSX.Element {
     [
       createNewPatientVitalSign,
       createPatientVitalSign,
+      data?.data,
       queryClient,
       selectedPatient,
       toast,
