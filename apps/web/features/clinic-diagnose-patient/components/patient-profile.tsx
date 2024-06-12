@@ -7,6 +7,7 @@ import { useSearchParams } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { ClinicCard } from "@/features/clinic/components/ui/card";
+import { cn } from "@/lib/utils";
 import { useGetPatient } from "@/services/patient/hooks/use-get-patient";
 import { getInitial, getWhatsappUrl } from "@/utils";
 
@@ -19,6 +20,11 @@ export function ClinicDiagnosePatientProfile(): JSX.Element | undefined {
   const { data: patientData } = useGetPatient(String(patientId));
 
   if (!patientData) return;
+
+  const medicalRecord = patientData.mr[patientData.mr.length - 1];
+  const vitalSign = medicalRecord.vitalSign[medicalRecord.vitalSign.length - 1];
+
+  const isValidAllergic = vitalSign.allergic.length > 1;
 
   return (
     <ClinicCard>
@@ -105,7 +111,13 @@ export function ClinicDiagnosePatientProfile(): JSX.Element | undefined {
           <div className="flex flex-col gap-2">
             <div>
               <p className="font-semibold">Alergi</p>
-              <p>{patientData.mr[0]?.vitalSign[0].allergic}</p>
+              <p
+                className={cn(
+                  isValidAllergic && "font-semibold text-lg text-destructive",
+                )}
+              >
+                {vitalSign.allergic}
+              </p>
             </div>
           </div>
         </div>
