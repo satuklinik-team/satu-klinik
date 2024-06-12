@@ -1,8 +1,8 @@
-import { z as a } from "zod";
+import { z as t } from "zod";
 import {
   Lezzform as u,
-  FormField as l,
-  FormItem as c,
+  FormField as c,
+  FormItem as l,
   FormLabel as i,
   FormControl as z,
   FormMessage as d,
@@ -13,41 +13,41 @@ import {
 } from "@lezzform/react";
 import * as n from "react";
 import { jsx as r, jsxs as s } from "react/jsx-runtime";
-var y = a.object({ email: a.string().email(), password: a.string() }),
-  f = "0YAr3RQoRFOxfyEoJ9Eh",
+var P = t.object({ email: t.string().email(), password: t.string() }),
+  p = "uznZ1pZkEqGciUa7cEmc",
   E = ({
     onSubmit: m,
-    onError: F,
-    onSuccess: p,
+    onError: f,
+    onSuccess: F,
     defaultValues: S,
-    onAction: P,
+    onAction: y,
     formProps: g,
   }) => {
-    let t = n.useRef();
+    let a = n.useRef();
     n.useEffect(() => {
-      m && (t.current = m);
+      m && (a.current = m);
     }, [m]);
     let h = n.useCallback(async (e, o) => {
-      if (t.current) return t.current(e, o);
+      if (a.current) return a.current(e, o);
     }, []);
     return r(
       u,
       {
-        id: f,
+        id: p,
         defaultValues: S,
         onSubmit: h,
-        onError: F,
-        onSuccess: p,
-        zodSchema: y,
+        onError: f,
+        onSuccess: F,
+        zodSchema: P,
         mode: "onTouched",
         children: (e) =>
           s(u.Container, {
             children: [
-              r(l, {
+              r(c, {
                 control: e.control,
                 name: "email",
                 render: ({ field: o }) =>
-                  s(c, {
+                  s(l, {
                     children: [
                       r(i, { isRequired: !0, children: "Email" }),
                       r(z, {
@@ -67,11 +67,11 @@ var y = a.object({ email: a.string().email(), password: a.string() }),
                     ],
                   }),
               }),
-              r(l, {
+              r(c, {
                 control: e.control,
                 name: "password",
                 render: ({ field: o }) =>
-                  s(c, {
+                  s(l, {
                     children: [
                       r(i, { isRequired: !0, children: "Password" }),
                       r(z, {
@@ -103,7 +103,7 @@ var y = a.object({ email: a.string().email(), password: a.string() }),
             ],
           }),
       },
-      f,
+      p,
     );
   };
 export { E as Form };
