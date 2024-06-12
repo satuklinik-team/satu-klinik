@@ -53,6 +53,11 @@ export function ClinicRegisterPatientPage(): JSX.Element {
   const defaultPatient = useMemo(() => {
     if (!selectedPatient) return;
 
+    const latestMedicalRecord =
+      selectedPatient.mr[selectedPatient.mr.length - 1];
+    const latestVitalSign =
+      latestMedicalRecord.vitalSign[latestMedicalRecord.vitalSign.length - 1];
+
     return {
       nik: selectedPatient.nik,
       fullname: selectedPatient.fullname,
@@ -67,6 +72,9 @@ export function ClinicRegisterPatientPage(): JSX.Element {
       sugar: undefined,
       cholesterol: undefined,
       saturation: undefined,
+      height: latestVitalSign.height,
+      weight: latestVitalSign.weight,
+      allergic: latestVitalSign.allergic,
     };
   }, [selectedPatient]);
 
@@ -203,6 +211,7 @@ export function ClinicRegisterPatientPage(): JSX.Element {
                       key={item.id}
                       onSelect={() => {
                         setSelectedPatient(item);
+
                         setIsPatientSearchOpen(false);
                         setPatientSearch("");
                       }}
