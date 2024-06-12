@@ -8,9 +8,9 @@ export class MailService {
 
   constructor(private readonly configService: ConfigService) {
     this.transporter = nodemailer.createTransport({
-      service: 'Gmail',
-      host: 'smtp.gmail.com',
-      port: 465,
+      service: this.configService.get('email.service'),
+      host: this.configService.get('email.host'),
+      port: parseInt(this.configService.get('email.port')),
       secure: true,
       auth: {
         user: this.configService.get('email.username'),
@@ -23,7 +23,7 @@ export class MailService {
     const feUrl = this.configService.get('frontend_url');
     const resetLink = `${feUrl}/reset-password?token=${token}`;
     const mailOptions = {
-      from: 'SatuKlinik Backend service',
+      from: 'SatuKlinik',
       to,
       subject: 'Password Reset Request',
       html: `<p>You requested a password reset. Click the link below to reset your password:</p><p><a href="${resetLink}">Reset Password</a></p><p>Your token: ${token}</p>`,
