@@ -199,9 +199,7 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
                 ? icd10Data.data
                 : [];
 
-              const label = options.find(
-                (disease) => disease.code === value,
-              )?.strt;
+              const label = options.find((disease) => disease.code === value);
 
               return (
                 <FormItem>
@@ -215,7 +213,16 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
                           role="combobox"
                           variant="outline"
                         >
-                          {value ? label : "Select disease..."}
+                          {value ? (
+                            <span className="font-normal">
+                              <span className="font-semibold">
+                                {label?.code}
+                              </span>{" "}
+                              - {label?.strt}
+                            </span>
+                          ) : (
+                            "Select disease..."
+                          )}
                           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                         </Button>
                       </PopoverTrigger>
@@ -293,7 +300,7 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
             render={({ field: { value, onChange } }) => {
               const label = icd9CMData?.data.find(
                 (action) => action.code === value,
-              )?.str;
+              );
 
               return (
                 <FormItem>
@@ -307,7 +314,16 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
                           role="combobox"
                           variant="outline"
                         >
-                          {value ? label : "Select action..."}
+                          {value ? (
+                            <span className="font-normal">
+                              <span className="font-semibold">
+                                {label?.code}
+                              </span>{" "}
+                              - {label?.str}
+                            </span>
+                          ) : (
+                            "Select action..."
+                          )}
                           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                         </Button>
                       </PopoverTrigger>
