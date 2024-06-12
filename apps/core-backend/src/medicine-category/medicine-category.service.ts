@@ -31,6 +31,7 @@ export class MedicineCategoryService {
       where: {
         clinicsId: dto.clinicsId,
       },
+      select: this._findAllSelectFactory(),
     };
 
     return await this.findAllService.findAll({
@@ -47,6 +48,7 @@ export class MedicineCategoryService {
       where: {
         id: dto.id,
       },
+      select: this._findAllSelectFactory(),
     });
   }
 
@@ -96,5 +98,18 @@ export class MedicineCategoryService {
     if (medicineCategory.clinicsId !== clinicsId) {
       throw new CannotAccessClinicException();
     }
+  }
+
+  private _findAllSelectFactory(): Prisma.MedicineCategoryFindManyArgs['select'] {
+    return {
+      id: true,
+      name: true,
+      clinicsId: true,
+      _count: {
+        select: {
+          Medicine: true,
+        },
+      },
+    };
   }
 }
