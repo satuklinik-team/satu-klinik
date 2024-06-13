@@ -1,6 +1,6 @@
 "use client";
 
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 
 import { ClinicCard } from "@/features/clinic/components/ui/card";
 import { PatientProfileContent } from "@/features/clinic-diagnose-patient/components/patient-profile-content";
@@ -8,12 +8,17 @@ import { useGetPatientMedicalRecord } from "@/services/patient-medical-record/ho
 import type { PatientMedicalRecordEntity } from "@/services/patient-medical-record/types/entity";
 import type { RouteParams } from "@/types";
 
+import { DiagnosePatientForm } from "../components/form";
+
 export function ClinicMedicalRecordDetailPage(): React.JSX.Element {
   const { mrId } = useParams<RouteParams>();
   const { data: patientMedicalRecord, isLoading } =
     useGetPatientMedicalRecord(mrId);
 
-  if (isLoading || !patientMedicalRecord) return <>Loading...</>;
+  const searchParams = useSearchParams();
+  const isEdit = searchParams.get("edit") === "true";
+
+  if (isLoading) return <>Loading...</>;
 
   const medicalRecord =
     patientMedicalRecord as Required<PatientMedicalRecordEntity>;
@@ -32,6 +37,9 @@ export function ClinicMedicalRecordDetailPage(): React.JSX.Element {
           patient={medicalRecord.Patient}
           vitalSign={vitalSign}
         />
+      </ClinicCard>
+      <ClinicCard className="mt-4">
+        <DiagnosePatientForm isReadOnly={!isEdit} />
       </ClinicCard>
       {/* <ClinicDiagnosePatientProfile />
       <ClinicCard className="mt-6">

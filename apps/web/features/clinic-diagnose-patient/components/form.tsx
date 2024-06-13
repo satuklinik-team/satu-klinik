@@ -44,6 +44,7 @@ import { createPatientAssessmentSchema } from "@/services/patient-assessment/typ
 import { PharmacyTaskQueryKeyFactory } from "@/services/pharmacy-task/utils/query-key.factory";
 import type { PrescriptionEntity } from "@/services/prescription/types/entity";
 import { TasksStatusQueryKeyFactory } from "@/services/tasks-status/utils/query-key.factory";
+import type { RouteParams } from "@/types";
 
 import { ClinicDiagnosePatientPrescriptionForm } from "./prescription-form";
 import { ClinicDiagnosePatientPrescriptionTable } from "./prescription-table";
@@ -51,7 +52,7 @@ import { ClinicDiagnosePatientPrescriptionTable } from "./prescription-table";
 export function ClinicDiagnosePatientForm(): JSX.Element {
   const queryClient = useQueryClient();
   const { toast } = useToast();
-  const { clinicId, mrId } = useParams();
+  const { clinicId, mrId } = useParams<RouteParams>();
   const router = useRouter();
   const searchParams = useSearchParams();
   const patientId = searchParams.get("patientId");
@@ -60,7 +61,7 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
 
   const form = useForm<CreatePatientAssessmentSchema>({
     resolver: zodResolver(createPatientAssessmentSchema),
-    defaultValues: { mrid: mrId as string, prescriptions: [] },
+    defaultValues: { mrid: mrId, prescriptions: [] },
   });
 
   const {
@@ -123,7 +124,7 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
         }),
       ]);
 
-      router.push(`/clinic/${clinicId as string}/doctor`);
+      router.push(`/clinic/${clinicId}/doctor`);
     },
     [clinicId, mutateAsync, queryClient, router, toast],
   );

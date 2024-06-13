@@ -47,21 +47,21 @@ import {
   prescriptionSchema,
 } from "@/services/prescription/types/entity";
 
-interface ClinicDiagnosePatientPrescriptionForm {
+interface PrescriptionForm {
   title: string;
-  defaultValues?: DefaultValues<PrescriptionEntity>;
+  defaultValues?: DefaultValues<PrescriptionEntity> | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onSubmit: (prescription: PrescriptionEntity) => void;
 }
 
-export function ClinicDiagnosePatientPrescriptionForm({
+export function PrescriptionForm({
   title,
   defaultValues,
   open,
   onOpenChange,
   onSubmit,
-}: ClinicDiagnosePatientPrescriptionForm): JSX.Element {
+}: PrescriptionForm): JSX.Element {
   const form = useForm<PrescriptionEntity>({
     resolver: zodResolver(prescriptionSchema),
     defaultValues: { period: 1, ...defaultValues },

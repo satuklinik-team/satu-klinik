@@ -1,11 +1,11 @@
 "use client";
 
 import {
+  Edit,
   Eye,
   HeartPulse,
   MessageCircle,
   Stethoscope,
-  Trash,
 } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -165,6 +165,18 @@ export function MedicalRecordTable({
                 <TooltipContent>Detail</TooltipContent>
               </Tooltip>
               <Tooltip>
+                <Link
+                  href={`/clinic/${clinicId}/mr/report/${row.id}?edit=true`}
+                >
+                  <TooltipTrigger asChild>
+                    <Button size="icon" variant="ghost">
+                      <Edit className="text-yellow-500" size={20} />
+                    </Button>
+                  </TooltipTrigger>
+                </Link>
+                <TooltipContent>Ubah Medical Record</TooltipContent>
+              </Tooltip>
+              {/* <Tooltip>
                 <TooltipTrigger
                   className="h-min p-2"
                   onClick={() => {
@@ -177,7 +189,7 @@ export function MedicalRecordTable({
                   <Trash className="text-red-500" size={20} />
                 </TooltipTrigger>
                 <TooltipContent>Hapus Patient Medical Record</TooltipContent>
-              </Tooltip>
+              </Tooltip> */}
             </TooltipProvider>
           </Cell>
         ),
