@@ -1,11 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { OnEvent } from '@nestjs/event-emitter';
+import { EventEmitter2, OnEvent } from '@nestjs/event-emitter';
 import { Activity } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class ActivityService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly eventEmitter: EventEmitter2,
+  ) {}
 
   @OnEvent('**')
   async handleEverything(payload: Activity) {
@@ -24,6 +27,16 @@ export class ActivityService {
         clinicsId: payload.clinicsId,
         createdAt: payload.createdAt,
       },
+    });
+  }
+
+  async emit(title: string, dto: any, payload: any) {
+    this.eventEmitter.emit(title, {
+      title,
+      createdAt: new Date(),
+      usersId: dto.usersId,
+      clinicsId: dto.clinicsId,
+      payload,
     });
   }
 }

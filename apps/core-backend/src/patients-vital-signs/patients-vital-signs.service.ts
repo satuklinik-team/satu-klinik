@@ -9,13 +9,14 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { formatDate } from 'src/utils/helpers/format-date.helper';
 import { ServiceContext } from 'src/utils/types';
 import { createVitalSignData } from './dto/factory.dto';
+import { ActivityService } from 'src/activity/activity.service';
 
 @Injectable()
 export class PatientsVitalSignsService {
   constructor(
     private readonly prismaService: PrismaService,
     private readonly patientService: PatientsService,
-    private eventEmitter: EventEmitter2,
+    private readonly activityService: ActivityService,
   ) {}
 
   async create(dto: any) {
@@ -28,13 +29,11 @@ export class PatientsVitalSignsService {
       if (!dto.patientId) {
         patient = await this.patientService.create(dto, { tx });
         dto.patientId = patient.id;
-        this.eventEmitter.emit('Create Patient', {
-          title: 'Create Patient',
-          createdAt: new Date(),
-          usersId: dto.usersId,
-          clinicsId: dto.clinicsId,
-          payload: this.patientService.createPatientData(dto),
-        });
+        this.activityService.emit(
+          'Create Patient',
+          dto,
+          this.patientService.createPatientData(dto),
+        );
       }
 
       const latestMR = await tx.patient_medical_records.findFirst({
@@ -63,13 +62,11 @@ export class PatientsVitalSignsService {
         },
       });
 
-      this.eventEmitter.emit('Patient Registration', {
-        title: 'Patient Registration',
-        createdAt: new Date(),
-        usersId: dto.usersId,
-        clinicsId: dto.clinicsId,
-        payload: createVitalSignData(dto, queue),
-      });
+      this.activityService.emit(
+        'Patient Registration',
+        dto,
+        createVitalSignData(dto, queue),
+      );
 
       const result = {
         ...data,
