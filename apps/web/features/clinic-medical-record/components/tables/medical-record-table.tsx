@@ -1,7 +1,14 @@
 "use client";
 
-import { HeartPulse, MessageCircle, Stethoscope, Trash } from "lucide-react";
+import {
+  Eye,
+  HeartPulse,
+  MessageCircle,
+  Stethoscope,
+  Trash,
+} from "lucide-react";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import { type ComponentProps, useEffect, useMemo, useRef } from "react";
 
 import { BloodBagOutlineIcon } from "@/components/icons/blood-bag-outline";
@@ -11,6 +18,7 @@ import { ScaleOutlineIcon } from "@/components/icons/scale-outline";
 import { ThermometerOutlineIcon } from "@/components/icons/thermometer-outline";
 import { BaseTable } from "@/components/shared/table/base-table";
 import { Cell } from "@/components/shared/table/cell";
+import { Button } from "@/components/ui/button";
 import {
   Tooltip,
   TooltipContent,
@@ -19,6 +27,7 @@ import {
 } from "@/components/ui/tooltip";
 import { ClinicPatientVitals } from "@/features/clinic-patient/components/shared/vitals";
 import type { PatientMedicalRecordEntity } from "@/services/patient-medical-record/types/entity";
+import type { RouteParams } from "@/types";
 import { getInitial, getWhatsappUrl } from "@/utils";
 
 type BaseTableProps = ComponentProps<
@@ -27,9 +36,7 @@ type BaseTableProps = ComponentProps<
 
 interface ActionDelete {
   type: "delete";
-  data: {
-    id: string;
-  };
+  row: PatientMedicalRecordEntity;
 }
 
 type Action = ActionDelete;
@@ -46,6 +53,8 @@ export function MedicalRecordTable({
   onAction,
   ...props
 }: MedicalRecordTableProps): React.JSX.Element {
+  const { clinicId } = useParams<RouteParams>();
+
   const onActionRef = useRef<MedicalRecordTableProps["onAction"]>(onAction);
 
   useEffect(() => {
@@ -137,11 +146,23 @@ export function MedicalRecordTable({
             <TooltipProvider>
               <Tooltip>
                 <Link href={getWhatsappUrl(row.Patient.phone)}>
-                  <TooltipTrigger className="h-min p-2">
-                    <MessageCircle className="text-green-500" size={20} />
+                  <TooltipTrigger asChild>
+                    <Button size="icon" variant="ghost">
+                      <MessageCircle className="text-green-500" size={20} />
+                    </Button>
                   </TooltipTrigger>
                 </Link>
                 <TooltipContent>Kontak WA</TooltipContent>
+              </Tooltip>
+              <Tooltip>
+                <Link href={`/clinic/${clinicId}/mr/report/${row.id}`}>
+                  <TooltipTrigger asChild>
+                    <Button size="icon" variant="ghost">
+                      <Eye size={20} />
+                    </Button>
+                  </TooltipTrigger>
+                </Link>
+                <TooltipContent>Detail</TooltipContent>
               </Tooltip>
               <Tooltip>
                 <TooltipTrigger
@@ -149,7 +170,7 @@ export function MedicalRecordTable({
                   onClick={() => {
                     onActionRef.current?.({
                       type: "delete",
-                      data: { id: String(row.id) },
+                      row,
                     });
                   }}
                 >
@@ -162,7 +183,7 @@ export function MedicalRecordTable({
         ),
       },
     ];
-  }, []);
+  }, [clinicId]);
 
   const columns = useMemo(() => {
     if (Array.isArray(propsColumns)) {
