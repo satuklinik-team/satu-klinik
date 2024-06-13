@@ -34,16 +34,4 @@ export class PatientMedicalRecordController {
       clinicsId: tokenData.clinicsId,
     });
   }
-
-  @Delete(':id')
-  @Roles(Role.DOCTOR)
-  async deleteById(
-    @Param('id') id: string,
-    @TokenData() tokenData: JwtPayload,
-  ) {
-    return this.patientMedicalRecordService.deleteById({
-      id,
-      clinicsId: tokenData.clinicsId,
-    });
-  }
 }

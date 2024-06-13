@@ -1,8 +1,10 @@
 import { Injectable } from '@nestjs/common';
+import { PatientAlreadyRegistedException } from 'src/exceptions/conflict/patient-already-registered.exception';
 import { CannotAccessClinicException } from 'src/exceptions/unauthorized/cannot-access-clinic';
 import { CreateVitalSignDto } from 'src/patients-vital-signs/dto/create-vital-sign.dto';
 import { PatientsService } from 'src/patients/patients.service';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { formatDate } from 'src/utils/helpers/format-date.helper';
 import { ServiceContext } from 'src/utils/types';
 
 @Injectable()
@@ -26,13 +28,25 @@ export class PatientsVitalSignsService {
         dto.patientId = patient.id;
       }
 
+      const latestMR = await tx.patient_medical_records.findFirst({
+        where: {
+          patientId: dto.patientId,
+        },
+        orderBy: {
+          visitAt: 'desc',
+        },
+      });
+      if (latestMR?.status === 'e1') {
+        throw new PatientAlreadyRegistedException();
+      }
+
       const queue = await this._getQueueNo(dto.clinicsId, { tx });
 
       const data = await tx.patient_medical_records.create({
         data: {
           patientId: dto.patientId,
           visitAt: now,
-          visitLabel: now.toLocaleDateString('en-GB'),
+          visitLabel: formatDate(now),
           queue,
           status: 'e1',
           practitionerId: dto.usersId,
@@ -95,7 +109,7 @@ export class PatientsVitalSignsService {
     const { id } = result;
     let { counter, currentDate } = result;
 
-    const today = new Date().toLocaleDateString('en-GB');
+    const today = formatDate(new Date());
     if (today !== currentDate) {
       currentDate = today;
       counter = 0;

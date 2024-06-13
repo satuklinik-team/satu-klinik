@@ -15,7 +15,7 @@ import { TokenData } from 'src/utils';
 import { Role } from '@prisma/client';
 import { Roles } from 'src/utils/decorators/roles.decorator';
 import { FindPharmacyTaskByIdDto } from './dto/find-pharmacy-task-by-id.dto';
-import { CompleteTaskDto } from './dto/complete-task.dto';
+import { CompletePharmacyTaskDto } from './dto/complete-pharmacy-task.dto';
 import { PractitionerOnly } from 'src/utils/decorators/practitioner-only.decorator';
 
 @Controller('pharmacy-tasks')
@@ -51,7 +51,7 @@ export class PharmacyTasksController {
   @PractitionerOnly()
   async completeTask(
     @Param('id', ParseIntPipe) id: number,
-    @Body() dto: CompleteTaskDto,
+    @Body() dto: CompletePharmacyTaskDto,
     @TokenData() tokenData: JwtPayload,
   ) {
     return await this.pharmacyTasksService.completeTask({

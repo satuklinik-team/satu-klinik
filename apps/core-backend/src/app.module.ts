@@ -31,6 +31,8 @@ import { SatusehatAdminModule } from './satusehat-admin/satusehat-admin.module';
 import { TasksModule } from './tasks-status/tasks-status.module';
 import { RevenueModule } from './revenue/revenue.module';
 import { PatientMedicalRecordModule } from './patient-medical-record/patient-medical-record.module';
+import { ResetPasswordModule } from './reset-password/reset-password.module';
+import { MailModule } from './mail/mail.module';
 
 @Module({
   imports: [
@@ -62,6 +64,8 @@ import { PatientMedicalRecordModule } from './patient-medical-record/patient-med
     TasksModule,
     RevenueModule,
     PatientMedicalRecordModule,
+    ResetPasswordModule,
+    MailModule,
   ],
   providers: [{ provide: APP_GUARD, useClass: AccessTokenGuard }],
 })

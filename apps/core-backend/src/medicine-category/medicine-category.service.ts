@@ -8,6 +8,7 @@ import { FindAllService } from 'src/find-all/find-all.service';
 import { Prisma } from '@prisma/client';
 import { FindAllMedicineCategoriesDto } from './dto/find-all-medicine-categories-dto';
 import { GetCategoryByIdDto } from './dto/get-category-by-id';
+import { MedicineCategoryNotEmptyException } from 'src/exceptions/conflict/medicine-category-not-empty';
 
 @Injectable()
 export class MedicineCategoryService {
@@ -30,6 +31,7 @@ export class MedicineCategoryService {
       where: {
         clinicsId: dto.clinicsId,
       },
+      select: this._findAllSelectFactory(),
     };
 
     return await this.findAllService.findAll({
@@ -46,6 +48,7 @@ export class MedicineCategoryService {
       where: {
         id: dto.id,
       },
+      select: this._findAllSelectFactory(),
     });
   }
 
@@ -64,6 +67,15 @@ export class MedicineCategoryService {
 
   async remove(dto: DeleteMedicineCategoryDto) {
     await this.canModifyMedicineCategory(dto.id, dto.clinicsId);
+
+    const medicine = await this.prismaService.medicine.findFirst({
+      where: {
+        categoryId: dto.id,
+      },
+    });
+    if (medicine) {
+      throw new MedicineCategoryNotEmptyException();
+    }
 
     return await this.prismaService.medicineCategory.delete({
       where: {
@@ -86,5 +98,18 @@ export class MedicineCategoryService {
     if (medicineCategory.clinicsId !== clinicsId) {
       throw new CannotAccessClinicException();
     }
+  }
+
+  private _findAllSelectFactory(): Prisma.MedicineCategoryFindManyArgs['select'] {
+    return {
+      id: true,
+      name: true,
+      clinicsId: true,
+      _count: {
+        select: {
+          Medicine: true,
+        },
+      },
+    };
   }
 }

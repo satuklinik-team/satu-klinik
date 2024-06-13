@@ -13,6 +13,7 @@ import { FindAllService } from 'src/find-all/find-all.service';
 import { GetPatientByIdDto } from './dto/get-patient-by-id-dto';
 import { ServiceContext } from 'src/utils/types';
 import { UpdatePatientDto } from './dto/update-patient-dto';
+import { formatDate } from 'src/utils/helpers/format-date.helper';
 
 @Injectable()
 export class PatientsService {
@@ -78,12 +79,24 @@ export class PatientsService {
   async getPatientById(dto: GetPatientByIdDto) {
     this.canModifyPatient(dto.id, dto.clinicsId);
 
-    return await this.prismaService.patient.findFirst({
+    const data = await this.prismaService.patient.findFirst({
       where: {
         id: dto.id,
       },
       select: this._findAllSelectFactory(),
     });
+
+    const result = {
+      ...data,
+      mr: data.mr.map((entry: any) => {
+        return {
+          ...entry,
+          visitAt: entry.visitAt.toLocaleString('en-GB'),
+        };
+      }),
+    };
+
+    return result;
   }
 
   async delete(dto: DeletePatientDto) {
@@ -154,7 +167,7 @@ export class PatientsService {
         mr: {
           some: {
             status,
-            visitLabel: now.toLocaleDateString('en-GB'),
+            visitLabel: formatDate(now),
           },
         },
       };
@@ -217,6 +230,7 @@ export class PatientsService {
           queue: true,
           status: true,
           vitalSign: true,
+          visitAt: true,
         },
       },
     };

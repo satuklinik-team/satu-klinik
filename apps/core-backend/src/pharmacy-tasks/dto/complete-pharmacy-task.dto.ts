@@ -10,7 +10,7 @@ import {
 import { JwtPayload } from 'src/auth/types';
 import { PaginationDto } from 'src/utils/classes';
 
-export class CompleteTaskDto {
+export class CompletePharmacyTaskDto {
   @IsOptional()
   @IsNumber()
   @Type(() => Number)
