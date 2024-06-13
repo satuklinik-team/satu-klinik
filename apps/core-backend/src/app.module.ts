@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { AccountsModule } from './accounts/accounts.module';
@@ -33,6 +33,7 @@ import { RevenueModule } from './revenue/revenue.module';
 import { PatientMedicalRecordModule } from './patient-medical-record/patient-medical-record.module';
 import { ResetPasswordModule } from './reset-password/reset-password.module';
 import { MailModule } from './mail/mail.module';
+import { LogMiddleware } from './middlewares/log.middleware';
 
 @Module({
   imports: [
@@ -69,4 +70,8 @@ import { MailModule } from './mail/mail.module';
   ],
   providers: [{ provide: APP_GUARD, useClass: AccessTokenGuard }],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LogMiddleware).forRoutes('*');
+  }
+}
