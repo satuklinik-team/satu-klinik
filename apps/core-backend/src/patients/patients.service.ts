@@ -218,6 +218,7 @@ export class PatientsService {
           queue: true,
           status: true,
           vitalSign: true,
+          visitAt: true,
         },
       },
     };
