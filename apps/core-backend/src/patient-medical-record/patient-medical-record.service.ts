@@ -63,6 +63,7 @@ export class PatientMedicalRecordService {
       select: {
         ...this._findAllSelectFactory(),
         assessment: true,
+        prescription: true,
       },
     });
   }
