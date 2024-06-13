@@ -8,6 +8,7 @@ import { PatientsService } from 'src/patients/patients.service';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { formatDate } from 'src/utils/helpers/format-date.helper';
 import { ServiceContext } from 'src/utils/types';
+import { createVitalSignData } from './dto/factory.dto';
 
 @Injectable()
 export class PatientsVitalSignsService {
@@ -51,7 +52,7 @@ export class PatientsVitalSignsService {
       const queue = await this._getQueueNo(dto.clinicsId, { tx });
 
       const data = await tx.patient_medical_records.create({
-        data: this.createVitalSignData(dto, queue),
+        data: createVitalSignData(dto, queue),
         select: {
           id: true,
           status: true,
@@ -67,7 +68,7 @@ export class PatientsVitalSignsService {
         createdAt: new Date(),
         usersId: dto.usersId,
         clinicsId: dto.clinicsId,
-        payload: this.createVitalSignData(dto, queue),
+        payload: createVitalSignData(dto, queue),
       });
 
       const result = {
@@ -85,35 +86,6 @@ export class PatientsVitalSignsService {
     });
 
     return data;
-  }
-
-  private createVitalSignData(
-    dto: any,
-    queue: string,
-  ): Prisma.Patient_medical_recordsCreateArgs['data'] {
-    const now = new Date();
-
-    return {
-      patientId: dto.patientId,
-      visitAt: now,
-      visitLabel: formatDate(now),
-      queue,
-      status: 'e1',
-      practitionerId: dto.usersId,
-      vitalSign: {
-        create: {
-          height: dto.height,
-          weight: dto.weight,
-          allergic: dto.allergic,
-          systole: dto.systole,
-          diastole: dto.diastole,
-          pulse: dto.pulse,
-          respiration: dto.respiration,
-          temperature: dto.temperature,
-          pain: dto.pain,
-        },
-      },
-    };
   }
 
   async _getQueueNo(clinicsId: string, context?: ServiceContext) {
