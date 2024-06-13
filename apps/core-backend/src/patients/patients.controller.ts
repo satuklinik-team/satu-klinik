@@ -31,6 +31,7 @@ export class PatientsController {
     return this.patientService.create({
       ...dto,
       clinicsId: tokenData.clinicsId,
+      usersId: tokenData.sub,
     });
   }
 

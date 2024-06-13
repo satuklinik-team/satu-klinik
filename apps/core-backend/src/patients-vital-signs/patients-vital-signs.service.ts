@@ -10,6 +10,7 @@ import { formatDate } from 'src/utils/helpers/format-date.helper';
 import { ServiceContext } from 'src/utils/types';
 import { createVitalSignData } from './dto/factory.dto';
 import { ActivityService } from 'src/activity/activity.service';
+import { ActivityTitles } from 'src/activity/title/activity-title';
 
 @Injectable()
 export class PatientsVitalSignsService {
@@ -29,11 +30,6 @@ export class PatientsVitalSignsService {
       if (!dto.patientId) {
         patient = await this.patientService.create(dto, { tx });
         dto.patientId = patient.id;
-        this.activityService.emit(
-          'Create Patient',
-          dto,
-          this.patientService.createPatientData(dto),
-        );
       }
 
       const latestMR = await tx.patient_medical_records.findFirst({
@@ -63,7 +59,7 @@ export class PatientsVitalSignsService {
       });
 
       this.activityService.emit(
-        'Patient Registration',
+        ActivityTitles.PATIENT_REGISTRATION,
         dto,
         createVitalSignData(dto, queue),
       );
