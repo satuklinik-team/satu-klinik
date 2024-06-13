@@ -238,6 +238,7 @@ model Users {
   Clinics                  Clinics?                  @relation(fields: [clinicsId], references: [id])
   Patient_medical_records  Patient_medical_records[]
   Patient_assessment       Patient_assessment[]
+  Activity                 Activity[]
 }
 
 model Session {
@@ -308,6 +309,7 @@ model Clinics {
   MedicineCategory    MedicineCategory[]
   Revenue             Revenue[]
   Medication_dispense Medication_dispense[]
+  Activity            Activity[]
 }
 
 model regularHours {
@@ -504,6 +506,19 @@ model Revenue {
   total     Decimal
   clinicsId String  @db.Uuid
   clinics   Clinics @relation(fields: [clinicsId], references: [id])
+}
+
+model Activity {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title       String
+  description String?
+  createdAt   DateTime @default(now())
+  createdBy   Users    @relation(fields: [usersId], references: [id])
+  clinics     Clinics  @relation(fields: [clinicsId], references: [id])
+  by          String
+  payload     String?
+  usersId     String   @db.Uuid
+  clinicsId   String   @db.Uuid
 }
 
 model SatuSehatError {

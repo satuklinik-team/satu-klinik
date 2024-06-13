@@ -28,7 +28,7 @@ export class PatientsService {
     const data = await prisma.patient.create({
       data: {
         norm: await this.generateMedicalRecordNorm(dto.clinicsId),
-        ...this._createPatientData(dto),
+        ...this.createPatientData(dto),
       },
     });
 
@@ -41,14 +41,14 @@ export class PatientsService {
         id: dto.id,
       },
       data: {
-        ...this._createPatientData(dto),
+        ...this.createPatientData(dto),
       },
     });
 
     return data;
   }
 
-  private _createPatientData(dto: UpdatePatientDto) {
+  public createPatientData(dto: UpdatePatientDto) {
     return {
       nik: dto.nik,
       fullname: dto.fullname,

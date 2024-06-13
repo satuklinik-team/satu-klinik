@@ -1,10 +1,9 @@
-import { Body, Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Res, UseGuards } from '@nestjs/common';
 import { Public, TokenData } from 'src/utils';
 import { AuthService } from './auth.service';
 import { Response } from 'express';
 import { JwtPayload } from './types';
 import { LoginDto, RegisterDto } from './dto';
-import { Request } from 'express';
 import { RefreshTokenGuard } from './guards';
 
 @Controller('auth')

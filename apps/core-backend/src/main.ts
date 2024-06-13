@@ -19,7 +19,6 @@ async function bootstrap() {
     }),
   );
   app.use(cookieParser());
-  app.use(new LogMiddleware().use);
 
   await app.listen(5050);
 }

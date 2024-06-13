@@ -34,10 +34,15 @@ import { PatientMedicalRecordModule } from './patient-medical-record/patient-med
 import { ResetPasswordModule } from './reset-password/reset-password.module';
 import { MailModule } from './mail/mail.module';
 import { LogMiddleware } from './middlewares/log.middleware';
+import { ActivityModule } from './activity/activity.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true, load: [configuration] }),
+    EventEmitterModule.forRoot({
+      wildcard: true,
+    }),
     Icd10Module,
     PrismaModule,
     AuthModule,
@@ -67,6 +72,7 @@ import { LogMiddleware } from './middlewares/log.middleware';
     PatientMedicalRecordModule,
     ResetPasswordModule,
     MailModule,
+    ActivityModule,
   ],
   providers: [{ provide: APP_GUARD, useClass: AccessTokenGuard }],
 })
