@@ -17,7 +17,6 @@ export function PatientDetailMedicalRecordTable({
     return patient.mr.map((item) => ({
       ...item,
       Patient: patient,
-      visitAt: new Date().toISOString(),
     }));
   }, [patient]);
 
