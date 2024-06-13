@@ -29,12 +29,14 @@ export class PatientsVitalSignsService {
       }
 
       const latestMR = await tx.patient_medical_records.findFirst({
-        where: {},
+        where: {
+          patientId: dto.patientId,
+        },
         orderBy: {
           visitAt: 'desc',
         },
       });
-      if (latestMR.status === 'e1') {
+      if (latestMR?.status === 'e1') {
         throw new PatientAlreadyRegistedException();
       }
 
