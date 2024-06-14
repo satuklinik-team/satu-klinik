@@ -23,7 +23,7 @@ export class PatientMedicalRecordService {
       where: {
         Patient: {
           clinicsId: dto.clinicsId,
-          ...(dto.patientId && { id: dto.patientId }),
+          id: dto.patientId,
         },
         visitLabel: {
           gte: dto.from,

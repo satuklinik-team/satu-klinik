@@ -4,12 +4,12 @@ import { PaginationDto } from 'src/utils/classes';
 
 export class FindAllMRDto extends PaginationDto {
   @IsString()
-  @IsNotEmpty()
-  from: string;
+  @IsOptional()
+  from?: string;
 
   @IsString()
-  @IsNotEmpty()
-  to: string;
+  @IsOptional()
+  to?: string;
 
   @IsString()
   @IsOptional()
