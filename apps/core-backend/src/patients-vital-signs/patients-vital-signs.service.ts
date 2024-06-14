@@ -10,7 +10,7 @@ import { formatDate } from 'src/utils/helpers/format-date.helper';
 import { ServiceContext } from 'src/utils/types';
 import { createVitalSignData } from './dto/factory.dto';
 import { ActivityService } from 'src/activity/activity.service';
-import { ActivityTitles } from 'src/activity/title/activity-title';
+import { ActivityTitles } from 'src/activity/dto/activity.dto';
 
 @Injectable()
 export class PatientsVitalSignsService {
@@ -20,6 +20,7 @@ export class PatientsVitalSignsService {
     private readonly activityService: ActivityService,
   ) {}
 
+  //:TODO: add dto declaration
   async create(dto: any) {
     if (dto.patientId) {
       await this.patientService.canModifyPatient(dto.patientId, dto.clinicsId);
@@ -46,8 +47,9 @@ export class PatientsVitalSignsService {
 
       const queue = await this._getQueueNo(dto.clinicsId, { tx });
 
+      const newMedicalRecord = createVitalSignData(dto, queue);
       const data = await tx.patient_medical_records.create({
-        data: createVitalSignData(dto, queue),
+        data: newMedicalRecord,
         select: {
           id: true,
           status: true,
@@ -58,11 +60,12 @@ export class PatientsVitalSignsService {
         },
       });
 
-      this.activityService.emit(
-        ActivityTitles.PATIENT_REGISTRATION,
-        dto,
-        createVitalSignData(dto, queue),
-      );
+      this.activityService.emit({
+        title: ActivityTitles.PATIENT_REGISTRATION,
+        clinicsId: dto.clinicsId,
+        userId: dto.userId,
+        payload: newMedicalRecord,
+      });
 
       const result = {
         ...data,

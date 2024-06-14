@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { EventEmitter2, OnEvent } from '@nestjs/event-emitter';
 import { Activity } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { ActivityDTO } from './dto/activity.dto';
 
 @Injectable()
 export class ActivityService {
@@ -10,7 +11,7 @@ export class ActivityService {
     private readonly eventEmitter: EventEmitter2,
   ) {}
 
-  @OnEvent('**')
+  @OnEvent('activity.new')
   async handleEverything(payload: Activity) {
     const user = await this.prismaService.users.findFirst({
       where: {
@@ -30,13 +31,10 @@ export class ActivityService {
     });
   }
 
-  async emit(title: string, dto: any, payload: any) {
-    this.eventEmitter.emit(title, {
-      title,
+  async emit(dto: ActivityDTO) {
+    this.eventEmitter.emit('activity.new', {
+      ...dto,
       createdAt: new Date(),
-      usersId: dto.usersId,
-      clinicsId: dto.clinicsId,
-      payload,
     });
   }
 }

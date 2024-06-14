@@ -14,7 +14,7 @@ import { GetPatientByIdDto } from './dto/get-patient-by-id-dto';
 import { ServiceContext } from 'src/utils/types';
 import { UpdatePatientDto } from './dto/update-patient-dto';
 import { formatDate } from 'src/utils/helpers/format-date.helper';
-import { ActivityTitles } from 'src/activity/title/activity-title';
+import { ActivityTitles } from 'src/activity/dto/activity.dto';
 import { ActivityService } from 'src/activity/activity.service';
 import { createPatientData } from './dto/factory.dto';
 
@@ -29,18 +29,21 @@ export class PatientsService {
   async create(dto: CreatePatientDto, context?: ServiceContext) {
     const prisma = this._initPrisma(context?.tx);
 
-    const data = await prisma.patient.create({
+    const patientData = {
       data: {
         norm: await this.generateMedicalRecordNorm(dto.clinicsId),
         ...createPatientData(dto),
       },
-    });
+    };
 
-    this.activityService.emit(
-      ActivityTitles.CREATE_PATIENT,
-      dto,
-      createPatientData(dto),
-    );
+    const data = await prisma.patient.create(patientData);
+
+    this.activityService.emit({
+      title: ActivityTitles.CREATE_PATIENT,
+      userId: dto.usersId,
+      clinicsId: dto.clinicsId,
+      payload: patientData,
+    });
 
     return data;
   }
