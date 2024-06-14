@@ -14,6 +14,8 @@ import { ClinicCard } from "@/features/clinic/components/ui/card";
 import { useGetPatient } from "@/services/patient/hooks/use-get-patient";
 import { getInitial } from "@/utils";
 
+import { PatientDetailMedicalRecordTable } from "../components/tables/patient-detail-medical-record-table";
+
 export function ClinicPatientDetailPage(): JSX.Element | undefined {
   const pathname = usePathname();
   const { patientId } = useParams();
@@ -133,6 +135,9 @@ export function ClinicPatientDetailPage(): JSX.Element | undefined {
             </div>
           </div>
         </div>
+      </ClinicCard>
+      <ClinicCard>
+        <PatientDetailMedicalRecordTable patient={patientData} />
       </ClinicCard>
     </div>
   );

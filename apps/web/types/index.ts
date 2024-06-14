@@ -1,3 +1,5 @@
+import type { Params } from "next/dist/shared/lib/router/utils/route-matcher";
+
 export interface Column<T extends object> {
   key: string;
   name: string;
@@ -11,4 +13,9 @@ export interface Pagination {
 
 export interface FormatterCellProps {
   row: unknown;
+}
+
+export interface RouteParams extends Params {
+  clinicId: string;
+  mrId: string;
 }

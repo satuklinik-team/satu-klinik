@@ -3,7 +3,7 @@ import type { LezzformReturn, LezzformProps } from "@lezzform/react";
 import * as React from "react";
 declare const zodFormSchema: z.ZodObject<
   {
-    name: z.ZodOptional<z.ZodString>;
+    norm: z.ZodOptional<z.ZodString>;
     nik: z.ZodString;
     fullname: z.ZodString;
     sex: z.ZodString;
@@ -26,8 +26,8 @@ declare const zodFormSchema: z.ZodObject<
   {
     height?: number;
     address?: string;
-    name?: string;
     weight?: number;
+    norm?: string;
     nik?: string;
     fullname?: string;
     sex?: string;
@@ -45,8 +45,8 @@ declare const zodFormSchema: z.ZodObject<
   {
     height?: number;
     address?: string;
-    name?: string;
     weight?: number;
+    norm?: string;
     nik?: string;
     fullname?: string;
     sex?: string;

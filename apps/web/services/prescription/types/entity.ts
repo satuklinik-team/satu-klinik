@@ -1,19 +1,19 @@
 import { z } from "zod";
 
 export const prescriptionSchema = z.object({
-  id: z.string().optional(),
-  medicineId: z.string().optional(),
+  id: z.coerce.number().optional(),
+  medicineId: z.coerce.number().optional(),
   medicine: z
     .object({
-      id: z.string(),
+      id: z.coerce.number(),
       title: z.string(),
     })
     .optional(),
-  frequency: z.number(),
-  period: z.number(),
-  doseQuantity: z.number(),
-  supplyDuration: z.number(),
-  totalQuantity: z.number().optional(),
+  frequency: z.coerce.number(),
+  period: z.coerce.number(),
+  doseQuantity: z.coerce.number(),
+  supplyDuration: z.coerce.number(),
+  totalQuantity: z.coerce.number().optional(),
   notes: z.string().optional(),
 });
 

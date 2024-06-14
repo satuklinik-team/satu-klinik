@@ -7,9 +7,9 @@ import {
   FormControl as s,
   FormMessage as u,
   Input as b,
-  EmailInput as w,
-  TextArea as L,
-  Dropdown as v,
+  EmailInput as L,
+  TextArea as v,
+  Dropdown as w,
   PasswordInput as F,
   Spacer as y,
   TwoColumn as P,
@@ -28,8 +28,8 @@ var I = a.object({
     password: a.string().max(14).min(6),
     confirmPassword: a.string().max(14).min(6),
   }),
-  C = "g31HQ3CMYwnZ2wJe1P9f",
-  D = ({
+  C = "dXjXUCRaO8x5WsOCXd6x",
+  O = ({
     onSubmit: c,
     onError: R,
     onSuccess: g,
@@ -92,7 +92,7 @@ var I = a.object({
                     children: [
                       e(t, { isRequired: !0, children: "Email" }),
                       e(s, {
-                        children: e(w, {
+                        children: e(L, {
                           label: "Email",
                           name: o.name,
                           value: o.value ?? "",
@@ -170,7 +170,7 @@ var I = a.object({
                     children: [
                       e(t, { isRequired: !0, children: "Alamat" }),
                       e(s, {
-                        children: e(L, {
+                        children: e(v, {
                           label: "Alamat",
                           name: o.name,
                           value: o.value ?? "",
@@ -194,7 +194,7 @@ var I = a.object({
                     children: [
                       e(t, { isRequired: !0, children: "Role" }),
                       e(s, {
-                        children: e(v.List, {
+                        children: e(w.List, {
                           label: "Role",
                           name: o.name,
                           value: o.value,
@@ -289,4 +289,4 @@ var I = a.object({
       C,
     );
   };
-export { D as Form };
+export { O as Form };
