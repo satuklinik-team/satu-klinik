@@ -12,4 +12,5 @@ export interface PatientMedicalRecordEntity {
   vitalSign?: VitalSignEntity[];
   assessment?: PatientAssessmentEntity[];
   prescription?: PrescriptionEntity[];
+  canModify?: boolean;
 }

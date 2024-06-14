@@ -11,18 +11,22 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { ClinicCard } from "@/features/clinic/components/ui/card";
+import { MedicalRecordTable } from "@/features/clinic-medical-record/components/tables/medical-record-table";
 import { useGetPatient } from "@/services/patient/hooks/use-get-patient";
+import { useFindPatientMedicalRecord } from "@/services/patient-medical-record/hooks/use-find-patient-medical-record";
 import { getInitial } from "@/utils";
-
-import { PatientDetailMedicalRecordTable } from "../components/tables/patient-detail-medical-record-table";
 
 export function ClinicPatientDetailPage(): JSX.Element | undefined {
   const pathname = usePathname();
   const { patientId } = useParams();
 
   const { data: patientData } = useGetPatient(String(patientId));
+  const { data: patientMedicalRecord } = useFindPatientMedicalRecord({
+    patientId,
+    count: true,
+  });
 
-  if (!patientData) return;
+  if (!patientMedicalRecord || !patientData) return;
 
   return (
     <div className="flex flex-col gap-4">
@@ -137,7 +141,7 @@ export function ClinicPatientDetailPage(): JSX.Element | undefined {
         </div>
       </ClinicCard>
       <ClinicCard>
-        <PatientDetailMedicalRecordTable patient={patientData} />
+        <MedicalRecordTable rows={patientMedicalRecord.data} />
       </ClinicCard>
     </div>
   );
