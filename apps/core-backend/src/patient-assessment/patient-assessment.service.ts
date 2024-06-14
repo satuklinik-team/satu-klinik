@@ -13,6 +13,7 @@ import { formatDate } from 'src/utils/helpers/format-date.helper';
 import { MRAlready2DaysException } from 'src/exceptions/bad-request/mr-already-two-days-exception';
 import { ActivityService } from 'src/activity/activity.service';
 import { ActivityTitles } from 'src/activity/dto/activity.dto';
+import { canModifyAssessment } from 'src/utils/helpers/find-day-difference';
 
 @Injectable()
 export class PatientAssessmentService {
@@ -90,11 +91,7 @@ export class PatientAssessmentService {
           throw new DifferentPractitionerException();
         }
 
-        const diffInMilliseconds = Math.abs(
-          assessment.createdAt.getTime() - new Date().getTime(),
-        );
-        const diffInDays = diffInMilliseconds / (1000 * 60 * 60 * 24);
-        if (diffInDays >= 2) {
+        if (!canModifyAssessment(assessment.createdAt)) {
           throw new MRAlready2DaysException();
         }
 
