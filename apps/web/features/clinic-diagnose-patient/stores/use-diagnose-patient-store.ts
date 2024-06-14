@@ -9,13 +9,16 @@ interface UseDiagnosePatientStoreState {
     { mrId, patientId }: { patientId: string; mrId: string },
     data: object
   ) => unknown;
-  getDiagnose: ({
-    mrId,
-    patientId,
-  }: {
-    patientId: string;
-    mrId: string;
-  }) => unknown;
+  getDiagnose: (
+    {
+      mrId,
+      patientId,
+    }: {
+      patientId: string;
+      mrId: string;
+    },
+    defaultValue?: object
+  ) => unknown;
   removeDiagnose: ({
     mrId,
     patientId,
@@ -42,14 +45,10 @@ export const useDiagnosePatientStore = create(
           );
         });
       },
-      getDiagnose({ mrId, patientId }) {
+      getDiagnose({ mrId, patientId }, defaultValue) {
         const diagnose = lodash.get(get().diagnoses, `${patientId}.${mrId}`);
 
-        return {
-          ...(diagnose ?? {}),
-          mrid: mrId,
-          prescriptions: diagnose?.prescriptions ?? [],
-        };
+        return diagnose ?? defaultValue;
       },
       removeDiagnose({ mrId, patientId }) {
         set((state) => {

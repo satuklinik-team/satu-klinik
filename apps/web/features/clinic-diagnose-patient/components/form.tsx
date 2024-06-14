@@ -6,6 +6,7 @@ import { useCallback } from "react";
 
 import { useToast } from "@/components/ui/use-toast";
 import { DiagnosePatientForm } from "@/features/clinic-medical-record-detail/components/form";
+import { useGetPatient } from "@/services/patient/hooks/use-get-patient";
 import { useCreatePatientAssessment } from "@/services/patient-assessment/hooks/use-create-patient-assessment";
 import type {
   CreatePatientAssessmentDto,
@@ -26,6 +27,7 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
   const patientId = searchParams.get("patientId");
 
   const { getDiagnose } = useDiagnosePatientStore();
+  const { data: patientData, isLoading } = useGetPatient(String(patientId));
 
   const { mutateAsync, isPending } = useCreatePatientAssessment();
 
@@ -52,10 +54,19 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
     [clinicId, mrId, mutateAsync, queryClient, router, toast]
   );
 
-  const defaultValues = getDiagnose({
-    mrId,
-    patientId: patientId!,
-  }) as CreatePatientAssessmentSchema;
+  if (isLoading) return <p className="text-sm">Loading...</p>;
+
+  const medicalRecord = patientData?.mr[patientData.mr.length - 1];
+  const vitalSign =
+    medicalRecord?.vitalSign[medicalRecord.vitalSign.length - 1];
+
+  const defaultValues = getDiagnose(
+    {
+      mrId,
+      patientId: patientId!,
+    },
+    { mrid: mrId, prescriptions: [], subjective: vitalSign?.pain }
+  ) as CreatePatientAssessmentSchema;
 
   return (
     <DiagnosePatientForm

@@ -14,6 +14,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useToast } from "@/components/ui/use-toast";
+import { useGetPatient } from "@/services/patient/hooks/use-get-patient";
 import { useFindPatientAssessment } from "@/services/patient-assessment/hooks/use-find-patient-assessment-history";
 import type { CreatePatientAssessmentSchema } from "@/services/patient-assessment/types/dto";
 import type { PatientAssessmentEntity } from "@/services/patient-assessment/types/entity";
@@ -27,6 +28,10 @@ export function ClinicDiagnoseHistory(): JSX.Element {
   const { mrId } = useParams<RouteParams>();
 
   const { toast } = useToast();
+  const { data: patientData } = useGetPatient(String(patientId));
+  const medicalRecord = patientData?.mr[patientData.mr.length - 1];
+  const vitalSign =
+    medicalRecord?.vitalSign[medicalRecord.vitalSign.length - 1];
 
   const { setDiagnose } = useDiagnosePatientStore();
 
@@ -89,7 +94,9 @@ export function ClinicDiagnoseHistory(): JSX.Element {
             icd10Code: row.icd10.code,
             objective: row.objective,
             plan: row.plan,
-            subjective: `${row.subjective}\n====${row.Patient_medical_records.visitLabel}====\n`,
+            subjective: `${vitalSign?.pain ?? ""}\n====${
+              row.Patient_medical_records.visitLabel
+            }====\n${row.subjective}\n`,
             icd9CMCode: row.icd9CM.code,
             mrid: mrId,
             prescriptions: row.Patient_medical_records.prescription,
@@ -124,7 +131,7 @@ export function ClinicDiagnoseHistory(): JSX.Element {
         },
       },
     ];
-  }, [mrId, patientId, setDiagnose, toast]);
+  }, [mrId, patientId, setDiagnose, toast, vitalSign?.pain]);
 
   return (
     <PatientTable<PatientAssessmentEntity>
