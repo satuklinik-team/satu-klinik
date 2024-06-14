@@ -3,6 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { Check, ChevronsUpDown, ImagePlusIcon } from "lucide-react";
+import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -53,6 +54,7 @@ export function ClinicNewItemForm(): JSX.Element {
 
   const form = useForm<CreateMedicineSchema>({
     resolver: zodResolver(createMedicineSchema),
+    mode: "onTouched",
   });
 
   const imageRef = form.register("image");
@@ -99,15 +101,20 @@ export function ClinicNewItemForm(): JSX.Element {
                 <FormLabel>Image</FormLabel>
                 <FormLabel className="block" htmlFor="image">
                   <div className="flex flex-col gap-3 items-center border border-dashed py-8 rounded-lg cursor-pointer">
-                    <ImagePlusIcon
-                      className="text-muted-foreground"
-                      size={32}
-                    />
-                    {imageObject?.name ? (
-                      <p className="text-muted-foreground text-xs font-bold">
-                        {imageObject.name}
-                      </p>
-                    ) : null}
+                    {imageObject ? (
+                      <Image
+                        alt={imageObject.name}
+                        className="object-scale-down"
+                        height={256}
+                        src={URL.createObjectURL(imageObject)}
+                        width={256}
+                      />
+                    ) : (
+                      <ImagePlusIcon
+                        className="text-muted-foreground"
+                        size={32}
+                      />
+                    )}
                     <p className="text-muted-foreground font-bold">
                       {imageObject?.name ? "Change file" : "Upload a file"}
                     </p>
@@ -115,6 +122,7 @@ export function ClinicNewItemForm(): JSX.Element {
                 </FormLabel>
                 <FormControl>
                   <Input
+                    accept="image/*"
                     className="hidden"
                     id="image"
                     type="file"
@@ -131,9 +139,9 @@ export function ClinicNewItemForm(): JSX.Element {
           control={form.control}
           name="categoryId"
           render={({ field: { value, onChange } }) => {
-            const options = medicineCategoryData?.data ?? [];
+            const options = medicineCategoryData.data;
 
-            const label = medicineCategoryData?.data.find(
+            const label = medicineCategoryData.data.find(
               (category) => category.id === value,
             )?.name;
 

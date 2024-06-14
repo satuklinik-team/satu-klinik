@@ -3,31 +3,31 @@ import {
   Lezzform as c,
   FormField as F,
   FormItem as S,
-  FormLabel as p,
-  FormControl as h,
+  FormLabel as h,
+  FormControl as p,
   FormMessage as d,
   Text as b,
   Input as L,
-  Button as P,
+  Button as R,
 } from "@lezzform/react";
-import * as e from "react";
+import * as r from "react";
 import { jsx as o, jsxs as s } from "react/jsx-runtime";
-var R = a.object({ name: a.string().optional() }),
-  u = "lQtPqBCaorkd0kUve5Pw",
+var y = a.object({ name: a.string().optional() }),
+  u = "IUahhwihQw4eqn7lfkVk",
   C = ({
     onSubmit: m,
     onError: i,
     onSuccess: l,
     defaultValues: f,
-    onAction: y,
-    formProps: k,
+    onAction: k,
+    formProps: P,
   }) => {
-    let t = e.useRef();
-    e.useEffect(() => {
+    let t = r.useRef();
+    r.useEffect(() => {
       m && (t.current = m);
     }, [m]);
-    let z = e.useCallback(async (n, r) => {
-      if (t.current) return t.current(n, r);
+    let z = r.useCallback(async (n, e) => {
+      if (t.current) return t.current(n, e);
     }, []);
     return o(
       c,
@@ -37,7 +37,7 @@ var R = a.object({ name: a.string().optional() }),
         onSubmit: z,
         onError: i,
         onSuccess: l,
-        zodSchema: R,
+        zodSchema: y,
         mode: "onTouched",
         children: (n) =>
           s(c.Container, {
@@ -46,19 +46,19 @@ var R = a.object({ name: a.string().optional() }),
               o(F, {
                 control: n.control,
                 name: "name",
-                render: ({ field: r }) =>
+                render: ({ field: e }) =>
                   s(S, {
                     children: [
-                      o(p, { children: "Name" }),
-                      o(h, {
+                      o(h, { children: "Name" }),
+                      o(p, {
                         children: o(L, {
                           label: "Name",
-                          name: r.name,
-                          value: r.value ?? "",
-                          onBlur: r.onBlur,
-                          onChange: r.onChange,
+                          name: e.name,
+                          value: e.value ?? "",
+                          onBlur: e.onBlur,
+                          onChange: e.onChange,
                           placeholder: "",
-                          disabled: r.disabled,
+                          disabled: e.disabled,
                           styles: { root: {} },
                         }),
                       }),
@@ -66,7 +66,7 @@ var R = a.object({ name: a.string().optional() }),
                     ],
                   }),
               }),
-              o(P, {
+              o(R, {
                 type: "submit",
                 className: "w-full",
                 disabled: n.formState.isSubmitting,

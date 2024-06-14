@@ -29,6 +29,7 @@ export class TasksController {
   }
 
   @Get('chart')
+  @Roles(Role.ADMIN, Role.DOCTOR)
   getMRChart(@Query() dto: GetMRChartDto, @TokenData() tokenData: JwtPayload) {
     return this.tasksService.getMRChart({
       ...dto,

@@ -4,16 +4,16 @@ import {
   FormField as a,
   FormItem as m,
   FormLabel as l,
-  FormControl as s,
-  FormMessage as u,
+  FormControl as u,
+  FormMessage as s,
   Attachment as R,
-  Dropdown as v,
-  Input as L,
+  Dropdown as L,
+  Input as v,
   NumberInput as p,
-  TwoColumn as k,
+  TwoColumn as I,
   Button as h,
 } from "@lezzform/react";
-import { ChevronDown as I } from "lucide-react";
+import { ChevronDown as k } from "lucide-react";
 import * as c from "react";
 import { jsx as e, jsxs as n } from "react/jsx-runtime";
 var w = t.object({
@@ -24,14 +24,14 @@ var w = t.object({
     stock: t.coerce.number(),
     discount: t.coerce.number().optional(),
   }),
-  g = "KYQrhxNS1K1sWrjkfXzb",
-  E = ({
+  g = "8VtJVBAlIEAVK4ZuxsLl",
+  f = ({
     onSubmit: i,
     onError: z,
     onSuccess: C,
     defaultValues: y,
-    onAction: P,
-    formProps: B,
+    onAction: B,
+    formProps: P,
   }) => {
     let b = c.useRef();
     c.useEffect(() => {
@@ -60,7 +60,7 @@ var w = t.object({
                   n(m, {
                     children: [
                       e(l, { isRequired: !0, children: "Image" }),
-                      e(s, {
+                      e(u, {
                         children: e(R, {
                           label: "Image",
                           name: o.name,
@@ -82,7 +82,7 @@ var w = t.object({
                           styles: { root: {} },
                         }),
                       }),
-                      e(u, {}),
+                      e(s, {}),
                     ],
                   }),
               }),
@@ -93,8 +93,8 @@ var w = t.object({
                   n(m, {
                     children: [
                       e(l, { isRequired: !0, children: "Category" }),
-                      e(s, {
-                        children: e(v, {
+                      e(u, {
+                        children: e(L, {
                           label: "Category",
                           name: o.name,
                           value: o.value,
@@ -109,11 +109,11 @@ var w = t.object({
                           disabled: o.disabled,
                           styles: { root: {} },
                           suffixAdornment: {
-                            icon: e(I, { size: 18, color: "#000000" }),
+                            icon: e(k, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
-                      e(u, {}),
+                      e(s, {}),
                     ],
                   }),
               }),
@@ -124,8 +124,8 @@ var w = t.object({
                   n(m, {
                     children: [
                       e(l, { isRequired: !0, children: "Title" }),
-                      e(s, {
-                        children: e(L, {
+                      e(u, {
+                        children: e(v, {
                           label: "Title",
                           name: o.name,
                           value: o.value ?? "",
@@ -137,7 +137,7 @@ var w = t.object({
                           styles: { root: {} },
                         }),
                       }),
-                      e(u, {}),
+                      e(s, {}),
                     ],
                   }),
               }),
@@ -148,7 +148,7 @@ var w = t.object({
                   n(m, {
                     children: [
                       e(l, { children: "Price" }),
-                      e(s, {
+                      e(u, {
                         children: e(p, {
                           label: "Price",
                           name: o.name,
@@ -160,7 +160,7 @@ var w = t.object({
                           styles: { root: {} },
                         }),
                       }),
-                      e(u, {}),
+                      e(s, {}),
                     ],
                   }),
               }),
@@ -171,7 +171,7 @@ var w = t.object({
                   n(m, {
                     children: [
                       e(l, { isRequired: !0, children: "Quantity" }),
-                      e(s, {
+                      e(u, {
                         children: e(p, {
                           label: "Quantity",
                           name: o.name,
@@ -184,7 +184,7 @@ var w = t.object({
                           styles: { root: {} },
                         }),
                       }),
-                      e(u, {}),
+                      e(s, {}),
                     ],
                   }),
               }),
@@ -195,7 +195,7 @@ var w = t.object({
                   n(m, {
                     children: [
                       e(l, { children: "Discount" }),
-                      e(s, {
+                      e(u, {
                         children: e(p, {
                           label: "Discount",
                           name: o.name,
@@ -207,11 +207,11 @@ var w = t.object({
                           styles: { root: {} },
                         }),
                       }),
-                      e(u, {}),
+                      e(s, {}),
                     ],
                   }),
               }),
-              n(k, {
+              n(I, {
                 styles: { root: {} },
                 children: [
                   e(h, {
@@ -236,4 +236,4 @@ var w = t.object({
       g,
     );
   };
-export { E as Form };
+export { f as Form };

@@ -15,5 +15,6 @@ export interface PatientEntity {
     queue: string;
     status: string;
     vitalSign: VitalSignEntity[];
+    visitAt: string;
   }[];
 }

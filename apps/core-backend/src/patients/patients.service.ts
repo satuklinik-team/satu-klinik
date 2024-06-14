@@ -84,12 +84,24 @@ export class PatientsService {
   async getPatientById(dto: GetPatientByIdDto) {
     this.canModifyPatient(dto.id, dto.clinicsId);
 
-    return await this.prismaService.patient.findFirst({
+    const data = await this.prismaService.patient.findFirst({
       where: {
         id: dto.id,
       },
       select: this._findAllSelectFactory(),
     });
+
+    const result = {
+      ...data,
+      mr: data.mr.map((entry: any) => {
+        return {
+          ...entry,
+          visitAt: entry.visitAt.toLocaleString('en-GB'),
+        };
+      }),
+    };
+
+    return result;
   }
 
   async delete(dto: DeletePatientDto) {
@@ -230,6 +242,7 @@ export class PatientsService {
           queue: true,
           status: true,
           vitalSign: true,
+          visitAt: true,
         },
       },
     };

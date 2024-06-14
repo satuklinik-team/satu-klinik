@@ -1,13 +1,13 @@
 import { z as a } from "zod";
 import {
-  Lezzform as C,
+  Lezzform as p,
   FormField as l,
   FormItem as t,
   FormLabel as m,
   FormControl as s,
   FormMessage as u,
   Input as b,
-  Dropdown as p,
+  Dropdown as C,
   DatePicker as q,
   PhoneNumberInput as I,
   TextArea as y,
@@ -26,7 +26,7 @@ import {
 import * as d from "react";
 import { jsx as o, jsxs as r } from "react/jsx-runtime";
 var T = a.object({
-    name: a.string().optional(),
+    norm: a.string().optional(),
     nik: a.string(),
     fullname: a.string(),
     sex: a.string(),
@@ -53,14 +53,14 @@ var T = a.object({
     temperature: a.coerce.number(),
     pain: a.string(),
   }),
-  B = "KlMzGCVXs3qjggfLn1OJ",
-  M = ({
+  B = "5t7K2k2yjJ0Z6AEBnxXW",
+  J = ({
     onSubmit: c,
     onError: F,
     onSuccess: L,
     defaultValues: z,
-    onAction: D,
-    formProps: x,
+    onAction: x,
+    formProps: D,
   }) => {
     let h = d.useRef();
     d.useEffect(() => {
@@ -70,7 +70,7 @@ var T = a.object({
       if (h.current) return h.current(n, e);
     }, []);
     return o(
-      C,
+      p,
       {
         id: B,
         defaultValues: z,
@@ -80,11 +80,11 @@ var T = a.object({
         zodSchema: T,
         mode: "onTouched",
         children: (n) =>
-          r(C.Container, {
+          r(p.Container, {
             children: [
               o(l, {
                 control: n.control,
-                name: "name",
+                name: "norm",
                 disabled: !0,
                 render: ({ field: e }) =>
                   r(t, {
@@ -171,7 +171,7 @@ var T = a.object({
                     children: [
                       o(m, { isRequired: !0, children: "Jenis Kelamin" }),
                       o(s, {
-                        children: o(p.List, {
+                        children: o(C.List, {
                           label: "Jenis Kelamin",
                           name: e.name,
                           value: e.value,
@@ -197,7 +197,7 @@ var T = a.object({
                     children: [
                       o(m, { isRequired: !0, children: "Golongan Darah" }),
                       o(s, {
-                        children: o(p.List, {
+                        children: o(C.List, {
                           label: "Golongan Darah",
                           name: e.name,
                           value: e.value,
@@ -551,4 +551,4 @@ var T = a.object({
       B,
     );
   };
-export { M as Form };
+export { J as Form };

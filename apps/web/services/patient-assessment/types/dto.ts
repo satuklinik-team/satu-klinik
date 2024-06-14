@@ -18,3 +18,4 @@ export type CreatePatientAssessmentSchema = z.infer<
 >;
 
 export type CreatePatientAssessmentDto = CreatePatientAssessmentSchema;
+export type UpdatePatientAssesmentDto = CreatePatientAssessmentDto;

@@ -36,7 +36,7 @@ export class PatientsController {
   }
 
   @Get()
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMIN, Role.DOCTOR)
   async findAll(
     @Query() dto: FindAllPatientsDto,
     @TokenData() tokenData: JwtPayload,
@@ -63,6 +63,7 @@ export class PatientsController {
   }
 
   @Get(':id')
+  @Roles(Role.ADMIN, Role.DOCTOR)
   async getPatientById(
     @Param('id') id: string,
     @TokenData() tokenData: JwtPayload,

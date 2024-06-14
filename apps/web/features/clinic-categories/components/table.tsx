@@ -58,33 +58,46 @@ export function ClinicCategoryTable(): JSX.Element {
       {
         key: "action",
         name: "Action",
-        renderCell: (row: MedicineCategoryEntity) => (
-          <Cell className="gap-2">
-            <TooltipProvider>
-              <Tooltip>
-                <Link
-                  href={`/clinic/${clinicId as string}/categories/${row.id}/edit`}
-                >
-                  <TooltipTrigger className="h-min p-2">
-                    <Edit size={20} />
+        renderCell: (row: MedicineCategoryEntity) => {
+          const isContainMedicine = Boolean(row._count.Medicine);
+          return (
+            <Cell className="gap-2">
+              <TooltipProvider>
+                <Tooltip>
+                  <Link
+                    href={`/clinic/${clinicId as string}/categories/${row.id}/edit`}
+                  >
+                    <TooltipTrigger className="h-min p-2">
+                      <Edit size={20} />
+                    </TooltipTrigger>
+                  </Link>
+                  <TooltipContent>Edit Kategori</TooltipContent>
+                </Tooltip>
+                <Tooltip delayDuration={100}>
+                  <TooltipTrigger asChild>
+                    <div>
+                      <Button
+                        disabled={isContainMedicine}
+                        onClick={() => {
+                          setToBeDeletedId(String(row.id));
+                        }}
+                        size="sm"
+                        variant="ghost"
+                      >
+                        <Trash className="text-red-500" size={20} />
+                      </Button>
+                    </div>
                   </TooltipTrigger>
-                </Link>
-                <TooltipContent>Edit Kategori</TooltipContent>
-              </Tooltip>
-              <Tooltip>
-                <TooltipTrigger
-                  className="h-min p-2"
-                  onClick={() => {
-                    setToBeDeletedId(String(row.id));
-                  }}
-                >
-                  <Trash className="text-red-500" size={20} />
-                </TooltipTrigger>
-                <TooltipContent>Hapus Kategori</TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </Cell>
-        ),
+                  <TooltipContent>
+                    {!isContainMedicine
+                      ? "Hapus Kategori"
+                      : "Tidak bisa hapus karena ada obat"}
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </Cell>
+          );
+        },
       },
     ];
   }, [clinicId]);
@@ -98,8 +111,8 @@ export function ClinicCategoryTable(): JSX.Element {
           setPagination(currentPagination);
         }}
         pagination={pagination}
-        rows={data?.data ?? []}
-        totalRows={data?.count}
+        rows={data.data}
+        totalRows={data.count}
       />
       <AlertDialog
         onOpenChange={(value) => {
