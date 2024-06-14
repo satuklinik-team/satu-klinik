@@ -75,6 +75,7 @@ export class PatientMedicalRecordService {
 
     const result = {
       ...data,
+      visitAt: data.visitAt.toLocaleString('en-GB'),
       canModify: canModifyAssessment(data.assessment[0]?.createdAt),
     };
 
