@@ -1,10 +1,8 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { useCallback } from "react";
 
 import { useToast } from "@/components/ui/use-toast";
 import { DiagnosePatientForm } from "@/features/clinic-medical-record-detail/components/form";
@@ -14,10 +12,11 @@ import type {
   CreatePatientAssessmentDto,
   CreatePatientAssessmentSchema,
 } from "@/services/patient-assessment/types/dto";
-import { createPatientAssessmentSchema } from "@/services/patient-assessment/types/dto";
 import { PharmacyTaskQueryKeyFactory } from "@/services/pharmacy-task/utils/query-key.factory";
 import { TasksStatusQueryKeyFactory } from "@/services/tasks-status/utils/query-key.factory";
 import type { RouteParams } from "@/types";
+
+import { useDiagnosePatientStore } from "../stores/use-diagnose-patient-store";
 
 export function ClinicDiagnosePatientForm(): JSX.Element {
   const queryClient = useQueryClient();
@@ -27,12 +26,8 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
   const searchParams = useSearchParams();
   const patientId = searchParams.get("patientId");
 
-  const { data: patientData } = useGetPatient(String(patientId));
-
-  const form = useForm<CreatePatientAssessmentSchema>({
-    resolver: zodResolver(createPatientAssessmentSchema),
-    defaultValues: { mrid: mrId, prescriptions: [] },
-  });
+  const { getDiagnose } = useDiagnosePatientStore();
+  const { data: patientData, isLoading } = useGetPatient(String(patientId));
 
   const { mutateAsync, isPending } = useCreatePatientAssessment();
 
@@ -56,16 +51,31 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
 
       router.push(`/clinic/${clinicId}/doctor`);
     },
-    [clinicId, mrId, mutateAsync, queryClient, router, toast],
+    [clinicId, mrId, mutateAsync, queryClient, router, toast]
   );
 
-  useEffect(() => {
-    const defaultSubjective = patientData?.mr[0]?.vitalSign[0].pain;
+  if (isLoading) return <p className="text-sm">Loading...</p>;
 
-    if (defaultSubjective) {
-      form.setValue("subjective", defaultSubjective);
-    }
-  }, [form, patientData?.mr]);
+  const medicalRecord = patientData?.mr[patientData.mr.length - 1];
+  const vitalSign =
+    medicalRecord?.vitalSign[medicalRecord.vitalSign.length - 1];
 
-  return <DiagnosePatientForm isLoading={isPending} onSubmit={onSubmit} />;
+  const defaultValues = getDiagnose(
+    {
+      mrId,
+      patientId: patientId!,
+    },
+    { mrid: mrId, prescriptions: [], subjective: vitalSign?.pain }
+  ) as CreatePatientAssessmentSchema;
+
+  return (
+    <DiagnosePatientForm
+      defaultValues={defaultValues}
+      isLoading={isPending}
+      onSubmit={onSubmit}
+      // onValuesChange={(values) => {
+      //   setDiagnose({ mrId, patientId: patientId! }, values);
+      // }}
+    />
+  );
 }

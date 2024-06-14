@@ -1,5 +1,7 @@
+"use client";
+
 import { ClinicPharmacyFinishPatientProfile } from "../components/patient-profile";
-import { ClinicPharmacyFinishPrescriptionsTable } from "../components/prescriptions-table";
+import { ClinicPharmacyPrescriptions } from "../components/prescriptions";
 
 export function ClinicPharmacyFinishPage(): JSX.Element {
   return (
@@ -10,7 +12,7 @@ export function ClinicPharmacyFinishPage(): JSX.Element {
 
       <div className="flex flex-row items-start gap-3">
         <ClinicPharmacyFinishPatientProfile />
-        <ClinicPharmacyFinishPrescriptionsTable />
+        <ClinicPharmacyPrescriptions />
       </div>
     </div>
   );

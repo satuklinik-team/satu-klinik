@@ -11,6 +11,7 @@ import { useGetNotification } from "@/services/tasks-status/services/use-get-not
 import { UserButton } from "../../../../components/layout/user-button";
 import { useClinicLayoutStore } from "../../stores/use-clinic-layout-store";
 import { leftBarGroups } from "../../utils";
+import { getIsValidMenuAccess, isValidMenuAccess } from "../../utils/helpers";
 import { LeftBarGroup } from "../ui/left-bar-group";
 import { LeftBarItem } from "../ui/left-bar-item";
 import { LeftBarTitle } from "../ui/left-bar-title";
@@ -28,15 +29,35 @@ export function LeftBar({ className, ...rest }: LeftBarProps): JSX.Element {
   const reducedPathname = pathname.replace(`clinic/${clinicId as string}`, "");
 
   const authorizedleftBarGroups = useMemo(() => {
-    if (roles === "PHARMACY")
-      return leftBarGroups.filter((item) => item.id === "3");
+    // if (roles === "PHARMACY")
+    //   return leftBarGroups.filter((item) => item.id === "3");
 
-    if (roles === "DOCTOR")
-      return leftBarGroups.filter(
-        (item) => item.id === "1" || item.id === "2" || item.id === "4",
-      );
+    // if (roles === "DOCTOR")
+    //   return leftBarGroups.filter((item) => {
+    //     // return ["1", "2", "4", "5"].includes(item.id);
+    //     const isValidGroup = getIsValidMenuAccess("DOCTOR")
+    //   });
 
-    return leftBarGroups;
+    return leftBarGroups
+      .filter((item) => {
+        const isValid = item.items
+          .map((menu) =>
+            getIsValidMenuAccess(roles, { groupId: item.id, menuId: menu.id }),
+          )
+          .includes(true);
+
+        return isValid;
+      })
+      .map((item) => {
+        const newItems = item.items.filter((menu) => {
+          const access = isValidMenuAccess(roles);
+          if (access.menu["*"]) return true;
+
+          return access.menu[item.id].includes(menu.id);
+        });
+
+        return { ...item, items: newItems };
+      });
   }, [roles]);
 
   return (

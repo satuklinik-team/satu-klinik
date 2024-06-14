@@ -1,14 +1,22 @@
 import { z } from "zod";
 
+export const medicineSchema = z.object({
+  id: z.coerce.number(),
+  title: z.string(),
+  price: z.coerce.number(),
+  stock: z.coerce.number(),
+  discount: z.coerce.number(),
+  imageUrl: z.string(),
+  kfaCode: z.string(),
+  satuSehatId: z.string().nullable(),
+  categoryId: z.coerce.number(),
+  syncWithSatuSehat: z.boolean(),
+});
+
 export const prescriptionSchema = z.object({
   id: z.coerce.number().optional(),
   medicineId: z.coerce.number().optional(),
-  medicine: z
-    .object({
-      id: z.coerce.number(),
-      title: z.string(),
-    })
-    .optional(),
+  Medicine: medicineSchema.optional(),
   frequency: z.coerce.number(),
   period: z.coerce.number(),
   doseQuantity: z.coerce.number(),

@@ -7,6 +7,7 @@ export interface LeftBarGroup {
 }
 
 export interface LeftBarItem {
+  id: string;
   icon: LucideIcon;
   text: string;
   path: string;

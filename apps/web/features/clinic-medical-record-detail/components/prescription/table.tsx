@@ -45,10 +45,10 @@ export function PrescriptionTable({
       if (!onChangeRef.current) return;
 
       onChangeRef.current(
-        value.filter((item) => item.medicineId !== medicineId),
+        value.filter((item) => item.medicineId !== medicineId)
       );
     },
-    [value],
+    [value]
   );
 
   const [selectedPrescription, setSelectedPrescription] =
@@ -66,7 +66,7 @@ export function PrescriptionTable({
       setSelectedPrescription(null);
       onClose();
     },
-    [onClose, onOpen],
+    [onClose, onOpen]
   );
 
   const columns = useMemo(() => {
@@ -77,7 +77,7 @@ export function PrescriptionTable({
         renderCell: (prescription: PrescriptionEntity) => (
           <Cell className="flex flex-col items-start gap-0">
             <p className="text-base font-semibold">
-              {prescription.medicine?.title}
+              {prescription.Medicine?.title}
             </p>
             <p className="text-muted-foreground">{prescription.notes}</p>
           </Cell>
@@ -184,7 +184,7 @@ export function PrescriptionTable({
           if (!onChangeRef.current) return;
 
           const findSameMedicine = value.find(
-            (item) => item.medicineId === prescription.medicineId,
+            (item) => item.medicineId === prescription.medicineId
           );
           if (
             findSameMedicine &&
@@ -214,7 +214,7 @@ export function PrescriptionTable({
                 if (item.medicineId === prescription.medicineId)
                   return newPrescription;
                 return item;
-              }),
+              })
             );
             return;
           }
