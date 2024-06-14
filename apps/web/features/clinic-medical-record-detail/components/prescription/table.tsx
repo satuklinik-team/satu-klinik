@@ -186,7 +186,10 @@ export function PrescriptionTable({
           const findSameMedicine = value.find(
             (item) => item.medicineId === prescription.medicineId,
           );
-          if (findSameMedicine) {
+          if (
+            findSameMedicine &&
+            findSameMedicine.medicineId !== selectedPrescription?.medicineId
+          ) {
             toast({
               title: "Terjadi Kesalahan!",
               description: "Tidak boleh mendaftarkan obat yang sama",
@@ -199,7 +202,6 @@ export function PrescriptionTable({
 
           const newPrescription: PrescriptionEntity = {
             ...prescription,
-            medicineId: prescription.medicine?.id,
             totalQuantity:
               prescription.supplyDuration *
               prescription.frequency *

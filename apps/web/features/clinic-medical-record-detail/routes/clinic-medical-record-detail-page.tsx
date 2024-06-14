@@ -1,6 +1,6 @@
 "use client";
 
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams } from "next/navigation";
 
 import { ClinicCard } from "@/features/clinic/components/ui/card";
 import { PatientProfileContent } from "@/features/clinic-diagnose-patient/components/patient-profile-content";
@@ -8,24 +8,19 @@ import { useGetPatientMedicalRecord } from "@/services/patient-medical-record/ho
 import type { PatientMedicalRecordEntity } from "@/services/patient-medical-record/types/entity";
 import type { RouteParams } from "@/types";
 
-import { DiagnosePatientForm } from "../components/form";
+import { MedicalRecordDetailDiagnoseForm } from "../components/medical-record-detail-diagnose-form";
 
 export function ClinicMedicalRecordDetailPage(): React.JSX.Element {
   const { mrId } = useParams<RouteParams>();
   const { data: patientMedicalRecord, isLoading } =
     useGetPatientMedicalRecord(mrId);
 
-  const searchParams = useSearchParams();
-  const isEdit = searchParams.get("edit") === "true";
+  const medicalRecord =
+    patientMedicalRecord as Required<PatientMedicalRecordEntity>;
 
   if (isLoading) return <>Loading...</>;
 
-  const medicalRecord =
-    patientMedicalRecord as Required<PatientMedicalRecordEntity>;
   const vitalSign = medicalRecord.vitalSign[medicalRecord.vitalSign.length - 1];
-  const assessment =
-    medicalRecord.assessment[medicalRecord.assessment.length - 1];
-
   const formattedVisitAt = medicalRecord.visitAt;
 
   return (
@@ -43,38 +38,8 @@ export function ClinicMedicalRecordDetailPage(): React.JSX.Element {
         />
       </ClinicCard>
       <ClinicCard className="mt-4">
-        <DiagnosePatientForm
-          defaultValues={{
-            icd10Code: assessment.icd10Code,
-            icd9CMCode: assessment.icd9CMCode,
-            mrid: mrId,
-            prescriptions: medicalRecord.prescription,
-            plan: assessment.plan,
-            assessment: assessment.assessment,
-            objective: assessment.objective,
-            subjective: assessment.subjective,
-          }}
-          isReadOnly={!isEdit}
-          onSubmit={(values) => {
-            console.log({ values });
-          }}
-        />
+        <MedicalRecordDetailDiagnoseForm medicalRecord={medicalRecord} />
       </ClinicCard>
-      {/* <ClinicDiagnosePatientProfile />
-      <ClinicCard className="mt-6">
-        <Tabs defaultValue="soap">
-          <TabsList className="flex flex-row justify-start gap-1 mb-4">
-            <TabsTrigger value="soap">SOAP</TabsTrigger>
-            <TabsTrigger value="history">History</TabsTrigger>
-          </TabsList>
-          <TabsContent value="soap">
-            <ClinicDiagnosePatientForm />
-          </TabsContent>
-          <TabsContent value="history">
-            <ClinicDiagnoseHistory />
-          </TabsContent>
-        </Tabs>
-      </ClinicCard> */}
     </div>
   );
 }

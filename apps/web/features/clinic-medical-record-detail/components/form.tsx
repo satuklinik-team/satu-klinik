@@ -21,19 +21,18 @@ import { createPatientAssessmentSchema } from "@/services/patient-assessment/typ
 
 import { PrescriptionTable } from "./prescription/table";
 
-// import { ClinicDiagnosePatientPrescriptionForm } from "./prescription-form";
-// import { ClinicDiagnosePatientPrescriptionTable } from "./prescription-table";
-
 interface DiagnosePatientFormProps {
   isReadOnly?: boolean;
   onSubmit: SubmitHandler<CreatePatientAssessmentSchema>;
   defaultValues?: DefaultValues<CreatePatientAssessmentSchema>;
+  isLoading?: boolean;
 }
 
 export function DiagnosePatientForm({
   isReadOnly,
   onSubmit,
   defaultValues,
+  isLoading,
 }: DiagnosePatientFormProps): JSX.Element {
   const form = useForm<CreatePatientAssessmentSchema>({
     resolver: zodResolver(createPatientAssessmentSchema),
@@ -219,32 +218,11 @@ export function DiagnosePatientForm({
           }}
         />
 
-        {/* <div className="space-y-2 mt-3">
-            <p className="text-sm font-medium">Prescriptions</p>
-            <div className="flex flex-col gap-3">
-              <ClinicDiagnosePatientPrescriptionTable
-                onDelete={remove}
-                onEdit={(currentPrescription) => {
-                  setOnEditPrescription(currentPrescription);
-                }}
-                prescriptions={prescriptions}
-              />
-              <Button
-                className="w-min"
-                onClick={() => {
-                  setOnAddPrescription(true);
-                }}
-                size="sm"
-                type="button"
-                variant="ghost"
-              >
-                + Add More
-              </Button>
-            </div>
-          </div> */}
         {!isReadOnly && (
-          <div className="flex flex-row justify-end">
-            <Button className="mt-4">Simpan</Button>
+          <div className="flex w-full">
+            <Button className="mt-4 w-full" disabled={isLoading}>
+              {!isLoading ? "Simpan" : "Loading..."}
+            </Button>
           </div>
         )}
       </form>
