@@ -14,4 +14,8 @@ export class FindAllMRDto extends PaginationDto {
   @IsString()
   @IsOptional()
   clinicsId?: string;
+
+  @IsString()
+  @IsOptional()
+  patientId?: string;
 }

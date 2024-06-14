@@ -11,7 +11,7 @@ import { UpdatePatientAssessmentDto } from './dto/update-patient-assessment.dto'
 import { DifferentPractitionerException } from 'src/exceptions/bad-request/different-practitioner-exception';
 import { formatDate } from 'src/utils/helpers/format-date.helper';
 import { MRAlready2DaysException } from 'src/exceptions/bad-request/mr-already-two-days-exception';
-import { dayDifference } from 'src/utils/helpers/find-day-difference';
+import { canModifyAssessment } from 'src/utils/helpers/find-day-difference';
 
 @Injectable()
 export class PatientAssessmentService {
@@ -73,7 +73,7 @@ export class PatientAssessmentService {
           throw new DifferentPractitionerException();
         }
 
-        if (dayDifference(assessment.createdAt, new Date()) >= 2) {
+        if (!canModifyAssessment(assessment.createdAt)) {
           throw new MRAlready2DaysException();
         }
 

@@ -8,6 +8,7 @@ import { GetMRByIdDto } from './dto/get-mr-by-id.dto';
 import { PatientsService } from 'src/patients/patients.service';
 import { DeleteMRByIdDto } from './dto/delete-mr-by-id.dto';
 import { AlreadyIntegratedException } from 'src/exceptions/bad-request/already-integrated-exception';
+import { canModifyAssessment } from 'src/utils/helpers/find-day-difference';
 
 @Injectable()
 export class PatientMedicalRecordService {
@@ -22,6 +23,7 @@ export class PatientMedicalRecordService {
       where: {
         Patient: {
           clinicsId: dto.clinicsId,
+          ...(dto.patientId && { id: dto.patientId }),
         },
         visitLabel: {
           gte: dto.from,
@@ -46,6 +48,7 @@ export class PatientMedicalRecordService {
         return {
           ...entry,
           visitAt: entry.visitAt.toLocaleString('en-GB'),
+          canModify: canModifyAssessment(entry.assessment[0]?.createdAt),
         };
       }),
     };
@@ -56,13 +59,12 @@ export class PatientMedicalRecordService {
   async getById(dto: GetMRByIdDto) {
     await this.canModifyMR(dto.id, dto.clinicsId);
 
-    return await this.prismaService.patient_medical_records.findFirst({
+    const data = await this.prismaService.patient_medical_records.findFirst({
       where: {
         id: dto.id,
       },
       select: {
         ...this._findAllSelectFactory(),
-        assessment: true,
         prescription: {
           where: {
             status: 'completed',
@@ -70,6 +72,13 @@ export class PatientMedicalRecordService {
         },
       },
     });
+
+    const result = {
+      ...data,
+      canModify: canModifyAssessment(data.assessment[0]?.createdAt),
+    };
+
+    return result;
   }
 
   async deleteById(dto: DeleteMRByIdDto) {
@@ -124,6 +133,7 @@ export class PatientMedicalRecordService {
       Patient: true,
       status: true,
       vitalSign: true,
+      assessment: true,
     };
   }
 }
