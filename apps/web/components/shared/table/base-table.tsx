@@ -50,13 +50,16 @@ export function BaseTable<T extends object>({
   const columns = useMemo(() => {
     const currentColumns = rawColumns.map((column) => {
       const Cell = column.renderCell;
+      const HeaderRender = column.renderHeader;
 
       return columnHelper.accessor(
         (row) => (row as Record<string, unknown>)[column.key],
         {
           id: column.key,
           header: ({ column: headerColumn }) =>
-            HeaderCell({ headerColumn, name: column.name }),
+            HeaderRender
+              ? HeaderRender()
+              : HeaderCell({ headerColumn, name: column.name }),
           cell: ({ row }) => {
             return Cell(row.original);
           },

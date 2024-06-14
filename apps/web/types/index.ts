@@ -4,6 +4,7 @@ export interface Column<T extends object> {
   key: string;
   name: string;
   renderCell: (row: T) => JSX.Element;
+  renderHeader?: () => JSX.Element;
 }
 
 export interface Pagination {
