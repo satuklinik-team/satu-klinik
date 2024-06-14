@@ -38,7 +38,7 @@ export class ClinicsController {
   }
 
   @Get('users')
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMIN, Role.DOCTOR)
   async FindClinicUsers(
     @Query() dto: FindClinicUsersDto,
     @TokenData() tokenData: JwtPayload,

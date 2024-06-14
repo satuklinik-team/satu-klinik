@@ -1,35 +1,8 @@
 "use client";
 
-import { useQueryClient } from "@tanstack/react-query";
 import { useDebounce } from "@uidotdev/usehooks";
-import {
-  Eye,
-  HeartPulse,
-  MessageCircle,
-  Stethoscope,
-  Trash,
-} from "lucide-react";
-import Link from "next/link";
-import { useParams } from "next/navigation";
 import { useMemo, useState } from "react";
 
-import { BloodBagOutlineIcon } from "@/components/icons/blood-bag-outline";
-import { HeightFilledIcon } from "@/components/icons/height-filled";
-import { LungOutlineIcon } from "@/components/icons/lung-outline";
-import { ScaleOutlineIcon } from "@/components/icons/scale-outline";
-import { ThermometerOutlineIcon } from "@/components/icons/thermometer-outline";
-import { BaseTable } from "@/components/shared/table/base-table";
-import { Cell } from "@/components/shared/table/cell";
-import {
-  AlertDialog,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -40,30 +13,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { useToast } from "@/components/ui/use-toast";
 import { ClinicCard } from "@/features/clinic/components/ui/card";
-import { ClinicPatientVitals } from "@/features/clinic-patient/components/shared/vitals";
-import { useDeletePatientMedicalRecord } from "@/services/patient-medical-record/hooks/use-delete-patient-medical-record";
 import { useFindPatientMedicalRecord } from "@/services/patient-medical-record/hooks/use-find-patient-medical-record";
-import type { PatientMedicalRecordEntity } from "@/services/patient-medical-record/types/entity";
-import { PatientMedicalRecordQueryKeyFactory } from "@/services/patient-medical-record/utils/query-key.factory";
-import type { Pagination, RouteParams } from "@/types";
-import { getInitial, getWhatsappUrl } from "@/utils";
+import type { Pagination } from "@/types";
 
+import { MedicalRecordTable } from "../components/tables/medical-record-table";
 import { timeRangeOptions } from "../utils";
 
 export function ClinicMedicalRecordPage(): JSX.Element {
-  const { clinicId } = useParams<RouteParams>();
-  const { toast } = useToast();
-
-  const queryClient = useQueryClient();
-
   const [pagination, setPagination] = useState<Pagination>({
     skip: 0,
     limit: 20,
@@ -86,130 +43,6 @@ export function ClinicMedicalRecordPage(): JSX.Element {
       to: selectedTimeRangeOption?.getTo(),
       search: debouncedSearch,
     });
-
-  const [toBeDeletedId, setToBeDeletedId] = useState<string>("");
-
-  const { mutateAsync: deletePatientMedicalRecord } =
-    useDeletePatientMedicalRecord(toBeDeletedId);
-
-  const columns = useMemo(() => {
-    return [
-      {
-        key: "visit",
-        name: "VISIT",
-        renderCell: (row: PatientMedicalRecordEntity) => (
-          <Cell>{row.visitAt}</Cell>
-        ),
-      },
-      {
-        key: "name",
-        name: "NAME",
-        renderCell: (row: PatientMedicalRecordEntity) => {
-          const vitalSign = row.vitalSign?.[0];
-
-          return (
-            <Cell className="gap-3">
-              <div className="flex items-center justify-center w-12 h-12 shrink-0 bg-border rounded-full border-2">
-                <p>{getInitial(row.Patient.fullname)}</p>
-              </div>
-              <div>
-                <p className="font-bold">{row.Patient.fullname}</p>
-                <p className="font-normal">{row.Patient.norm}</p>
-                <p className="font-normal">{row.Patient.address}</p>
-                <ClinicPatientVitals
-                  vitals={[
-                    {
-                      icon: <Stethoscope size={16} />,
-                      value: vitalSign
-                        ? `${vitalSign.systole} / ${vitalSign.diastole}`
-                        : "-",
-                      label: "Sistole / Diastole",
-                    },
-                    {
-                      icon: <ThermometerOutlineIcon size={16} />,
-                      value: vitalSign ? `${vitalSign.temperature} C` : "-",
-                      label: "Suhu Badan",
-                    },
-                    {
-                      icon: <HeightFilledIcon size={16} />,
-                      value: vitalSign ? `${vitalSign.height} cm` : "-",
-                      label: "Tinggi Badan",
-                    },
-                    {
-                      icon: (
-                        <ScaleOutlineIcon
-                          className="fill-transparent stroke-foreground"
-                          size={16}
-                        />
-                      ),
-                      value: vitalSign ? `${vitalSign.weight} kg` : "-",
-                      label: "Berat Badan",
-                    },
-                    {
-                      icon: <HeartPulse size={16} />,
-                      value: vitalSign?.pulse ?? "-",
-                      label: "Detak Jantung",
-                    },
-                    {
-                      icon: <LungOutlineIcon size={18} />,
-                      value: vitalSign?.respiration ?? "-",
-                      label: "Respirasi",
-                    },
-                    {
-                      icon: <BloodBagOutlineIcon size={18} />,
-                      value: row.Patient.blood.toLocaleUpperCase(),
-                      label: "Golongan Darah",
-                    },
-                  ]}
-                />
-              </div>
-            </Cell>
-          );
-        },
-      },
-      {
-        key: "action",
-        name: "ACTION",
-        renderCell: (row: PatientMedicalRecordEntity) => (
-          <Cell className="gap-2">
-            <TooltipProvider>
-              <Tooltip>
-                <Link href={getWhatsappUrl(row.Patient.phone)}>
-                  <TooltipTrigger asChild>
-                    <Button size="icon" variant="ghost">
-                      <MessageCircle className="text-green-500" size={20} />
-                    </Button>
-                  </TooltipTrigger>
-                </Link>
-                <TooltipContent>Kontak WA</TooltipContent>
-              </Tooltip>
-              <Tooltip>
-                <Link href={`/clinic/${clinicId}/mr/report/${row.id}`}>
-                  <TooltipTrigger asChild>
-                    <Button size="icon" variant="ghost">
-                      <Eye size={20} />
-                    </Button>
-                  </TooltipTrigger>
-                </Link>
-                <TooltipContent>Detail</TooltipContent>
-              </Tooltip>
-              {/* <Tooltip>
-                <TooltipTrigger
-                  className="h-min p-2"
-                  onClick={() => {
-                    setToBeDeletedId(String(row.id));
-                  }}
-                >
-                  <Trash className="text-red-500" size={20} />
-                </TooltipTrigger>
-                <TooltipContent>Hapus Patient Medical Record</TooltipContent>
-              </Tooltip> */}
-            </TooltipProvider>
-          </Cell>
-        ),
-      },
-    ];
-  }, [clinicId]);
 
   return (
     <div className="h-full">
@@ -254,8 +87,7 @@ export function ClinicMedicalRecordPage(): JSX.Element {
           />
         </div>
 
-        <BaseTable<PatientMedicalRecordEntity>
-          columns={columns}
+        <MedicalRecordTable
           isLoading={isFetching}
           onPaginationChange={(currentPagination) => {
             setPagination(currentPagination);
@@ -266,7 +98,7 @@ export function ClinicMedicalRecordPage(): JSX.Element {
         />
       </ClinicCard>
 
-      <AlertDialog
+      {/* <AlertDialog
         onOpenChange={(value) => {
           if (!value) setToBeDeletedId("");
         }}
@@ -301,7 +133,7 @@ export function ClinicMedicalRecordPage(): JSX.Element {
             </Button>
           </AlertDialogFooter>
         </AlertDialogContent>
-      </AlertDialog>
+      </AlertDialog> */}
     </div>
   );
 }

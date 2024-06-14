@@ -26,6 +26,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { ClinicPatientVitals } from "@/features/clinic-patient/components/shared/vitals";
+import { cn } from "@/lib/utils";
 import type { PatientMedicalRecordEntity } from "@/services/patient-medical-record/types/entity";
 import type { RouteParams } from "@/types";
 import { getInitial, getWhatsappUrl } from "@/utils";
@@ -144,7 +145,7 @@ export function MedicalRecordTable({
         renderCell: (row: PatientMedicalRecordEntity) => (
           <Cell className="gap-2">
             <TooltipProvider>
-              <Tooltip>
+              <Tooltip delayDuration={100}>
                 <Link href={getWhatsappUrl(row.Patient.phone)}>
                   <TooltipTrigger asChild>
                     <Button size="icon" variant="ghost">
@@ -154,7 +155,7 @@ export function MedicalRecordTable({
                 </Link>
                 <TooltipContent>Kontak WA</TooltipContent>
               </Tooltip>
-              <Tooltip>
+              <Tooltip delayDuration={100}>
                 <Link href={`/clinic/${clinicId}/mr/report/${row.id}`}>
                   <TooltipTrigger asChild>
                     <Button size="icon" variant="ghost">
@@ -164,19 +165,30 @@ export function MedicalRecordTable({
                 </Link>
                 <TooltipContent>Detail</TooltipContent>
               </Tooltip>
-              <Tooltip>
+              <Tooltip delayDuration={100}>
                 <Link
                   href={`/clinic/${clinicId}/mr/report/${row.id}?edit=true`}
+                  className={cn(!row.canModify && "pointer-events-none")}
                 >
                   <TooltipTrigger asChild>
-                    <Button size="icon" variant="ghost">
-                      <Edit className="text-yellow-500" size={20} />
-                    </Button>
+                    <div>
+                      <Button
+                        disabled={!row.canModify}
+                        size="icon"
+                        variant="ghost"
+                      >
+                        <Edit className="text-yellow-500" size={20} />
+                      </Button>
+                    </div>
                   </TooltipTrigger>
                 </Link>
-                <TooltipContent>Ubah Medical Record</TooltipContent>
+                <TooltipContent>
+                  {row.canModify
+                    ? "Ubah Medical Record"
+                    : "Tidak bisa ubah medical record"}
+                </TooltipContent>
               </Tooltip>
-              {/* <Tooltip>
+              {/* <Tooltip delayDuration={100}>
                 <TooltipTrigger
                   className="h-min p-2"
                   onClick={() => {

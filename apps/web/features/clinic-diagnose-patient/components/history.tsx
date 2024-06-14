@@ -1,17 +1,39 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
+import { Copy } from "lucide-react";
+import { useParams, useSearchParams } from "next/navigation";
 import { useMemo, useState } from "react";
 
 import { BaseTable as PatientTable } from "@/components/shared/table/base-table";
 import { Cell } from "@/components/shared/table/cell";
+import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { useToast } from "@/components/ui/use-toast";
+import { useGetPatient } from "@/services/patient/hooks/use-get-patient";
 import { useFindPatientAssessment } from "@/services/patient-assessment/hooks/use-find-patient-assessment-history";
+import type { CreatePatientAssessmentSchema } from "@/services/patient-assessment/types/dto";
 import type { PatientAssessmentEntity } from "@/services/patient-assessment/types/entity";
-import type { Pagination } from "@/types";
+import type { Pagination, RouteParams } from "@/types";
+
+import { useDiagnosePatientStore } from "../stores/use-diagnose-patient-store";
 
 export function ClinicDiagnoseHistory(): JSX.Element {
   const searchParams = useSearchParams();
   const patientId = searchParams.get("patientId");
+  const { mrId } = useParams<RouteParams>();
+
+  const { toast } = useToast();
+  const { data: patientData } = useGetPatient(String(patientId));
+  const medicalRecord = patientData?.mr[patientData.mr.length - 1];
+  const vitalSign =
+    medicalRecord?.vitalSign[medicalRecord.vitalSign.length - 1];
+
+  const { setDiagnose } = useDiagnosePatientStore();
 
   const [pagination, setPagination] = useState<Pagination>({
     skip: 0,
@@ -63,8 +85,53 @@ export function ClinicDiagnoseHistory(): JSX.Element {
           );
         },
       },
+      {
+        key: "action",
+        name: "ACTION",
+        renderCell: (row: PatientAssessmentEntity) => {
+          const copyData = {
+            assessment: row.assessment,
+            icd10Code: row.icd10.code,
+            objective: row.objective,
+            plan: row.plan,
+            subjective: `${vitalSign?.pain ?? ""}\n====${
+              row.Patient_medical_records.visitLabel
+            }====\n${row.subjective}\n`,
+            icd9CMCode: row.icd9CM.code,
+            mrid: mrId,
+            prescriptions: row.Patient_medical_records.prescription,
+          } as unknown as CreatePatientAssessmentSchema;
+          return (
+            <Cell className="flex items-center gap-2">
+              <TooltipProvider>
+                <Tooltip delayDuration={100}>
+                  <TooltipTrigger>
+                    <Button
+                      onClick={async () => {
+                        setDiagnose({ mrId, patientId: patientId! }, copyData);
+                        toast({
+                          title: "Berhasil menyalin data",
+                          variant: "success",
+                        });
+                        await navigator.clipboard.writeText(
+                          JSON.stringify(copyData)
+                        );
+                      }}
+                      size="sm"
+                      variant="ghost"
+                    >
+                      <Copy size={20} />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>Salin data</TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </Cell>
+          );
+        },
+      },
     ];
-  }, []);
+  }, [mrId, patientId, setDiagnose, toast, vitalSign?.pain]);
 
   return (
     <PatientTable<PatientAssessmentEntity>
