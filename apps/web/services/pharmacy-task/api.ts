@@ -31,7 +31,7 @@ class PharmacyTaskApi {
   ): Promise<PharmacyTaskDetailEntity> {
     const queryParams = stringify(dto);
 
-    const { data } = await this.api.get<PharmacyTaskEntity>(
+    const { data } = await this.api.get<PharmacyTaskDetailEntity>(
       `/pharmacy-tasks/${id}?${queryParams}`
     );
 
