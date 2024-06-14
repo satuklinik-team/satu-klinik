@@ -2,6 +2,7 @@
 
 import dayjs from "dayjs";
 import { useParams, usePathname } from "next/navigation";
+import { useState } from "react";
 
 import {
   Breadcrumb,
@@ -14,6 +15,7 @@ import { ClinicCard } from "@/features/clinic/components/ui/card";
 import { MedicalRecordTable } from "@/features/clinic-medical-record/components/tables/medical-record-table";
 import { useGetPatient } from "@/services/patient/hooks/use-get-patient";
 import { useFindPatientMedicalRecord } from "@/services/patient-medical-record/hooks/use-find-patient-medical-record";
+import type { Pagination } from "@/types";
 import { getInitial } from "@/utils";
 
 export function ClinicPatientDetailPage(): JSX.Element | undefined {
@@ -24,6 +26,11 @@ export function ClinicPatientDetailPage(): JSX.Element | undefined {
   const { data: patientMedicalRecord } = useFindPatientMedicalRecord({
     patientId,
     count: true,
+  });
+
+  const [pagination, setPagination] = useState<Pagination>({
+    skip: 0,
+    limit: 20,
   });
 
   if (!patientMedicalRecord || !patientData) return;
@@ -141,7 +148,14 @@ export function ClinicPatientDetailPage(): JSX.Element | undefined {
         </div>
       </ClinicCard>
       <ClinicCard>
-        <MedicalRecordTable rows={patientMedicalRecord.data} />
+        <MedicalRecordTable
+          onPaginationChange={(currentPagination) => {
+            setPagination(currentPagination);
+          }}
+          pagination={pagination}
+          rows={patientMedicalRecord.data}
+          totalRows={patientMedicalRecord.count}
+        />
       </ClinicCard>
     </div>
   );
