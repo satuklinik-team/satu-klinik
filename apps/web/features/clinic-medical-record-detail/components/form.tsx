@@ -1,9 +1,8 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
 import type { DefaultValues, SubmitHandler } from "react-hook-form";
-import { useFieldArray, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -17,11 +16,10 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { ICD9CMInput } from "@/features/clinic-diagnose-patient/components/inputs/icd9cm-input";
 import { ICD10nput } from "@/features/clinic-diagnose-patient/components/inputs/icd10-input";
-import { ClinicDiagnosePatientPrescriptionForm } from "@/features/clinic-diagnose-patient/components/prescription-form";
-import { ClinicDiagnosePatientPrescriptionTable } from "@/features/clinic-diagnose-patient/components/prescription-table";
 import type { CreatePatientAssessmentSchema } from "@/services/patient-assessment/types/dto";
 import { createPatientAssessmentSchema } from "@/services/patient-assessment/types/dto";
-import type { PrescriptionEntity } from "@/services/prescription/types/entity";
+
+import { PrescriptionTable } from "./prescription/table";
 
 // import { ClinicDiagnosePatientPrescriptionForm } from "./prescription-form";
 // import { ClinicDiagnosePatientPrescriptionTable } from "./prescription-table";
@@ -40,16 +38,6 @@ export function DiagnosePatientForm({
   const form = useForm<CreatePatientAssessmentSchema>({
     resolver: zodResolver(createPatientAssessmentSchema),
     defaultValues,
-  });
-
-  const {
-    fields: prescriptions,
-    remove,
-    insert,
-    update,
-  } = useFieldArray({
-    control: form.control,
-    name: "prescriptions",
   });
 
   // const { mutateAsync } = useCreatePatientAssessment();
@@ -96,128 +84,142 @@ export function DiagnosePatientForm({
   //   }
   // }, [form, medicalRecordData]);
 
-  const [onAddPrescription, setOnAddPrescription] = useState<boolean>();
-
-  const [onEditPrescription, setOnEditPrescription] =
-    useState<PrescriptionEntity | null>(null);
-
   return (
-    <>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-          <FormField
-            control={form.control}
-            name="subjective"
-            render={({ field }) => (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
+        <FormField
+          control={form.control}
+          name="subjective"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Subjektif</FormLabel>
+              <FormControl>
+                <Textarea
+                  placeholder="Patient's story of complain, pain, feel etc."
+                  readOnly={isReadOnly}
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="objective"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Objektif</FormLabel>
+              <FormControl>
+                <Textarea
+                  placeholder="Observation, physical exam and laboratory information summary"
+                  readOnly={isReadOnly}
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="assessment"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Penilaian</FormLabel>
+              <FormControl>
+                <Textarea
+                  placeholder="Assessment, a summary of your diagnosis of the patient's existing condition"
+                  readOnly={isReadOnly}
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="icd10Code"
+          render={({ field: { value, onChange } }) => {
+            return (
               <FormItem>
-                <FormLabel>Subjektif</FormLabel>
+                <FormLabel>ICD10</FormLabel>
                 <FormControl>
-                  <Textarea
-                    placeholder="Patient's story of complain, pain, feel etc."
+                  <ICD10nput
+                    onChange={onChange}
                     readOnly={isReadOnly}
-                    {...field}
+                    value={value}
                   />
                 </FormControl>
                 <FormMessage />
               </FormItem>
-            )}
-          />
+            );
+          }}
+        />
 
-          <FormField
-            control={form.control}
-            name="objective"
-            render={({ field }) => (
+        <FormField
+          control={form.control}
+          name="plan"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Rencana</FormLabel>
+              <FormControl>
+                <Textarea
+                  placeholder="The treatment plan (e.g., medication, therapies, surgeries)"
+                  readOnly={isReadOnly}
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="icd9CMCode"
+          render={({ field: { value, onChange } }) => {
+            return (
               <FormItem>
-                <FormLabel>Objektif</FormLabel>
+                <FormLabel>ICD9CM / Tindakan</FormLabel>
                 <FormControl>
-                  <Textarea
-                    placeholder="Observation, physical exam and laboratory information summary"
+                  <ICD9CMInput
+                    onChange={onChange}
                     readOnly={isReadOnly}
-                    {...field}
+                    value={value}
                   />
                 </FormControl>
                 <FormMessage />
               </FormItem>
-            )}
-          />
+            );
+          }}
+        />
 
-          <FormField
-            control={form.control}
-            name="assessment"
-            render={({ field }) => (
+        <FormField
+          control={form.control}
+          name="prescriptions"
+          render={({ field: { value, onChange } }) => {
+            return (
               <FormItem>
-                <FormLabel>Penilaian</FormLabel>
+                <FormLabel>Prescriptions</FormLabel>
                 <FormControl>
-                  <Textarea
-                    placeholder="Assessment, a summary of your diagnosis of the patient's existing condition"
+                  <PrescriptionTable
+                    onChange={onChange}
                     readOnly={isReadOnly}
-                    {...field}
+                    value={value ?? []}
                   />
                 </FormControl>
                 <FormMessage />
               </FormItem>
-            )}
-          />
+            );
+          }}
+        />
 
-          <FormField
-            control={form.control}
-            name="icd10Code"
-            render={({ field: { value, onChange } }) => {
-              return (
-                <FormItem>
-                  <FormLabel>ICD10</FormLabel>
-                  <FormControl>
-                    <ICD10nput
-                      onChange={onChange}
-                      readOnly={isReadOnly}
-                      value={value}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              );
-            }}
-          />
-
-          <FormField
-            control={form.control}
-            name="plan"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Rencana</FormLabel>
-                <FormControl>
-                  <Textarea
-                    placeholder="The treatment plan (e.g., medication, therapies, surgeries)"
-                    readOnly={isReadOnly}
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="icd9CMCode"
-            render={({ field: { value, onChange } }) => {
-              return (
-                <FormItem>
-                  <FormLabel>ICD9CM / Tindakan</FormLabel>
-                  <FormControl>
-                    <ICD9CMInput
-                      onChange={onChange}
-                      readOnly={isReadOnly}
-                      value={value}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              );
-            }}
-          />
-
-          <div className="space-y-2 mt-3">
+        {/* <div className="space-y-2 mt-3">
             <p className="text-sm font-medium">Prescriptions</p>
             <div className="flex flex-col gap-3">
               <ClinicDiagnosePatientPrescriptionTable
@@ -239,48 +241,13 @@ export function DiagnosePatientForm({
                 + Add More
               </Button>
             </div>
-          </div>
-
+          </div> */}
+        {!isReadOnly && (
           <div className="flex flex-row justify-end">
             <Button className="mt-4">Simpan</Button>
           </div>
-        </form>
-      </Form>
-
-      <ClinicDiagnosePatientPrescriptionForm
-        defaultValues={onEditPrescription!}
-        onOpenChange={(open) => {
-          if (!open) {
-            setOnAddPrescription(false);
-            setOnEditPrescription(null);
-          }
-        }}
-        onSubmit={(prescription) => {
-          const newPrescription = {
-            ...prescription,
-            medicineId: prescription.medicine?.id,
-            totalQuantity:
-              prescription.supplyDuration *
-              prescription.frequency *
-              prescription.doseQuantity,
-          };
-
-          if (onAddPrescription) {
-            insert(prescriptions.length, newPrescription);
-            setOnAddPrescription(false);
-          }
-
-          if (onEditPrescription) {
-            const currentIndex = prescriptions.findIndex(
-              (item) => item.medicine?.id === newPrescription.medicine?.id,
-            );
-            update(currentIndex, newPrescription);
-            setOnEditPrescription(null);
-          }
-        }}
-        open={Boolean(onAddPrescription) || Boolean(onEditPrescription)}
-        title={onAddPrescription ? "Add Prescription" : "Edit Prescription"}
-      />
-    </>
+        )}
+      </form>
+    </Form>
   );
 }

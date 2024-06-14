@@ -5,12 +5,14 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { BaseTable } from "@/components/shared/table/base-table";
 import { Cell } from "@/components/shared/table/cell";
+import { Button } from "@/components/ui/button";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useToast } from "@/components/ui/use-toast";
 import { useDisclose } from "@/hooks/use-disclose";
 import type { PrescriptionEntity } from "@/services/prescription/types/entity";
 
@@ -19,13 +21,16 @@ import { PrescriptionForm } from "./form";
 interface PrescriptionTable {
   value: PrescriptionEntity[];
   onChange?: (value: PrescriptionEntity[]) => unknown;
+  readOnly?: boolean;
 }
 
 export function PrescriptionTable({
   value,
   onChange,
+  readOnly,
 }: PrescriptionTable): JSX.Element {
-  const { isOpen, onClose } = useDisclose();
+  const { toast } = useToast();
+  const { isOpen, onClose, onOpen } = useDisclose();
 
   const onChangeRef = useRef<PrescriptionTable["onChange"]>(onChange);
 
@@ -36,13 +41,12 @@ export function PrescriptionTable({
   }, [onChange]);
 
   const onDeletePrescription = useCallback(
-    (id: string) => {
-      //   const currentIndex = prescriptions.findIndex((item) => item.id === id);
-      //   onDelete(currentIndex);
+    (medicineId: number) => {
+      if (!onChangeRef.current) return;
 
-      if (onChangeRef.current) {
-        onChangeRef.current(value.filter((item) => item.id !== id));
-      }
+      onChangeRef.current(
+        value.filter((item) => item.medicineId !== medicineId),
+      );
     },
     [value],
   );
@@ -50,18 +54,23 @@ export function PrescriptionTable({
   const [selectedPrescription, setSelectedPrescription] =
     useState<PrescriptionEntity | null>(null);
 
+  const isEdit = Boolean(selectedPrescription);
+
   const onFormModalClose = useCallback(
     (open: boolean) => {
-      if (open) return;
+      if (open) {
+        onOpen();
+        return;
+      }
 
       setSelectedPrescription(null);
-      onClose;
+      onClose();
     },
-    [onClose],
+    [onClose, onOpen],
   );
 
   const columns = useMemo(() => {
-    return [
+    const baseColumns = [
       {
         key: "name",
         name: "R/",
@@ -102,49 +111,93 @@ export function PrescriptionTable({
           <Cell>{prescription.totalQuantity}</Cell>
         ),
       },
-      {
+    ];
+
+    if (!readOnly) {
+      baseColumns.push({
         key: "actions",
         name: "",
         renderCell: (prescription: PrescriptionEntity) => (
           <Cell className="gap-2">
             <TooltipProvider>
               <Tooltip>
-                <TooltipTrigger
-                  className="h-min p-2"
-                  onClick={() => {
-                    setSelectedPrescription(prescription);
-                  }}
-                >
-                  <Edit size={20} />
+                <TooltipTrigger asChild>
+                  <Button
+                    onClick={() => {
+                      setSelectedPrescription(prescription);
+                      onOpen();
+                    }}
+                    size="sm"
+                    type="button"
+                    variant="ghost"
+                  >
+                    <Edit size={20} />
+                  </Button>
                 </TooltipTrigger>
                 <TooltipContent>Edit Preskripsi</TooltipContent>
               </Tooltip>
               <Tooltip>
-                <TooltipTrigger
-                  className="h-min p-2"
-                  onClick={() => {
-                    onDeletePrescription(String(prescription.id));
-                  }}
-                >
-                  <Trash className="text-red-500" size={20} />
+                <TooltipTrigger asChild>
+                  <Button
+                    onClick={() => {
+                      if (!prescription.medicineId) return;
+
+                      onDeletePrescription(prescription.medicineId);
+                    }}
+                    size="sm"
+                    type="button"
+                    variant="ghost"
+                  >
+                    <Trash className="text-red-500" size={20} />
+                  </Button>
                 </TooltipTrigger>
                 <TooltipContent>Hapus Preskripsi</TooltipContent>
               </Tooltip>
             </TooltipProvider>
           </Cell>
         ),
-      },
-    ];
-  }, [onDeletePrescription]);
+      });
+    }
+    return baseColumns;
+  }, [onDeletePrescription, onOpen, readOnly]);
 
   return (
-    <>
+    <div className="flex flex-col gap-3">
       <BaseTable<PrescriptionEntity> columns={columns} rows={value} />
-      {/* <PrescriptionForm
+      {!readOnly && (
+        <Button
+          className="w-min"
+          onClick={() => {
+            onOpen();
+          }}
+          size="sm"
+          type="button"
+          variant="ghost"
+        >
+          + Add More
+        </Button>
+      )}
+      <PrescriptionForm
         defaultValues={selectedPrescription}
         onOpenChange={onFormModalClose}
         onSubmit={(prescription) => {
-          const newPrescription = {
+          if (!onChangeRef.current) return;
+
+          const findSameMedicine = value.find(
+            (item) => item.medicineId === prescription.medicineId,
+          );
+          if (findSameMedicine) {
+            toast({
+              title: "Terjadi Kesalahan!",
+              description: "Tidak boleh mendaftarkan obat yang sama",
+              variant: "warning",
+            });
+            return;
+          }
+
+          onFormModalClose(false);
+
+          const newPrescription: PrescriptionEntity = {
             ...prescription,
             medicineId: prescription.medicine?.id,
             totalQuantity:
@@ -153,22 +206,22 @@ export function PrescriptionTable({
               prescription.doseQuantity,
           };
 
-          if (onAddPrescription) {
-            insert(prescriptions.length, newPrescription);
-            setOnAddPrescription(false);
+          if (isEdit) {
+            onChangeRef.current(
+              value.map((item) => {
+                if (item.medicineId === prescription.medicineId)
+                  return newPrescription;
+                return item;
+              }),
+            );
+            return;
           }
 
-          if (onEditPrescription) {
-            const currentIndex = prescriptions.findIndex(
-              (item) => item.medicine?.id === newPrescription.medicine?.id
-            );
-            update(currentIndex, newPrescription);
-            setOnEditPrescription(null);
-          }
+          onChangeRef.current([...value, newPrescription]);
         }}
-        open={Boolean(onAddPrescription) || Boolean(onEditPrescription)}
-        title={onAddPrescription ? "Add Prescription" : "Edit Prescription"}
-      /> */}
-    </>
+        open={isOpen}
+        title={!isEdit ? "Add Prescription" : "Edit Prescription"}
+      />
+    </div>
   );
 }

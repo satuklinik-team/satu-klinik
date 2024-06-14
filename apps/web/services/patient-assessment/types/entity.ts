@@ -28,4 +28,6 @@ export interface PatientAssessmentEntity {
       patient_medical_recordsId: string;
     }[];
   };
+  icd10Code: string;
+  icd9CMCode: string;
 }

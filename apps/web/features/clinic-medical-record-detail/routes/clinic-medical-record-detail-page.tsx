@@ -23,12 +23,16 @@ export function ClinicMedicalRecordDetailPage(): React.JSX.Element {
   const medicalRecord =
     patientMedicalRecord as Required<PatientMedicalRecordEntity>;
   const vitalSign = medicalRecord.vitalSign[medicalRecord.vitalSign.length - 1];
+  const assessment =
+    medicalRecord.assessment[medicalRecord.assessment.length - 1];
+
+  const formattedVisitAt = medicalRecord.visitAt;
 
   return (
     <div className="h-full">
       <div className="mb-6 flex flex-col gap-2">
         <h1 className="text-2xl sm:text-3xl md:text-3xl lg:text-4xl xl:text-4xl 2xl:text-4xl font-semibold">
-          Medical Record
+          Medical Record at {formattedVisitAt}
         </h1>
         <p className="text-muted-foreground">Summary of patient</p>
       </div>
@@ -39,7 +43,22 @@ export function ClinicMedicalRecordDetailPage(): React.JSX.Element {
         />
       </ClinicCard>
       <ClinicCard className="mt-4">
-        <DiagnosePatientForm isReadOnly={!isEdit} />
+        <DiagnosePatientForm
+          defaultValues={{
+            icd10Code: assessment.icd10Code,
+            icd9CMCode: assessment.icd9CMCode,
+            mrid: mrId,
+            prescriptions: medicalRecord.prescription,
+            plan: assessment.plan,
+            assessment: assessment.assessment,
+            objective: assessment.objective,
+            subjective: assessment.subjective,
+          }}
+          isReadOnly={!isEdit}
+          onSubmit={(values) => {
+            console.log({ values });
+          }}
+        />
       </ClinicCard>
       {/* <ClinicDiagnosePatientProfile />
       <ClinicCard className="mt-6">
