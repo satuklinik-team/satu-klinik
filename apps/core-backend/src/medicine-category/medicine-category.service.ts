@@ -9,21 +9,35 @@ import { Prisma } from '@prisma/client';
 import { FindAllMedicineCategoriesDto } from './dto/find-all-medicine-categories-dto';
 import { GetCategoryByIdDto } from './dto/get-category-by-id';
 import { MedicineCategoryNotEmptyException } from 'src/exceptions/conflict/medicine-category-not-empty';
+import { ActivityService } from 'src/activity/activity.service';
+import { ActivityTitles } from 'src/activity/dto/activity.dto';
+import { exclude } from 'src/utils';
 
 @Injectable()
 export class MedicineCategoryService {
   constructor(
     private readonly prismaService: PrismaService,
     private readonly findAllService: FindAllService,
+    private readonly activityService: ActivityService,
   ) {}
 
   async create(dto: CreateMedicineCategoryDto) {
-    return await this.prismaService.medicineCategory.create({
+    const data = await this.prismaService.medicineCategory.create({
       data: {
-        name: dto.name,
-        clinicsId: dto.clinicsId,
+        ...exclude(dto, ['usersId']),
       },
     });
+
+    this.activityService.emit({
+      title: ActivityTitles.CREATE_MEDICINE_CATEGORY,
+      clinicsId: dto.clinicsId,
+      usersId: dto.usersId,
+      payload: {
+        ...exclude(dto, ['usersId']),
+      },
+    });
+
+    return data;
   }
 
   async findAll(dto: FindAllMedicineCategoriesDto) {
@@ -55,7 +69,7 @@ export class MedicineCategoryService {
   async update(dto: UpdateMedicineCategoryDto) {
     await this.canModifyMedicineCategory(dto.id, dto.clinicsId);
 
-    return await this.prismaService.medicineCategory.update({
+    const data = await this.prismaService.medicineCategory.update({
       where: {
         id: dto.id,
       },
@@ -63,6 +77,17 @@ export class MedicineCategoryService {
         name: dto.name,
       },
     });
+
+    this.activityService.emit({
+      title: ActivityTitles.UPDATE_MEDICINE_CATEGORY,
+      clinicsId: dto.clinicsId,
+      usersId: dto.usersId,
+      payload: {
+        ...exclude(dto, ['usersId']),
+      },
+    });
+
+    return data;
   }
 
   async remove(dto: DeleteMedicineCategoryDto) {
@@ -77,11 +102,22 @@ export class MedicineCategoryService {
       throw new MedicineCategoryNotEmptyException();
     }
 
-    return await this.prismaService.medicineCategory.delete({
+    const data = await this.prismaService.medicineCategory.delete({
       where: {
         id: dto.id,
       },
     });
+
+    this.activityService.emit({
+      title: ActivityTitles.DELETE_MEDICINE_CATEGORY,
+      clinicsId: dto.clinicsId,
+      usersId: dto.usersId,
+      payload: {
+        ...exclude(dto, ['usersId']),
+      },
+    });
+
+    return data;
   }
 
   async canModifyMedicineCategory(id: number, clinicsId: string) {

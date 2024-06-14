@@ -1,3 +1,4 @@
+import { Prisma } from '@prisma/client';
 import { UpdatePatientDto } from './update-patient-dto';
 
 export function createPatientData(dto: UpdatePatientDto) {

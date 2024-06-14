@@ -40,7 +40,7 @@ export class PatientsService {
 
     this.activityService.emit({
       title: ActivityTitles.CREATE_PATIENT,
-      userId: dto.usersId,
+      usersId: dto.usersId,
       clinicsId: dto.clinicsId,
       payload: patientData,
     });
@@ -49,11 +49,20 @@ export class PatientsService {
   }
 
   async updatePatientById(dto: UpdatePatientDto) {
+    const patientData = createPatientData(dto);
+
     const data = await this.prismaService.patient.update({
       where: {
         id: dto.id,
       },
-      data: createPatientData(dto),
+      data: patientData,
+    });
+
+    this.activityService.emit({
+      title: ActivityTitles.UPDATE_PATIENT,
+      usersId: dto.usersId,
+      clinicsId: dto.clinicsId,
+      payload: patientData,
     });
 
     return data;
@@ -88,6 +97,13 @@ export class PatientsService {
 
     const data = await this.prismaService.patient.delete({
       where: { id: dto.id },
+    });
+
+    this.activityService.emit({
+      title: ActivityTitles.DELETE_PATIENT,
+      usersId: dto.usersId,
+      clinicsId: dto.clinicsId,
+      payload: data,
     });
 
     return data;

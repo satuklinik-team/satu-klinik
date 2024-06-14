@@ -58,6 +58,7 @@ export class PatientsController {
       ...dto,
       id,
       clinicsId: tokenData.clinicsId,
+      usersId: tokenData.sub,
     });
   }
 
@@ -78,6 +79,7 @@ export class PatientsController {
     return await this.patientService.delete({
       id,
       clinicsId: tokenData.clinicsId,
+      usersId: tokenData.sub,
     });
   }
 }

@@ -19,11 +19,9 @@ export class PatientsVitalSignsController {
     @Body() dto: CreateVitalSignDto,
     @TokenData() tokenData: JwtPayload,
   ) {
-    return this.patientVitalSignService.create({
-      ...dto,
-      clinicsId: tokenData.clinicsId,
-      usersId: tokenData.sub,
-    });
+    dto.clinicsId = tokenData.clinicsId;
+    dto.usersId = tokenData.sub;
+    return this.patientVitalSignService.create(dto);
   }
 
   @Post('new-patient')
@@ -32,11 +30,8 @@ export class PatientsVitalSignsController {
     @Body() dto: CreateNewPatientVitalSignDto,
     @TokenData() tokenData: JwtPayload,
   ) {
-    return this.patientVitalSignService.create({
-      ...dto,
-      clinicsId: tokenData.clinicsId,
-      usersId: tokenData.sub,
-      patientId: null,
-    });
+    dto.clinicsId = tokenData.clinicsId;
+    dto.usersId = tokenData.sub;
+    return this.patientVitalSignService.create(dto);
   }
 }

@@ -11,6 +11,8 @@ import { UpdatePatientAssessmentDto } from './dto/update-patient-assessment.dto'
 import { DifferentPractitionerException } from 'src/exceptions/bad-request/different-practitioner-exception';
 import { formatDate } from 'src/utils/helpers/format-date.helper';
 import { MRAlready2DaysException } from 'src/exceptions/bad-request/mr-already-two-days-exception';
+import { ActivityService } from 'src/activity/activity.service';
+import { ActivityTitles } from 'src/activity/dto/activity.dto';
 
 @Injectable()
 export class PatientAssessmentService {
@@ -20,14 +22,30 @@ export class PatientAssessmentService {
     private readonly findAllService: FindAllService,
     private readonly medicineService: MedicineService,
     private readonly revenueService: RevenueService,
+    private readonly activityService: ActivityService,
   ) {}
 
   async createOrUpdate(
     dto: CreatePatientAssessmentDto | UpdatePatientAssessmentDto,
   ) {
     const data = await this.prismaService.$transaction(async (tx) => {
+      let whereArgs: Prisma.Patient_medical_recordsFindFirstArgs['where'];
+      if (dto instanceof UpdatePatientAssessmentDto) {
+        whereArgs = {
+          assessment: {
+            some: {
+              id: dto.id,
+            },
+          },
+        };
+      } else {
+        whereArgs = {
+          id: dto.mrid,
+        };
+      }
+
       const patientMR = await tx.patient_medical_records.findFirst({
-        where: { id: dto.mrid },
+        where: whereArgs,
         select: {
           Patient: {
             select: {
@@ -187,6 +205,19 @@ export class PatientAssessmentService {
           });
         }
       }
+
+      this.activityService.emit({
+        title:
+          dto instanceof CreatePatientAssessmentDto
+            ? ActivityTitles.CREATE_ASSESSMENT
+            : ActivityTitles.UPDATE_ASSESSMENT,
+        clinicsId: dto.clinicsId,
+        usersId: dto.usersId,
+        payload: {
+          ...assessmentData,
+          prescriptions: prescriptionsDto,
+        },
+      });
 
       return {
         assessment,

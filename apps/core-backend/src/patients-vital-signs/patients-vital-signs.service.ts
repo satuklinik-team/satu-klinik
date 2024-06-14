@@ -11,6 +11,7 @@ import { ServiceContext } from 'src/utils/types';
 import { createVitalSignData } from './dto/factory.dto';
 import { ActivityService } from 'src/activity/activity.service';
 import { ActivityTitles } from 'src/activity/dto/activity.dto';
+import { CreateNewPatientVitalSignDto } from './dto/create-new-patient-vital-sign.dto';
 
 @Injectable()
 export class PatientsVitalSignsService {
@@ -20,15 +21,14 @@ export class PatientsVitalSignsService {
     private readonly activityService: ActivityService,
   ) {}
 
-  //:TODO: add dto declaration
-  async create(dto: any) {
+  async create(dto: CreateVitalSignDto | CreateNewPatientVitalSignDto) {
     if (dto.patientId) {
       await this.patientService.canModifyPatient(dto.patientId, dto.clinicsId);
     }
 
     const data = await this.prismaService.$transaction(async (tx) => {
       let patient: any;
-      if (!dto.patientId) {
+      if (dto instanceof CreateNewPatientVitalSignDto) {
         patient = await this.patientService.create(dto, { tx });
         dto.patientId = patient.id;
       }
@@ -63,7 +63,7 @@ export class PatientsVitalSignsService {
       this.activityService.emit({
         title: ActivityTitles.PATIENT_REGISTRATION,
         clinicsId: dto.clinicsId,
-        userId: dto.userId,
+        usersId: dto.usersId,
         payload: newMedicalRecord,
       });
 
