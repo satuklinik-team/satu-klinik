@@ -22,19 +22,17 @@ export class MedicineCategoryService {
   ) {}
 
   async create(dto: CreateMedicineCategoryDto) {
+    const medicineCategoryData = exclude(dto, ['usersId']);
+
     const data = await this.prismaService.medicineCategory.create({
-      data: {
-        ...exclude(dto, ['usersId']),
-      },
+      data: medicineCategoryData,
     });
 
     this.activityService.emit({
       title: ActivityTitles.CREATE_MEDICINE_CATEGORY,
       clinicsId: dto.clinicsId,
       usersId: dto.usersId,
-      payload: {
-        ...exclude(dto, ['usersId']),
-      },
+      payload: medicineCategoryData,
     });
 
     return data;
@@ -78,13 +76,13 @@ export class MedicineCategoryService {
       },
     });
 
+    const medicineCategoryData = exclude(dto, ['usersId']);
+
     this.activityService.emit({
       title: ActivityTitles.UPDATE_MEDICINE_CATEGORY,
       clinicsId: dto.clinicsId,
       usersId: dto.usersId,
-      payload: {
-        ...exclude(dto, ['usersId']),
-      },
+      payload: medicineCategoryData,
     });
 
     return data;
@@ -108,13 +106,13 @@ export class MedicineCategoryService {
       },
     });
 
+    const medicineCategoryData = exclude(dto, ['usersId']);
+
     this.activityService.emit({
       title: ActivityTitles.DELETE_MEDICINE_CATEGORY,
       clinicsId: dto.clinicsId,
       usersId: dto.usersId,
-      payload: {
-        ...exclude(dto, ['usersId']),
-      },
+      payload: medicineCategoryData,
     });
 
     return data;

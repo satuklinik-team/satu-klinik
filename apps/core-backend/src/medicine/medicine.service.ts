@@ -36,15 +36,17 @@ export class MedicineService {
       uploadedImage = await this.minioClientService.upload(dto.image);
     }
 
+    const medicineData = createMedicineData(dto, uploadedImage?.url);
+
     const data = await this.prismaService.medicine.create({
-      data: createMedicineData(dto, uploadedImage?.url),
+      data: medicineData,
     });
 
     this.activityService.emit({
       title: ActivityTitles.CREATE_MEDICINE,
       clinicsId: dto.clinicsId,
       usersId: dto.usersId,
-      payload: createMedicineData(dto, uploadedImage?.url),
+      payload: medicineData,
     });
 
     return data;
@@ -63,11 +65,13 @@ export class MedicineService {
       uploadedImage = await this.minioClientService.upload(dto.image);
     }
 
+    const medicineData = createMedicineData(dto, uploadedImage?.url);
+
     const data = await this.prismaService.medicine.update({
       where: {
         id: dto.id,
       },
-      data: createMedicineData(dto, uploadedImage?.url),
+      data: medicineData,
     });
 
     this.activityService.emit({
@@ -76,7 +80,7 @@ export class MedicineService {
       usersId: dto.usersId,
       payload: {
         id: dto.id,
-        ...createMedicineData(dto, uploadedImage?.url),
+        ...medicineData,
       },
     });
 
