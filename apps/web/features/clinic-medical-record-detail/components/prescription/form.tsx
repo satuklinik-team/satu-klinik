@@ -1,16 +1,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Check, ChevronsUpDown } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { type DefaultValues, useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-} from "@/components/ui/command";
 import {
   Dialog,
   DialogContent,
@@ -28,11 +20,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import {
   Select,
   SelectContent,
   SelectItem,
@@ -40,127 +27,68 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { cn } from "@/lib/utils";
-import { useFindMedicine } from "@/services/medicine/hooks/use-find-medicine";
+import { MedicineInput } from "@/features/clinic-diagnose-patient/components/inputs/medicine-input";
 import {
   type PrescriptionEntity,
   prescriptionSchema,
 } from "@/services/prescription/types/entity";
 
-interface ClinicDiagnosePatientPrescriptionForm {
+interface PrescriptionForm {
   title: string;
-  defaultValues?: DefaultValues<PrescriptionEntity>;
+  defaultValues?: DefaultValues<PrescriptionEntity> | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onSubmit: (prescription: PrescriptionEntity) => void;
 }
 
-export function ClinicDiagnosePatientPrescriptionForm({
+const resetValue: DefaultValues<PrescriptionEntity> = {
+  doseQuantity: 0,
+  frequency: 0,
+  period: 1,
+  totalQuantity: 0,
+  supplyDuration: 0,
+  notes: "",
+  medicineId: undefined,
+};
+
+export function PrescriptionForm({
   title,
   defaultValues,
   open,
   onOpenChange,
   onSubmit,
-}: ClinicDiagnosePatientPrescriptionForm): JSX.Element {
+}: PrescriptionForm): JSX.Element {
   const form = useForm<PrescriptionEntity>({
     resolver: zodResolver(prescriptionSchema),
-    defaultValues: { period: 1, ...defaultValues },
-  });
-
-  const [search, setSearch] = useState<string>(
-    defaultValues?.medicine?.title ?? "",
-  );
-
-  const [isMedicineOpen, setIsMedicineOpen] = useState<boolean>(false);
-
-  const { data: medicineData } = useFindMedicine({
-    search,
-    limit: 50,
   });
 
   useEffect(() => {
-    if (!defaultValues) return;
+    if (!defaultValues) {
+      form.reset(resetValue);
+      return;
+    }
 
     form.reset(defaultValues);
-  }, [defaultValues, form]);
+  }, [defaultValues, form, open]);
 
   return (
     <Dialog onOpenChange={onOpenChange} open={open}>
       <DialogContent className="sm:max-w-[425px] bg-white">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
+          <form id="prescription-form" onSubmit={form.handleSubmit(onSubmit)}>
             <DialogHeader className="mb-4">
               <DialogTitle>{title}</DialogTitle>
             </DialogHeader>
             <div className="flex flex-col gap-4 mb-6">
               <FormField
                 control={form.control}
-                name="medicine"
+                name="medicineId"
                 render={({ field: { value, onChange } }) => {
-                  const options = medicineData?.data;
-
                   return (
                     <FormItem>
                       <FormLabel>Obat</FormLabel>
                       <FormControl>
-                        <Popover
-                          onOpenChange={setIsMedicineOpen}
-                          open={isMedicineOpen}
-                        >
-                          <PopoverTrigger asChild>
-                            <Button
-                              aria-expanded={isMedicineOpen}
-                              className="w-full justify-between"
-                              role="combobox"
-                              variant="outline"
-                            >
-                              {value?.title ?? "Select medicine..."}
-                              <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                            </Button>
-                          </PopoverTrigger>
-                          <PopoverContent className="w-96 sm:w-96 md:w-96 lg:w-96 xl:w-96 2xl:w-96 max-h-[300px] overflow-y-auto p-0">
-                            <Command shouldFilter={false}>
-                              <CommandInput
-                                onValueChange={(commandValue) => {
-                                  setSearch(commandValue);
-                                }}
-                                placeholder="Search medicines..."
-                                value={search}
-                              />
-                              <CommandEmpty>No medicines found.</CommandEmpty>
-                              <CommandGroup>
-                                {options?.map((item) => (
-                                  <CommandItem
-                                    key={item.id}
-                                    onSelect={(currentValue) => {
-                                      const selectedValue = options.find(
-                                        (option) =>
-                                          String(option.id) === currentValue,
-                                      );
-
-                                      onChange({
-                                        id: String(selectedValue?.id),
-                                        title: selectedValue?.title,
-                                      });
-                                      setIsMedicineOpen(false);
-                                    }}
-                                    value={String(item.id)}
-                                  >
-                                    <Check
-                                      className={cn(
-                                        "mr-2 h-4 w-4",
-                                        String(value) === String(item.id)
-                                          ? "opacity-100"
-                                          : "opacity-0",
-                                      )}
-                                    />
-                                    {item.title}
-                                  </CommandItem>
-                                ))}
-                              </CommandGroup>
-                            </Command>
-                          </PopoverContent>
-                        </Popover>
+                        <MedicineInput onChange={onChange} value={value} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -174,17 +102,14 @@ export function ClinicDiagnosePatientPrescriptionForm({
                   <FormField
                     control={form.control}
                     name="frequency"
-                    render={({ field: { value, onChange } }) => (
+                    render={({ field }) => (
                       <FormItem className="flex-1">
                         <FormControl>
                           <Input
+                            {...field}
                             min={0}
-                            onChange={(e) => {
-                              onChange(Number(e.target.value));
-                            }}
                             placeholder="Frequency"
                             type="number"
-                            value={value}
                           />
                         </FormControl>
                         <FormMessage />
@@ -197,17 +122,14 @@ export function ClinicDiagnosePatientPrescriptionForm({
                   <FormField
                     control={form.control}
                     name="doseQuantity"
-                    render={({ field: { value, onChange } }) => (
+                    render={({ field }) => (
                       <FormItem className="flex-1">
                         <FormControl>
                           <Input
+                            {...field}
                             min={0}
-                            onChange={(e) => {
-                              onChange(Number(e.target.value));
-                            }}
                             placeholder="Dose"
                             type="number"
-                            value={value}
                           />
                         </FormControl>
                         <FormMessage />
@@ -230,17 +152,14 @@ export function ClinicDiagnosePatientPrescriptionForm({
                 <FormField
                   control={form.control}
                   name="supplyDuration"
-                  render={({ field: { value, onChange } }) => (
+                  render={({ field }) => (
                     <FormItem className="flex-1">
                       <FormControl>
                         <Input
+                          {...field}
                           min={0}
-                          onChange={(e) => {
-                            onChange(Number(e.target.value));
-                          }}
                           placeholder="Supply Duration"
                           type="number"
-                          value={value}
                         />
                       </FormControl>
                       <FormMessage />
@@ -275,11 +194,13 @@ export function ClinicDiagnosePatientPrescriptionForm({
                 )}
               />
             </div>
-            <DialogFooter>
-              <Button>Save changes</Button>
-            </DialogFooter>
           </form>
         </Form>
+        <DialogFooter>
+          <Button onClick={form.handleSubmit(onSubmit)} type="button">
+            Save changes
+          </Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

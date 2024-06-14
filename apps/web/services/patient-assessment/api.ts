@@ -33,6 +33,18 @@ class PatientAssessmentApi {
 
     return data;
   }
+
+  async updatePatientAssessment(
+    id: number,
+    values: CreatePatientAssessmentDto,
+  ): Promise<PatientAssessmentEntity> {
+    const { data } = await this.api.patch<PatientAssessmentEntity>(
+      `/patient-assessment/${id}`,
+      values,
+    );
+
+    return data;
+  }
 }
 
 export const patientAssessmentApi = new PatientAssessmentApi();

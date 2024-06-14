@@ -1,30 +1,30 @@
 import { z as a } from "zod";
 import {
-  Lezzform as b,
+  Lezzform as p,
   FormField as t,
   FormItem as s,
   FormLabel as u,
   FormControl as l,
   FormMessage as c,
   Input as F,
-  PasswordInput as g,
-  Button as C,
+  PasswordInput as f,
+  Button as g,
 } from "@lezzform/react";
 import * as n from "react";
 import { jsx as e, jsxs as m } from "react/jsx-runtime";
-var L = a.object({
+var C = a.object({
     id: a.string(),
     token: a.string(),
     username: a.string(),
     password: a.string(),
   }),
-  p = "MdFq0bnkkN5mcwpMbmMB",
+  z = "JooQer00dyDYQaEKOffu",
   P = ({
     onSubmit: i,
-    onError: z,
+    onError: b,
     onSuccess: h,
     defaultValues: S,
-    onAction: f,
+    onAction: L,
     formProps: k,
   }) => {
     let d = n.useRef();
@@ -35,17 +35,17 @@ var L = a.object({
       if (d.current) return d.current(r, o);
     }, []);
     return e(
-      b,
+      p,
       {
-        id: p,
+        id: z,
         defaultValues: S,
         onSubmit: R,
-        onError: z,
+        onError: b,
         onSuccess: h,
-        zodSchema: L,
+        zodSchema: C,
         mode: "onSubmit",
         children: (r) =>
-          m(b.Container, {
+          m(p.Container, {
             children: [
               e(t, {
                 control: r.control,
@@ -127,7 +127,7 @@ var L = a.object({
                     children: [
                       e(u, { isRequired: !0, children: "Password" }),
                       e(l, {
-                        children: e(g, {
+                        children: e(f, {
                           label: "Password",
                           name: o.name,
                           value: o.value ?? "",
@@ -143,7 +143,7 @@ var L = a.object({
                     ],
                   }),
               }),
-              e(C, {
+              e(g, {
                 type: "submit",
                 className: "w-full",
                 disabled: r.formState.isSubmitting,
@@ -154,7 +154,7 @@ var L = a.object({
             ],
           }),
       },
-      p,
+      z,
     );
   };
 export { P as Form };

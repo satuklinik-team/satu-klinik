@@ -2,8 +2,15 @@
 
 import { useQueryClient } from "@tanstack/react-query";
 import { useDebounce } from "@uidotdev/usehooks";
-import { HeartPulse, MessageCircle, Stethoscope, Trash } from "lucide-react";
+import {
+  Eye,
+  HeartPulse,
+  MessageCircle,
+  Stethoscope,
+  Trash,
+} from "lucide-react";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import { useMemo, useState } from "react";
 
 import { BloodBagOutlineIcon } from "@/components/icons/blood-bag-outline";
@@ -46,12 +53,13 @@ import { useDeletePatientMedicalRecord } from "@/services/patient-medical-record
 import { useFindPatientMedicalRecord } from "@/services/patient-medical-record/hooks/use-find-patient-medical-record";
 import type { PatientMedicalRecordEntity } from "@/services/patient-medical-record/types/entity";
 import { PatientMedicalRecordQueryKeyFactory } from "@/services/patient-medical-record/utils/query-key.factory";
-import type { Pagination } from "@/types";
+import type { Pagination, RouteParams } from "@/types";
 import { getInitial, getWhatsappUrl } from "@/utils";
 
 import { timeRangeOptions } from "../utils";
 
 export function ClinicMedicalRecordPage(): JSX.Element {
+  const { clinicId } = useParams<RouteParams>();
   const { toast } = useToast();
 
   const queryClient = useQueryClient();
@@ -167,13 +175,25 @@ export function ClinicMedicalRecordPage(): JSX.Element {
             <TooltipProvider>
               <Tooltip>
                 <Link href={getWhatsappUrl(row.Patient.phone)}>
-                  <TooltipTrigger className="h-min p-2">
-                    <MessageCircle className="text-green-500" size={20} />
+                  <TooltipTrigger asChild>
+                    <Button size="icon" variant="ghost">
+                      <MessageCircle className="text-green-500" size={20} />
+                    </Button>
                   </TooltipTrigger>
                 </Link>
                 <TooltipContent>Kontak WA</TooltipContent>
               </Tooltip>
               <Tooltip>
+                <Link href={`/clinic/${clinicId}/mr/report/${row.id}`}>
+                  <TooltipTrigger asChild>
+                    <Button size="icon" variant="ghost">
+                      <Eye size={20} />
+                    </Button>
+                  </TooltipTrigger>
+                </Link>
+                <TooltipContent>Detail</TooltipContent>
+              </Tooltip>
+              {/* <Tooltip>
                 <TooltipTrigger
                   className="h-min p-2"
                   onClick={() => {
@@ -183,13 +203,13 @@ export function ClinicMedicalRecordPage(): JSX.Element {
                   <Trash className="text-red-500" size={20} />
                 </TooltipTrigger>
                 <TooltipContent>Hapus Patient Medical Record</TooltipContent>
-              </Tooltip>
+              </Tooltip> */}
             </TooltipProvider>
           </Cell>
         ),
       },
     ];
-  }, []);
+  }, [clinicId]);
 
   return (
     <div className="h-full">

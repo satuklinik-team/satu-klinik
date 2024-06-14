@@ -1,5 +1,7 @@
 import type { PatientEntity } from "@/services/patient/types/entity";
+import type { PatientAssessmentEntity } from "@/services/patient-assessment/types/entity";
 import type { VitalSignEntity } from "@/services/patient-vital-sign/types/entity";
+import type { PrescriptionEntity } from "@/services/prescription/types/entity";
 
 export interface PatientMedicalRecordEntity {
   id: string;
@@ -8,4 +10,6 @@ export interface PatientMedicalRecordEntity {
   Patient: PatientEntity;
   status: string;
   vitalSign?: VitalSignEntity[];
+  assessment?: PatientAssessmentEntity[];
+  prescription?: PrescriptionEntity[];
 }

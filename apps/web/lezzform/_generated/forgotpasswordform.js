@@ -7,24 +7,24 @@ import {
   FormControl as i,
   FormMessage as d,
   Input as w,
-  PasswordInput as z,
+  PasswordInput as F,
   Spacer as R,
   Button as P,
 } from "@lezzform/react";
 import * as n from "react";
 import { jsx as e, jsxs as t } from "react/jsx-runtime";
-var L = a.object({
+var y = a.object({
     email: a.string(),
     password: a.string(),
     confirmPassword: a.string(),
   }),
-  F = "jQLEE5SGkJz1lBgB6GaA",
-  B = ({
+  z = "1uUoKpqIX0uOybJPMKlK",
+  v = ({
     onSubmit: m,
     onError: h,
-    onSuccess: S,
-    defaultValues: b,
-    onAction: y,
+    onSuccess: b,
+    defaultValues: S,
+    onAction: L,
     formProps: g,
   }) => {
     let s = n.useRef();
@@ -37,12 +37,12 @@ var L = a.object({
     return e(
       p,
       {
-        id: F,
-        defaultValues: b,
+        id: z,
+        defaultValues: S,
         onSubmit: f,
         onError: h,
-        onSuccess: S,
-        zodSchema: L,
+        onSuccess: b,
+        zodSchema: y,
         mode: "onTouched",
         children: (r) =>
           t(p.Container, {
@@ -79,7 +79,7 @@ var L = a.object({
                     children: [
                       e(c, { isRequired: !0, children: "New Password" }),
                       e(i, {
-                        children: e(z, {
+                        children: e(F, {
                           label: "New Password",
                           name: o.name,
                           value: o.value ?? "",
@@ -103,7 +103,7 @@ var L = a.object({
                     children: [
                       e(c, { isRequired: !0, children: "Retype Password" }),
                       e(i, {
-                        children: e(z, {
+                        children: e(F, {
                           label: "Retype Password",
                           name: o.name,
                           value: o.value ?? "",
@@ -131,7 +131,7 @@ var L = a.object({
             ],
           }),
       },
-      F,
+      z,
     );
   };
-export { B as Form };
+export { v as Form };
