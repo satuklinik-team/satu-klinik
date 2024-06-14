@@ -1,6 +1,7 @@
 import { useParams, useSearchParams } from "next/navigation";
 
 import { useUpdatePatientAssessment } from "@/services/patient-assessment/hooks/use-update-patient-assessment";
+import type { PatientAssessmentEntity } from "@/services/patient-assessment/types/entity";
 import type { PatientMedicalRecordEntity } from "@/services/patient-medical-record/types/entity";
 import type { RouteParams } from "@/types";
 
@@ -17,10 +18,16 @@ export function MedicalRecordDetailDiagnoseForm({
   const searchParams = useSearchParams();
   const isEdit = searchParams.get("edit") === "true";
 
-  const assessment =
-    medicalRecord.assessment[medicalRecord.assessment.length - 1];
-
+  const assessment: PatientAssessmentEntity =
+    medicalRecord.assessment[medicalRecord.assessment.length - 1] ?? {};
   const { isPending, mutateAsync } = useUpdatePatientAssessment(assessment.id);
+
+  if (!assessment.id)
+    return (
+      <div className="-mt-4 w-full text-center">
+        <p className="text-base">Belum ada data diagnosa</p>
+      </div>
+    );
 
   return (
     <DiagnosePatientForm

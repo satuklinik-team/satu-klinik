@@ -193,7 +193,7 @@ export function ClinicMedicalRecordPage(): JSX.Element {
                 </Link>
                 <TooltipContent>Detail</TooltipContent>
               </Tooltip>
-              <Tooltip>
+              {/* <Tooltip>
                 <TooltipTrigger
                   className="h-min p-2"
                   onClick={() => {
@@ -203,7 +203,7 @@ export function ClinicMedicalRecordPage(): JSX.Element {
                   <Trash className="text-red-500" size={20} />
                 </TooltipTrigger>
                 <TooltipContent>Hapus Patient Medical Record</TooltipContent>
-              </Tooltip>
+              </Tooltip> */}
             </TooltipProvider>
           </Cell>
         ),
