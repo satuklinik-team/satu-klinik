@@ -1,6 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect, useRef } from "react";
 import type { DefaultValues, SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
 
@@ -26,6 +27,8 @@ interface DiagnosePatientFormProps {
   onSubmit: SubmitHandler<CreatePatientAssessmentSchema>;
   defaultValues?: DefaultValues<CreatePatientAssessmentSchema>;
   isLoading?: boolean;
+  onValuesChange?: (values: CreatePatientAssessmentSchema) => unknown;
+  intervalTime?: number;
 }
 
 export function DiagnosePatientForm({
@@ -33,11 +36,40 @@ export function DiagnosePatientForm({
   onSubmit,
   defaultValues,
   isLoading,
+  onValuesChange,
+  intervalTime = 1000,
 }: DiagnosePatientFormProps): JSX.Element {
   const form = useForm<CreatePatientAssessmentSchema>({
     resolver: zodResolver(createPatientAssessmentSchema),
     defaultValues,
   });
+
+  const onValuesChangeRef =
+    useRef<DiagnosePatientFormProps["onValuesChange"]>(onValuesChange);
+
+  useEffect(() => {
+    if (!onValuesChange) return;
+
+    onValuesChangeRef.current = onValuesChange;
+  }, [onValuesChange]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (!onValuesChangeRef.current) return;
+
+      onValuesChangeRef.current(form.getValues());
+    }, intervalTime);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [form, intervalTime]);
+
+  useEffect(() => {
+    if (!defaultValues) return;
+
+    form.reset(defaultValues);
+  }, [defaultValues, form]);
 
   // const { mutateAsync } = useCreatePatientAssessment();
 

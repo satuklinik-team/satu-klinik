@@ -21,10 +21,18 @@ export function ClinicDiagnosePatientPage(): JSX.Element {
             <TabsTrigger value="soap">SOAP</TabsTrigger>
             <TabsTrigger value="history">History</TabsTrigger>
           </TabsList>
-          <TabsContent value="soap">
+          <TabsContent
+            className="data-[state=inactive]:hidden"
+            forceMount
+            value="soap"
+          >
             <ClinicDiagnosePatientForm />
           </TabsContent>
-          <TabsContent value="history">
+          <TabsContent
+            className="data-[state=inactive]:hidden"
+            forceMount
+            value="history"
+          >
             <ClinicDiagnoseHistory />
           </TabsContent>
         </Tabs>
