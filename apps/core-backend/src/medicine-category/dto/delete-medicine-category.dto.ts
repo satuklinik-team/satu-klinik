@@ -10,4 +10,8 @@ export class DeleteMedicineCategoryDto {
   @IsString()
   @IsOptional()
   clinicsId?: string;
+
+  @IsString()
+  @IsOptional()
+  usersId?: string;
 }

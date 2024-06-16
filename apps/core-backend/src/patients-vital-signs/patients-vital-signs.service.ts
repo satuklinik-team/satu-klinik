@@ -1,4 +1,6 @@
 import { Injectable } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { Prisma } from '@prisma/client';
 import { PatientAlreadyRegistedException } from 'src/exceptions/conflict/patient-already-registered.exception';
 import { CannotAccessClinicException } from 'src/exceptions/unauthorized/cannot-access-clinic';
 import { CreateVitalSignDto } from 'src/patients-vital-signs/dto/create-vital-sign.dto';
@@ -6,24 +8,27 @@ import { PatientsService } from 'src/patients/patients.service';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { formatDate } from 'src/utils/helpers/format-date.helper';
 import { ServiceContext } from 'src/utils/types';
+import { createVitalSignData } from './dto/factory.dto';
+import { ActivityService } from 'src/activity/activity.service';
+import { ActivityTitles } from 'src/activity/dto/activity.dto';
+import { CreateNewPatientVitalSignDto } from './dto/create-new-patient-vital-sign.dto';
 
 @Injectable()
 export class PatientsVitalSignsService {
   constructor(
     private readonly prismaService: PrismaService,
     private readonly patientService: PatientsService,
+    private readonly activityService: ActivityService,
   ) {}
 
-  async create(dto: any) {
-    const now = new Date();
-
+  async create(dto: CreateVitalSignDto | CreateNewPatientVitalSignDto) {
     if (dto.patientId) {
       await this.patientService.canModifyPatient(dto.patientId, dto.clinicsId);
     }
 
     const data = await this.prismaService.$transaction(async (tx) => {
       let patient: any;
-      if (!dto.patientId) {
+      if (dto instanceof CreateNewPatientVitalSignDto) {
         patient = await this.patientService.create(dto, { tx });
         dto.patientId = patient.id;
       }
@@ -42,28 +47,9 @@ export class PatientsVitalSignsService {
 
       const queue = await this._getQueueNo(dto.clinicsId, { tx });
 
+      const newMedicalRecord = createVitalSignData(dto, queue);
       const data = await tx.patient_medical_records.create({
-        data: {
-          patientId: dto.patientId,
-          visitAt: now,
-          visitLabel: formatDate(now),
-          queue,
-          status: 'e1',
-          practitionerId: dto.usersId,
-          vitalSign: {
-            create: {
-              height: dto.height,
-              weight: dto.weight,
-              allergic: dto.allergic,
-              systole: dto.systole,
-              diastole: dto.diastole,
-              pulse: dto.pulse,
-              respiration: dto.respiration,
-              temperature: dto.temperature,
-              pain: dto.pain,
-            },
-          },
-        },
+        data: newMedicalRecord,
         select: {
           id: true,
           status: true,
@@ -72,6 +58,13 @@ export class PatientsVitalSignsService {
           visitLabel: true,
           vitalSign: { orderBy: { id: 'desc' }, take: 1 },
         },
+      });
+
+      this.activityService.emit({
+        title: ActivityTitles.PATIENT_REGISTRATION,
+        clinicsId: dto.clinicsId,
+        usersId: dto.usersId,
+        payload: newMedicalRecord,
       });
 
       const result = {

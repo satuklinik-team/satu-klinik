@@ -8,4 +8,8 @@ export class CreateMedicineCategoryDto {
   @IsString()
   @IsOptional()
   clinicsId?: string;
+
+  @IsString()
+  @IsOptional()
+  usersId?: string;
 }

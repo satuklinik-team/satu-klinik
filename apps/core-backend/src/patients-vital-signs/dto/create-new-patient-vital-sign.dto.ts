@@ -54,4 +54,8 @@ export class CreateNewPatientVitalSignDto extends CreatePatientDto {
   @IsString()
   @IsOptional()
   usersId?: string;
+
+  @IsString()
+  @IsOptional()
+  patientId?: string;
 }

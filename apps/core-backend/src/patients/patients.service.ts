@@ -14,53 +14,58 @@ import { GetPatientByIdDto } from './dto/get-patient-by-id-dto';
 import { ServiceContext } from 'src/utils/types';
 import { UpdatePatientDto } from './dto/update-patient-dto';
 import { formatDate } from 'src/utils/helpers/format-date.helper';
+import { ActivityTitles } from 'src/activity/dto/activity.dto';
+import { ActivityService } from 'src/activity/activity.service';
+import { createPatientData } from './dto/factory.dto';
 
 @Injectable()
 export class PatientsService {
   constructor(
     private readonly prismaService: PrismaService,
     private readonly findAllService: FindAllService,
+    private readonly activityService: ActivityService,
   ) {}
 
   async create(dto: CreatePatientDto, context?: ServiceContext) {
     const prisma = this._initPrisma(context?.tx);
 
-    const data = await prisma.patient.create({
+    const patientData = {
       data: {
         norm: await this.generateMedicalRecordNorm(dto.clinicsId),
-        ...this._createPatientData(dto),
+        ...createPatientData(dto),
       },
+    };
+
+    const data = await prisma.patient.create(patientData);
+
+    this.activityService.emit({
+      title: ActivityTitles.CREATE_PATIENT,
+      usersId: dto.usersId,
+      clinicsId: dto.clinicsId,
+      payload: patientData,
     });
 
     return data;
   }
 
   async updatePatientById(dto: UpdatePatientDto) {
+    const patientData = createPatientData(dto);
+
     const data = await this.prismaService.patient.update({
       where: {
         id: dto.id,
       },
-      data: {
-        ...this._createPatientData(dto),
-      },
+      data: patientData,
+    });
+
+    this.activityService.emit({
+      title: ActivityTitles.UPDATE_PATIENT,
+      usersId: dto.usersId,
+      clinicsId: dto.clinicsId,
+      payload: patientData,
     });
 
     return data;
-  }
-
-  private _createPatientData(dto: UpdatePatientDto) {
-    return {
-      nik: dto.nik,
-      fullname: dto.fullname,
-      parentname: dto.parentname,
-      address: dto.address,
-      phone: dto.phone,
-      age: dto.age,
-      sex: dto.sex,
-      blood: dto.blood,
-      ...(dto.birthAt && { birthAt: `${dto.birthAt}T00:00:00.000Z` }),
-      clinicsId: dto.clinicsId,
-    };
   }
 
   async findAll(dto: FindAllPatientsDto) {
@@ -104,6 +109,13 @@ export class PatientsService {
 
     const data = await this.prismaService.patient.delete({
       where: { id: dto.id },
+    });
+
+    this.activityService.emit({
+      title: ActivityTitles.DELETE_PATIENT,
+      usersId: dto.usersId,
+      clinicsId: dto.clinicsId,
+      payload: data,
     });
 
     return data;

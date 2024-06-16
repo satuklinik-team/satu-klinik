@@ -49,12 +49,7 @@ export class PatientAssessmentController {
     dto.usersId = tokenData.sub;
     dto.clinicsId = tokenData.clinicsId;
 
-    return await this.patientAssessmentService.createOrUpdate({
-      ...dto,
-      id,
-      usersId: tokenData.sub,
-      clinicsId: tokenData.clinicsId,
-    });
+    return await this.patientAssessmentService.createOrUpdate(dto);
   }
 
   @Get()
