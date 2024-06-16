@@ -47,7 +47,7 @@ export class PatientsVitalSignsService {
         },
       });
       if (latestMR?.status === 'e1') {
-        // throw new PatientAlreadyRegistedException();
+        throw new PatientAlreadyRegistedException();
       }
 
       const queue = await this._getQueueNo(dto.clinicsId, { tx });
