@@ -55,7 +55,10 @@ export class PatientsService {
       where: {
         id: dto.id,
       },
-      data: patientData,
+      data: {
+        ...patientData,
+        ...(!patientData.nik && { satuSehatId: null }),
+      },
     });
 
     this.activityService.emit({
