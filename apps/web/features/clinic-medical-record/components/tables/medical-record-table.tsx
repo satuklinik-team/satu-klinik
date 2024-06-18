@@ -166,12 +166,12 @@ export function MedicalRecordTable({
                 <TooltipContent>Detail</TooltipContent>
               </Tooltip>
               <Tooltip delayDuration={100}>
-                <Link
-                  href={`/clinic/${clinicId}/mr/report/${row.id}?edit=true`}
-                  className={cn(!row.canModify && "pointer-events-none")}
-                >
-                  <TooltipTrigger asChild>
-                    <div>
+                <TooltipTrigger asChild>
+                  <div>
+                    <Link
+                      className={cn(!row.canModify && "pointer-events-none")}
+                      href={`/clinic/${clinicId}/mr/report/${row.id}?edit=true`}
+                    >
                       <Button
                         disabled={!row.canModify}
                         size="icon"
@@ -179,13 +179,13 @@ export function MedicalRecordTable({
                       >
                         <Edit className="text-yellow-500" size={20} />
                       </Button>
-                    </div>
-                  </TooltipTrigger>
-                </Link>
+                    </Link>
+                  </div>
+                </TooltipTrigger>
                 <TooltipContent>
                   {row.canModify
                     ? "Ubah Medical Record"
-                    : "Tidak bisa ubah medical record"}
+                    : "Tidak bisa ubah medical record (max 2x24 jam)"}
                 </TooltipContent>
               </Tooltip>
               {/* <Tooltip delayDuration={100}>
