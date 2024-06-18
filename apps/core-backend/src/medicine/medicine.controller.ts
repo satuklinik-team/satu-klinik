@@ -40,6 +40,7 @@ export class MedicineController {
     return await this.medicineService.create({
       ...dto,
       clinicsId: tokenData.clinicsId,
+      usersId: tokenData.sub,
     });
   }
 
@@ -57,6 +58,7 @@ export class MedicineController {
     return await this.medicineService.update({
       ...dto,
       clinicsId: tokenData.clinicsId,
+      usersId: tokenData.sub,
     });
   }
 
@@ -107,6 +109,7 @@ export class MedicineController {
     return await this.medicineService.delete({
       id,
       clinicsId: tokenData.clinicsId,
+      usersId: tokenData.sub,
     });
   }
 }

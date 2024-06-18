@@ -9,6 +9,8 @@ import { FindPharmacyTaskByIdDto } from './dto/find-pharmacy-task-by-id.dto';
 import { IncorrectPrescriptionIdException } from 'src/exceptions/bad-request/incorrect-prescription-id-exception';
 import { RevenueService } from 'src/revenue/revenue.service';
 import { formatDate } from 'src/utils/helpers/format-date.helper';
+import { ActivityService } from 'src/activity/activity.service';
+import { ActivityTitles } from 'src/activity/dto/activity.dto';
 
 @Injectable()
 export class PharmacyTasksService {
@@ -16,6 +18,7 @@ export class PharmacyTasksService {
     private readonly prismaService: PrismaService,
     private readonly findAllService: FindAllService,
     private readonly revenueService: RevenueService,
+    private readonly activityService: ActivityService,
   ) {}
 
   async findAll(dto: FindAllPharmacyTaskDto) {
@@ -87,20 +90,6 @@ export class PharmacyTasksService {
       throw new CannotAccessClinicException();
     }
 
-    const prescriptionSelect: Prisma.Patient_prescriptionSelect = {
-      id: true,
-      createdAt: true,
-      frequency: true,
-      period: true,
-      doseQuantity: true,
-      totalQuantity: true,
-      supplyDuration: true,
-      notes: true,
-      deletedAt: true,
-      status: true,
-      Medicine: true,
-    };
-
     const cancelledPrescriptions =
       await this.prismaService.patient_prescription.findMany({
         where: {
@@ -111,7 +100,7 @@ export class PharmacyTasksService {
             some: {},
           },
         },
-        select: prescriptionSelect,
+        select: this._prescriptionSelectFactory(),
       });
 
     const newPrescriptions =
@@ -120,7 +109,7 @@ export class PharmacyTasksService {
           patient_medical_recordsId: pharmacyTask.assessmentReffId,
           status: 'completed',
         },
-        select: prescriptionSelect,
+        select: this._prescriptionSelectFactory(),
       });
 
     return {
@@ -165,6 +154,7 @@ export class PharmacyTasksService {
             some: {},
           },
         },
+        select: this._prescriptionSelectFactory(),
       });
 
       await tx.patient_prescription.updateMany({
@@ -182,10 +172,18 @@ export class PharmacyTasksService {
           patient_medical_recordsId: pharmacyTask.assessmentReffId,
           status: 'completed',
         },
+        select: this._prescriptionSelectFactory(),
       });
 
-      const cancelledPrescriptionsId = cancelledPrescriptions.map(
-        (prescription) => prescription.id,
+      const boughtPrescriptions = await Promise.all(
+        dto.boughtPrescriptionsId.map(async (prescriptionId: number) => {
+          return await tx.patient_prescription.findFirst({
+            where: {
+              id: prescriptionId,
+            },
+            select: this._prescriptionSelectFactory(),
+          });
+        }),
       );
 
       const newPrescriptionsId = newPrescriptions.map(
@@ -223,24 +221,7 @@ export class PharmacyTasksService {
         });
       }
 
-      for (const prescriptionId of dto.boughtPrescriptionsId) {
-        const prescription = await tx.patient_prescription.findFirst({
-          where: {
-            id: prescriptionId,
-          },
-          select: {
-            Medicine: true,
-            id: true,
-            medicineId: true,
-            type: true,
-            frequency: true,
-            period: true,
-            doseQuantity: true,
-            totalQuantity: true,
-            supplyDuration: true,
-          },
-        });
-
+      for (const prescription of boughtPrescriptions) {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { id, Medicine, ...medicationDispense } = prescription;
 
@@ -263,10 +244,10 @@ export class PharmacyTasksService {
         );
       }
 
-      for (const prescriptionId of cancelledPrescriptionsId) {
+      for (const prescription of cancelledPrescriptions) {
         await tx.medication_dispense.updateMany({
           where: {
-            patient_prescriptionId: prescriptionId,
+            patient_prescriptionId: prescription.id,
           },
           data: {
             status: 'cancelled',
@@ -274,20 +255,9 @@ export class PharmacyTasksService {
           },
         });
 
-        const prescription = await tx.patient_prescription.findFirst({
-          where: {
-            id: prescriptionId,
-          },
-          select: {
-            Medicine: true,
-            medicineId: true,
-            totalQuantity: true,
-          },
-        });
-
         await tx.medicine.update({
           where: {
-            id: prescription.medicineId,
+            id: prescription.Medicine.id,
           },
           data: {
             stock: {
@@ -307,9 +277,36 @@ export class PharmacyTasksService {
         );
       }
 
+      this.activityService.emit({
+        title: ActivityTitles.COMPLETE_PHARMACY_TASK,
+        clinicsId: dto.clinicsId,
+        usersId: dto.usersId,
+        payload: {
+          id: dto.id,
+          cancelledPrescriptions,
+          boughtPrescriptions,
+          clinicsId: dto.clinicsId,
+        },
+      });
+
       return pharmacyTask;
     });
 
     return data;
+  }
+
+  private _prescriptionSelectFactory(): Prisma.Patient_prescriptionFindFirstArgs['select'] {
+    return {
+      id: true,
+      Medicine: true,
+      createdAt: true,
+      frequency: true,
+      period: true,
+      doseQuantity: true,
+      totalQuantity: true,
+      supplyDuration: true,
+      notes: true,
+      deletedAt: true,
+    };
   }
 }

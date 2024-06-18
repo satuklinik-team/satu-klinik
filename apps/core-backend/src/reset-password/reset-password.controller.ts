@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Put } from '@nestjs/common';
+import { Body, Controller, Patch, Post, Put } from '@nestjs/common';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ResetPasswordService } from './reset-password.service';
 import { ResetPasswordDto } from './dto/reset-password.dto';
@@ -12,7 +12,7 @@ export class ResetPasswordController {
     return this.resetPasswordService.forgotPassword(dto.email);
   }
 
-  @Put()
+  @Patch()
   async resetPassword(@Body() dto: ResetPasswordDto) {
     return this.resetPasswordService.resetPassword(
       dto.newPassword,

@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { AccountsModule } from './accounts/accounts.module';
@@ -33,10 +33,13 @@ import { RevenueModule } from './revenue/revenue.module';
 import { PatientMedicalRecordModule } from './patient-medical-record/patient-medical-record.module';
 import { ResetPasswordModule } from './reset-password/reset-password.module';
 import { MailModule } from './mail/mail.module';
+import { ActivityModule } from './activity/activity.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true, load: [configuration] }),
+    EventEmitterModule.forRoot(),
     Icd10Module,
     PrismaModule,
     AuthModule,
@@ -66,6 +69,7 @@ import { MailModule } from './mail/mail.module';
     PatientMedicalRecordModule,
     ResetPasswordModule,
     MailModule,
+    ActivityModule,
   ],
   providers: [{ provide: APP_GUARD, useClass: AccessTokenGuard }],
 })

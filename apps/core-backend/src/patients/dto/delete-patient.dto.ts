@@ -16,4 +16,8 @@ export class DeletePatientDto {
   @IsString()
   @IsOptional()
   clinicsId?: string;
+
+  @IsString()
+  @IsOptional()
+  usersId?: string;
 }

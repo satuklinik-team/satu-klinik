@@ -33,6 +33,7 @@ export class MedicineCategoryController {
   ) {
     return await this.medicineCategoryService.create({
       ...dto,
+      usersId: tokenData.sub,
       clinicsId: tokenData.clinicsId,
     });
   }
@@ -71,6 +72,7 @@ export class MedicineCategoryController {
     return this.medicineCategoryService.update({
       ...dto,
       id,
+      usersId: tokenData.sub,
       clinicsId: tokenData.clinicsId,
     });
   }
@@ -83,6 +85,7 @@ export class MedicineCategoryController {
   ) {
     return this.medicineCategoryService.remove({
       id,
+      usersId: tokenData.sub,
       clinicsId: tokenData.clinicsId,
     });
   }

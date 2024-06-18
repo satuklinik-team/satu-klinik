@@ -10,6 +10,10 @@ import { FindAllService } from 'src/find-all/find-all.service';
 import { UpdateMedicineDto } from './dto/update-medicine-dto';
 import { DeleteMedicineDto } from './dto/delete-medicine-dto';
 import { GetMedicineByIdDto } from './dto/get-medicine-by-id';
+import { ActivityService } from 'src/activity/activity.service';
+import { ActivityTitles } from 'src/activity/dto/activity.dto';
+import { exclude } from 'src/utils';
+import { createMedicineData } from './dto/factory.dto';
 
 @Injectable()
 export class MedicineService {
@@ -18,6 +22,7 @@ export class MedicineService {
     private readonly prismaService: PrismaService,
     private readonly medicineCategoryService: MedicineCategoryService,
     private readonly findAllService: FindAllService,
+    private readonly activityService: ActivityService,
   ) {}
 
   async create(dto: CreateMedicineDto) {
@@ -26,19 +31,25 @@ export class MedicineService {
       dto.clinicsId,
     );
 
-    const uploadedImage = await this.minioClientService.upload(dto.image);
+    let uploadedImage = null;
+    if (dto.image) {
+      uploadedImage = await this.minioClientService.upload(dto.image);
+    }
 
-    return await this.prismaService.medicine.create({
-      data: {
-        title: dto.title,
-        price: dto.price,
-        stock: dto.stock,
-        discount: dto.discount,
-        categoryId: dto.categoryId,
-        kfaCode: dto.kfaCode,
-        imageUrl: uploadedImage.url,
-      },
+    const medicineData = createMedicineData(dto, uploadedImage?.url);
+
+    const data = await this.prismaService.medicine.create({
+      data: medicineData,
     });
+
+    this.activityService.emit({
+      title: ActivityTitles.CREATE_MEDICINE,
+      clinicsId: dto.clinicsId,
+      usersId: dto.usersId,
+      payload: medicineData,
+    });
+
+    return data;
   }
 
   async update(dto: UpdateMedicineDto) {
@@ -54,30 +65,45 @@ export class MedicineService {
       uploadedImage = await this.minioClientService.upload(dto.image);
     }
 
-    return await this.prismaService.medicine.update({
+    const medicineData = createMedicineData(dto, uploadedImage?.url);
+
+    const data = await this.prismaService.medicine.update({
       where: {
         id: dto.id,
       },
-      data: {
-        title: dto.title,
-        price: dto.price,
-        stock: dto.stock,
-        discount: dto.discount,
-        categoryId: dto.categoryId,
-        imageUrl: uploadedImage?.url,
-        kfaCode: dto.kfaCode,
+      data: medicineData,
+    });
+
+    this.activityService.emit({
+      title: ActivityTitles.UPDATE_MEDICINE,
+      clinicsId: dto.clinicsId,
+      usersId: dto.usersId,
+      payload: {
+        id: dto.id,
+        ...medicineData,
       },
     });
+
+    return data;
   }
 
   async delete(dto: DeleteMedicineDto) {
     await this.canModifyMedicine(dto.id, dto.clinicsId);
 
-    return await this.prismaService.medicine.delete({
+    const data = await this.prismaService.medicine.delete({
       where: {
         id: dto.id,
       },
     });
+
+    this.activityService.emit({
+      title: ActivityTitles.DELETE_MEDICINE,
+      clinicsId: dto.clinicsId,
+      usersId: dto.usersId,
+      payload: data,
+    });
+
+    return data;
   }
 
   async findAll(dto: FindAllIMedicineDto) {
