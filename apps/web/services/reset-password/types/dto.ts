@@ -11,7 +11,7 @@ export const resetPasswordRequestSchema = z
     resetToken: z.string().min(1),
   })
   .refine((data) => data.newPassword === data.confirmPassword, {
-    message: "Passwords do not match",
+    message: "Password tidak sama!",
     path: ["confirmPassword"],
   });
 

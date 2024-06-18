@@ -2,8 +2,8 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PasswordInput } from "@lezzform/react";
-import { useSearchParams } from "next/navigation";
-import { useCallback } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useCallback, useEffect } from "react";
 import type { SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
 
@@ -24,8 +24,13 @@ export function ResetPasswordForm(): React.JSX.Element {
   const searchParams = useSearchParams();
   const resetToken = searchParams.get("token");
 
+  const router = useRouter();
+
   const form = useForm<ResetPasswordRequestSchema>({
     resolver: zodResolver(resetPasswordRequestSchema),
+    defaultValues: {
+      resetToken: String(resetToken),
+    },
   });
 
   const { mutateAsync, isPending } = useResetPassword();
@@ -37,13 +42,21 @@ export function ResetPasswordForm(): React.JSX.Element {
           newPassword: values.newPassword,
           resetToken: String(resetToken),
         });
+
+        router.replace("/auth/login?message=Berhasil reset password!");
         return Boolean(data);
       } catch (error) {
         return false;
       }
     },
-    [mutateAsync, resetToken],
+    [mutateAsync, resetToken, router],
   );
+
+  useEffect(() => {
+    if (!resetToken) return;
+
+    form.reset({ resetToken: String(resetToken) });
+  }, [form, resetToken]);
 
   return (
     <Form {...form}>
