@@ -141,7 +141,7 @@ export class SatusehatRawatJalanService {
         ),
     );
 
-    this.clinicSatuSehatResponseJsonArray.push(responseBody.data.entry);
+    this.clinicSatuSehatResponseJsonArray.push(...responseBody.data.entry);
 
     return responseBody.data.entry;
   }
@@ -149,18 +149,32 @@ export class SatusehatRawatJalanService {
   async observationHttpBodyList(mrid: string) {
     const valuesList = [
       {
+        key: 'height',
+        code: '8302-2',
+        display: 'Body height',
+        valueUnit: 'cm',
+        valueCode: 'cm',
+      },
+      {
+        key: 'weight',
+        code: '29463-7',
+        display: 'Body weight',
+        valueUnit: 'kg',
+        valueCode: 'kg',
+      },
+      {
         key: 'pulse',
         code: '8867-4',
         display: 'Heart rate',
-        valueUnit: 'beats/minute',
-        valueCode: '/min',
+        valueUnit: '{beats}/min',
+        valueCode: '{beats}/min',
       },
       {
         key: 'respiration',
         code: '9279-1',
         display: 'Respiratory rate',
-        valueUnit: 'breaths/minute',
-        valueCode: '/min',
+        valueUnit: '{breaths}/min',
+        valueCode: '{breaths}/min',
       },
       {
         key: 'systole',
@@ -180,8 +194,29 @@ export class SatusehatRawatJalanService {
         key: 'temperature',
         code: '8310-5',
         display: 'Body temperature',
-        valueUnit: 'C',
+        valueUnit: 'Cel',
         valueCode: 'Cel',
+      },
+      {
+        key: 'sugar',
+        code: '2345-7',
+        display: 'Glucose [Mass/volume] in Serum or Plasma',
+        valueUnit: 'mg/dL',
+        valueCode: 'mg/dL',
+      },
+      {
+        key: 'cholesterol',
+        code: '2093-3',
+        display: 'Cholesterol [Mass/volume] in Serum or Plasma',
+        valueUnit: 'mg/dL',
+        valueCode: 'mg/dL',
+      },
+      {
+        key: 'urate',
+        code: '3084-1',
+        display: 'Urate [Mass/volume] in Serum or Plasma',
+        valueUnit: 'mg/dL',
+        valueCode: 'mg/dL',
       },
     ];
 
@@ -189,7 +224,9 @@ export class SatusehatRawatJalanService {
       return await this.satusehatJsonService.observationJson(mrid, value);
     });
 
-    return await Promise.all(transformedValues);
+    const result = await Promise.all(transformedValues);
+    console.log(result.filter((value) => value !== false));
+    return result.filter((value) => value !== false);
   }
 
   async ensurePatientSatuSehatId(mrid: string) {
@@ -781,6 +818,9 @@ export class SatusehatRawatJalanService {
           encounterId: {
             not: null,
           },
+          status: {
+            not: 'e1',
+          },
           satuSehatCompleted: false,
         },
         select: {
@@ -796,6 +836,7 @@ export class SatusehatRawatJalanService {
             id: mr.id,
           },
           select: {
+            status: true,
             prescription: true,
           },
         });

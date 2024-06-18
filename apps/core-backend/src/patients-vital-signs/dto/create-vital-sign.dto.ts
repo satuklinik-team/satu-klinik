@@ -54,6 +54,21 @@ export class CreateVitalSignDto extends PartialType(CreatePatientDto) {
   @IsNotEmpty()
   pulse: number;
 
+  @IsNumber()
+  @Type(() => Number)
+  @IsOptional()
+  sugar?: number;
+
+  @IsNumber()
+  @Type(() => Number)
+  @IsOptional()
+  cholesterol?: number;
+
+  @IsNumber()
+  @Type(() => Number)
+  @IsOptional()
+  urate?: number;
+
   @IsString()
   @IsNotEmpty()
   allergic: string;

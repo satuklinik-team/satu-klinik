@@ -206,11 +206,16 @@ export class SatusehatJsonService {
           patient_medical_recordsId: mrid,
         },
         select: {
+          height: true,
+          weight: true,
           pulse: true,
           respiration: true,
           systole: true,
           diastole: true,
           temperature: true,
+          sugar: true,
+          cholesterol: true,
+          urate: true,
           Patient_medical_records: {
             select: {
               Patient: {
@@ -231,6 +236,10 @@ export class SatusehatJsonService {
           },
         },
       });
+
+    if (!patientVitalSign[value.key]) {
+      return false;
+    }
 
     return {
       resource: {

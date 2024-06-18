@@ -38,6 +38,21 @@ export class CreateNewPatientVitalSignDto extends CreatePatientDto {
   @IsNotEmpty()
   pulse: number;
 
+  @IsNumber()
+  @Type(() => Number)
+  @IsOptional()
+  sugar?: number;
+
+  @IsNumber()
+  @Type(() => Number)
+  @IsOptional()
+  cholesterol?: number;
+
+  @IsNumber()
+  @Type(() => Number)
+  @IsOptional()
+  urate?: number;
+
   @IsString()
   @IsNotEmpty()
   allergic: string;

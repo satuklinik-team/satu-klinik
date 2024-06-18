@@ -64,6 +64,7 @@ model Patient_vital_sign {
   saturation                Int?                     @default(0)
   sugar                     Int?                     @default(0)
   cholesterol               Int?                     @default(0)
+  urate                     Int?                     @default(0)
   pain                      String?
   allergic                  String?                  @default("n/a")
   deletedAt                 DateTime?
