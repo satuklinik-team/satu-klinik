@@ -1,8 +1,10 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { Info } from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback } from "react";
 
+import { Alert, AlertTitle } from "@/components/ui/alert";
 import { useToast } from "@/components/ui/use-toast";
 import { AuthFormWrapper } from "@/features/auth/components/layout/form-wrapper";
 import { Form as LoginForm } from "@/lezzform/_generated/loginform";
@@ -13,6 +15,9 @@ export function LoginPage(): JSX.Element {
   const router = useRouter();
   const { toast } = useToast();
   const { mutateAsync } = useAuthLogin();
+
+  const searchParams = useSearchParams();
+  const message = searchParams.get("message");
 
   const onSubmit = useCallback(
     async (_form: object, dto: Record<string, unknown>) => {
@@ -52,6 +57,12 @@ export function LoginPage(): JSX.Element {
       description="Enter your username and password to login."
       title="Login"
     >
+      {Boolean(message) && (
+        <Alert>
+          <Info className="h-4 w-4" />
+          <AlertTitle>{message}</AlertTitle>
+        </Alert>
+      )}
       <LoginForm onSubmit={onSubmit} />
       <a className="text-sm text-primary -mt-1" href="/auth/register">
         Belum ada akun? Register disini
