@@ -1,3 +1,5 @@
+"use client";
+
 import { AuthFormWrapper } from "@/features/auth/components/layout/form-wrapper";
 
 import { ResetPasswordForm } from "../components/form";
