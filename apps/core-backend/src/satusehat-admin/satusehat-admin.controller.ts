@@ -5,6 +5,7 @@ import { RoleNotAuthorizedException } from 'src/exceptions/unauthorized/role-not
 import { SatusehatRawatJalanService } from 'src/satusehat-rawat-jalan/satusehat-rawat-jalan.service';
 import { TokenData } from 'src/utils';
 import { Roles } from 'src/utils/decorators/roles.decorator';
+import { formatDate } from 'src/utils/helpers/format-date.helper';
 
 @Controller('satusehat-admin')
 export class SatusehatAdminController {
