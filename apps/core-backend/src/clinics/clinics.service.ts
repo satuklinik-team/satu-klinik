@@ -107,7 +107,7 @@ export class ClinicsService {
             Pharmacy_Task: true,
             users: true,
             Patient: true,
-            Category: true,
+            MedicineCategory: true,
             Departments: true,
           },
         },

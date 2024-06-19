@@ -35,7 +35,7 @@ export function MembersTeamsStatisticsCell(row: ClinicEntity): JSX.Element {
       <div className="flex flex-col items-center gap-1">
         <p className="text-center text-xs">Total Category</p>
         <p className="text-lg font-semibold text-center text-blue-600">
-          {row._count.Category}
+          {row._count.MedicineCategory}
         </p>
       </div>
     </Cell>
