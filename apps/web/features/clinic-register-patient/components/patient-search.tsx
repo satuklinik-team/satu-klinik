@@ -1,7 +1,7 @@
 import { Input } from "@lezzform/react";
 import { useDebounce } from "@uidotdev/usehooks";
 import { Check, Search } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
   Command,
@@ -27,17 +27,32 @@ export function PatientSearch({
   onChange,
   value,
 }: PatientSearchProps): React.JSX.Element {
-  const [isPatientSearchOpen, setIsPatientSearchOpen] = useState<boolean>(true);
+  const [isPatientSearchOpen, setIsPatientSearchOpen] =
+    useState<boolean>(false);
   const [patientSearch, setPatientSearch] = useState<string>("");
   const debouncedPatientSearch = useDebounce(patientSearch, 300);
 
-  const { data: searchPatientData } = useFindPatient({
-    search: debouncedPatientSearch,
-    limit: 20,
-  });
+  const isSearchEnabled = debouncedPatientSearch.length >= 3;
+
+  const { data: searchPatientData } = useFindPatient(
+    {
+      search: debouncedPatientSearch,
+      limit: 20,
+    },
+    { enabled: isSearchEnabled },
+  );
+
+  useEffect(() => {
+    if (!isSearchEnabled) return;
+
+    setIsPatientSearchOpen(true);
+  }, [isSearchEnabled, debouncedPatientSearch]);
 
   return (
-    <Popover onOpenChange={setIsPatientSearchOpen} open={isPatientSearchOpen}>
+    <Popover
+      onOpenChange={setIsPatientSearchOpen}
+      open={Boolean(isPatientSearchOpen && isSearchEnabled)}
+    >
       <Command className="h-fit" shouldFilter={false}>
         <PopoverTrigger className="mb-2">
           <Input
@@ -52,6 +67,9 @@ export function PatientSearch({
         <PopoverContent
           className="max-h-[300px] overflow-y-auto p-0 DropdownPopoverContent"
           onOpenAutoFocus={(e) => {
+            e.preventDefault();
+          }}
+          onCloseAutoFocus={(e) => {
             e.preventDefault();
           }}
         >
