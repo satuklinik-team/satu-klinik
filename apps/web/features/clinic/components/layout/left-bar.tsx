@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
 import { type HTMLAttributes, useMemo } from "react";
 
@@ -51,6 +52,7 @@ export function LeftBar({ className, ...rest }: LeftBarProps): JSX.Element {
       .map((item) => {
         const newItems = item.items.filter((menu) => {
           const access = isValidMenuAccess(roles);
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- necessary
           if (access.menu["*"]) return true;
 
           return access.menu[item.id].includes(menu.id);
@@ -69,21 +71,28 @@ export function LeftBar({ className, ...rest }: LeftBarProps): JSX.Element {
       {...rest}
     >
       <div className="flex flex-row items-center w-full h-16 px-5 py-5 border-b">
-        <Image
-          alt="Brand Logo"
-          className={cn("w-8 h-8 hidden", !isLeftBarOpen && "hidden sm:block")}
-          height={44}
-          src="/brand-logo-2.png"
-          width={253}
-        />
+        <Link href="/members">
+          <Image
+            alt="Brand Logo"
+            className={cn(
+              "w-8 h-8 hidden",
+              !isLeftBarOpen && "hidden sm:block",
+            )}
+            height={44}
+            src="/brand-logo-2.png"
+            width={253}
+          />
+        </Link>
 
-        <Image
-          alt="Brand Logo"
-          className={cn(!isLeftBarOpen && "block sm:hidden")}
-          height={32}
-          src="/brand-logo.png"
-          width={172}
-        />
+        <Link href="/members">
+          <Image
+            alt="Brand Logo"
+            className={cn(!isLeftBarOpen && "block sm:hidden")}
+            height={32}
+            src="/brand-logo.png"
+            width={172}
+          />
+        </Link>
       </div>
 
       <div className="flex-1 overflow-x-auto">
