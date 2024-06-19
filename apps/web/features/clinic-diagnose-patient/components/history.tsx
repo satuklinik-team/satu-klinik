@@ -65,10 +65,12 @@ export function ClinicDiagnoseHistory(): JSX.Element {
               <p>A : {row.assessment}</p>
               <p>P : {row.plan}</p>
               <p>
-                ICD10 : {row.icd10.code} | {row.icd10.strt}
+                ICD10 :{" "}
+                {row.icd10 ? `${row.icd10.code} | ${row.icd10.strt}` : "-"}
               </p>
               <p>
-                ICD9 : {row.icd9CM.code} | {row.icd9CM.str}
+                ICD9 :{" "}
+                {row.icd9CM ? `${row.icd9CM.code} | ${row.icd9CM.str}` : "-"}
               </p>
             </Cell>
           );
@@ -91,13 +93,13 @@ export function ClinicDiagnoseHistory(): JSX.Element {
         renderCell: (row: PatientAssessmentEntity) => {
           const copyData = {
             assessment: row.assessment,
-            icd10Code: row.icd10.code,
+            icd10Code: row.icd10?.code ?? "",
             objective: row.objective,
             plan: row.plan,
             subjective: `${vitalSign?.pain ?? ""}\n====${
               row.Patient_medical_records.visitLabel
             }====\n${row.subjective}\n`,
-            icd9CMCode: row.icd9CM.code,
+            icd9CMCode: row.icd9CM?.code ?? "",
             mrid: mrId,
             prescriptions: row.Patient_medical_records.prescription,
           } as unknown as CreatePatientAssessmentSchema;
@@ -114,7 +116,7 @@ export function ClinicDiagnoseHistory(): JSX.Element {
                           variant: "success",
                         });
                         await navigator.clipboard.writeText(
-                          JSON.stringify(copyData)
+                          JSON.stringify(copyData),
                         );
                       }}
                       size="sm"
