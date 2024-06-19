@@ -26,3 +26,8 @@ export const formalizeWord = (string?: string): string => {
 
   return string[0].toUpperCase() + string.slice(1, string.length).toLowerCase();
 };
+
+export const phoneNumberRegex =
+  /^([+]?[\\s0-9]+)?(\\d{3}|[(]?[0-9]+[)])?([-]?[\\s]?[0-9])+$/;
+
+export const numbericRegex = /^[0-9\\s]+$/;
