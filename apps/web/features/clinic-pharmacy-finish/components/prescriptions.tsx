@@ -13,16 +13,20 @@ import type { PrescriptionEntity } from "@/services/prescription/types/entity";
 import { TasksStatusQueryKeyFactory } from "@/services/tasks-status/utils/query-key.factory";
 
 import { PharmacyPrescriptionTable } from "./prescription/table";
+import { useDisclose } from "@/hooks/use-disclose";
+import { PrescriptionVerifyModal } from "./prescription/verify-modal";
 
 export function ClinicPharmacyPrescriptions(): JSX.Element | undefined {
   const { toast } = useToast();
   const router = useRouter();
   const { pharmacyId, clinicId } = useParams();
 
+  const { isOpen: isVerifyOpen, setIsOpen: setIsVerifyOpen } = useDisclose();
+
   const queryClient = useQueryClient();
 
   const { data: pharmacyTaskData, isFetching } = useGetPharmacyTask(
-    pharmacyId as string
+    pharmacyId as string,
   );
 
   const [selectedIds, setSelectedIds] = useState<
@@ -74,9 +78,16 @@ export function ClinicPharmacyPrescriptions(): JSX.Element | undefined {
               selectedIds={selectedIds}
             />
 
+            <PrescriptionVerifyModal
+              onConfirm={onCompletePharmacyTask}
+              onOpenChange={setIsVerifyOpen}
+              open={isVerifyOpen}
+              isLoading={isPending}
+            />
+            {/* 
             <Button disabled={isPending} onClick={onCompletePharmacyTask}>
               Selesai
-            </Button>
+            </Button> */}
           </div>
         </ClinicCard>
       )}
