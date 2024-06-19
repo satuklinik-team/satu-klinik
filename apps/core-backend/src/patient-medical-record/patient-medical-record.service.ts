@@ -31,7 +31,7 @@ export class PatientMedicalRecordService {
         },
       },
       orderBy: {
-        visitAt: 'asc',
+        visitAt: 'desc',
       },
       select: this._findAllSelectFactory(),
     };
