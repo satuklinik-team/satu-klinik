@@ -8,7 +8,7 @@ export interface ClinicEntity {
     Departments: number;
     users: number;
     Patient: number;
-    Category: number;
+    MedicineCategory: number;
     Pharmacy_Task: number;
   };
 }
