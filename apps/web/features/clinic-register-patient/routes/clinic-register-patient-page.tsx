@@ -1,30 +1,14 @@
 "use client";
 
 import { useQueryClient } from "@tanstack/react-query";
-import { useDebounce } from "@uidotdev/usehooks";
 import dayjs from "dayjs";
-import { Check } from "lucide-react";
 import { useCallback, useMemo, useState } from "react";
 import type { UseFormReturn } from "react-hook-form";
 
-import { Button } from "@/components/ui/button";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-} from "@/components/ui/command";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import { useToast } from "@/components/ui/use-toast";
 import { ClinicCard } from "@/features/clinic/components/ui/card";
 import { QueueCard } from "@/features/clinic-patient/components/shared/queue-card";
 import { Form as AddPatientForm } from "@/lezzform/_generated/addpatientform";
-import { cn } from "@/lib/utils";
 import { useFindPatient } from "@/services/patient/hooks/use-find-patient";
 import type { CreatePatientDto } from "@/services/patient/types/dto";
 import type { PatientEntity } from "@/services/patient/types/entity";
@@ -34,21 +18,14 @@ import { useCreatePatientVitalSign } from "@/services/patient-vital-sign/hooks/u
 import type { CreateNewPatientVitalSignDto } from "@/services/patient-vital-sign/types/dto";
 import { TasksStatusQueryKeyFactory } from "@/services/tasks-status/utils/query-key.factory";
 
+import { PatientSearch } from "../components/patient-search";
+
 export function ClinicRegisterPatientPage(): JSX.Element {
   const queryClient = useQueryClient();
 
   const { toast } = useToast();
 
   const [selectedPatient, setSelectedPatient] = useState<PatientEntity>();
-  const [isPatientSearchOpen, setIsPatientSearchOpen] =
-    useState<boolean>(false);
-  const [patientSearch, setPatientSearch] = useState<string>("");
-  const debouncedPatientSearch = useDebounce(patientSearch, 300);
-
-  const { data: searchPatientData } = useFindPatient({
-    search: debouncedPatientSearch,
-    limit: 20,
-  });
 
   const defaultPatient = useMemo(() => {
     const defaultValues = {
@@ -201,64 +178,10 @@ export function ClinicRegisterPatientPage(): JSX.Element {
 
       <div className="flex flex-col sm:flex-col md:flex-col lg:flex-row xl:flex-row 2xl:flex-row gap-4">
         <div className="flex-1">
-          <Popover
-            onOpenChange={setIsPatientSearchOpen}
-            open={isPatientSearchOpen}
-          >
-            <PopoverTrigger asChild className="mb-5">
-              <Button
-                aria-expanded={isPatientSearchOpen}
-                className="w-full justify-between text-muted-foreground hover:text-muted-foreground"
-                role="combobox"
-                variant="outline"
-              >
-                Cari berdasarkan nama, nomor rekam medis, atau tempat tinggal
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="max-h-[300px] overflow-y-auto p-0">
-              <Command shouldFilter={false}>
-                <CommandInput
-                  onValueChange={(commandValue) => {
-                    setPatientSearch(commandValue);
-                  }}
-                  placeholder="Cari berdasarkan nama, nomor rekam medis, atau tempat tinggal"
-                  value={patientSearch}
-                />
-                <CommandEmpty>No patients found.</CommandEmpty>
-                <CommandGroup>
-                  {searchPatientData?.data.map((item) => (
-                    <CommandItem
-                      key={item.id}
-                      onSelect={() => {
-                        setSelectedPatient(item);
-
-                        setIsPatientSearchOpen(false);
-                        setPatientSearch("");
-                      }}
-                      value={item.id}
-                    >
-                      <Check
-                        className={cn(
-                          "mr-2 h-4 w-4",
-                          selectedPatient?.id === item.id
-                            ? "opacity-100"
-                            : "opacity-0",
-                        )}
-                      />
-                      <div className="text-xs">
-                        <p className="text-sm font-semibold">{item.fullname}</p>
-                        <p>{item.norm}</p>
-                        <p>{item.nik}</p>
-                        <p>{item.birthAt}</p>
-                        <p>{item.phone}</p>
-                        <p>{item.address}</p>
-                      </div>
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
-              </Command>
-            </PopoverContent>
-          </Popover>
+          <PatientSearch
+            onChange={setSelectedPatient}
+            value={selectedPatient}
+          />
           <ClinicCard
             borderPosition="top"
             className="border-sky-500"
