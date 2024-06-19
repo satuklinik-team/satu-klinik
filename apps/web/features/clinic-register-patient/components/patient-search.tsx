@@ -1,13 +1,12 @@
+import { Input } from "@lezzform/react";
 import { useDebounce } from "@uidotdev/usehooks";
-import { Check } from "lucide-react";
+import { Check, Search } from "lucide-react";
 import { useState } from "react";
 
-import { Button } from "@/components/ui/button";
 import {
   Command,
   CommandEmpty,
   CommandGroup,
-  CommandInput,
   CommandItem,
 } from "@/components/ui/command";
 import {
@@ -28,8 +27,7 @@ export function PatientSearch({
   onChange,
   value,
 }: PatientSearchProps): React.JSX.Element {
-  const [isPatientSearchOpen, setIsPatientSearchOpen] =
-    useState<boolean>(false);
+  const [isPatientSearchOpen, setIsPatientSearchOpen] = useState<boolean>(true);
   const [patientSearch, setPatientSearch] = useState<string>("");
   const debouncedPatientSearch = useDebounce(patientSearch, 300);
 
@@ -40,25 +38,23 @@ export function PatientSearch({
 
   return (
     <Popover onOpenChange={setIsPatientSearchOpen} open={isPatientSearchOpen}>
-      <PopoverTrigger asChild className="mb-5">
-        <Button
-          aria-expanded={isPatientSearchOpen}
-          className="w-full justify-between text-muted-foreground hover:text-muted-foreground"
-          role="combobox"
-          variant="outline"
-        >
-          Cari berdasarkan nama, nomor rekam medis, atau tempat tinggal
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className="max-h-[300px] overflow-y-auto p-0">
-        <Command shouldFilter={false}>
-          <CommandInput
-            onValueChange={(commandValue) => {
-              setPatientSearch(commandValue);
+      <Command className="h-fit" shouldFilter={false}>
+        <PopoverTrigger className="mb-2">
+          <Input
+            onChange={(e) => {
+              setPatientSearch(e.target.value);
             }}
             placeholder="Cari berdasarkan nama, nomor rekam medis, atau tempat tinggal"
+            prefixAdornment={{ icon: <Search size={18} /> }}
             value={patientSearch}
           />
+        </PopoverTrigger>
+        <PopoverContent
+          className="max-h-[300px] overflow-y-auto p-0 DropdownPopoverContent"
+          onOpenAutoFocus={(e) => {
+            e.preventDefault();
+          }}
+        >
           <CommandEmpty>No patients found.</CommandEmpty>
           <CommandGroup>
             {searchPatientData?.data.map((item) => (
@@ -89,8 +85,8 @@ export function PatientSearch({
               </CommandItem>
             ))}
           </CommandGroup>
-        </Command>
-      </PopoverContent>
+        </PopoverContent>
+      </Command>
     </Popover>
   );
 }
