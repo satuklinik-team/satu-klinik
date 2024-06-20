@@ -6,6 +6,7 @@ import type { PatientMedicalRecordEntity } from "@/services/patient-medical-reco
 import type { RouteParams } from "@/types";
 
 import { DiagnosePatientForm } from "./form";
+import { useToast } from "@/components/ui/use-toast";
 
 interface MedicalRecordDetailDiagnoseForm {
   medicalRecord: Required<PatientMedicalRecordEntity>;
@@ -17,6 +18,8 @@ export function MedicalRecordDetailDiagnoseForm({
   const { mrId } = useParams<RouteParams>();
   const searchParams = useSearchParams();
   const isEdit = searchParams.get("edit") === "true";
+
+  const { toast } = useToast();
 
   const assessment: PatientAssessmentEntity =
     medicalRecord.assessment[medicalRecord.assessment.length - 1] ?? {};
@@ -46,6 +49,10 @@ export function MedicalRecordDetailDiagnoseForm({
       onSubmit={async (values) => {
         const data = await mutateAsync(values);
 
+        toast({
+          title: "Berhasil edit data medical record!",
+          variant: "success",
+        });
         return Boolean(data);
       }}
     />

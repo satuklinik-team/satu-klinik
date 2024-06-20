@@ -48,12 +48,6 @@ export function ICD9CMInput({
     return findData;
   }, [data?.data, value]);
 
-  useEffect(() => {
-    if (!isSearchEnabled) return;
-
-    setIsOpen(true);
-  }, [isSearchEnabled, setIsOpen, debouncedSearch]);
-
   return (
     <Autocomplete
       onOpenChange={setIsOpen}

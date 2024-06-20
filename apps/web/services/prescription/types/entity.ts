@@ -16,7 +16,7 @@ export const medicineSchema = z.object({
 export const prescriptionSchema = z.object({
   id: z.coerce.number().optional(),
   medicineId: z.coerce.number().optional(),
-  Medicine: medicineSchema.optional(),
+  // Medicine: medicineSchema.optional(),
   frequency: z.coerce.number(),
   period: z.coerce.number(),
   doseQuantity: z.coerce.number(),

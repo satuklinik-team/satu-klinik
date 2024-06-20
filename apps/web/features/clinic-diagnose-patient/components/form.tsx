@@ -51,7 +51,7 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
 
       router.push(`/clinic/${clinicId}/doctor`);
     },
-    [clinicId, mrId, mutateAsync, queryClient, router, toast]
+    [clinicId, mrId, mutateAsync, queryClient, router, toast],
   );
 
   if (isLoading) return <p className="text-sm">Loading...</p>;
@@ -60,12 +60,14 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
   const vitalSign =
     medicalRecord?.vitalSign[medicalRecord.vitalSign.length - 1];
 
+  console.log({ medicalRecord, vitalSign });
+
   const defaultValues = getDiagnose(
     {
       mrId,
       patientId: patientId!,
     },
-    { mrid: mrId, prescriptions: [], subjective: vitalSign?.pain }
+    { mrid: mrId, prescriptions: [], subjective: vitalSign?.pain },
   ) as CreatePatientAssessmentSchema;
 
   return (
