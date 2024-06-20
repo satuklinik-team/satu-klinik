@@ -3,6 +3,7 @@
 import { ClinicCard } from "@/features/clinic/components/ui/card";
 import { QueueCard } from "@/features/clinic-patient/components/shared/queue-card";
 import { useFindPatient } from "@/services/patient/hooks/use-find-patient";
+import { useFindPatientQueue } from "@/services/patient-vital-sign/hooks/use-find-patient-queue";
 import { useGetTasksStatus } from "@/services/tasks-status/services/use-get-tasks-status";
 import type { GeneralTasksStatusEntity } from "@/services/tasks-status/types/entity";
 
@@ -12,11 +13,11 @@ export function ClinicDashboardPage(): JSX.Element {
   const { data: tasksStatusData } =
     useGetTasksStatus<GeneralTasksStatusEntity>();
 
-  const { data } = useFindPatient({
+  const { data } = useFindPatientQueue({
     skip: 0,
     limit: 20,
     count: true,
-    type: "ENTRY",
+    // type: "ENTRY",
   });
 
   return (
@@ -136,7 +137,12 @@ export function ClinicDashboardPage(): JSX.Element {
         >
           <div className="flex flex-col gap-2">
             {data?.data.map((item, index) => (
-              <QueueCard isActive={index === 0} key={item.id} {...item} />
+              <QueueCard
+                isActive={index === 0}
+                key={item.id}
+                {...item.Patient}
+                queue={item.queue}
+              />
             ))}
           </div>
         </ClinicCard>
