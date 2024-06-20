@@ -3,8 +3,8 @@ import { from } from 'rxjs';
 export enum DateOperation {
   Today = 'today',
   Yesterday = 'yesterday',
-  SevenDaysAgo = '7DaysAgo',
-  TwentyOneDaysAgo = '21DaysAgo',
+  SevenDaysAgo = 'oneWeekAgo',
+  TwentyOneDaysAgo = 'threeWeeksAgo',
   ThisMonth = 'thisMonth',
   LastMonth = 'lastMonth',
 }
