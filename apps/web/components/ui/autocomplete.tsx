@@ -26,7 +26,7 @@ Autocomplete.displayName = "Autocomplete";
 const AutocompleteInput = React.forwardRef<
   React.ElementRef<typeof Input>,
   React.ComponentPropsWithoutRef<typeof Input> & {
-    display?: string;
+    display?: React.ReactNode;
     onReset?: () => unknown;
   }
 >(({ className, display, onReset, ...props }, ref) => {
@@ -62,7 +62,11 @@ const AutocompleteInput = React.forwardRef<
           !display && "hidden",
         )}
       >
-        <p className="text-sm">{display}</p>
+        {typeof display === "string" ? (
+          <p className="text-sm">{display}</p>
+        ) : (
+          display
+        )}
         <Button
           className="p-0 h-8 w-8 -mr-3"
           size="icon"
