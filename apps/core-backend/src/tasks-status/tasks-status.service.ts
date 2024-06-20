@@ -212,7 +212,10 @@ export class TasksService {
 
     const result = Object.keys(counts).map((date) => ({
       visitLabel: date,
-      count: counts[date],
+      count: {
+        ...counts[date],
+        total: counts[date].e1 + counts[date].d1 + counts[date].p1,
+      },
     }));
 
     return result;
