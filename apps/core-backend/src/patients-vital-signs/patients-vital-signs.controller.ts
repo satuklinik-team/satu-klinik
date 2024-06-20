@@ -6,7 +6,7 @@ import { JwtPayload } from 'src/auth/types';
 import { Role } from '@prisma/client';
 import { Roles } from 'src/utils/decorators/roles.decorator';
 import { CreateNewPatientVitalSignDto } from './dto/create-new-patient-vital-sign.dto';
-import { FindAllVitalSignDto } from './dto/find-all-vital-sign-dto';
+import { FindTodayVitalSignDto } from './dto/find-today-vital-sign-dto';
 
 @Controller('patients-vital-signs')
 export class PatientsVitalSignsController {
@@ -17,7 +17,7 @@ export class PatientsVitalSignsController {
   @Get()
   @Roles(Role.ADMIN, Role.DOCTOR)
   findTodayVitalSign(
-    @Query() dto: FindAllVitalSignDto,
+    @Query() dto: FindTodayVitalSignDto,
     @TokenData() tokenData: JwtPayload,
   ) {
     return this.patientVitalSignService.findTodayVitalSign({

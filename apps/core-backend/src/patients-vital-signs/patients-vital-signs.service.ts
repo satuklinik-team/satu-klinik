@@ -13,7 +13,7 @@ import { ActivityService } from 'src/activity/activity.service';
 import { ActivityTitles } from 'src/activity/dto/activity.dto';
 import { CreateNewPatientVitalSignDto } from './dto/create-new-patient-vital-sign.dto';
 import { FindAllService } from 'src/find-all/find-all.service';
-import { FindAllVitalSignDto } from './dto/find-all-vital-sign-dto';
+import { FindTodayVitalSignDto } from './dto/find-today-vital-sign-dto';
 
 @Injectable()
 export class PatientsVitalSignsService {
@@ -24,13 +24,14 @@ export class PatientsVitalSignsService {
     private readonly findAllService: FindAllService,
   ) {}
 
-  async findTodayVitalSign(dto: FindAllVitalSignDto) {
+  async findTodayVitalSign(dto: FindTodayVitalSignDto) {
     const args: Prisma.Patient_medical_recordsFindManyArgs = {
       where: {
         Patient: {
           clinicsId: dto.clinicsId,
         },
         visitLabel: formatDate(new Date()),
+        status: 'e1',
       },
       include: {
         Patient: true,
