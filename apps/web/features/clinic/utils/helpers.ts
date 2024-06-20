@@ -14,6 +14,7 @@ export const isValidMenuAccess = (role: UserRole) => {
   return {
     group: splittedAccess.map((item) => item.group),
     menu: splittedAccess.reduce<Record<string, string[]>>((prev, curr) => {
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- necessary
       if (!prev[curr.group]) return { ...prev, [curr.group]: [curr.items] };
 
       return { ...prev, [curr.group]: [...prev[curr.group], curr.items] };

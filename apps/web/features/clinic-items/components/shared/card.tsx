@@ -48,7 +48,7 @@ export function ClinicItemCard({
     >
       <img
         alt={title}
-        className="w-full h-36 bg-muted-foreground/20 rounded-t-md"
+        className="w-full h-36 bg-muted-foreground/20 rounded-t-md object-cover"
         height={144}
         src={imageUrl ?? DEFAULT_MEDICINE_URL}
         width={200}
