@@ -71,6 +71,9 @@ export class PatientMedicalRecordService {
           where: {
             status: 'completed',
           },
+          include: {
+            Medicine: true,
+          },
         },
       },
     });
