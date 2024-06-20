@@ -4,6 +4,7 @@ import { stringify } from "qs";
 import { api } from "@/lib/api";
 
 import type {
+  TasksStatusChartEntity,
   TasksStatusEntity,
   TasksStatusNotificationEntity,
 } from "./types/entity";
@@ -23,7 +24,17 @@ class TasksStatusApi {
     const queryParams = stringify(dto);
 
     const { data } = await this.api.get<TasksStatusNotificationEntity>(
-      `/tasks-status/notification?&${queryParams}`,
+      `/tasks-status/notification?&${queryParams}`
+    );
+
+    return data;
+  }
+
+  async getChart(dto?: object): Promise<TasksStatusChartEntity[]> {
+    const queryParams = stringify(dto);
+
+    const { data } = await this.api.get<TasksStatusChartEntity[]>(
+      `/tasks-status/chart?&${queryParams}`
     );
 
     return data;

@@ -1,16 +1,13 @@
 import { Role } from '@prisma/client';
-import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { DateOperation } from 'src/utils/helpers/format-date.helper';
 
 export class GetMRChartDto {
   @IsString()
   @IsOptional()
   clinicsId?: string;
 
-  @IsString()
+  @IsEnum(DateOperation)
   @IsNotEmpty()
-  from: string;
-
-  @IsString()
-  @IsNotEmpty()
-  to: string;
+  type: DateOperation;
 }

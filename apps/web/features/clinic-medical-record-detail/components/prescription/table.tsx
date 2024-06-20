@@ -45,10 +45,10 @@ export function PrescriptionTable({
       if (!onChangeRef.current) return;
 
       onChangeRef.current(
-        value.filter((item) => item.medicineId !== medicineId)
+        value.filter((item) => item.medicineId !== medicineId),
       );
     },
-    [value]
+    [value],
   );
 
   const [selectedPrescription, setSelectedPrescription] =
@@ -66,7 +66,7 @@ export function PrescriptionTable({
       setSelectedPrescription(null);
       onClose();
     },
-    [onClose, onOpen]
+    [onClose, onOpen],
   );
 
   const columns = useMemo(() => {
@@ -184,7 +184,7 @@ export function PrescriptionTable({
           if (!onChangeRef.current) return;
 
           const findSameMedicine = value.find(
-            (item) => item.medicineId === prescription.medicineId
+            (item) => item.Medicine?.id === prescription.Medicine?.id,
           );
           if (
             findSameMedicine &&
@@ -202,6 +202,7 @@ export function PrescriptionTable({
 
           const newPrescription: PrescriptionEntity = {
             ...prescription,
+            medicineId: prescription.Medicine?.id,
             totalQuantity:
               prescription.supplyDuration *
               prescription.frequency *
@@ -214,7 +215,7 @@ export function PrescriptionTable({
                 if (item.medicineId === prescription.medicineId)
                   return newPrescription;
                 return item;
-              })
+              }),
             );
             return;
           }

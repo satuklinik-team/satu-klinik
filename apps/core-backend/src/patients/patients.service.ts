@@ -2,10 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreatePatientDto } from './dto/create-patient.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Prisma } from '@prisma/client';
-import {
-  FindAllPatientTypes,
-  FindAllPatientsDto,
-} from './dto/find-all-patients-dto';
+import { FindAllPatientsDto } from './dto/find-all-patients-dto';
 import { CannotAccessClinicException } from 'src/exceptions/unauthorized/cannot-access-clinic';
 import { DeletePatientDto } from './dto/delete-patient.dto';
 import { JwtPayload } from 'src/auth/types';
@@ -167,57 +164,42 @@ export class PatientsService {
   private _findAllWhereFactory(
     dto: FindAllPatientsDto,
   ): Prisma.PatientFindManyArgs['where'] {
-    if (!dto.search) {
-      if (dto.type === FindAllPatientTypes.ALL) {
-        return { clinicsId: dto.clinicsId };
-      }
-      const now = new Date();
-      const status = dto.type.at(0).toLowerCase() + '1';
-
-      return {
-        clinicsId: dto.clinicsId,
-        mr: {
-          some: {
-            status,
-            visitLabel: formatDate(now),
-          },
-        },
-      };
-    }
     return {
       clinicsId: dto.clinicsId,
-      OR: [
-        {
-          nik: {
-            contains: dto.search,
-            mode: 'insensitive',
+      ...(dto.search && {
+        OR: [
+          {
+            nik: {
+              contains: dto.search,
+              mode: 'insensitive',
+            },
           },
-        },
-        {
-          fullname: {
-            contains: dto.search,
-            mode: 'insensitive',
+          {
+            fullname: {
+              contains: dto.search,
+              mode: 'insensitive',
+            },
           },
-        },
-        {
-          norm: {
-            contains: dto.search,
-            mode: 'insensitive',
+          {
+            norm: {
+              contains: dto.search,
+              mode: 'insensitive',
+            },
           },
-        },
-        {
-          address: {
-            contains: dto.search,
-            mode: 'insensitive',
+          {
+            address: {
+              contains: dto.search,
+              mode: 'insensitive',
+            },
           },
-        },
-        {
-          phone: {
-            contains: dto.search,
-            mode: 'insensitive',
+          {
+            phone: {
+              contains: dto.search,
+              mode: 'insensitive',
+            },
           },
-        },
-      ],
+        ],
+      }),
     };
   }
 

@@ -7,7 +7,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { Prisma, Role } from '@prisma/client';
 import { RoleNotAuthorizedException } from 'src/exceptions/unauthorized/role-not-authorized';
 import { GetNotificationDto } from './dto/get-notification-dto';
-import { formatDate } from 'src/utils/helpers/format-date.helper';
+import { createFromTo, formatDate } from 'src/utils/helpers/format-date.helper';
 import { GetMRChartDto } from './dto/get-mr-chart.dto';
 import { parse } from 'path';
 
@@ -180,11 +180,14 @@ export class TasksService {
   }
 
   async getMRChart(dto: GetMRChartDto) {
+    const { from, to } = createFromTo(dto.type);
+    console.log(from);
+    console.log(to);
     const records = await this.prismaService.patient_medical_records.findMany({
       where: {
         visitLabel: {
-          gte: dto.from,
-          lte: dto.to,
+          gte: from,
+          lte: to,
         },
         Patient: {
           clinicsId: dto.clinicsId,
@@ -192,8 +195,8 @@ export class TasksService {
       },
     });
 
-    const fromDate = Date.parse(dto.from);
-    const toDate = Date.parse(dto.to);
+    const fromDate = new Date(from);
+    const toDate = new Date(to);
 
     const dates = this.getDaysArray(fromDate, toDate);
 
@@ -215,13 +218,9 @@ export class TasksService {
     return result;
   }
 
-  getDaysArray = function (start: number, end: number) {
+  getDaysArray = function (start: Date, end: Date) {
     const arr = [];
-    for (
-      const dt = new Date(start);
-      dt <= new Date(end);
-      dt.setDate(dt.getDate() + 1)
-    ) {
+    for (const dt = start; dt <= end; dt.setDate(dt.getDate() + 1)) {
       arr.push(formatDate(new Date(dt)));
     }
     return arr;

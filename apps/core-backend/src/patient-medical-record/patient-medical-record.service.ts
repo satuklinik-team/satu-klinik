@@ -9,6 +9,7 @@ import { PatientsService } from 'src/patients/patients.service';
 import { DeleteMRByIdDto } from './dto/delete-mr-by-id.dto';
 import { AlreadyIntegratedException } from 'src/exceptions/bad-request/already-integrated-exception';
 import { canModifyAssessment } from 'src/utils/helpers/find-day-difference';
+import { createFromTo } from 'src/utils/helpers/format-date.helper';
 
 @Injectable()
 export class PatientMedicalRecordService {
@@ -19,6 +20,7 @@ export class PatientMedicalRecordService {
   ) {}
 
   async findAll(dto: FindAllMRDto) {
+    const { from, to } = createFromTo(dto.type);
     const args: Prisma.Patient_medical_recordsFindManyArgs = {
       where: {
         Patient: {
@@ -26,8 +28,8 @@ export class PatientMedicalRecordService {
           id: dto.patientId,
         },
         visitLabel: {
-          gte: dto.from,
-          lte: dto.to,
+          gte: from,
+          lte: to,
         },
       },
       orderBy: {
@@ -68,6 +70,9 @@ export class PatientMedicalRecordService {
         prescription: {
           where: {
             status: 'completed',
+          },
+          include: {
+            Medicine: true,
           },
         },
       },

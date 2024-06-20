@@ -3,6 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { Check, ChevronsUpDown, ImagePlusIcon } from "lucide-react";
+import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -111,15 +112,32 @@ export function ClinicEditItemForm({
                 <FormLabel>Image</FormLabel>
                 <FormLabel className="block" htmlFor="image">
                   <div className="flex flex-col gap-3 items-center border border-dashed py-8 rounded-lg cursor-pointer">
-                    <ImagePlusIcon
-                      className="text-muted-foreground"
-                      size={32}
-                    />
                     {imageObject?.name || defaultValues.imageUrl ? (
-                      <p className="text-muted-foreground text-xs font-bold">
-                        {imageObject?.name ?? defaultValues.imageUrl}
-                      </p>
-                    ) : null}
+                      <>
+                        {imageObject ? (
+                          <Image
+                            alt={imageObject.name}
+                            className="object-scale-down"
+                            height={256}
+                            src={URL.createObjectURL(imageObject)}
+                            width={256}
+                          />
+                        ) : (
+                          <Image
+                            alt={defaultValues.title}
+                            className="object-scale-down"
+                            height={256}
+                            src={String(defaultValues.imageUrl)}
+                            width={256}
+                          />
+                        )}
+                      </>
+                    ) : (
+                      <ImagePlusIcon
+                        className="text-muted-foreground"
+                        size={32}
+                      />
+                    )}
                     <p className="text-muted-foreground font-bold">
                       Edit image
                     </p>
@@ -143,9 +161,9 @@ export function ClinicEditItemForm({
           control={form.control}
           name="categoryId"
           render={({ field: { value, onChange } }) => {
-            const options = medicineCategoryData?.data ?? [];
+            const options = medicineCategoryData.data;
 
-            const label = medicineCategoryData?.data.find(
+            const label = medicineCategoryData.data.find(
               (category) => category.id === value,
             )?.name;
 

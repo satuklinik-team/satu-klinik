@@ -1,7 +1,7 @@
 "use client";
 
 import { useDebounce } from "@uidotdev/usehooks";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 
 import { Input } from "@/components/ui/input";
 import {
@@ -31,17 +31,18 @@ export function ClinicMedicalRecordPage(): JSX.Element {
 
   const [selectedTimeRange, setSelectedTimeRange] = useState<string>("today");
 
-  const selectedTimeRangeOption = useMemo(() => {
-    return timeRangeOptions.find((item) => item.value === selectedTimeRange);
-  }, [selectedTimeRange]);
+  // const selectedTimeRangeOption = useMemo(() => {
+  //   return timeRangeOptions.find((item) => item.value === selectedTimeRange);
+  // }, [selectedTimeRange]);
 
   const { data: patiendMedicalRecordData, isFetching } =
     useFindPatientMedicalRecord({
       ...pagination,
       count: true,
-      from: selectedTimeRangeOption?.getFrom(),
-      to: selectedTimeRangeOption?.getTo(),
+      // from: selectedTimeRangeOption?.getFrom(),
+      // to: selectedTimeRangeOption?.getTo(),
       search: debouncedSearch,
+      type: selectedTimeRange,
     });
 
   return (

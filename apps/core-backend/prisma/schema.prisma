@@ -486,6 +486,7 @@ model Medicine {
   kfaCode              String?
   satuSehatId          String?
   categoryId           Int?
+  deletedAt            DateTime?
   syncedWithSatuSehat  Boolean                @default(false)
   category             MedicineCategory?      @relation(fields: [categoryId], references: [id])
   Patient_prescription Patient_prescription[]

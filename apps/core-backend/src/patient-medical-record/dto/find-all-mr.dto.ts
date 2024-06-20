@@ -1,15 +1,12 @@
-import { IsString, IsNotEmpty, IsOptional } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional, IsEnum } from 'class-validator';
 import { JwtPayload } from 'src/auth/types';
 import { PaginationDto } from 'src/utils/classes';
+import { DateOperation } from 'src/utils/helpers/format-date.helper';
 
 export class FindAllMRDto extends PaginationDto {
-  @IsString()
+  @IsEnum(DateOperation)
   @IsOptional()
-  from?: string;
-
-  @IsString()
-  @IsOptional()
-  to?: string;
+  type?: DateOperation;
 
   @IsString()
   @IsOptional()

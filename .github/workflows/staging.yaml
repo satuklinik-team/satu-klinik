@@ -86,7 +86,8 @@ jobs:
 
       - name: Building Web
         run: |
-          echo ${{ secrets.BACKEND_STAGING_PUBLIC_URL }} > apps/web/.env  
+          echo ${{ secrets.BACKEND_STAGING_MINIO_URL }} > apps/web/.env
+          echo ${{ secrets.BACKEND_STAGING_PUBLIC_URL }} >> apps/web/.env
           docker buildx build -f "${{ secrets.DOCKERFILE_WEB }}" --tag "${{ secrets.DOCKER_IMAGE_WEB_STAGING }}" .
 
       - name: Push web image into Registry

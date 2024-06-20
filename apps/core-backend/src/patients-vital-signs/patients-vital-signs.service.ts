@@ -12,6 +12,8 @@ import { createVitalSignData } from './dto/factory.dto';
 import { ActivityService } from 'src/activity/activity.service';
 import { ActivityTitles } from 'src/activity/dto/activity.dto';
 import { CreateNewPatientVitalSignDto } from './dto/create-new-patient-vital-sign.dto';
+import { FindAllService } from 'src/find-all/find-all.service';
+import { FindAllVitalSignDto } from './dto/find-all-vital-sign-dto';
 
 @Injectable()
 export class PatientsVitalSignsService {
@@ -19,7 +21,32 @@ export class PatientsVitalSignsService {
     private readonly prismaService: PrismaService,
     private readonly patientService: PatientsService,
     private readonly activityService: ActivityService,
+    private readonly findAllService: FindAllService,
   ) {}
+
+  async findTodayVitalSign(dto: FindAllVitalSignDto) {
+    const args: Prisma.Patient_medical_recordsFindManyArgs = {
+      where: {
+        Patient: {
+          clinicsId: dto.clinicsId,
+        },
+        visitLabel: formatDate(new Date()),
+      },
+      include: {
+        Patient: true,
+        vitalSign: true,
+      },
+      orderBy: {
+        visitAt: 'desc',
+      },
+    };
+
+    return await this.findAllService.findAll({
+      table: this.prismaService.patient_medical_records,
+      ...args,
+      ...dto,
+    });
+  }
 
   async create(dto: CreateVitalSignDto | CreateNewPatientVitalSignDto) {
     if (dto.patientId) {
@@ -41,7 +68,8 @@ export class PatientsVitalSignsService {
           visitAt: 'desc',
         },
       });
-      if (latestMR?.status === 'e1') {
+      const today = formatDate(new Date());
+      if (latestMR?.status === 'e1' && latestMR.visitLabel === today) {
         throw new PatientAlreadyRegistedException();
       }
 

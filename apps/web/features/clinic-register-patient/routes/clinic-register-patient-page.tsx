@@ -15,6 +15,7 @@ import type { PatientEntity } from "@/services/patient/types/entity";
 import { PatientQueryKeyFactory } from "@/services/patient/utils/query-key.factory";
 import { useCreateNewPatientVitalSign } from "@/services/patient-vital-sign/hooks/use-create-new-patient";
 import { useCreatePatientVitalSign } from "@/services/patient-vital-sign/hooks/use-create-patient";
+import { useFindPatientQueue } from "@/services/patient-vital-sign/hooks/use-find-patient-queue";
 import type { CreateNewPatientVitalSignDto } from "@/services/patient-vital-sign/types/dto";
 import { TasksStatusQueryKeyFactory } from "@/services/tasks-status/utils/query-key.factory";
 
@@ -70,6 +71,12 @@ export function ClinicRegisterPatientPage(): JSX.Element {
     limit: 20,
     count: true,
     type: "ENTRY",
+  });
+
+  const { data: patientQueueData } = useFindPatientQueue({
+    skip: 0,
+    limit: 20,
+    count: true,
   });
 
   const { mutateAsync: createPatientVitalSign } = useCreatePatientVitalSign();
@@ -200,8 +207,13 @@ export function ClinicRegisterPatientPage(): JSX.Element {
           title="Antrian Sekarang"
         >
           <div className="flex flex-col gap-2">
-            {data?.data.map((item, index) => (
-              <QueueCard isActive={index === 0} key={item.id} {...item} />
+            {patientQueueData?.data.map((item, index) => (
+              <QueueCard
+                isActive={index === 0}
+                key={item.id}
+                {...item.Patient}
+                queue={item.queue}
+              />
             ))}
           </div>
         </ClinicCard>
