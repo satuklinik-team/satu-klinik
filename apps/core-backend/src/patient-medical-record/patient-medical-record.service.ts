@@ -31,6 +31,9 @@ export class PatientMedicalRecordService {
           gte: from,
           lte: to,
         },
+        ...(dto.search && {
+          Patient: this.patientsService.searchPatientFactory(dto.search),
+        }),
       },
       orderBy: {
         visitAt: 'desc',

@@ -166,40 +166,46 @@ export class PatientsService {
   ): Prisma.PatientFindManyArgs['where'] {
     return {
       clinicsId: dto.clinicsId,
-      ...(dto.search && {
-        OR: [
-          {
-            nik: {
-              contains: dto.search,
-              mode: 'insensitive',
-            },
+      ...(dto.search && this.searchPatientFactory(dto.search)),
+    };
+  }
+
+  public searchPatientFactory(
+    search: string,
+  ): Prisma.PatientFindManyArgs['where'] {
+    return {
+      OR: [
+        {
+          nik: {
+            contains: search,
+            mode: 'insensitive',
           },
-          {
-            fullname: {
-              contains: dto.search,
-              mode: 'insensitive',
-            },
+        },
+        {
+          fullname: {
+            contains: search,
+            mode: 'insensitive',
           },
-          {
-            norm: {
-              contains: dto.search,
-              mode: 'insensitive',
-            },
+        },
+        {
+          norm: {
+            contains: search,
+            mode: 'insensitive',
           },
-          {
-            address: {
-              contains: dto.search,
-              mode: 'insensitive',
-            },
+        },
+        {
+          address: {
+            contains: search,
+            mode: 'insensitive',
           },
-          {
-            phone: {
-              contains: dto.search,
-              mode: 'insensitive',
-            },
+        },
+        {
+          phone: {
+            contains: search,
+            mode: 'insensitive',
           },
-        ],
-      }),
+        },
+      ],
     };
   }
 

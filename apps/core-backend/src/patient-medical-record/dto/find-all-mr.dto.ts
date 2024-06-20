@@ -10,6 +10,10 @@ export class FindAllMRDto extends PaginationDto {
 
   @IsString()
   @IsOptional()
+  search?: string;
+
+  @IsString()
+  @IsOptional()
   clinicsId?: string;
 
   @IsString()
