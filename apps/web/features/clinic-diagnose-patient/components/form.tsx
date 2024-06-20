@@ -60,12 +60,10 @@ export function ClinicDiagnosePatientForm(): JSX.Element {
   const vitalSign =
     medicalRecord?.vitalSign[medicalRecord.vitalSign.length - 1];
 
-  console.log({ medicalRecord, vitalSign });
-
   const defaultValues = getDiagnose(
     {
       mrId,
-      patientId: patientId!,
+      patientId: String(patientId),
     },
     { mrid: mrId, prescriptions: [], subjective: vitalSign?.pain },
   ) as CreatePatientAssessmentSchema;

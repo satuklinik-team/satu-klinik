@@ -2,7 +2,7 @@
 
 import { useDebounce } from "@uidotdev/usehooks";
 import { Check } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 import {
   Autocomplete,
@@ -65,6 +65,9 @@ export function ICD9CMInput({
           }
           onChange={(e) => {
             setSearch(e.target.value);
+          }}
+          onClick={(e) => {
+            e.preventDefault();
           }}
           onReset={() => {
             setSearch("");

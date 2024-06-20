@@ -53,9 +53,6 @@ const AutocompleteInput = React.forwardRef<
           display && "hidden",
           className,
         )}
-        onClick={(e) => {
-          e.preventDefault();
-        }}
         {...props}
       />
 

@@ -13,10 +13,27 @@ export const medicineSchema = z.object({
   syncWithSatuSehat: z.boolean(),
 });
 
+const customErrorMap: z.ZodErrorMap = (issue, ctx) => {
+  if (issue.code === z.ZodIssueCode.invalid_type) {
+    if (issue.expected === "object") {
+      return { message: "Data tidak valid!" };
+    }
+  }
+
+  return { message: ctx.defaultError };
+};
+
+z.setErrorMap(customErrorMap);
+
 export const prescriptionSchema = z.object({
   id: z.coerce.number().optional(),
   medicineId: z.coerce.number().optional(),
-  // Medicine: medicineSchema.optional(),
+  Medicine: medicineSchema
+    .omit({ kfaCode: true, syncWithSatuSehat: true })
+    .optional()
+    .refine((data) => typeof data === "object", {
+      message: "Data tidak valid!",
+    }),
   frequency: z.coerce.number(),
   period: z.coerce.number(),
   doseQuantity: z.coerce.number(),

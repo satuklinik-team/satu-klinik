@@ -66,6 +66,9 @@ export function ICD10nput({
           onChange={(e) => {
             setSearch(e.target.value);
           }}
+          onClick={(e) => {
+            e.preventDefault();
+          }}
           onReset={() => {
             setSearch("");
             onChange("");

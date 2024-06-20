@@ -16,10 +16,11 @@ import {
 import { useDisclose } from "@/hooks/use-disclose";
 import { cn } from "@/lib/utils";
 import { useFindMedicine } from "@/services/medicine/hooks/use-find-medicine";
+import type { MedicineEntity } from "@/services/medicine/types/entity";
 
 interface MedicineInput {
-  value?: number | string;
-  onChange: (value: MedicineInput["value"]) => unknown;
+  value?: number | string | MedicineEntity;
+  onChange: (value?: MedicineInput["value"]) => unknown;
   readOnly?: boolean;
 }
 
@@ -40,6 +41,8 @@ export function MedicineInput({
 
   const label = useMemo(() => {
     if (!value) return;
+
+    if (typeof value === "object") return value;
 
     const findData = data?.data.find((action) => action.id === value);
     return findData;
@@ -77,7 +80,7 @@ export function MedicineInput({
                 );
 
                 setSearch(selectedValue?.title ?? "");
-                onChange(selectedValue?.id);
+                onChange(selectedValue);
                 setIsOpen(false);
               }}
               value={String(item.id)}
