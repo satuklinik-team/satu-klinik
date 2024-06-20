@@ -9,12 +9,13 @@ import { getInitial } from "@/utils";
 type QueueCardProps = HTMLAttributes<HTMLDivElement> &
   PatientEntity & {
     isActive: boolean;
+    queue: string;
   };
 
 export function QueueCard({
   isActive,
   className,
-  mr,
+  queue,
   fullname,
   norm,
   address,
@@ -24,7 +25,7 @@ export function QueueCard({
     <Card
       className={cn(
         "flex-row justify-between items-center gap-2 px-4 py-3",
-        className
+        className,
       )}
       {...rest}
     >
@@ -33,8 +34,7 @@ export function QueueCard({
       </div>
       <div className="flex-1 flex flex-col">
         <p className="text-base font-bold">
-          <span className="text-sm font-semibold">No Antrian:</span>{" "}
-          {mr[0].queue}
+          <span className="text-sm font-semibold">No Antrian:</span> {queue}
         </p>
         <p className="text-sm font-normal">
           <span className="font-semibold">Nama Lengkap:</span> {fullname}
@@ -46,7 +46,7 @@ export function QueueCard({
           <span className="font-semibold">Alamat:</span> {address}
         </p>
       </div>
-      {isActive && (
+      {Boolean(isActive) && (
         <Badge className="p-0 w-3 h-3 rounded-full" variant="destructive" />
       )}
     </Card>

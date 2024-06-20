@@ -15,3 +15,12 @@ export interface TasksStatusNotificationEntity {
   doctorTask: boolean;
   pharmacyTask: boolean;
 }
+
+export interface TasksStatusChartEntity {
+  visitLabel: string;
+  count: {
+    e1: number;
+    d1: number;
+    p1: number;
+  };
+}

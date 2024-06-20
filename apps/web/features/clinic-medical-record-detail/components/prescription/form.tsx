@@ -82,13 +82,18 @@ export function PrescriptionForm({
             <div className="flex flex-col gap-4 mb-6">
               <FormField
                 control={form.control}
-                name="medicineId"
+                name="Medicine"
                 render={({ field: { value, onChange } }) => {
                   return (
                     <FormItem>
                       <FormLabel>Obat</FormLabel>
                       <FormControl>
-                        <MedicineInput onChange={onChange} value={value} />
+                        <MedicineInput
+                          onChange={(newValue) => {
+                            onChange(newValue);
+                          }}
+                          value={value}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

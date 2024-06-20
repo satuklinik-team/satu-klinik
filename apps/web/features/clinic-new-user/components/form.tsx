@@ -1,15 +1,5 @@
 "use client";
 
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { ClinicNewUserSchema, clinicNewUserSchema } from "../validators";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   EmailInput,
@@ -18,19 +8,33 @@ import {
   PhoneNumberInput,
   TextArea,
 } from "@lezzform/react";
+import { useQueryClient } from "@tanstack/react-query";
 import { CreditCard, Mail, User } from "lucide-react";
-import { numbericRegex, phoneNumberRegex } from "@/utils";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { useParams, useRouter } from "next/navigation";
+import { useCallback } from "react";
+import type { SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
+
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useToast } from "@/components/ui/use-toast";
 import { useCreateUser } from "@/services/user/hooks/use-create-user";
-import { useCallback } from "react";
-import { CreateUserDto } from "@/services/user/types/dto";
-import { UserRole } from "@/services/user/types/entity";
-import { useQueryClient } from "@tanstack/react-query";
+import type { CreateUserDto } from "@/services/user/types/dto";
+import type { UserRole } from "@/services/user/types/entity";
 import { UserQueryKeyFactory } from "@/services/user/utils/query-key.factory";
-import { useParams, useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
+import { numbericRegex, phoneNumberRegex } from "@/utils";
+
+import type { ClinicNewUserSchema } from "../validators";
+import { clinicNewUserSchema } from "../validators";
 
 const defaultValues: ClinicNewUserSchema = {
   address: "",
@@ -135,7 +139,9 @@ export function AddNewUserForm(): React.JSX.Element {
                   onKeyDown={(e) => {
                     if (e.key.length > 1) return;
                     const isValidKey = phoneNumberRegex.test(e.key);
-                    if (!isValidKey) return e.preventDefault();
+                    if (!isValidKey) {
+                      e.preventDefault();
+                    }
                   }}
                 />
               </FormControl>
@@ -155,7 +161,9 @@ export function AddNewUserForm(): React.JSX.Element {
                   onKeyDown={(e) => {
                     if (e.key.length > 1) return;
                     const isValidKey = numbericRegex.test(e.key);
-                    if (!isValidKey) return e.preventDefault();
+                    if (!isValidKey) {
+                      e.preventDefault();
+                    }
                   }}
                   prefixAdornment={{ icon: <CreditCard size={18} /> }}
                 />
@@ -187,29 +195,28 @@ export function AddNewUserForm(): React.JSX.Element {
                 <div>
                   <RadioGroup
                     className="flex flex-col space-y-1"
-                    onValueChange={(value) => field.onChange(value)}
+                    onValueChange={(value) => {
+                      field.onChange(value);
+                    }}
                     value={field.value}
                   >
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem
+                        id="dropdown-list-DOCTOR"
                         value="DOCTOR"
-                        id={`dropdown-list-DOCTOR`}
                       />
-                      <Label htmlFor={`dropdown-list-DOCTOR`}>Dokter</Label>
+                      <Label htmlFor="dropdown-list-DOCTOR">Dokter</Label>
                     </div>
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem
+                        id="dropdown-list-PHARMACY"
                         value="PHARMACY"
-                        id={`dropdown-list-PHARMACY`}
                       />
-                      <Label htmlFor={`dropdown-list-PHARMACY`}>Apoteker</Label>
+                      <Label htmlFor="dropdown-list-PHARMACY">Apoteker</Label>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <RadioGroupItem
-                        value="ADMIN"
-                        id={`dropdown-list-ADMIN`}
-                      />
-                      <Label htmlFor={`dropdown-list-ADMIN`}>Admin</Label>
+                      <RadioGroupItem id="dropdown-list-ADMIN" value="ADMIN" />
+                      <Label htmlFor="dropdown-list-ADMIN">Admin</Label>
                     </div>
                   </RadioGroup>
                 </div>
@@ -246,9 +253,11 @@ export function AddNewUserForm(): React.JSX.Element {
         />
         <div className="grid grid-cols-2 gap-2 mt-4">
           <Button
-            variant="destructive"
+            onClick={() => {
+              form.reset(defaultValues);
+            }}
             type="button"
-            onClick={() => form.reset(defaultValues)}
+            variant="destructive"
           >
             Reset
           </Button>

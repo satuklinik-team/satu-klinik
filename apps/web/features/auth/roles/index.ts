@@ -8,5 +8,9 @@ export const sidebarMenuAccess: Partial<Record<UserRole, string[]>> = {
     "4::report",
     "5::activity",
   ],
-  PHARMACY: ["3::pharmacy-task", "3::pharmacy-inventory"],
+  PHARMACY: [
+    "3::pharmacy-task",
+    "3::pharmacy-categories",
+    "3::pharmacy-inventory",
+  ],
 };

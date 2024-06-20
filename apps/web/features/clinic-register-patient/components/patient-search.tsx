@@ -66,10 +66,10 @@ export function PatientSearch({
         </PopoverTrigger>
         <PopoverContent
           className="max-h-[300px] overflow-y-auto p-0 DropdownPopoverContent"
-          onOpenAutoFocus={(e) => {
+          onCloseAutoFocus={(e) => {
             e.preventDefault();
           }}
-          onCloseAutoFocus={(e) => {
+          onOpenAutoFocus={(e) => {
             e.preventDefault();
           }}
         >
