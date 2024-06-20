@@ -90,9 +90,12 @@ export class MedicineService {
   async delete(dto: DeleteMedicineDto) {
     await this.canModifyMedicine(dto.id, dto.clinicsId);
 
-    const data = await this.prismaService.medicine.delete({
+    const data = await this.prismaService.medicine.update({
       where: {
         id: dto.id,
+      },
+      data: {
+        deletedAt: new Date(),
       },
     });
 
@@ -140,6 +143,7 @@ export class MedicineService {
           contains: dto.search,
           mode: 'insensitive',
         },
+        deletedAt: null,
       };
     }
     return {
@@ -147,6 +151,7 @@ export class MedicineService {
         id: dto.categoryId,
         clinicsId: dto.clinicsId,
       },
+      deletedAt: null,
     };
   }
 
