@@ -36,6 +36,9 @@ export class PatientsVitalSignsService {
         Patient: true,
         vitalSign: true,
       },
+      orderBy: {
+        visitAt: 'desc',
+      },
     };
 
     return await this.findAllService.findAll({
