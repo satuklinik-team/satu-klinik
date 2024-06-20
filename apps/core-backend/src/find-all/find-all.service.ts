@@ -11,6 +11,7 @@ export class FindAllService {
       where: dto.where,
       select: dto.select,
       orderBy: dto.orderBy,
+      include: dto.include,
       skip: dto.skip,
       take: dto.limit,
     });

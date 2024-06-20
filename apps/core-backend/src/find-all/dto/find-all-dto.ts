@@ -12,5 +12,8 @@ export class FindAllDto extends PaginationDto {
   select?: any;
 
   @IsOptional()
+  include?: any;
+
+  @IsOptional()
   orderBy?: any;
 }
