@@ -225,7 +225,6 @@ export class SatusehatRawatJalanService {
     });
 
     const result = await Promise.all(transformedValues);
-    console.log(result.filter((value) => value !== false));
     return result.filter((value) => value !== false);
   }
 
@@ -863,7 +862,7 @@ export class SatusehatRawatJalanService {
 
     const completedEncounterJsonArray = [];
 
-    for (const { mrid } of mridList) {
+    for (const mrid of mridList) {
       completedEncounterJsonArray.push(
         await this.satusehatJsonService.completedEncounterJson(mrid),
       );
@@ -871,7 +870,7 @@ export class SatusehatRawatJalanService {
 
     await this.postBundle(clinicsId, completedEncounterJsonArray);
 
-    for (const { mrid } of mridList) {
+    for (const mrid of mridList) {
       await this.prismaService.patient_medical_records.update({
         where: {
           id: mrid,

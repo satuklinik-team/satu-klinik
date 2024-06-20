@@ -790,11 +790,11 @@ export class SatusehatJsonService {
         id: medDispenseId,
       },
       select: {
-        Medicine: true,
         patient_prescription: {
           select: {
             id: true,
             satuSehatId: true,
+            Medicine: true,
             Patient_medical_records: {
               select: {
                 id: true,
@@ -857,8 +857,8 @@ export class SatusehatJsonService {
         ],
       },
       medicationReference: {
-        reference: `Medication/${medDispense.Medicine.satuSehatId}`,
-        display: medDispense.Medicine.title,
+        reference: `Medication/${medDispense.patient_prescription.Medicine.satuSehatId}`,
+        display: medDispense.patient_prescription.Medicine.title,
       },
       subject: {
         reference: `Patient/${medDispense.patient_prescription.Patient_medical_records.Patient.satuSehatId}`,
