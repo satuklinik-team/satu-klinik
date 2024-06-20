@@ -63,7 +63,6 @@ export class PatientsController {
   }
 
   @Get(':id')
-  @Roles(Role.ADMIN, Role.DOCTOR)
   async getPatientById(
     @Param('id') id: string,
     @TokenData() tokenData: JwtPayload,
