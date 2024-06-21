@@ -64,6 +64,7 @@ model Patient_vital_sign {
   saturation                Int?                     @default(0)
   sugar                     Int?                     @default(0)
   cholesterol               Int?                     @default(0)
+  urate                     Int?                     @default(0)
   pain                      String?
   allergic                  String?                  @default("n/a")
   deletedAt                 DateTime?
@@ -127,8 +128,6 @@ model Patient_prescription {
 model Medication_dispense {
   id                     Int                   @id @default(autoincrement())
   createdAt              DateTime?             @default(now()) @db.Timestamptz(6)
-  medicineId             Int?
-  Medicine               Medicine?             @relation(fields: [medicineId], references: [id])
   type                   String?
   frequency              Int?
   period                 Int?
@@ -490,7 +489,6 @@ model Medicine {
   syncedWithSatuSehat  Boolean                @default(false)
   category             MedicineCategory?      @relation(fields: [categoryId], references: [id])
   Patient_prescription Patient_prescription[]
-  Medication_dispense  Medication_dispense[]
 }
 
 model MedicineCategory {
