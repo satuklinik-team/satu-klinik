@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const createMedicineSchema = z.object({
-  image: z.instanceof(FileList).optional(),
+  image: z.instanceof(Blob).optional(),
   title: z.string(),
   price: z.number().max(999999999, "Maximum 9 digits!").optional(),
   stock: z.number().max(999999999, "Maximum 9 digits!").optional(),
@@ -10,7 +10,7 @@ export const createMedicineSchema = z.object({
 });
 
 export const updateMedicineSchema = z.object({
-  image: z.instanceof(FileList).optional(),
+  image: z.instanceof(Blob).optional(),
   title: z.string().optional(),
   price: z.number().max(999999999, "Maximum 9 digits!").optional(),
   stock: z.number().max(999999999, "Maximum 9 digits!").optional(),
