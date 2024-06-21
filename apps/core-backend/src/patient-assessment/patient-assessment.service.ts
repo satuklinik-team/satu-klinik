@@ -14,6 +14,7 @@ import { MRAlready2DaysException } from 'src/exceptions/bad-request/mr-already-t
 import { ActivityService } from 'src/activity/activity.service';
 import { ActivityTitles } from 'src/activity/dto/activity.dto';
 import { canModifyAssessment } from 'src/utils/helpers/find-day-difference';
+import { checkUndefined } from 'src/utils';
 
 @Injectable()
 export class PatientAssessmentService {
@@ -70,8 +71,8 @@ export class PatientAssessmentService {
         objective: dto.objective,
         assessment: dto.assessment,
         plan: dto.plan,
-        icd10Code: dto.icd10Code,
-        icd9CMCode: dto.icd9CMCode,
+        icd10Code: checkUndefined(dto.icd10Code),
+        icd9CMCode: checkUndefined(dto.icd9CMCode),
         syncedWithSatuSehat: false,
       };
 

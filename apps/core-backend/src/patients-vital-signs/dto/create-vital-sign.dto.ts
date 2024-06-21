@@ -16,6 +16,7 @@ export class CreateVitalSignDto extends PartialType(CreatePatientDto) {
   patientId: string;
 
   @IsBoolean()
+  @Type(() => Boolean)
   @IsNotEmpty()
   changePatientDetail = false;
 

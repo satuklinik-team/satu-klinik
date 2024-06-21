@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Patch, Post, Put, Query } from '@nestjs/common';
 import { CreateVitalSignDto } from './dto/create-vital-sign.dto';
 import { PatientsVitalSignsService } from './patients-vital-signs.service';
 import { TokenData } from 'src/utils';
@@ -40,6 +40,17 @@ export class PatientsVitalSignsController {
   @Post('new-patient')
   @Roles(Role.ADMIN)
   createNewPatientVitalSign(
+    @Body() dto: CreateNewPatientVitalSignDto,
+    @TokenData() tokenData: JwtPayload,
+  ) {
+    dto.clinicsId = tokenData.clinicsId;
+    dto.usersId = tokenData.sub;
+    return this.patientVitalSignService.create(dto);
+  }
+
+  @Put()
+  @Roles(Role.ADMIN)
+  updateVitalSign(
     @Body() dto: CreateNewPatientVitalSignDto,
     @TokenData() tokenData: JwtPayload,
   ) {

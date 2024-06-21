@@ -1,4 +1,5 @@
 import { Prisma } from '@prisma/client';
+import { checkUndefined } from 'src/utils';
 import { formatDate } from 'src/utils/helpers/format-date.helper';
 
 export function createVitalSignData(
@@ -16,17 +17,17 @@ export function createVitalSignData(
     practitionerId: dto.usersId,
     vitalSign: {
       create: {
-        height: dto.height,
-        weight: dto.weight,
+        height: checkUndefined(dto.height),
+        weight: checkUndefined(dto.weight),
         allergic: dto.allergic,
         systole: dto.systole,
         diastole: dto.diastole,
         pulse: dto.pulse,
         respiration: dto.respiration,
         temperature: dto.temperature,
-        sugar: dto.sugar,
-        cholesterol: dto.cholesterol,
-        urate: dto.urate,
+        sugar: checkUndefined(dto.sugar),
+        cholesterol: checkUndefined(dto.cholesterol),
+        urate: checkUndefined(dto.urate),
         pain: dto.pain,
       },
     },
