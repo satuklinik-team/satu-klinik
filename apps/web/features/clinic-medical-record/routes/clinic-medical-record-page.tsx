@@ -1,9 +1,7 @@
 "use client";
 
-import { useDebounce } from "@uidotdev/usehooks";
 import { useState } from "react";
 
-import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -17,6 +15,7 @@ import { ClinicCard } from "@/features/clinic/components/ui/card";
 import { useFindPatientMedicalRecord } from "@/services/patient-medical-record/hooks/use-find-patient-medical-record";
 import type { Pagination } from "@/types";
 
+import { SearchMedicalRecordInput } from "../components/search-input";
 import { MedicalRecordTable } from "../components/tables/medical-record-table";
 import { timeRangeOptions } from "../utils";
 
@@ -27,7 +26,6 @@ export function ClinicMedicalRecordPage(): JSX.Element {
   });
 
   const [search, setSearch] = useState("");
-  const debouncedSearch = useDebounce(search, 300);
 
   const [selectedTimeRange, setSelectedTimeRange] = useState<string>("today");
 
@@ -41,7 +39,7 @@ export function ClinicMedicalRecordPage(): JSX.Element {
       count: true,
       // from: selectedTimeRangeOption?.getFrom(),
       // to: selectedTimeRangeOption?.getTo(),
-      search: debouncedSearch,
+      search,
       type: selectedTimeRange,
     });
 
@@ -51,7 +49,7 @@ export function ClinicMedicalRecordPage(): JSX.Element {
         <h1 className="text-2xl sm:text-3xl md:text-3xl lg:text-4xl xl:text-4xl 2xl:text-4xl font-semibold">
           Medical Record
         </h1>
-        <p className="text-muted-foreground">patient visit history</p>
+        <p className="text-muted-foreground">Patient visit history</p>
       </div>
 
       <ClinicCard>
@@ -78,21 +76,12 @@ export function ClinicMedicalRecordPage(): JSX.Element {
               </SelectContent>
             </Select>
           </div>
-          <Input
-            className="py-2 h-fit"
-            onChange={(e) => {
-              setSearch(e.target.value);
-            }}
-            placeholder="Cari berdasarkan nama, nomor rekam medis, atau tempat tinggal"
-            value={search}
-          />
+          <SearchMedicalRecordInput onChange={setSearch} />
         </div>
 
         <MedicalRecordTable
           isLoading={isFetching}
-          onPaginationChange={(currentPagination) => {
-            setPagination(currentPagination);
-          }}
+          onPaginationChange={setPagination}
           pagination={pagination}
           rows={patiendMedicalRecordData?.data ?? []}
           totalRows={patiendMedicalRecordData?.count}
