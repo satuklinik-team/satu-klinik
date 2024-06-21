@@ -10,12 +10,18 @@ export class MailService {
 
   async sendPasswordResetEmail(to: string, token: string) {
     const feUrl = this.configService.get('frontend_url');
-    const resetLink = `${feUrl}/reset-password?token=${token}`;
+    const resetLink = `${feUrl}/auth/reset-password?token=${token}`;
+
+    const debugEmail = this.configService.get('email.debug_email');
+    if (debugEmail) {
+      to = debugEmail;
+    }
+
     const mail: SendGrid.MailDataRequired = {
       to,
       subject: 'Password Reset Request',
       from: this.configService.get('email.username'),
-      html: `<p>You requested a password reset. Click the link below to reset your password:</p><p><a href="${resetLink}">Reset Password</a></p><p>Your token: ${token}</p>`,
+      html: `<p>You requested a password reset on SatuKlinik. Click the link below to reset your password:</p><p><a href="${resetLink}">Reset Password</a></p><p>Your token: ${token}</p>`,
     };
 
     return await SendGrid.send(mail);

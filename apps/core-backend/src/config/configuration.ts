@@ -33,5 +33,6 @@ export default () => ({
     host: process.env.EMAIL_HOST,
     port: process.env.EMAIL_PORT,
     send_grid_key: process.env.SEND_GRID_KEY,
+    debug_email: process.env.DEBUG_EMAIL,
   },
 });
