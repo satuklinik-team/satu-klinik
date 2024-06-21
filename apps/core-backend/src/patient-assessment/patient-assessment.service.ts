@@ -71,8 +71,8 @@ export class PatientAssessmentService {
         objective: dto.objective,
         assessment: dto.assessment,
         plan: dto.plan,
-        icd10Code: checkUndefined(dto.icd10Code),
-        icd9CMCode: checkUndefined(dto.icd9CMCode),
+        icd10Code: dto.icd10Code,
+        icd9CMCode: dto.icd9CMCode,
         syncedWithSatuSehat: false,
       };
 
