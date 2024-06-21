@@ -3,6 +3,7 @@ import { MinioService } from 'nestjs-minio-client';
 import * as crypto from 'crypto';
 import { BufferedFile } from './model/file.model';
 import { ConfigService } from '@nestjs/config';
+import { FileLargerThan4MBException } from 'src/exceptions/bad-request/file-larger-than-4mb-exception';
 
 @Injectable()
 export class MinioClientService {
@@ -26,6 +27,11 @@ export class MinioClientService {
   ) {
     if (!file.mimetype.startsWith('image')) {
       throw new HttpException('Error uploading file', HttpStatus.BAD_REQUEST);
+    }
+
+    const MAX_FILE_SIZE = 4 * 1024 * 1024; // 4 MB in bytes
+    if (file.size > MAX_FILE_SIZE) {
+      throw new FileLargerThan4MBException();
     }
 
     const temp_filename = Date.now().toString();
