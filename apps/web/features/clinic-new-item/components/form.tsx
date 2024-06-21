@@ -30,6 +30,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { UploadInput } from "@/components/ui/upload-input";
 import { useToast } from "@/components/ui/use-toast";
 import { cn } from "@/lib/utils";
 import { useCreateMedicine } from "@/services/medicine/hooks/use-create-medicine";
@@ -57,7 +58,9 @@ export function ClinicNewItemForm(): JSX.Element {
     mode: "onTouched",
   });
 
-  const imageRef = form.register("image");
+  const { setValue, setError } = form;
+
+  // const imageRef = form.register("image");
 
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -69,7 +72,7 @@ export function ClinicNewItemForm(): JSX.Element {
     async (dto: CreateMedicineDto) => {
       const formData = new FormData();
 
-      formData.append("image", dto.image?.item(0) as unknown as Blob);
+      formData.append("image", dto.image as unknown as Blob);
       formData.append("title", String(dto.title));
       formData.append("price", String(dto.price));
       formData.append("stock", String(dto.stock));
@@ -83,7 +86,7 @@ export function ClinicNewItemForm(): JSX.Element {
       toast({ title: "Berhasil Membuat Obat Baru!", variant: "success" });
       router.push(`/clinic/${clinicId as string}/items`);
     },
-    [clinicId, mutateAsync, queryClient, router, toast],
+    [clinicId, mutateAsync, queryClient, router, toast]
   );
 
   return (
@@ -93,41 +96,51 @@ export function ClinicNewItemForm(): JSX.Element {
           control={form.control}
           name="image"
           render={({ field }) => {
-            const value = field.value;
-            const imageObject = value?.item(0);
+            const imageObject = field.value as unknown as File | undefined;
 
             return (
               <FormItem>
                 <FormLabel>Image</FormLabel>
-                <FormLabel className="block" htmlFor="image">
-                  <div className="flex flex-col gap-3 items-center border border-dashed py-8 rounded-lg cursor-pointer">
-                    {imageObject ? (
-                      <Image
-                        alt={imageObject.name}
-                        className="object-scale-down"
-                        height={256}
-                        src={URL.createObjectURL(imageObject)}
-                        width={256}
-                      />
-                    ) : (
-                      <ImagePlusIcon
-                        className="text-muted-foreground"
-                        size={32}
-                      />
-                    )}
-                    <p className="text-muted-foreground font-bold">
-                      {imageObject?.name ? "Change file" : "Upload a file"}
-                    </p>
-                  </div>
-                </FormLabel>
+
                 <FormControl>
-                  <Input
+                  <UploadInput
+                    accept="image/*"
+                    isCompressed
+                    maxSizeKB={4096}
+                    onChange={(file) => {
+                      setValue("image", file);
+                    }}
+                    onError={(e) => {
+                      setError("image", { message: String(e) });
+                    }}
+                  >
+                    <div className="flex flex-col gap-3 items-center border border-dashed py-8 rounded-lg cursor-pointer">
+                      {imageObject ? (
+                        <Image
+                          alt={imageObject.name}
+                          className="object-scale-down"
+                          height={256}
+                          src={URL.createObjectURL(imageObject)}
+                          width={256}
+                        />
+                      ) : (
+                        <ImagePlusIcon
+                          className="text-muted-foreground"
+                          size={32}
+                        />
+                      )}
+                      <p className="text-muted-foreground font-bold text-sm">
+                        {imageObject?.name ? "Change file" : "Upload a file"}
+                      </p>
+                    </div>
+                  </UploadInput>
+                  {/* <Input
                     accept="image/*"
                     className="hidden"
                     id="image"
                     type="file"
                     {...imageRef}
-                  />
+                  /> */}
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -142,7 +155,7 @@ export function ClinicNewItemForm(): JSX.Element {
             const options = medicineCategoryData.data;
 
             const label = medicineCategoryData.data.find(
-              (category) => category.id === value,
+              (category) => category.id === value
             )?.name;
 
             return (
@@ -189,7 +202,7 @@ export function ClinicNewItemForm(): JSX.Element {
                                   "mr-2 h-4 w-4",
                                   value === item.id
                                     ? "opacity-100"
-                                    : "opacity-0",
+                                    : "opacity-0"
                                 )}
                               />
                               {item.name}

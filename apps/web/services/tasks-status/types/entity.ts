@@ -22,5 +22,6 @@ export interface TasksStatusChartEntity {
     e1: number;
     d1: number;
     p1: number;
+    total: number;
   };
 }
