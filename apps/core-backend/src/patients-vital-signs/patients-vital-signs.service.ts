@@ -50,7 +50,7 @@ export class PatientsVitalSignsService {
   }
 
   async create(dto: CreateVitalSignDto | CreateNewPatientVitalSignDto) {
-    if (dto.patientId) {
+    if (dto instanceof CreateVitalSignDto) {
       await this.patientService.canModifyPatient(dto.patientId, dto.clinicsId);
     }
 
@@ -59,6 +59,11 @@ export class PatientsVitalSignsService {
       if (dto instanceof CreateNewPatientVitalSignDto) {
         patient = await this.patientService.create(dto, { tx });
         dto.patientId = patient.id;
+      } else if (dto.changePatientDetail) {
+        patient = await this.patientService.updatePatientById({
+          id: dto.patientId,
+          ...dto,
+        });
       }
 
       const latestMR = await tx.patient_medical_records.findFirst({
@@ -101,7 +106,7 @@ export class PatientsVitalSignsService {
         visitAt: data.visitAt.toLocaleString('en-GB'),
       };
 
-      if (patient === undefined) {
+      if (dto instanceof CreateVitalSignDto && !dto.changePatientDetail) {
         return result;
       }
       return {

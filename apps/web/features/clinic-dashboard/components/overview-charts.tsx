@@ -36,16 +36,12 @@ export function ClinicDashboardOverviewCharts(): React.JSX.Element {
     if (!chartData) return [];
 
     return chartData.map((item) => {
-      const total = Object.entries(item.count).reduce((acc, [, value]) => {
-        return acc + value;
-      }, 0);
-
       return {
         visitLabel: item.visitLabel,
         doctor: item.count.d1,
         entry: item.count.e1,
         pharmacy: item.count.p1,
-        total,
+        total: item.count.total,
       };
     });
   }, [chartData]);

@@ -19,9 +19,11 @@ import {
 import { ClinicCard } from "@/features/clinic/components/ui/card";
 import { ClinicPatientVitals } from "@/features/clinic-patient/components/shared/vitals";
 import { patientStatuses } from "@/features/clinic-patient/utils";
-import { useFindPatient } from "@/services/patient/hooks/use-find-patient";
-import type { PatientEntity } from "@/services/patient/types/entity";
-import type { VitalSignEntity } from "@/services/patient-vital-sign/types/entity";
+import { useFindPatientQueue } from "@/services/patient-vital-sign/hooks/use-find-patient-queue";
+import type {
+  PatientQueue,
+  VitalSignEntity,
+} from "@/services/patient-vital-sign/types/entity";
 import type { Pagination } from "@/types";
 import { getInitial } from "@/utils";
 
@@ -33,22 +35,21 @@ export function ClinicDoctorTable(): JSX.Element {
     limit: 20,
   });
 
-  const { data, isLoading } = useFindPatient({
+  const { data, isLoading } = useFindPatientQueue({
     ...pagination,
     count: true,
-    type: "ENTRY",
   });
 
   return (
     <ClinicCard className="mt-4">
-      <BaseTable<PatientEntity>
+      <BaseTable<PatientQueue>
         columns={[
           {
             key: "queue",
             name: "No",
             renderCell: (row) => (
               <Cell>
-                <p>{row.mr[0]?.queue}</p>
+                <p>{row.queue}</p>
               </Cell>
             ),
           },
@@ -56,17 +57,15 @@ export function ClinicDoctorTable(): JSX.Element {
             key: "name",
             name: "Nama",
             renderCell: (row) => {
-              const vitalSign = row.mr[0]?.vitalSign[0] as
-                | VitalSignEntity
-                | undefined;
+              const vitalSign = row.vitalSign[0] as VitalSignEntity | undefined;
 
               return (
                 <Cell className="gap-3">
                   <div className="flex items-center justify-center w-12 h-12 shrink-0 bg-border rounded-full border-2">
-                    <p>{getInitial(row.fullname)}</p>
+                    <p>{getInitial(row.Patient.fullname)}</p>
                   </div>
                   <div>
-                    <p className="font-bold">{row.fullname}</p>
+                    <p className="font-bold">{row.Patient.fullname}</p>
                     <ClinicPatientVitals
                       vitals={[
                         {
@@ -88,7 +87,7 @@ export function ClinicDoctorTable(): JSX.Element {
                         },
                         {
                           icon: <BloodBagOutlineIcon size={18} />,
-                          value: row.blood.toLocaleUpperCase(),
+                          value: row.Patient.blood.toLocaleUpperCase(),
                           label: "Golongan Darah",
                         },
                       ]}
@@ -104,7 +103,7 @@ export function ClinicDoctorTable(): JSX.Element {
             renderCell: (row) => (
               <Cell className="gap-2">
                 <Badge className="text-sm cursor-default">
-                  {patientStatuses[row.mr[0]?.status as "e1" | "p1" | "d1"]}
+                  {patientStatuses[row.status as "e1" | "p1" | "d1"]}
                 </Badge>
               </Cell>
             ),
@@ -118,8 +117,8 @@ export function ClinicDoctorTable(): JSX.Element {
                   <Tooltip>
                     <Link
                       href={`/clinic/${clinicId as string}/mr/${
-                        row.mr[0]?.id
-                      }/diagnose?patientId=${row.id}`}
+                        row.id
+                      }/diagnose?patientId=${row.patientId}`}
                     >
                       <TooltipTrigger className="h-min p-2 border border-border hover:bg-primary/50 rounded-md transition">
                         <Stethoscope size={32} />
