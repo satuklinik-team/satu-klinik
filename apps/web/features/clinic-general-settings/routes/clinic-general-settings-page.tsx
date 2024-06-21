@@ -3,8 +3,9 @@
 // import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ClinicCard } from "@/features/clinic/components/ui/card";
-import { Form as GeneralForm } from "@/lezzform/_generated/generalform";
 import { Form as IntegrationForm } from "@/lezzform/_generated/integrationform";
+
+import { SettingGeneralForm } from "../components/general-form";
 
 export function ClinicGeneralSettingsPage(): JSX.Element {
   return (
@@ -35,7 +36,7 @@ export function ClinicGeneralSettingsPage(): JSX.Element {
             <TabsTrigger value="integration">Integration</TabsTrigger>
           </TabsList>
           <TabsContent value="general">
-            <GeneralForm />
+            <SettingGeneralForm />
           </TabsContent>
           {/* <TabsContent
             className="flex flex-col gap-4 px-4 py-2"
