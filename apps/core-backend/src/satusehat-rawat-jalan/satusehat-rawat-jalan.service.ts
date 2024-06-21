@@ -499,6 +499,13 @@ export class SatusehatRawatJalanService {
             clinicsId,
           },
           encounterId: null,
+          assessment: {
+            some: {
+              icd10Code: {
+                not: null,
+              },
+            },
+          },
         },
         select: {
           id: true,
@@ -543,6 +550,11 @@ export class SatusehatRawatJalanService {
       await this.prismaService.patient_assessment.findMany({
         where: {
           syncedWithSatuSehat: false,
+          Patient_medical_records: {
+            encounterId: {
+              not: null,
+            },
+          },
         },
         select: {
           patient_medical_recordsId: true,
@@ -683,6 +695,13 @@ export class SatusehatRawatJalanService {
         Patient: {
           clinicsId,
         },
+        assessment: {
+          some: {
+            conditionId: {
+              not: null,
+            },
+          },
+        },
       },
       syncedWithSatuSehat: false,
       Medicine: {
@@ -817,8 +836,12 @@ export class SatusehatRawatJalanService {
           encounterId: {
             not: null,
           },
-          status: {
-            not: 'e1',
+          assessment: {
+            some: {
+              conditionId: {
+                not: null,
+              },
+            },
           },
           satuSehatCompleted: false,
         },
