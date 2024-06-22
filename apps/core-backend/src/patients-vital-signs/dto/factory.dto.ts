@@ -2,18 +2,26 @@ import { Prisma } from '@prisma/client';
 import { checkUndefined } from 'src/utils';
 import { formatDate } from 'src/utils/helpers/format-date.helper';
 
+export enum VitalSignQueryTypes {
+  CREATE = 'create',
+  UPDATE = 'update',
+}
+
 export function createVitalSignData(
+  type: VitalSignQueryTypes,
   dto: any,
-  queue: string,
+  queue?: string,
 ): Prisma.Patient_medical_recordsCreateArgs['data'] {
   const now = new Date();
 
   return {
-    patientId: dto.patientId,
-    visitAt: now,
-    visitLabel: formatDate(now),
-    queue,
-    status: 'e1',
+    ...(type === VitalSignQueryTypes.CREATE && {
+      patientId: dto.patientId,
+      visitAt: now,
+      visitLabel: formatDate(now),
+      status: 'e1',
+      queue,
+    }),
     practitionerId: dto.usersId,
     vitalSign: {
       create: {

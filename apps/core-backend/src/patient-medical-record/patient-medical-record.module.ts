@@ -7,5 +7,6 @@ import { PatientsModule } from 'src/patients/patients.module';
   imports: [PatientsModule],
   controllers: [PatientMedicalRecordController],
   providers: [PatientMedicalRecordService],
+  exports: [PatientMedicalRecordService],
 })
 export class PatientMedicalRecordModule {}

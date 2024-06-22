@@ -45,10 +45,12 @@ export class PatientsService {
     return data;
   }
 
-  async updatePatientById(dto: UpdatePatientDto) {
+  async updatePatientById(dto: UpdatePatientDto, context?: ServiceContext) {
+    const prisma = this._initPrisma(context?.tx);
+
     const patientData = createPatientData(dto);
 
-    const data = await this.prismaService.patient.update({
+    const data = await prisma.patient.update({
       where: {
         id: dto.id,
       },
