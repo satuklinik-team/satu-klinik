@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { Prisma } from '@prisma/client';
+import { Patient, Prisma } from '@prisma/client';
 import { PatientAlreadyRegistedException } from 'src/exceptions/conflict/patient-already-registered.exception';
 import { CannotAccessClinicException } from 'src/exceptions/unauthorized/cannot-access-clinic';
 import { CreateVitalSignDto } from 'src/patients-vital-signs/dto/create-vital-sign.dto';
@@ -59,7 +59,7 @@ export class PatientsVitalSignsService {
     }
 
     const data = await this.prismaService.$transaction(async (tx) => {
-      let patient: any;
+      let patient: Patient;
       if (dto instanceof CreateNewPatientVitalSignDto) {
         patient = await this.patientService.create(dto, { tx });
         dto.patientId = patient.id;
@@ -138,16 +138,6 @@ export class PatientsVitalSignsService {
     );
 
     const data = await this.prismaService.$transaction(async (tx) => {
-      if (dto.changePatientDetail) {
-        await this.patientService.updatePatientById(
-          {
-            id: dto.patientId,
-            ...dto,
-          },
-          { tx },
-        );
-      }
-
       const mr = await tx.patient_medical_records.update({
         where: {
           id: dto.mrid,
@@ -156,21 +146,11 @@ export class PatientsVitalSignsService {
           practitionerId: dto.usersId,
         },
         select: {
-          id: true,
-          status: true,
-          queue: true,
-          visitAt: true,
-          visitLabel: true,
-          vitalSign: { take: 1 },
+          patientId: true,
         },
       });
 
-      const result = {
-        ...mr,
-        visitAt: mr.visitAt.toLocaleString('en-GB'),
-      };
-
-      const vitalSign = await tx.patient_vital_sign.updateMany({
+      await tx.patient_vital_sign.updateMany({
         where: {
           patient_medical_recordsId: dto.mrid,
         },
@@ -184,7 +164,43 @@ export class PatientsVitalSignsService {
         payload: updateVitalSign.vitalSign.create,
       });
 
-      return dto.changePatientDetail ? result : vitalSign;
+      let patient: Patient;
+      if (dto.changePatientDetail) {
+        patient = await this.patientService.updatePatientById(
+          {
+            id: mr.patientId,
+            ...dto,
+          },
+          { tx },
+        );
+      }
+
+      const data = await tx.patient_medical_records.findFirst({
+        where: {
+          id: dto.mrid,
+        },
+        select: {
+          id: true,
+          status: true,
+          queue: true,
+          visitAt: true,
+          visitLabel: true,
+          vitalSign: { take: 1 },
+        },
+      });
+
+      const result = {
+        ...data,
+        visitAt: data.visitAt.toLocaleString('en-GB'),
+      };
+
+      if (!dto.changePatientDetail) {
+        return result;
+      }
+      return {
+        patient,
+        patientMedicalRecord: result,
+      };
     });
 
     return data;
