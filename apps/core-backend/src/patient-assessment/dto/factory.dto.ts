@@ -1,6 +1,7 @@
 import { Prisma } from '@prisma/client';
 import { CreatePatientAssessmentDto } from './create-patient-assessment.dto';
 import { UpdatePatientAssessmentDto } from './update-patient-assessment.dto';
+import { undefinedToNull } from 'src/utils';
 
 export function createAssessmentData(
   dto: CreatePatientAssessmentDto | UpdatePatientAssessmentDto,
@@ -12,8 +13,8 @@ export function createAssessmentData(
     objective: dto.objective,
     assessment: dto.assessment,
     plan: dto.plan,
-    icd10Code: dto.icd10Code,
-    icd9CMCode: dto.icd9CMCode,
+    icd10Code: undefinedToNull(dto.icd10Code),
+    icd9CMCode: undefinedToNull(dto.icd9CMCode),
     syncedWithSatuSehat: false,
   };
 }
