@@ -106,13 +106,11 @@ export class MedicineCategoryService {
       },
     });
 
-    const medicineCategoryData = exclude(dto, ['usersId']);
-
     this.activityService.emit({
       title: ActivityTitles.DELETE_MEDICINE_CATEGORY,
       clinicsId: dto.clinicsId,
       usersId: dto.usersId,
-      payload: medicineCategoryData,
+      payload: data,
     });
 
     return data;

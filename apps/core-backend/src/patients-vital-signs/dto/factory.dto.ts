@@ -1,5 +1,5 @@
 import { Prisma } from '@prisma/client';
-import { checkUndefined } from 'src/utils';
+import { undefinedToNull } from 'src/utils';
 import { formatDate } from 'src/utils/helpers/format-date.helper';
 
 export enum VitalSignQueryTypes {

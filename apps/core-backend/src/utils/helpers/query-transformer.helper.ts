@@ -59,4 +59,4 @@ function parseBoolean(val) {
 export const queryTransformer = (query: Record<string, unknown>) =>
   parseValue(query);
 
-export const checkUndefined = (value: any) => (value ? value : null);
+export const undefinedToNull = (value: any) => (value ? value : null);

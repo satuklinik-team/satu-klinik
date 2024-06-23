@@ -64,7 +64,10 @@ export class PatientsService {
       title: ActivityTitles.UPDATE_PATIENT,
       usersId: dto.usersId,
       clinicsId: dto.clinicsId,
-      payload: patientData,
+      payload: {
+        id: dto.id,
+        ...patientData,
+      },
     });
 
     return data;

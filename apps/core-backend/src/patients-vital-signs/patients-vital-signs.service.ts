@@ -161,7 +161,10 @@ export class PatientsVitalSignsService {
         title: ActivityTitles.UPDATE_PATIENT_REGISTRATION,
         clinicsId: dto.clinicsId,
         usersId: dto.usersId,
-        payload: updateVitalSign.vitalSign.create,
+        payload: {
+          mrid: dto.mrid,
+          ...updateVitalSign.vitalSign.create,
+        },
       });
 
       let patient: Patient;
