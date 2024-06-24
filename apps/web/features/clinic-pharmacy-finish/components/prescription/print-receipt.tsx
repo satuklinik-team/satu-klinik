@@ -56,6 +56,7 @@ export function PrescriptionPrintReceipt({
           <h1 className="text-2xl font-bold">{clinic.name}</h1>
           <p>{clinic.license ?? "-"}</p>
           <p className="text-sm mt-1">telp: {clinic.phone}</p>
+          <p className="text-sm max-w-sm mx-auto">{clinic.address}</p>
         </div>
         <div className="w-full mt-4">
           <Separator className="h-1 bg-black" />
