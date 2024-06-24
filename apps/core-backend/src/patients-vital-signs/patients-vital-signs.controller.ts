@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Patch, Post, Put, Query } from '@nestjs/common';
 import { CreateVitalSignDto } from './dto/create-vital-sign.dto';
 import { PatientsVitalSignsService } from './patients-vital-signs.service';
 import { TokenData } from 'src/utils';
@@ -7,6 +7,7 @@ import { Role } from '@prisma/client';
 import { Roles } from 'src/utils/decorators/roles.decorator';
 import { CreateNewPatientVitalSignDto } from './dto/create-new-patient-vital-sign.dto';
 import { FindTodayVitalSignDto } from './dto/find-today-vital-sign-dto';
+import { UpdateVitalSignDto } from './dto/update-vital-sign.dto';
 
 @Controller('patients-vital-signs')
 export class PatientsVitalSignsController {
@@ -28,23 +29,34 @@ export class PatientsVitalSignsController {
 
   @Post()
   @Roles(Role.ADMIN)
-  createExistingPatientVitalSign(
+  async createExistingPatientVitalSign(
     @Body() dto: CreateVitalSignDto,
     @TokenData() tokenData: JwtPayload,
   ) {
     dto.clinicsId = tokenData.clinicsId;
     dto.usersId = tokenData.sub;
-    return this.patientVitalSignService.create(dto);
+    return await this.patientVitalSignService.create(dto);
   }
 
   @Post('new-patient')
   @Roles(Role.ADMIN)
-  createNewPatientVitalSign(
+  async createNewPatientVitalSign(
     @Body() dto: CreateNewPatientVitalSignDto,
     @TokenData() tokenData: JwtPayload,
   ) {
     dto.clinicsId = tokenData.clinicsId;
     dto.usersId = tokenData.sub;
-    return this.patientVitalSignService.create(dto);
+    return await this.patientVitalSignService.create(dto);
+  }
+
+  @Patch()
+  @Roles(Role.ADMIN)
+  async updateVitalSign(
+    @Body() dto: UpdateVitalSignDto,
+    @TokenData() tokenData: JwtPayload,
+  ) {
+    dto.clinicsId = tokenData.clinicsId;
+    dto.usersId = tokenData.sub;
+    return await this.patientVitalSignService.update(dto);
   }
 }

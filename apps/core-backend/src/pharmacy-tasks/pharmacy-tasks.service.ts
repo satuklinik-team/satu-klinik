@@ -285,7 +285,6 @@ export class PharmacyTasksService {
           id: dto.id,
           cancelledPrescriptions,
           boughtPrescriptions,
-          clinicsId: dto.clinicsId,
         },
       });
 

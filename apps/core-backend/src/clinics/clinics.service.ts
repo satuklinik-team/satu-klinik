@@ -121,6 +121,14 @@ export class ClinicsService {
     });
   }
 
+  async getById(clinicsId: string) {
+    return await this.prismaService.clinics.findFirst({
+      where: {
+        id: clinicsId,
+      },
+    });
+  }
+
   async addUserOnClinic(user: CreateUserDto, clinicId: string) {
     if (user.role === Role.OWNER) {
       throw new AddNewOwnerToClinicException();

@@ -1,5 +1,6 @@
 export enum ActivityTitles {
   PATIENT_REGISTRATION = 'Patient Registration',
+  UPDATE_PATIENT_REGISTRATION = 'Update Patient Registration',
   CREATE_PATIENT = 'Create Patient',
   UPDATE_PATIENT = 'Update Patient',
   DELETE_PATIENT = 'Delete Patient',

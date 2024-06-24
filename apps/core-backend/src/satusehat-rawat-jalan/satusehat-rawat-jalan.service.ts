@@ -14,7 +14,8 @@ import { v4 as uuidv4 } from 'uuid';
 export class SatusehatRawatJalanService {
   private logger: Logger = new Logger(SatusehatRawatJalanService.name);
 
-  clinicSatuSehatResponseJsonArray = [];
+  clinicReqJsonArray = [];
+  clinicResJsonArray = [];
 
   constructor(
     private readonly prismaService: PrismaService,
@@ -56,9 +57,11 @@ export class SatusehatRawatJalanService {
     const satusehatResponseBodyJsonArray = [];
 
     for (const clinic of clinics) {
+      await this.postSatuSehatForClinic(clinic.id);
       satusehatResponseBodyJsonArray.push({
         clinic,
-        clinicResponseBody: await this.postSatuSehatForClinic(clinic.id),
+        clinicRequestBody: this.clinicReqJsonArray,
+        clinicResponseBody: this.clinicResJsonArray,
       });
     }
 
@@ -66,7 +69,8 @@ export class SatusehatRawatJalanService {
   }
 
   async postSatuSehatForClinic(clinicsId: string) {
-    this.clinicSatuSehatResponseJsonArray = [];
+    this.clinicReqJsonArray = [];
+    this.clinicResJsonArray = [];
 
     const medicalRecords =
       await this.prismaService.patient_medical_records.findMany({
@@ -100,8 +104,6 @@ export class SatusehatRawatJalanService {
     await this.ensureMedicationDispenseSatuSehatId(clinicsId);
 
     await this.ensureCompletedEncounterSatuSehatId(clinicsId);
-
-    return this.clinicSatuSehatResponseJsonArray;
   }
 
   async postBundle(clinicsId: string, entry: any[]) {
@@ -141,7 +143,8 @@ export class SatusehatRawatJalanService {
         ),
     );
 
-    this.clinicSatuSehatResponseJsonArray.push(...responseBody.data.entry);
+    this.clinicReqJsonArray.push(requestBody);
+    this.clinicResJsonArray.push(...responseBody.data.entry);
 
     return responseBody.data.entry;
   }

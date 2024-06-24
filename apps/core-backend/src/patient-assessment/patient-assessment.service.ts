@@ -14,6 +14,8 @@ import { MRAlready2DaysException } from 'src/exceptions/bad-request/mr-already-t
 import { ActivityService } from 'src/activity/activity.service';
 import { ActivityTitles } from 'src/activity/dto/activity.dto';
 import { canModifyAssessment } from 'src/utils/helpers/find-day-difference';
+import { undefinedToNull } from 'src/utils';
+import { createAssessmentData } from './dto/factory.dto';
 
 @Injectable()
 export class PatientAssessmentService {
@@ -63,17 +65,7 @@ export class PatientAssessmentService {
         dto.clinicsId,
       );
 
-      const assessmentData: Prisma.Patient_assessmentCreateArgs['data'] = {
-        patient_medical_recordsId: dto.mrid,
-        doctorId: dto.usersId,
-        subjective: dto.subjective,
-        objective: dto.objective,
-        assessment: dto.assessment,
-        plan: dto.plan,
-        icd10Code: dto.icd10Code,
-        icd9CMCode: dto.icd9CMCode,
-        syncedWithSatuSehat: false,
-      };
+      const assessmentData = createAssessmentData(dto);
 
       let assessment: Patient_assessment;
       if (dto instanceof CreatePatientAssessmentDto) {
@@ -211,6 +203,7 @@ export class PatientAssessmentService {
         clinicsId: dto.clinicsId,
         usersId: dto.usersId,
         payload: {
+          ...(dto instanceof UpdatePatientAssessmentDto && { id: dto.id }),
           ...assessmentData,
           prescriptions: prescriptionsDto,
         },
