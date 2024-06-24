@@ -37,6 +37,11 @@ export class ClinicsController {
     });
   }
 
+  @Get('detail')
+  async getClinicDetail(@TokenData() tokenData: JwtPayload) {
+    return await this.clinicsService.getById(tokenData.clinicsId);
+  }
+
   @Get('users')
   @Roles(Role.ADMIN, Role.DOCTOR)
   async FindClinicUsers(
