@@ -12,7 +12,7 @@
     "@hookform/resolvers": "^3.3.4",
     "@lezzcode/query": "^0.0.25",
     "@lezzform/cli": "^0.2.12",
-    "@lezzform/react": "^0.2.79",
+    "@lezzform/react": "^0.2.80",
     "@lezztable-demo/cli": "^0.0.3",
     "@lezztable-demo/react": "^0.0.33",
     "@lezztable-demo/types": "^0.0.10",

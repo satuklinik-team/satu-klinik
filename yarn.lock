@@ -1239,10 +1239,10 @@
     typescript "^5.3.3"
     zod "^3.22.4"
 
-"@lezzform/react@^0.2.79":
-  version "0.2.79"
-  resolved "https://registry.yarnpkg.com/@lezzform/react/-/react-0.2.79.tgz#655eb2ed9cfbd2a2d167151335396b98f740749b"
-  integrity sha512-BwLnu6gd/XmjiExM85f3OR6i+X7izgM6nUEXXnAPN4s2Xey525L1jMjXZbwrlx6oiR1lTw0kikoG0Tnfhor6oA==
+"@lezzform/react@^0.2.80":
+  version "0.2.80"
+  resolved "https://registry.yarnpkg.com/@lezzform/react/-/react-0.2.80.tgz#6bcd344c8dda031f469842a799698239ee178f9c"
+  integrity sha512-Giqy099zQedIVL8MEIke3QGzO62yZon4QDu1GpA+kVU9zsAuCSwDrlA9TjN5au6pZCpxCY+7GKxd2RcVjgwXJg==
   dependencies:
     "@hookform/resolvers" "^3.3.4"
     "@lezzform/types" "*"
