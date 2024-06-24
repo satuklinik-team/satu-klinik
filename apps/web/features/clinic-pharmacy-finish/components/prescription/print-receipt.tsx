@@ -7,17 +7,20 @@ import { useReactToPrint } from "react-to-print";
 
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import type { ClinicEntity } from "@/services/clinic/types/entity";
 import type { PatientEntity } from "@/services/patient/types/entity";
 import type { PrescriptionEntity } from "@/services/prescription/types/entity";
 
 interface PrescriptionPrintReceiptProps {
   prescriptions: PrescriptionEntity[];
   patient: PatientEntity;
+  clinic: ClinicEntity;
 }
 
 export function PrescriptionPrintReceipt({
   prescriptions,
   patient,
+  clinic,
 }: PrescriptionPrintReceiptProps): React.JSX.Element {
   const printRef = useRef<HTMLDivElement | null>(null);
 
@@ -50,11 +53,9 @@ export function PrescriptionPrintReceipt({
           <p>Receipt</p>
         </div>
         <div className="text-center mt-2">
-          <h1 className="text-2xl font-bold">Klinik Demo Husada</h1>
-          <p>333/xxx/wwww/2024</p>
-          <p className="text-sm mt-1">
-            Kab Semarang{"   "} telp: +628912383747
-          </p>
+          <h1 className="text-2xl font-bold">{clinic.name}</h1>
+          <p>{clinic.license ?? "-"}</p>
+          <p className="text-sm mt-1">telp: {clinic.phone}</p>
         </div>
         <div className="w-full mt-4">
           <Separator className="h-1 bg-black" />

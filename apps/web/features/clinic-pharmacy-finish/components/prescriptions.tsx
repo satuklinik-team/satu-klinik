@@ -7,6 +7,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { ClinicCard } from "@/features/clinic/components/ui/card";
 import { useDisclose } from "@/hooks/use-disclose";
+import { useGetClinic } from "@/services/clinic/hooks/use-get-clinic";
 import { useGetPatient } from "@/services/patient/hooks/use-get-patient";
 import { useCompletePharmacyTask } from "@/services/pharmacy-task/hooks/use-complete-pharmacy-task";
 import { useGetPharmacyTask } from "@/services/pharmacy-task/hooks/use-get-pharmacy-task";
@@ -34,6 +35,9 @@ export function ClinicPharmacyPrescriptions(): JSX.Element | undefined {
   );
   const { data: patientData, isFetching: isPatientFetching } = useGetPatient(
     String(patientId)
+  );
+  const { data: clinicData, isFetching: isClinicDataFetching } = useGetClinic(
+    String(clinicId)
   );
 
   const [selectedIds, setSelectedIds] = useState<
@@ -87,7 +91,12 @@ export function ClinicPharmacyPrescriptions(): JSX.Element | undefined {
   }, [pharmacyTaskData?.newPrescriptions]);
 
   const isLoading =
-    !patientData || !pharmacyTaskData || isFetching || isPatientFetching;
+    !patientData ||
+    !pharmacyTaskData ||
+    isFetching ||
+    isPatientFetching ||
+    isClinicDataFetching ||
+    !clinicData;
 
   if (isLoading) return;
 
@@ -108,9 +117,11 @@ export function ClinicPharmacyPrescriptions(): JSX.Element | undefined {
               onOpenChange={setIsVerifyOpen}
               open={isVerifyOpen}
             />
+
             <PrescriptionPrintReceipt
               patient={patientData}
               prescriptions={selectedPrescriptions}
+              clinic={clinicData}
             />
             {/* 
             <Button disabled={isPending} onClick={onCompletePharmacyTask}>
