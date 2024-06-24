@@ -1,19 +1,21 @@
 "use client";
 
 import { useQueryClient } from "@tanstack/react-query";
-import { useParams, useRouter } from "next/navigation";
-import { useCallback, useState } from "react";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
-import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { ClinicCard } from "@/features/clinic/components/ui/card";
+import { useDisclose } from "@/hooks/use-disclose";
+import { useGetClinic } from "@/services/clinic/hooks/use-get-clinic";
+import { useGetPatient } from "@/services/patient/hooks/use-get-patient";
 import { useCompletePharmacyTask } from "@/services/pharmacy-task/hooks/use-complete-pharmacy-task";
 import { useGetPharmacyTask } from "@/services/pharmacy-task/hooks/use-get-pharmacy-task";
 import type { PrescriptionEntity } from "@/services/prescription/types/entity";
 import { TasksStatusQueryKeyFactory } from "@/services/tasks-status/utils/query-key.factory";
 
+import { PrescriptionPrintReceipt } from "./prescription/print-receipt";
 import { PharmacyPrescriptionTable } from "./prescription/table";
-import { useDisclose } from "@/hooks/use-disclose";
 import { PrescriptionVerifyModal } from "./prescription/verify-modal";
 
 export function ClinicPharmacyPrescriptions(): JSX.Element | undefined {
@@ -21,12 +23,21 @@ export function ClinicPharmacyPrescriptions(): JSX.Element | undefined {
   const router = useRouter();
   const { pharmacyId, clinicId } = useParams();
 
+  const searchParams = useSearchParams();
+  const patientId = searchParams.get("patientId");
+
   const { isOpen: isVerifyOpen, setIsOpen: setIsVerifyOpen } = useDisclose();
 
   const queryClient = useQueryClient();
 
   const { data: pharmacyTaskData, isFetching } = useGetPharmacyTask(
-    pharmacyId as string,
+    pharmacyId as string
+  );
+  const { data: patientData, isFetching: isPatientFetching } = useGetPatient(
+    String(patientId)
+  );
+  const { data: clinicData, isFetching: isClinicDataFetching } = useGetClinic(
+    String(clinicId)
   );
 
   const [selectedIds, setSelectedIds] = useState<
@@ -65,13 +76,35 @@ export function ClinicPharmacyPrescriptions(): JSX.Element | undefined {
     toast,
   ]);
 
-  if (!pharmacyTaskData || isFetching) return;
+  const selectedPrescriptions = useMemo(() => {
+    if (!pharmacyTaskData?.newPrescriptions) return [];
+
+    return pharmacyTaskData.newPrescriptions.filter((item) =>
+      selectedIds.includes(item.id)
+    );
+  }, [pharmacyTaskData?.newPrescriptions, selectedIds]);
+
+  useEffect(() => {
+    if (!pharmacyTaskData?.newPrescriptions) return;
+
+    setSelectedIds(pharmacyTaskData.newPrescriptions.map((item) => item.id));
+  }, [pharmacyTaskData?.newPrescriptions]);
+
+  const isLoading =
+    !patientData ||
+    !pharmacyTaskData ||
+    isFetching ||
+    isPatientFetching ||
+    isClinicDataFetching ||
+    !clinicData;
+
+  if (isLoading) return;
 
   return (
     <>
       {Boolean(pharmacyTaskData.newPrescriptions.length) && (
         <ClinicCard title="Prescription">
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 text-base font-normal">
             <PharmacyPrescriptionTable
               onSelectChange={setSelectedIds}
               rows={pharmacyTaskData.newPrescriptions}
@@ -79,10 +112,16 @@ export function ClinicPharmacyPrescriptions(): JSX.Element | undefined {
             />
 
             <PrescriptionVerifyModal
+              isLoading={isPending}
               onConfirm={onCompletePharmacyTask}
               onOpenChange={setIsVerifyOpen}
               open={isVerifyOpen}
-              isLoading={isPending}
+            />
+
+            <PrescriptionPrintReceipt
+              patient={patientData}
+              prescriptions={selectedPrescriptions}
+              clinic={clinicData}
             />
             {/* 
             <Button disabled={isPending} onClick={onCompletePharmacyTask}>

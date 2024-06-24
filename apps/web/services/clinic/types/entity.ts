@@ -11,4 +11,5 @@ export interface ClinicEntity {
     MedicineCategory: number;
     Pharmacy_Task: number;
   };
+  license: string | null;
 }
