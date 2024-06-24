@@ -1239,10 +1239,10 @@
     typescript "^5.3.3"
     zod "^3.22.4"
 
-"@lezzform/react@^0.2.75":
-  version "0.2.75"
-  resolved "https://registry.yarnpkg.com/@lezzform/react/-/react-0.2.75.tgz#c332479e49b5f825a15a31d6fa365b56d7c24083"
-  integrity sha512-ydGPcD/4O1ZEvpvXx0JDcvOIjQ7CLzclNg8V3IJLMFqe7BLvGOkTMBewl4N0lkDXH7IO5Q9VwOokEyUd/neX4Q==
+"@lezzform/react@^0.2.77":
+  version "0.2.77"
+  resolved "https://registry.yarnpkg.com/@lezzform/react/-/react-0.2.77.tgz#c069627c5ea50e18100534431592b5b4096f00e9"
+  integrity sha512-BM0RB1LO/YBbG36inrhLkwLKynLXDCo9Z5zYO8Lt0r7MLC0a2O09h0ci6On2W9jmqxpwW2ataoKvIO03o2A2pw==
   dependencies:
     "@hookform/resolvers" "^3.3.4"
     "@lezzform/types" "*"
@@ -1279,6 +1279,7 @@
     cmdk "^0.2.1"
     date-fns "^3.3.1"
     embla-carousel-react "^8.0.0"
+    input-otp "^1.2.4"
     lodash.get "^4.4.2"
     lucide-react "^0.341.0"
     next-themes "^0.2.1"
@@ -9463,6 +9464,11 @@ react-style-singleton@^2.2.1:
     get-nonce "^1.0.0"
     invariant "^2.2.4"
     tslib "^2.0.0"
+
+react-to-print@^2.15.1:
+  version "2.15.1"
+  resolved "https://registry.yarnpkg.com/react-to-print/-/react-to-print-2.15.1.tgz#c9a6732cadf1118fc90d886b54a9388c419561b9"
+  integrity sha512-1foogIFbCpzAVxydkhBiDfMiFYhIMphiagDOfcG4X/EcQ+fBPqJ0rby9Wv/emzY1YLkIQy/rEgOrWQT+rBKhjw==
 
 react-transition-group@^4.4.5:
   version "4.4.5"
