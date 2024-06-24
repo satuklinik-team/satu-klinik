@@ -119,14 +119,10 @@ export function ClinicPharmacyPrescriptions(): JSX.Element | undefined {
             />
 
             <PrescriptionPrintReceipt
+              clinic={clinicData}
               patient={patientData}
               prescriptions={selectedPrescriptions}
-              clinic={clinicData}
             />
-            {/* 
-            <Button disabled={isPending} onClick={onCompletePharmacyTask}>
-              Selesai
-            </Button> */}
           </div>
         </ClinicCard>
       )}
