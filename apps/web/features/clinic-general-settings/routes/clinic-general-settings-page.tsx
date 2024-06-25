@@ -1,11 +1,19 @@
 "use client";
 
+import { BadgeCheck, TriangleAlert } from "lucide-react";
+import { useParams } from "next/navigation";
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ClinicCard } from "@/features/clinic/components/ui/card";
+import { useGetClinic } from "@/services/clinic/hooks/use-get-clinic";
+import type { RouteParams } from "@/types";
 
 import { SettingGeneralForm } from "../components/general-form";
 
 export function ClinicGeneralSettingsPage(): JSX.Element {
+  const { clinicId } = useParams<RouteParams>();
+  const { data: clinicData } = useGetClinic(clinicId);
+
   return (
     <div className="h-full">
       <div className="mb-6 flex flex-col gap-2">
@@ -15,16 +23,26 @@ export function ClinicGeneralSettingsPage(): JSX.Element {
         <p className="text-muted-foreground">Configure system parameters</p>
       </div>
 
-      <ClinicCard
-        borderPosition="left"
-        className="border-sky-500 mb-4"
-        classNames={{
-          content: "pt-0",
-        }}
-        title={<p className="text-lg font-semibold">Welcome, Nona Perma</p>}
-      >
-        <p className="text-sm font-normal">Manage your application.</p>
-      </ClinicCard>
+      {Boolean(clinicData?.completeCreds) && (
+        <div className="bg-green-100 border border-green-500 rounded-md p-4 mb-4 flex gap-2">
+          <BadgeCheck className="text-green-800" />
+          <h2 className="text-green-800 font-semibold">
+            Klinik sudah terintegrasi dengan SatuSehat
+          </h2>
+        </div>
+      )}
+
+      {Boolean(!clinicData?.completeCreds) && (
+        <div className="bg-yellow-100 border border-yellow-500 rounded-md p-4 mb-4 flex gap-2">
+          <TriangleAlert className="text-yellow-800" />
+          <div className="flex flex-col">
+            <h2 className="text-yellow-800 font-semibold">
+              Klinik belum terintegrasi dengan SatuSehat
+            </h2>
+            <p className="text-sm">Silahkan hubungi admin SatuKlinik</p>
+          </div>
+        </div>
+      )}
 
       <ClinicCard title="General">
         <Tabs defaultValue="general">
