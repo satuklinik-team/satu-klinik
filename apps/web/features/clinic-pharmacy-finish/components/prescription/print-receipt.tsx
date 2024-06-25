@@ -48,11 +48,7 @@ export function PrescriptionPrintReceipt({
         className="hidden print:block w-full p-4 font-serif text-black"
         ref={printRef}
       >
-        <div className="w-full flex items-center justify-between">
-          <p>{today.format("DD/MM/YYYY, HH:mm:ss")}</p>
-          <p>Receipt</p>
-        </div>
-        <div className="text-center mt-2">
+        <div className="text-center">
           <h1 className="text-2xl font-bold">{clinic.name}</h1>
           <p>{clinic.license ?? "-"}</p>
           <p className="text-sm mt-1">telp: {clinic.phone}</p>
