@@ -241,7 +241,11 @@ export class PatientAssessmentService {
           select: {
             id: true,
             visitLabel: true,
-            prescription: true,
+            prescription: {
+              include: {
+                Medicine: true,
+              },
+            },
           },
         },
       },

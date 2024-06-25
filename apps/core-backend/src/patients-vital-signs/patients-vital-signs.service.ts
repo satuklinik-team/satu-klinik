@@ -42,7 +42,7 @@ export class PatientsVitalSignsService {
         vitalSign: true,
       },
       orderBy: {
-        visitAt: 'desc',
+        visitAt: 'asc',
       },
     };
 

@@ -126,6 +126,14 @@ export class ClinicsService {
       where: {
         id: clinicsId,
       },
+      select: {
+        id: true,
+        name: true,
+        address: true,
+        phone: true,
+        email: true,
+        completeCreds: true,
+      },
     });
   }
 
