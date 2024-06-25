@@ -7,6 +7,7 @@ export const createMedicineSchema = z.object({
   stock: z.number().max(999999999, "Maximum 9 digits!").optional(),
   discount: z.number().max(100, "Maximum 100%!").optional(),
   categoryId: z.number(),
+  kfaCode: z.string().optional(),
 });
 
 export const updateMedicineSchema = z.object({
