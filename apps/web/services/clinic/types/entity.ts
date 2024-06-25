@@ -12,4 +12,5 @@ export interface ClinicEntity {
     Pharmacy_Task: number;
   };
   license: string | null;
+  completeCreds?: boolean;
 }
