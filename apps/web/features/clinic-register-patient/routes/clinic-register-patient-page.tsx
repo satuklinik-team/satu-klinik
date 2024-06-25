@@ -34,6 +34,7 @@ export function ClinicRegisterPatientPage(): JSX.Element {
       pulse: 0,
       respiration: 0,
       temperature: 0,
+      nik: "0000000000000000",
     };
 
     if (!selectedPatient) return defaultValues;
@@ -45,7 +46,7 @@ export function ClinicRegisterPatientPage(): JSX.Element {
 
     return {
       ...defaultValues,
-      nik: selectedPatient.nik,
+      nik: !selectedPatient.nik ? defaultValues.nik : selectedPatient.nik,
       fullname: selectedPatient.fullname,
       address: selectedPatient.address,
       sex: selectedPatient.sex,
@@ -83,7 +84,7 @@ export function ClinicRegisterPatientPage(): JSX.Element {
 
       if (patientQueueData?.data && selectedPatient) {
         const findPatient = patientQueueData.data.find(
-          (item) => item.Patient.norm === selectedPatient.norm
+          (item) => item.Patient.norm === selectedPatient.norm,
         );
 
         if (findPatient)
@@ -170,7 +171,7 @@ export function ClinicRegisterPatientPage(): JSX.Element {
       queryClient,
       selectedPatient,
       toast,
-    ]
+    ],
   );
 
   return (
