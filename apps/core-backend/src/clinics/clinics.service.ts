@@ -102,6 +102,7 @@ export class ClinicsService {
         address: true,
         phone: true,
         email: true,
+        completeCreds: true,
         _count: {
           select: {
             Pharmacy_Task: true,
