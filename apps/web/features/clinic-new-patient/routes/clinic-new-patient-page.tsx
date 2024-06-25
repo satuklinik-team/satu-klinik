@@ -75,7 +75,10 @@ export function ClinicNewPatientPage(): JSX.Element {
       </div>
 
       <ClinicCard title="Add New Patient">
-        <AddPatientForm onSubmit={onSubmit} />
+        <AddPatientForm
+          defaultValues={{ nik: "0000000000000000" }}
+          onSubmit={onSubmit}
+        />
       </ClinicCard>
     </div>
   );
