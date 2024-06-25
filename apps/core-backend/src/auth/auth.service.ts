@@ -69,7 +69,7 @@ export class AuthService {
     const data = await this._login(dto);
     const token = await this.tokenService.getAuthToken({
       sub: data.user.id,
-      clinicsId: data.clinic.id,
+      clinicsId: data.clinic?.id,
       role: data.user.roles,
       source: 'browser',
     });
@@ -115,6 +115,10 @@ export class AuthService {
 
     if (await this._isPasswordNotMatch(user.password, dto.password))
       throw new IncorrectEmailPasswordException();
+
+    if (user.roles === Role.SATUKLINIKADMIN) {
+      return { user: exclude(user, ['password']) };
+    }
 
     let clinic = await this.prismaService.clinics.findUnique({
       where: { id: user.clinicsId },
