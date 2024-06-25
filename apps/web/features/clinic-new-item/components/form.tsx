@@ -33,6 +33,7 @@ import {
 import { UploadInput } from "@/components/ui/upload-input";
 import { useToast } from "@/components/ui/use-toast";
 import { cn } from "@/lib/utils";
+import { useGetClinic } from "@/services/clinic/hooks/use-get-clinic";
 import { useCreateMedicine } from "@/services/medicine/hooks/use-create-medicine";
 import type {
   CreateMedicineDto,
@@ -41,10 +42,13 @@ import type {
 import { createMedicineSchema } from "@/services/medicine/types/dto";
 import { MedicineQueryKeyFactory } from "@/services/medicine/utils/query-key.factory";
 import { useFindMedicineCategory } from "@/services/medicine-category/hooks/use-find-medicine-category";
+import type { RouteParams } from "@/types";
+
+import { SatuSehatKfaInput } from "./inputs/satusehat-kfa-input";
 
 export function ClinicNewItemForm(): JSX.Element {
   const router = useRouter();
-  const { clinicId } = useParams();
+  const { clinicId } = useParams<RouteParams>();
   const [search, setSearch] = useState<string>("");
 
   const { data: medicineCategoryData } = useFindMedicineCategory({
@@ -52,6 +56,8 @@ export function ClinicNewItemForm(): JSX.Element {
     limit: 50,
     search,
   });
+
+  const { data: clinicData } = useGetClinic(clinicId);
 
   const form = useForm<CreateMedicineSchema>({
     resolver: zodResolver(createMedicineSchema),
@@ -64,7 +70,7 @@ export function ClinicNewItemForm(): JSX.Element {
 
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  const { mutateAsync } = useCreateMedicine();
+  const { mutateAsync, isPending } = useCreateMedicine();
 
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
 
@@ -78,20 +84,51 @@ export function ClinicNewItemForm(): JSX.Element {
       formData.append("stock", String(dto.stock));
       formData.append("discount", String(dto.discount));
       formData.append("categoryId", String(dto.categoryId));
+      if (dto.kfaCode) {
+        formData.append("kfaCode", String(dto.kfaCode));
+      }
 
       await mutateAsync(formData as unknown as CreateMedicineDto);
       await queryClient.invalidateQueries({
         queryKey: new MedicineQueryKeyFactory().lists(),
       });
       toast({ title: "Berhasil Membuat Obat Baru!", variant: "success" });
-      router.push(`/clinic/${clinicId as string}/items`);
+      router.push(`/clinic/${clinicId}/items`);
     },
-    [clinicId, mutateAsync, queryClient, router, toast]
+    [clinicId, mutateAsync, queryClient, router, toast],
   );
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
+        {Boolean(clinicData?.completeCreds) && (
+          <FormField
+            control={form.control}
+            name="kfaCode"
+            render={({ field: { value, onChange } }) => {
+              return (
+                <FormItem>
+                  <FormLabel>Cari data obat</FormLabel>
+                  <FormControl>
+                    <SatuSehatKfaInput
+                      onChange={(kfaCode, kfa) => {
+                        onChange(kfaCode);
+                        if (kfa) {
+                          form.setValue("title", kfa.name, {
+                            shouldDirty: true,
+                            shouldValidate: true,
+                          });
+                        }
+                      }}
+                      value={value}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
+          />
+        )}
         <FormField
           control={form.control}
           name="image"
@@ -155,7 +192,7 @@ export function ClinicNewItemForm(): JSX.Element {
             const options = medicineCategoryData.data;
 
             const label = medicineCategoryData.data.find(
-              (category) => category.id === value
+              (category) => category.id === value,
             )?.name;
 
             return (
@@ -202,7 +239,7 @@ export function ClinicNewItemForm(): JSX.Element {
                                   "mr-2 h-4 w-4",
                                   value === item.id
                                     ? "opacity-100"
-                                    : "opacity-0"
+                                    : "opacity-0",
                                 )}
                               />
                               {item.name}
@@ -296,7 +333,9 @@ export function ClinicNewItemForm(): JSX.Element {
           )}
         />
 
-        <Button className="w-full mt-4">Simpan</Button>
+        <Button className="w-full mt-4" isLoading={isPending}>
+          Simpan
+        </Button>
       </form>
     </Form>
   );
