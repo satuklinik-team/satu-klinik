@@ -49,7 +49,7 @@ export function ClinicDashboardOverviewCharts(): React.JSX.Element {
   if (isLoading) return <p className="text-sm">Loading...</p>;
 
   return (
-    <div className="flex flex-col gap-2 h-96">
+    <div className="flex flex-col gap-2 h-96 text-base">
       <Select
         onValueChange={(value) => {
           setSelectedTimeRange(value);

@@ -78,6 +78,7 @@ const config = {
         "4xl": "7.5rem",
         "5xl": "10rem",
         "6xl": "12.5rem",
+        "dashboard-content": "calc(100vh - 4rem)",
       },
       borderRadius: {
         lg: "var(--radius)",
