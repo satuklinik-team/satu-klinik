@@ -65,13 +65,6 @@ export function ClinicRegisterPatientPage(): JSX.Element {
     };
   }, [selectedPatient]);
 
-  // const { data } = useFindPatient({
-  //   skip: 0,
-  //   limit: 20,
-  //   count: true,
-  //   type: "ENTRY",
-  // });
-
   const { data: patientQueueData } = useFindPatientQueue({
     skip: 0,
     limit: 20,
@@ -144,6 +137,19 @@ export function ClinicRegisterPatientPage(): JSX.Element {
 
       toast({ title: "Berhasil Membuat Pasien!", variant: "success" });
 
+      const layoutRef =
+        document.querySelector<HTMLDivElement>("#clinic-layout");
+
+      if (layoutRef) {
+        layoutRef.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      // if (pageRef.current) {
+      //   pageRef.current.scrollTo({ top: 0, behavior: "smooth" });
+      // }
+
+      // window.scrollTo({ top: 0, behavior: "smooth" });
+
       form.reset({
         nik: undefined,
         fullname: undefined,
@@ -174,7 +180,7 @@ export function ClinicRegisterPatientPage(): JSX.Element {
   );
 
   return (
-    <div className="h-full">
+    <div>
       <div className="mb-6 flex flex-col gap-2">
         <h1 className="text-2xl sm:text-3xl md:text-3xl lg:text-4xl xl:text-4xl 2xl:text-4xl font-semibold">
           Pendaftaran Pasien
