@@ -9,14 +9,13 @@ import { useToast } from "@/components/ui/use-toast";
 import { ClinicCard } from "@/features/clinic/components/ui/card";
 import { QueueCard } from "@/features/clinic-patient/components/shared/queue-card";
 import { Form as AddPatientForm } from "@/lezzform/_generated/addpatientform";
-import { useFindPatient } from "@/services/patient/hooks/use-find-patient";
 import type { CreatePatientDto } from "@/services/patient/types/dto";
 import type { PatientEntity } from "@/services/patient/types/entity";
-import { PatientQueryKeyFactory } from "@/services/patient/utils/query-key.factory";
 import { useCreateNewPatientVitalSign } from "@/services/patient-vital-sign/hooks/use-create-new-patient";
 import { useCreatePatientVitalSign } from "@/services/patient-vital-sign/hooks/use-create-patient";
 import { useFindPatientQueue } from "@/services/patient-vital-sign/hooks/use-find-patient-queue";
 import type { CreateNewPatientVitalSignDto } from "@/services/patient-vital-sign/types/dto";
+import { PatientVitalSignQueryKeyFactory } from "@/services/patient-vital-sign/utils/query-key.factory";
 import { TasksStatusQueryKeyFactory } from "@/services/tasks-status/utils/query-key.factory";
 
 import { PatientSearch } from "../components/patient-search";
@@ -66,13 +65,6 @@ export function ClinicRegisterPatientPage(): JSX.Element {
     };
   }, [selectedPatient]);
 
-  const { data } = useFindPatient({
-    skip: 0,
-    limit: 20,
-    count: true,
-    type: "ENTRY",
-  });
-
   const { data: patientQueueData } = useFindPatientQueue({
     skip: 0,
     limit: 20,
@@ -89,9 +81,9 @@ export function ClinicRegisterPatientPage(): JSX.Element {
         CreatePatientDto & CreateNewPatientVitalSignDto
       >;
 
-      if (data?.data && selectedPatient) {
-        const findPatient = data.data.find(
-          (item) => item.norm === selectedPatient.norm,
+      if (patientQueueData?.data && selectedPatient) {
+        const findPatient = patientQueueData.data.find(
+          (item) => item.Patient.norm === selectedPatient.norm
         );
 
         if (findPatient)
@@ -136,7 +128,7 @@ export function ClinicRegisterPatientPage(): JSX.Element {
 
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: new PatientQueryKeyFactory().lists(),
+          queryKey: new PatientVitalSignQueryKeyFactory().lists(),
         }),
         queryClient.invalidateQueries({
           queryKey: new TasksStatusQueryKeyFactory().notifications(),
@@ -144,6 +136,13 @@ export function ClinicRegisterPatientPage(): JSX.Element {
       ]);
 
       toast({ title: "Berhasil Membuat Pasien!", variant: "success" });
+
+      const layoutRef =
+        document.querySelector<HTMLDivElement>("#clinic-layout");
+
+      if (layoutRef) {
+        layoutRef.scrollTo({ top: 0, behavior: "smooth" });
+      }
 
       form.reset({
         nik: undefined,
@@ -167,15 +166,15 @@ export function ClinicRegisterPatientPage(): JSX.Element {
     [
       createNewPatientVitalSign,
       createPatientVitalSign,
-      data?.data,
+      patientQueueData?.data,
       queryClient,
       selectedPatient,
       toast,
-    ],
+    ]
   );
 
   return (
-    <div className="h-full">
+    <div>
       <div className="mb-6 flex flex-col gap-2">
         <h1 className="text-2xl sm:text-3xl md:text-3xl lg:text-4xl xl:text-4xl 2xl:text-4xl font-semibold">
           Pendaftaran Pasien

@@ -20,6 +20,12 @@ class ClinicApi {
 
     return data;
   }
+
+  async getClinicDetail(): Promise<ClinicEntity> {
+    const { data } = await this.api.get<ClinicEntity>("/clinics/detail");
+
+    return data;
+  }
 }
 
 export const clinicApi = new ClinicApi();

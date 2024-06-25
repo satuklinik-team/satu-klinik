@@ -1,11 +1,13 @@
 import { type ComponentProps, useCallback, useMemo } from "react";
 
+import { useToast } from "@/components/ui/use-toast";
 import { Form as GeneralForm } from "@/lezzform/_generated/generalform";
 import { useGetSettings } from "@/services/settings/hooks/use-get-settings";
 import { useUpdateSettings } from "@/services/settings/hooks/use-update-settings";
 
 export function SettingGeneralForm(): React.JSX.Element {
   const { data: settingsData, isLoading } = useGetSettings();
+  const { toast } = useToast();
 
   const defaultValues = useMemo<
     ComponentProps<typeof GeneralForm>["defaultValues"]
@@ -42,9 +44,11 @@ export function SettingGeneralForm(): React.JSX.Element {
         serviceFee: values.price,
       });
 
+      toast({ title: "Berhasil ubah konfigurasi", variant: "success" });
+
       return Boolean(data);
     },
-    [mutateUpdateSettings]
+    [mutateUpdateSettings, toast]
   );
 
   if (isLoading) return <p className="text-sm">Loading...</p>;

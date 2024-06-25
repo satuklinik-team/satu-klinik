@@ -70,7 +70,7 @@ export function MedicalRecordTable({
         key: "visit",
         name: "VISIT",
         renderCell: (row: PatientMedicalRecordEntity) => (
-          <Cell>{row.visitAt}</Cell>
+          <Cell className="max-w-8">{row.visitAt}</Cell>
         ),
       },
       {
@@ -143,7 +143,7 @@ export function MedicalRecordTable({
         key: "action",
         name: "ACTION",
         renderCell: (row: PatientMedicalRecordEntity) => (
-          <Cell className="gap-2">
+          <Cell className="gap-2 max-w-8">
             <TooltipProvider>
               <Tooltip delayDuration={100}>
                 <Link href={getWhatsappUrl(row.Patient.phone)}>

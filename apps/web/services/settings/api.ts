@@ -16,7 +16,7 @@ class SettingApi {
   }
 
   async updateSetting(dto: UpdateSettingDto): Promise<SettingEntity> {
-    const { data } = await this.api.put<SettingEntity>(this.baseUrl, dto);
+    const { data } = await this.api.patch<SettingEntity>(this.baseUrl, dto);
 
     return data;
   }

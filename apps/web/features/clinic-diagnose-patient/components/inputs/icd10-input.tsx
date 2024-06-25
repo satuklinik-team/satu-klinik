@@ -40,7 +40,7 @@ export function ICD10nput({
       search: debouncedSearch,
       limit: 20,
     },
-    { enabled: isSearchEnabled },
+    { enabled: isSearchEnabled }
   );
 
   const label = useMemo(() => {
@@ -67,7 +67,9 @@ export function ICD10nput({
             setSearch(e.target.value);
           }}
           onClick={(e) => {
-            e.preventDefault();
+            if (isOpen) {
+              e.preventDefault();
+            }
           }}
           onReset={() => {
             setSearch("");
@@ -96,7 +98,7 @@ export function ICD10nput({
               <Check
                 className={cn(
                   "mr-2 h-4 w-4",
-                  value === item.code ? "opacity-100" : "opacity-0",
+                  value === item.code ? "opacity-100" : "opacity-0"
                 )}
               />
               <span className="text-sm mr-1">{item.code}</span>- {item.strt}
