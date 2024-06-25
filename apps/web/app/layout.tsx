@@ -31,7 +31,9 @@ export default function RootLayout({
   return (
     <Providers>
       <html lang="en">
-        <body className={cn(creatoDisplay.className, "bg-white")}>
+        <body
+          className={cn(creatoDisplay.className, "bg-white overflow-hidden")}
+        >
           {children}
           <Toaster />
         </body>
