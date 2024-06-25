@@ -144,12 +144,6 @@ export function ClinicRegisterPatientPage(): JSX.Element {
         layoutRef.scrollTo({ top: 0, behavior: "smooth" });
       }
 
-      // if (pageRef.current) {
-      //   pageRef.current.scrollTo({ top: 0, behavior: "smooth" });
-      // }
-
-      // window.scrollTo({ top: 0, behavior: "smooth" });
-
       form.reset({
         nik: undefined,
         fullname: undefined,
