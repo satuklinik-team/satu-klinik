@@ -44,6 +44,10 @@ export class SatusehatKfaService {
         ),
     );
 
+    if (!data.items.data) {
+      data.items.data = [];
+    }
+
     return {
       data: data.items.data.map((value: any) => {
         return {
