@@ -79,7 +79,7 @@ export function SatuSehatKfaInput({
               setIsOpen(true);
             }, 500);
           }}
-          placeholder="Cari ICD10"
+          placeholder="Cari data obat..."
           readOnly={readOnly}
           value={search}
         />
