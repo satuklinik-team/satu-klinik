@@ -133,6 +133,9 @@ export class AuthService {
       });
     }
 
-    return { user: exclude(user, ['password']), clinic };
+    return {
+      user: exclude(user, ['password']),
+      clinic: exclude(clinic, ['clientId', 'clientSecret']),
+    };
   }
 }
