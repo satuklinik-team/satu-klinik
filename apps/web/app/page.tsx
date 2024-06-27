@@ -1,7 +1,14 @@
+"use client";
+
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+
 export default function Page(): JSX.Element {
-  return (
-    <main>
-      <p className="text-primary">Satu Klinik</p>
-    </main>
-  );
+  const router = useRouter();
+
+  useEffect(() => {
+    router.replace("/auth/login");
+  }, [router]);
+
+  return <>Redirecting...</>;
 }

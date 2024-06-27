@@ -50,7 +50,7 @@ export function ClinicEditPatientPage(): JSX.Element | undefined {
       toast({ title: "Berhasil Memperbarui Pasien!", variant: "success" });
       router.push(`/clinic/${clinicId as string}/patient`);
     },
-    [clinicId, mutateAsync, queryClient, router, toast],
+    [clinicId, mutateAsync, queryClient, router, toast]
   );
 
   if (!patientData) return;
@@ -93,6 +93,7 @@ export function ClinicEditPatientPage(): JSX.Element | undefined {
           defaultValues={{
             ...patientData,
             birthAt: new Date(patientData.birthAt),
+            medicalNumber: patientData.norm,
           }}
           onSubmit={onSubmit}
         />

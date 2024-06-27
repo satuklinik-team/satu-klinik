@@ -231,6 +231,10 @@ export class SatusehatRawatJalanService {
     return result.filter((value) => value !== false);
   }
 
+  onlyContainsZeros(str: string): boolean {
+    return str.split('').every((char) => char === '0');
+  }
+
   async ensurePatientSatuSehatId(mrid: string) {
     const patientMR =
       await this.prismaService.patient_medical_records.findFirst({
@@ -248,6 +252,13 @@ export class SatusehatRawatJalanService {
           },
         },
       });
+
+    if (
+      !patientMR.Patient.nik ||
+      this.onlyContainsZeros(patientMR.Patient.nik)
+    ) {
+      return;
+    }
 
     if (!patientMR.Patient.satuSehatId) {
       const queryParams = {
@@ -499,6 +510,9 @@ export class SatusehatRawatJalanService {
       await this.prismaService.patient_medical_records.findMany({
         where: {
           Patient: {
+            satuSehatId: {
+              not: null,
+            },
             clinicsId,
           },
           encounterId: null,

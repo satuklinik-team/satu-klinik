@@ -1,61 +1,61 @@
 import { z as a } from "zod";
 import {
-  Lezzform as p,
+  Lezzform as F,
   FormField as l,
   FormItem as u,
   FormLabel as c,
   FormControl as i,
   FormMessage as d,
-  Input as w,
-  PasswordInput as F,
-  Spacer as R,
+  Input as f,
+  PasswordInput as p,
+  Spacer as w,
   Button as P,
 } from "@lezzform/react";
 import * as n from "react";
-import { jsx as e, jsxs as t } from "react/jsx-runtime";
+import { jsx as r, jsxs as t } from "react/jsx-runtime";
 var y = a.object({
     email: a.string(),
     password: a.string(),
     confirmPassword: a.string(),
   }),
-  z = "1uUoKpqIX0uOybJPMKlK",
-  v = ({
+  z = "j1zqRERvrdJFVCvjVU4o",
+  k = ({
     onSubmit: m,
     onError: h,
-    onSuccess: b,
+    onSuccess: R,
     defaultValues: S,
     onAction: L,
-    formProps: g,
+    formProps: C,
   }) => {
     let s = n.useRef();
     n.useEffect(() => {
       m && (s.current = m);
     }, [m]);
-    let f = n.useCallback(async (r, o) => {
-      if (s.current) return s.current(r, o);
+    let b = n.useCallback(async (e, o) => {
+      if (s.current) return s.current(e, o);
     }, []);
-    return e(
-      p,
+    return r(
+      F,
       {
         id: z,
         defaultValues: S,
-        onSubmit: f,
+        onSubmit: b,
         onError: h,
-        onSuccess: b,
+        onSuccess: R,
         zodSchema: y,
         mode: "onTouched",
-        children: (r) =>
-          t(p.Container, {
+        children: (e) =>
+          t(F.Container, {
             children: [
-              e(l, {
-                control: r.control,
+              r(l, {
+                control: e.control,
                 name: "email",
                 render: ({ field: o }) =>
                   t(u, {
                     children: [
-                      e(c, { isRequired: !0, children: "Email" }),
-                      e(i, {
-                        children: e(w, {
+                      r(c, { isRequired: !0, children: "Email" }),
+                      r(i, {
+                        children: r(f, {
                           label: "Email",
                           name: o.name,
                           value: o.value ?? "",
@@ -67,19 +67,19 @@ var y = a.object({
                           styles: { root: {} },
                         }),
                       }),
-                      e(d, {}),
+                      r(d, {}),
                     ],
                   }),
               }),
-              e(l, {
-                control: r.control,
+              r(l, {
+                control: e.control,
                 name: "password",
                 render: ({ field: o }) =>
                   t(u, {
                     children: [
-                      e(c, { isRequired: !0, children: "New Password" }),
-                      e(i, {
-                        children: e(F, {
+                      r(c, { isRequired: !0, children: "New Password" }),
+                      r(i, {
+                        children: r(p, {
                           label: "New Password",
                           name: o.name,
                           value: o.value ?? "",
@@ -91,19 +91,19 @@ var y = a.object({
                           styles: { root: {} },
                         }),
                       }),
-                      e(d, {}),
+                      r(d, {}),
                     ],
                   }),
               }),
-              e(l, {
-                control: r.control,
+              r(l, {
+                control: e.control,
                 name: "confirmPassword",
                 render: ({ field: o }) =>
                   t(u, {
                     children: [
-                      e(c, { isRequired: !0, children: "Retype Password" }),
-                      e(i, {
-                        children: e(F, {
+                      r(c, { isRequired: !0, children: "Retype Password" }),
+                      r(i, {
+                        children: r(p, {
                           label: "Retype Password",
                           name: o.name,
                           value: o.value ?? "",
@@ -115,23 +115,23 @@ var y = a.object({
                           styles: { root: {} },
                         }),
                       }),
-                      e(d, {}),
+                      r(d, {}),
                     ],
                   }),
               }),
-              e(R, { styles: { root: {} }, size: 16 }),
-              e(P, {
+              r(w, { styles: { root: {} }, size: 16 }),
+              r(P, {
                 type: "submit",
                 className: "w-full",
-                disabled: r.formState.isSubmitting,
-                isLoading: r.formState.isSubmitting,
+                disabled: e.formState.isSubmitting,
+                isLoading: e.formState.isSubmitting,
                 styles: { root: { backgroundColor: "#2E584F" } },
                 children: "Reset Password",
               }),
             ],
           }),
       },
-      z,
+      z
     );
   };
-export { v as Form };
+export { k as Form };

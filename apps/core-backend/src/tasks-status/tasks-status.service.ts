@@ -181,8 +181,6 @@ export class TasksService {
 
   async getMRChart(dto: GetMRChartDto) {
     const { from, to } = createFromTo(dto.type);
-    console.log(from);
-    console.log(to);
     const records = await this.prismaService.patient_medical_records.findMany({
       where: {
         visitLabel: {

@@ -49,7 +49,7 @@ export function LoginPage(): JSX.Element {
 
       router.replace(`/clinic/${data.clinic.id}`);
     },
-    [mutateAsync, router, toast],
+    [mutateAsync, router, toast]
   );
 
   return (
@@ -64,8 +64,9 @@ export function LoginPage(): JSX.Element {
         </Alert>
       )}
       <LoginForm onSubmit={onSubmit} />
-      <a className="text-sm text-primary -mt-1" href="/auth/register">
-        Belum ada akun? Register disini
+      <a className="text-sm text-muted-foreground -mt-1" href="/auth/register">
+        Belum ada akun?{" "}
+        <span className="text-primary font-medium">Register disini</span>
       </a>
     </AuthFormWrapper>
   );
