@@ -9,18 +9,18 @@ import {
   EmailInput as b,
   PasswordInput as R,
   Spacer as L,
-  Button as P,
+  Button as w,
 } from "@lezzform/react";
 import * as n from "react";
 import { jsx as r, jsxs as s } from "react/jsx-runtime";
-var w = a.object({ email: a.string().email(), password: a.string() }),
-  F = "NOKXVD9MUF1YOUxeu52P",
+var y = a.object({ email: a.string().email(), password: a.string() }),
+  f = "EsqByOVkjlS1zURhG3Uz",
   E = ({
     onSubmit: m,
-    onError: f,
-    onSuccess: p,
+    onError: p,
+    onSuccess: F,
     defaultValues: S,
-    onAction: y,
+    onAction: P,
     formProps: g,
   }) => {
     let t = n.useRef();
@@ -33,12 +33,12 @@ var w = a.object({ email: a.string().email(), password: a.string() }),
     return r(
       u,
       {
-        id: F,
+        id: f,
         defaultValues: S,
         onSubmit: h,
-        onError: f,
-        onSuccess: p,
-        zodSchema: w,
+        onError: p,
+        onSuccess: F,
+        zodSchema: y,
         mode: "onTouched",
         children: (e) =>
           s(u.Container, {
@@ -92,7 +92,7 @@ var w = a.object({ email: a.string().email(), password: a.string() }),
                   }),
               }),
               r(L, { styles: { root: {} }, size: 16 }),
-              r(P, {
+              r(w, {
                 type: "submit",
                 className: "w-full",
                 disabled: e.formState.isSubmitting,
@@ -103,7 +103,7 @@ var w = a.object({ email: a.string().email(), password: a.string() }),
             ],
           }),
       },
-      F
+      f
     );
   };
 export { E as Form };

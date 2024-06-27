@@ -7,8 +7,8 @@ import {
   FormControl as u,
   FormMessage as s,
   Attachment as R,
-  Dropdown as L,
-  Input as v,
+  Dropdown as v,
+  Input as L,
   NumberInput as p,
   TwoColumn as I,
   Button as h,
@@ -24,14 +24,14 @@ var w = t.object({
     stock: t.coerce.number(),
     discount: t.coerce.number().optional(),
   }),
-  g = "lyhYVn64yL0B6jQfdapi",
-  E = ({
+  g = "dDygktOeqVZDIHUuYyUS",
+  D = ({
     onSubmit: i,
     onError: z,
     onSuccess: C,
     defaultValues: y,
-    onAction: B,
-    formProps: P,
+    onAction: P,
+    formProps: B,
   }) => {
     let b = c.useRef();
     c.useEffect(() => {
@@ -94,7 +94,7 @@ var w = t.object({
                     children: [
                       e(l, { isRequired: !0, children: "Category" }),
                       e(u, {
-                        children: e(L, {
+                        children: e(v, {
                           label: "Category",
                           name: o.name,
                           value: o.value,
@@ -125,7 +125,7 @@ var w = t.object({
                     children: [
                       e(l, { isRequired: !0, children: "Title" }),
                       e(u, {
-                        children: e(v, {
+                        children: e(L, {
                           label: "Title",
                           name: o.name,
                           value: o.value ?? "",
@@ -236,4 +236,4 @@ var w = t.object({
       g
     );
   };
-export { E as Form };
+export { D as Form };

@@ -4,22 +4,22 @@ import {
   FormField as F,
   FormItem as S,
   FormLabel as p,
-  FormControl as h,
-  FormMessage as d,
+  FormControl as d,
+  FormMessage as h,
   Input as b,
   Button as L,
 } from "@lezzform/react";
 import * as e from "react";
 import { jsx as r, jsxs as s } from "react/jsx-runtime";
 var R = a.object({ name: a.string() }),
-  c = "BbV86XjPZS1Y3pEGwOh0",
+  c = "XruUfqJvzVAUiZywqxAf",
   w = ({
     onSubmit: m,
     onError: i,
-    onSuccess: l,
-    defaultValues: f,
+    onSuccess: f,
+    defaultValues: l,
     onAction: y,
-    formProps: P,
+    formProps: k,
   }) => {
     let t = e.useRef();
     e.useEffect(() => {
@@ -32,10 +32,10 @@ var R = a.object({ name: a.string() }),
       u,
       {
         id: c,
-        defaultValues: f,
+        defaultValues: l,
         onSubmit: z,
         onError: i,
-        onSuccess: l,
+        onSuccess: f,
         zodSchema: R,
         mode: "onTouched",
         children: (n) =>
@@ -48,7 +48,7 @@ var R = a.object({ name: a.string() }),
                   s(S, {
                     children: [
                       r(p, { isRequired: !0, children: "Name" }),
-                      r(h, {
+                      r(d, {
                         children: r(b, {
                           label: "Name",
                           name: o.name,
@@ -61,7 +61,7 @@ var R = a.object({ name: a.string() }),
                           styles: { root: {} },
                         }),
                       }),
-                      r(d, {}),
+                      r(h, {}),
                     ],
                   }),
               }),
