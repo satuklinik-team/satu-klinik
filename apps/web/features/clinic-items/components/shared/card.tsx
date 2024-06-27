@@ -38,6 +38,8 @@ export function ClinicItemCard({
 
   const discountPrice = (price * (100 - discount)) / 100;
 
+  const stockValue = !stock || stock < 0 ? 0 : stock;
+
   return (
     <Card
       className={cn("cursor-pointer", className)}
@@ -68,7 +70,7 @@ export function ClinicItemCard({
             {discount}% off
           </Badge>
         </div>
-        <p className="text-muted-foreground text-sm">Stock: {stock}</p>
+        <p className="text-muted-foreground text-sm">Stock: {stockValue}</p>
         <div className="flex flex-row items-center gap-2">
           <TooltipProvider>
             <Tooltip>

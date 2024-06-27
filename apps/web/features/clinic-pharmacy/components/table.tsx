@@ -31,7 +31,7 @@ export function ClinicPharmacyTable(): JSX.Element {
     return [
       {
         key: "taskId",
-        name: "Task ID",
+        name: "Nomor Antrian",
         renderCell: (row: PharmacyTaskEntity) => <Cell>{row.id}</Cell>,
       },
       {
@@ -67,7 +67,7 @@ export function ClinicPharmacyTable(): JSX.Element {
               className="w-min h-min p-1.5 rounded-full"
               onClick={() => {
                 router.push(
-                  `${pathname}/${row.id}?patientId=${row.patient.id}`,
+                  `${pathname}/${row.id}?patientId=${row.patient.id}`
                 );
               }}
               variant="ghost"
