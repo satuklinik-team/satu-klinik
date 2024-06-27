@@ -5,7 +5,7 @@
     "build": {
       "dependsOn": ["^build"],
       "outputs": [".next/**", "!.next/cache/**"],
-      "env": ["NEXT_PUBLIC_BACKEND_URL"]
+      "env": ["NEXT_PUBLIC_BACKEND_URL", "NEXT_PUBLIC_GOOGLE_ANALYTICS_ID"]
     },
     "lint": {
       "dependsOn": ["^lint"]

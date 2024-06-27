@@ -1,5 +1,6 @@
 import "./globals.css";
 
+import { GoogleAnalytics } from "@next/third-parties/google";
 import type { Metadata } from "next";
 import CreatoDisplay from "next/font/local";
 
@@ -32,6 +33,9 @@ export default function RootLayout({
         <Navigation />
         {children}
         <Footer />
+        <GoogleAnalytics
+          gaId={String(process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID)}
+        />
       </body>
     </html>
   );
