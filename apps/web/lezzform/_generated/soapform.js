@@ -1,33 +1,33 @@
 import { z as a } from "zod";
 import {
   Lezzform as c,
-  FormField as F,
-  FormItem as S,
-  FormLabel as h,
-  FormControl as p,
+  FormField as S,
+  FormItem as F,
+  FormLabel as p,
+  FormControl as h,
   FormMessage as d,
   Text as b,
   Input as L,
   Button as R,
 } from "@lezzform/react";
-import * as r from "react";
+import * as e from "react";
 import { jsx as o, jsxs as s } from "react/jsx-runtime";
 var y = a.object({ name: a.string().optional() }),
-  u = "IUahhwihQw4eqn7lfkVk",
-  C = ({
+  u = "6YHS6WtoGwZRwtrJASrF",
+  A = ({
     onSubmit: m,
     onError: i,
     onSuccess: l,
     defaultValues: f,
-    onAction: k,
-    formProps: P,
+    onAction: P,
+    formProps: w,
   }) => {
-    let t = r.useRef();
-    r.useEffect(() => {
+    let t = e.useRef();
+    e.useEffect(() => {
       m && (t.current = m);
     }, [m]);
-    let z = r.useCallback(async (n, e) => {
-      if (t.current) return t.current(n, e);
+    let z = e.useCallback(async (n, r) => {
+      if (t.current) return t.current(n, r);
     }, []);
     return o(
       c,
@@ -43,22 +43,22 @@ var y = a.object({ name: a.string().optional() }),
           s(c.Container, {
             children: [
               o(b.Heading2, { styles: { root: {} }, children: "SOAPForm" }),
-              o(F, {
+              o(S, {
                 control: n.control,
                 name: "name",
-                render: ({ field: e }) =>
-                  s(S, {
+                render: ({ field: r }) =>
+                  s(F, {
                     children: [
-                      o(h, { children: "Name" }),
-                      o(p, {
+                      o(p, { children: "Name" }),
+                      o(h, {
                         children: o(L, {
                           label: "Name",
-                          name: e.name,
-                          value: e.value ?? "",
-                          onBlur: e.onBlur,
-                          onChange: e.onChange,
+                          name: r.name,
+                          value: r.value ?? "",
+                          onBlur: r.onBlur,
+                          onChange: r.onChange,
                           placeholder: "",
-                          disabled: e.disabled,
+                          disabled: r.disabled,
                           styles: { root: {} },
                         }),
                       }),
@@ -77,7 +77,7 @@ var y = a.object({ name: a.string().optional() }),
             ],
           }),
       },
-      u,
+      u
     );
   };
-export { C as Form };
+export { A as Form };

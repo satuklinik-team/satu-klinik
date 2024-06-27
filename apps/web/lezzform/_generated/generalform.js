@@ -7,8 +7,8 @@ import {
   FormControl as i,
   FormMessage as u,
   Input as d,
-  PhoneNumberInput as S,
-  NumberInput as C,
+  PhoneNumberInput as C,
+  NumberInput as S,
   Button as I,
 } from "@lezzform/react";
 import {
@@ -31,12 +31,12 @@ var P = n.object({
         (m) =>
           !m ||
           /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/.test(m),
-        { message: "Invalid phone number format" },
+        { message: "Invalid phone number format" }
       ),
     address: n.string(),
     price: n.coerce.number(),
   }),
-  h = "S1dt6rmG5dYPWQYnSTKO",
+  h = "stvWPnGExRJIN79oRSIR",
   D = ({
     onSubmit: m,
     onError: b,
@@ -158,7 +158,7 @@ var P = n.object({
                     children: [
                       o(l, { isRequired: !0, children: "Nomor Telepon" }),
                       o(i, {
-                        children: o(S, {
+                        children: o(C, {
                           label: "Nomor Telepon",
                           name: e.name,
                           value: e.value ?? "",
@@ -209,7 +209,7 @@ var P = n.object({
                     children: [
                       o(l, { isRequired: !0, children: "Harga Dasar" }),
                       o(i, {
-                        children: o(C, {
+                        children: o(S, {
                           label: "Harga Dasar",
                           name: e.name,
                           value: e.value ?? 0,
@@ -236,7 +236,7 @@ var P = n.object({
             ],
           }),
       },
-      h,
+      h
     );
   };
 export { D as Form };

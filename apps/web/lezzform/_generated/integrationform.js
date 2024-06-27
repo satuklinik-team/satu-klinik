@@ -1,30 +1,30 @@
 import { z as a } from "zod";
 import {
-  Lezzform as p,
-  FormField as t,
+  Lezzform as b,
+  FormField as m,
   FormItem as s,
   FormLabel as u,
   FormControl as l,
   FormMessage as c,
   Input as F,
-  PasswordInput as f,
-  Button as g,
+  PasswordInput as g,
+  Button as C,
 } from "@lezzform/react";
 import * as n from "react";
-import { jsx as e, jsxs as m } from "react/jsx-runtime";
-var C = a.object({
+import { jsx as e, jsxs as t } from "react/jsx-runtime";
+var L = a.object({
     id: a.string(),
     token: a.string(),
     username: a.string(),
     password: a.string(),
   }),
-  z = "JooQer00dyDYQaEKOffu",
+  p = "rRrb9IyoBlJ2cagt2Gwt",
   P = ({
     onSubmit: i,
-    onError: b,
+    onError: z,
     onSuccess: h,
     defaultValues: S,
-    onAction: L,
+    onAction: f,
     formProps: k,
   }) => {
     let d = n.useRef();
@@ -35,23 +35,23 @@ var C = a.object({
       if (d.current) return d.current(r, o);
     }, []);
     return e(
-      p,
+      b,
       {
-        id: z,
+        id: p,
         defaultValues: S,
         onSubmit: R,
-        onError: b,
+        onError: z,
         onSuccess: h,
-        zodSchema: C,
+        zodSchema: L,
         mode: "onSubmit",
         children: (r) =>
-          m(p.Container, {
+          t(b.Container, {
             children: [
-              e(t, {
+              e(m, {
                 control: r.control,
                 name: "id",
                 render: ({ field: o }) =>
-                  m(s, {
+                  t(s, {
                     children: [
                       e(u, { isRequired: !0, children: "ID" }),
                       e(l, {
@@ -71,11 +71,11 @@ var C = a.object({
                     ],
                   }),
               }),
-              e(t, {
+              e(m, {
                 control: r.control,
                 name: "token",
                 render: ({ field: o }) =>
-                  m(s, {
+                  t(s, {
                     children: [
                       e(u, { isRequired: !0, children: "Token" }),
                       e(l, {
@@ -95,11 +95,11 @@ var C = a.object({
                     ],
                   }),
               }),
-              e(t, {
+              e(m, {
                 control: r.control,
                 name: "username",
                 render: ({ field: o }) =>
-                  m(s, {
+                  t(s, {
                     children: [
                       e(u, { isRequired: !0, children: "Username" }),
                       e(l, {
@@ -119,15 +119,15 @@ var C = a.object({
                     ],
                   }),
               }),
-              e(t, {
+              e(m, {
                 control: r.control,
                 name: "password",
                 render: ({ field: o }) =>
-                  m(s, {
+                  t(s, {
                     children: [
                       e(u, { isRequired: !0, children: "Password" }),
                       e(l, {
-                        children: e(f, {
+                        children: e(g, {
                           label: "Password",
                           name: o.name,
                           value: o.value ?? "",
@@ -143,7 +143,7 @@ var C = a.object({
                     ],
                   }),
               }),
-              e(g, {
+              e(C, {
                 type: "submit",
                 className: "w-full",
                 disabled: r.formState.isSubmitting,
@@ -154,7 +154,7 @@ var C = a.object({
             ],
           }),
       },
-      z,
+      p
     );
   };
 export { P as Form };

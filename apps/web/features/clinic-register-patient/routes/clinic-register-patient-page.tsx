@@ -35,6 +35,7 @@ export function ClinicRegisterPatientPage(): JSX.Element {
       respiration: 0,
       temperature: 0,
       nik: "0000000000000000",
+      blood: "N/A",
     };
 
     if (!selectedPatient) return defaultValues;
