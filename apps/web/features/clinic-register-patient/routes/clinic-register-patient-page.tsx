@@ -41,8 +41,12 @@ export function ClinicRegisterPatientPage(): JSX.Element {
 
     const latestMedicalRecord =
       selectedPatient.mr[selectedPatient.mr.length - 1];
-    const latestVitalSign =
-      latestMedicalRecord.vitalSign[latestMedicalRecord.vitalSign.length - 1];
+
+    let latestVitalSign;
+    if (selectedPatient.mr.length) {
+      latestVitalSign =
+        latestMedicalRecord.vitalSign[latestMedicalRecord.vitalSign.length - 1];
+    }
 
     return {
       ...defaultValues,
@@ -59,9 +63,9 @@ export function ClinicRegisterPatientPage(): JSX.Element {
       sugar: undefined,
       cholesterol: undefined,
       saturation: undefined,
-      height: latestVitalSign.height,
-      weight: latestVitalSign.weight,
-      allergic: latestVitalSign.allergic,
+      height: latestVitalSign?.height ?? 0,
+      weight: latestVitalSign?.weight ?? 0,
+      allergic: latestVitalSign?.allergic ?? "",
       norm: selectedPatient.norm,
     };
   }, [selectedPatient]);
@@ -84,7 +88,7 @@ export function ClinicRegisterPatientPage(): JSX.Element {
 
       if (patientQueueData?.data && selectedPatient) {
         const findPatient = patientQueueData.data.find(
-          (item) => item.Patient.norm === selectedPatient.norm,
+          (item) => item.Patient.norm === selectedPatient.norm
         );
 
         if (findPatient)
@@ -171,7 +175,7 @@ export function ClinicRegisterPatientPage(): JSX.Element {
       queryClient,
       selectedPatient,
       toast,
-    ],
+    ]
   );
 
   return (
