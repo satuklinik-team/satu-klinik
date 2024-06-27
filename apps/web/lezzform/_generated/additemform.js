@@ -24,8 +24,8 @@ var w = t.object({
     stock: t.coerce.number(),
     discount: t.coerce.number().optional(),
   }),
-  g = "8VtJVBAlIEAVK4ZuxsLl",
-  f = ({
+  g = "lyhYVn64yL0B6jQfdapi",
+  E = ({
     onSubmit: i,
     onError: z,
     onSuccess: C,
@@ -233,7 +233,7 @@ var w = t.object({
             ],
           }),
       },
-      g,
+      g
     );
   };
-export { f as Form };
+export { E as Form };

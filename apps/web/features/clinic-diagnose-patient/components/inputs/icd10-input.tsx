@@ -2,7 +2,7 @@
 
 import { useDebounce } from "@uidotdev/usehooks";
 import { Check } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 
 import {
   Autocomplete,
@@ -28,7 +28,8 @@ export function ICD10nput({
   value,
   readOnly,
 }: Properties): React.JSX.Element {
-  const { isOpen, setIsOpen, onClose } = useDisclose();
+  const { isOpen, setIsOpen, onClose } = useDisclose(true);
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   const [search, setSearch] = useState<string>(value ?? "");
   const debouncedSearch = useDebounce(search, 300);
@@ -53,7 +54,13 @@ export function ICD10nput({
       onOpenChange={setIsOpen}
       open={Boolean(isOpen && isSearchEnabled)}
     >
-      <AutocompleteTrigger>
+      <AutocompleteTrigger
+        onFocus={() => {
+          if (inputRef.current) {
+            inputRef.current.focus();
+          }
+        }}
+      >
         <AutocompleteInput
           display={
             Boolean(value) && (
@@ -80,6 +87,7 @@ export function ICD10nput({
           }}
           placeholder="Cari ICD10"
           readOnly={readOnly}
+          ref={inputRef}
           value={search}
         />
       </AutocompleteTrigger>
