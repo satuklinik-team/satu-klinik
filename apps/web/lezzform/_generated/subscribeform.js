@@ -10,13 +10,13 @@ import {
   EmailInput as p,
   PasswordInput as g,
   Divider as k,
-  PhoneNumberInput as S,
+  PhoneNumberInput as L,
   TextArea as y,
-  Spacer as v,
-  Button as B,
+  Spacer as B,
+  Button as v,
 } from "@lezzform/react";
 import * as c from "react";
-import { jsx as e, jsxs as a } from "react/jsx-runtime";
+import { jsx as o, jsxs as a } from "react/jsx-runtime";
 var P = n.object({
     fullname: n.string(),
     email: n.string().email(),
@@ -37,8 +37,8 @@ var P = n.object({
     clinicAddress: n.string(),
     clinicCode: n.string().optional(),
   }),
-  C = "ajmQEGmRfrnEL755Xory",
-  K = ({
+  C = "67Ym9JgSFC0cZ2f8QBi0",
+  E = ({
     onSubmit: u,
     onError: b,
     onSuccess: z,
@@ -50,15 +50,15 @@ var P = n.object({
     c.useEffect(() => {
       u && (d.current = u);
     }, [u]);
-    let L = c.useCallback(async (r, o) => {
-      if (d.current) return d.current(r, o);
+    let S = c.useCallback(async (r, e) => {
+      if (d.current) return d.current(r, e);
     }, []);
-    return e(
+    return o(
       h,
       {
         id: C,
         defaultValues: R,
-        onSubmit: L,
+        onSubmit: S,
         onError: b,
         onSuccess: z,
         zodSchema: P,
@@ -66,224 +66,224 @@ var P = n.object({
         children: (r) =>
           a(h.Container, {
             children: [
-              e(m, {
+              o(m, {
                 control: r.control,
                 name: "fullname",
-                render: ({ field: o }) =>
+                render: ({ field: e }) =>
                   a(l, {
                     children: [
-                      e(t, { isRequired: !0, children: "Nama Lengkap" }),
-                      e(s, {
-                        children: e(F, {
+                      o(t, { isRequired: !0, children: "Nama Lengkap" }),
+                      o(s, {
+                        children: o(F, {
                           label: "Nama Lengkap",
-                          name: o.name,
-                          value: o.value ?? "",
-                          onBlur: o.onBlur,
-                          onChange: o.onChange,
+                          name: e.name,
+                          value: e.value ?? "",
+                          onBlur: e.onBlur,
+                          onChange: e.onChange,
                           placeholder: "Nama Lengkap",
-                          disabled: o.disabled,
+                          disabled: e.disabled,
                           isRequired: !0,
                           styles: { root: {} },
                         }),
                       }),
-                      e(i, {}),
+                      o(i, {}),
                     ],
                   }),
               }),
-              e(m, {
+              o(m, {
                 control: r.control,
                 name: "email",
-                render: ({ field: o }) =>
+                render: ({ field: e }) =>
                   a(l, {
                     children: [
-                      e(t, { isRequired: !0, children: "Email" }),
-                      e(s, {
-                        children: e(p, {
+                      o(t, { isRequired: !0, children: "Email" }),
+                      o(s, {
+                        children: o(p, {
                           label: "Email",
-                          name: o.name,
-                          value: o.value ?? "",
-                          onBlur: o.onBlur,
-                          onChange: o.onChange,
+                          name: e.name,
+                          value: e.value ?? "",
+                          onBlur: e.onBlur,
+                          onChange: e.onChange,
                           placeholder: "Email",
-                          disabled: o.disabled,
+                          disabled: e.disabled,
                           isRequired: !0,
                           styles: { root: {} },
                         }),
                       }),
-                      e(i, {}),
+                      o(i, {}),
                     ],
                   }),
               }),
-              e(m, {
+              o(m, {
                 control: r.control,
                 name: "password",
-                render: ({ field: o }) =>
+                render: ({ field: e }) =>
                   a(l, {
                     children: [
-                      e(t, { isRequired: !0, children: "Password" }),
-                      e(s, {
-                        children: e(g, {
+                      o(t, { isRequired: !0, children: "Password" }),
+                      o(s, {
+                        children: o(g, {
                           label: "Password",
-                          name: o.name,
-                          value: o.value ?? "",
-                          onBlur: o.onBlur,
-                          onChange: o.onChange,
-                          disabled: o.disabled,
+                          name: e.name,
+                          value: e.value ?? "",
+                          onBlur: e.onBlur,
+                          onChange: e.onChange,
+                          disabled: e.disabled,
                           placeholder: "Password",
                           isRequired: !0,
                           styles: { root: {} },
                         }),
                       }),
-                      e(i, {}),
+                      o(i, {}),
                     ],
                   }),
               }),
-              e(m, {
+              o(m, {
                 control: r.control,
                 name: "confirmPassword",
-                render: ({ field: o }) =>
+                render: ({ field: e }) =>
                   a(l, {
                     children: [
-                      e(t, { isRequired: !0, children: "Konfirmasi Password" }),
-                      e(s, {
-                        children: e(g, {
+                      o(t, { isRequired: !0, children: "Konfirmasi Password" }),
+                      o(s, {
+                        children: o(g, {
                           label: "Konfirmasi Password",
-                          name: o.name,
-                          value: o.value ?? "",
-                          onBlur: o.onBlur,
-                          onChange: o.onChange,
-                          disabled: o.disabled,
+                          name: e.name,
+                          value: e.value ?? "",
+                          onBlur: e.onBlur,
+                          onChange: e.onChange,
+                          disabled: e.disabled,
                           placeholder: "Konfirmasi Password",
                           isRequired: !0,
                           styles: { root: {} },
                         }),
                       }),
-                      e(i, {}),
+                      o(i, {}),
                     ],
                   }),
               }),
-              e(k.Solid, { styles: { root: {} }, size: 1, color: "#c7c7c7" }),
-              e(m, {
+              o(k.Solid, { styles: { root: {} }, size: 1, color: "#c7c7c7" }),
+              o(m, {
                 control: r.control,
                 name: "clinicName",
-                render: ({ field: o }) =>
+                render: ({ field: e }) =>
                   a(l, {
                     children: [
-                      e(t, { isRequired: !0, children: "Nama Klinik" }),
-                      e(s, {
-                        children: e(F, {
+                      o(t, { isRequired: !0, children: "Nama Klinik" }),
+                      o(s, {
+                        children: o(F, {
                           label: "Nama Klinik",
-                          name: o.name,
-                          value: o.value ?? "",
-                          onBlur: o.onBlur,
-                          onChange: o.onChange,
+                          name: e.name,
+                          value: e.value ?? "",
+                          onBlur: e.onBlur,
+                          onChange: e.onChange,
                           placeholder: "Nama Klinik",
-                          disabled: o.disabled,
+                          disabled: e.disabled,
                           isRequired: !0,
                           styles: { root: {} },
                         }),
                       }),
-                      e(i, {}),
+                      o(i, {}),
                     ],
                   }),
               }),
-              e(m, {
+              o(m, {
                 control: r.control,
                 name: "clinicEmail",
-                render: ({ field: o }) =>
+                render: ({ field: e }) =>
                   a(l, {
                     children: [
-                      e(t, { isRequired: !0, children: "Email Klinik" }),
-                      e(s, {
-                        children: e(p, {
+                      o(t, { isRequired: !0, children: "Email Klinik" }),
+                      o(s, {
+                        children: o(p, {
                           label: "Email Klinik",
-                          name: o.name,
-                          value: o.value ?? "",
-                          onBlur: o.onBlur,
-                          onChange: o.onChange,
+                          name: e.name,
+                          value: e.value ?? "",
+                          onBlur: e.onBlur,
+                          onChange: e.onChange,
                           placeholder: "Email Klinik",
-                          disabled: o.disabled,
+                          disabled: e.disabled,
                           isRequired: !0,
                           styles: { root: {} },
                         }),
                       }),
-                      e(i, {}),
+                      o(i, {}),
                     ],
                   }),
               }),
-              e(m, {
+              o(m, {
                 control: r.control,
                 name: "clinicPhone",
-                render: ({ field: o }) =>
+                render: ({ field: e }) =>
                   a(l, {
                     children: [
-                      e(t, { isRequired: !0, children: "No Telp. Klinik" }),
-                      e(s, {
-                        children: e(S, {
+                      o(t, { isRequired: !0, children: "No Telp. Klinik" }),
+                      o(s, {
+                        children: o(L, {
                           label: "No Telp. Klinik",
-                          name: o.name,
-                          value: o.value ?? "",
-                          onBlur: o.onBlur,
-                          onChange: o.onChange,
-                          disabled: o.disabled,
+                          name: e.name,
+                          value: e.value ?? "",
+                          onBlur: e.onBlur,
+                          onChange: e.onChange,
+                          disabled: e.disabled,
                           placeholder: "No Telp. Klinik",
                           isRequired: !0,
                           styles: { root: {} },
                         }),
                       }),
-                      e(i, {}),
+                      o(i, {}),
                     ],
                   }),
               }),
-              e(m, {
+              o(m, {
                 control: r.control,
                 name: "clinicAddress",
-                render: ({ field: o }) =>
+                render: ({ field: e }) =>
                   a(l, {
                     children: [
-                      e(t, { isRequired: !0, children: "Alamat" }),
-                      e(s, {
-                        children: e(y, {
+                      o(t, { isRequired: !0, children: "Alamat" }),
+                      o(s, {
+                        children: o(y, {
                           label: "Alamat",
-                          name: o.name,
-                          value: o.value ?? "",
-                          onBlur: o.onBlur,
-                          onChange: o.onChange,
-                          disabled: o.disabled,
+                          name: e.name,
+                          value: e.value ?? "",
+                          onBlur: e.onBlur,
+                          onChange: e.onChange,
+                          disabled: e.disabled,
                           placeholder: "Alamat",
                           isRequired: !0,
                           styles: { root: {} },
                         }),
                       }),
-                      e(i, {}),
+                      o(i, {}),
                     ],
                   }),
               }),
-              e(m, {
+              o(m, {
                 control: r.control,
                 name: "clinicCode",
-                render: ({ field: o }) =>
+                render: ({ field: e }) =>
                   a(l, {
                     children: [
-                      e(t, { children: "Kode Fasyankes" }),
-                      e(s, {
-                        children: e(F, {
+                      o(t, { children: "Kode Fasyankes" }),
+                      o(s, {
+                        children: o(F, {
                           label: "Kode Fasyankes",
-                          name: o.name,
-                          value: o.value ?? "",
-                          onBlur: o.onBlur,
-                          onChange: o.onChange,
+                          name: e.name,
+                          value: e.value ?? "",
+                          onBlur: e.onBlur,
+                          onChange: e.onChange,
                           placeholder: "Kode Fasyankes",
-                          disabled: o.disabled,
+                          disabled: e.disabled,
                           styles: { root: {} },
                         }),
                       }),
-                      e(i, {}),
+                      o(i, {}),
                     ],
                   }),
               }),
-              e(v, { styles: { root: {} }, size: 16 }),
-              e(B, {
+              o(B, { styles: { root: {} }, size: 16 }),
+              o(v, {
                 type: "submit",
                 className: "w-full",
                 disabled: r.formState.isSubmitting,
@@ -297,4 +297,4 @@ var P = n.object({
       C
     );
   };
-export { K as Form };
+export { E as Form };

@@ -1,61 +1,61 @@
 import { z as a } from "zod";
 import {
-  Lezzform as F,
+  Lezzform as p,
   FormField as l,
   FormItem as u,
   FormLabel as c,
   FormControl as i,
   FormMessage as d,
-  Input as f,
-  PasswordInput as p,
+  Input as R,
+  PasswordInput as F,
   Spacer as w,
   Button as P,
 } from "@lezzform/react";
 import * as n from "react";
-import { jsx as r, jsxs as t } from "react/jsx-runtime";
+import { jsx as e, jsxs as m } from "react/jsx-runtime";
 var y = a.object({
     email: a.string(),
     password: a.string(),
     confirmPassword: a.string(),
   }),
-  z = "j1zqRERvrdJFVCvjVU4o",
+  z = "nAIPeKvIuHmnsR0c2vZ2",
   k = ({
-    onSubmit: m,
+    onSubmit: t,
     onError: h,
-    onSuccess: R,
-    defaultValues: S,
+    onSuccess: S,
+    defaultValues: b,
     onAction: L,
-    formProps: C,
+    formProps: g,
   }) => {
     let s = n.useRef();
     n.useEffect(() => {
-      m && (s.current = m);
-    }, [m]);
-    let b = n.useCallback(async (e, o) => {
-      if (s.current) return s.current(e, o);
+      t && (s.current = t);
+    }, [t]);
+    let f = n.useCallback(async (r, o) => {
+      if (s.current) return s.current(r, o);
     }, []);
-    return r(
-      F,
+    return e(
+      p,
       {
         id: z,
-        defaultValues: S,
-        onSubmit: b,
+        defaultValues: b,
+        onSubmit: f,
         onError: h,
-        onSuccess: R,
+        onSuccess: S,
         zodSchema: y,
         mode: "onTouched",
-        children: (e) =>
-          t(F.Container, {
+        children: (r) =>
+          m(p.Container, {
             children: [
-              r(l, {
-                control: e.control,
+              e(l, {
+                control: r.control,
                 name: "email",
                 render: ({ field: o }) =>
-                  t(u, {
+                  m(u, {
                     children: [
-                      r(c, { isRequired: !0, children: "Email" }),
-                      r(i, {
-                        children: r(f, {
+                      e(c, { isRequired: !0, children: "Email" }),
+                      e(i, {
+                        children: e(R, {
                           label: "Email",
                           name: o.name,
                           value: o.value ?? "",
@@ -67,19 +67,19 @@ var y = a.object({
                           styles: { root: {} },
                         }),
                       }),
-                      r(d, {}),
+                      e(d, {}),
                     ],
                   }),
               }),
-              r(l, {
-                control: e.control,
+              e(l, {
+                control: r.control,
                 name: "password",
                 render: ({ field: o }) =>
-                  t(u, {
+                  m(u, {
                     children: [
-                      r(c, { isRequired: !0, children: "New Password" }),
-                      r(i, {
-                        children: r(p, {
+                      e(c, { isRequired: !0, children: "New Password" }),
+                      e(i, {
+                        children: e(F, {
                           label: "New Password",
                           name: o.name,
                           value: o.value ?? "",
@@ -91,19 +91,19 @@ var y = a.object({
                           styles: { root: {} },
                         }),
                       }),
-                      r(d, {}),
+                      e(d, {}),
                     ],
                   }),
               }),
-              r(l, {
-                control: e.control,
+              e(l, {
+                control: r.control,
                 name: "confirmPassword",
                 render: ({ field: o }) =>
-                  t(u, {
+                  m(u, {
                     children: [
-                      r(c, { isRequired: !0, children: "Retype Password" }),
-                      r(i, {
-                        children: r(p, {
+                      e(c, { isRequired: !0, children: "Retype Password" }),
+                      e(i, {
+                        children: e(F, {
                           label: "Retype Password",
                           name: o.name,
                           value: o.value ?? "",
@@ -115,16 +115,16 @@ var y = a.object({
                           styles: { root: {} },
                         }),
                       }),
-                      r(d, {}),
+                      e(d, {}),
                     ],
                   }),
               }),
-              r(w, { styles: { root: {} }, size: 16 }),
-              r(P, {
+              e(w, { styles: { root: {} }, size: 16 }),
+              e(P, {
                 type: "submit",
                 className: "w-full",
-                disabled: e.formState.isSubmitting,
-                isLoading: e.formState.isSubmitting,
+                disabled: r.formState.isSubmitting,
+                isLoading: r.formState.isSubmitting,
                 styles: { root: { backgroundColor: "#2E584F" } },
                 children: "Reset Password",
               }),

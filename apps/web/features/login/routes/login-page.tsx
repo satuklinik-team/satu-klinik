@@ -1,6 +1,7 @@
 "use client";
 
 import { Info } from "lucide-react";
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback } from "react";
 
@@ -64,10 +65,21 @@ export function LoginPage(): JSX.Element {
         </Alert>
       )}
       <LoginForm onSubmit={onSubmit} />
-      <a className="text-sm text-muted-foreground -mt-1" href="/auth/register">
-        Belum ada akun?{" "}
-        <span className="text-primary font-medium">Register disini</span>
-      </a>
+      <div className="w-full flex justify-between">
+        <Link
+          className="text-sm text-muted-foreground -mt-1"
+          href="/auth/register"
+        >
+          Belum ada akun?{" "}
+          <span className="text-primary font-medium">Register disini</span>
+        </Link>
+        <Link
+          className="text-sm text-primary underline -mt-1"
+          href="/auth/forgot-password"
+        >
+          Lupa Password?
+        </Link>
+      </div>
     </AuthFormWrapper>
   );
 }
