@@ -31,8 +31,15 @@ export function ClinicPharmacyTable(): JSX.Element {
     return [
       {
         key: "taskId",
-        name: "Task ID",
-        renderCell: (row: PharmacyTaskEntity) => <Cell>{row.id}</Cell>,
+        name: "Nomor Antrian",
+        renderCell: (row: PharmacyTaskEntity) => {
+          try {
+            const medicalRecord = row.patient.mr[row.patient.mr.length - 1];
+            return <Cell>{medicalRecord.queue}</Cell>;
+          } catch (error) {
+            return <Cell>-</Cell>;
+          }
+        },
       },
       {
         key: "name",
@@ -67,7 +74,7 @@ export function ClinicPharmacyTable(): JSX.Element {
               className="w-min h-min p-1.5 rounded-full"
               onClick={() => {
                 router.push(
-                  `${pathname}/${row.id}?patientId=${row.patient.id}`,
+                  `${pathname}/${row.id}?patientId=${row.patient.id}`
                 );
               }}
               variant="ghost"

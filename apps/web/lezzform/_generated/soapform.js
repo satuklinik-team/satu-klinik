@@ -1,20 +1,20 @@
 import { z as a } from "zod";
 import {
   Lezzform as c,
-  FormField as S,
-  FormItem as F,
+  FormField as F,
+  FormItem as S,
   FormLabel as p,
   FormControl as h,
   FormMessage as d,
   Text as b,
   Input as L,
-  Button as R,
+  Button as y,
 } from "@lezzform/react";
 import * as e from "react";
 import { jsx as o, jsxs as s } from "react/jsx-runtime";
-var y = a.object({ name: a.string().optional() }),
-  u = "6YHS6WtoGwZRwtrJASrF",
-  A = ({
+var R = a.object({ name: a.string().optional() }),
+  u = "Xy3wUGNoBquvQBwnIOnG",
+  C = ({
     onSubmit: m,
     onError: i,
     onSuccess: l,
@@ -37,17 +37,17 @@ var y = a.object({ name: a.string().optional() }),
         onSubmit: z,
         onError: i,
         onSuccess: l,
-        zodSchema: y,
+        zodSchema: R,
         mode: "onTouched",
         children: (n) =>
           s(c.Container, {
             children: [
               o(b.Heading2, { styles: { root: {} }, children: "SOAPForm" }),
-              o(S, {
+              o(F, {
                 control: n.control,
                 name: "name",
                 render: ({ field: r }) =>
-                  s(F, {
+                  s(S, {
                     children: [
                       o(p, { children: "Name" }),
                       o(h, {
@@ -66,7 +66,7 @@ var y = a.object({ name: a.string().optional() }),
                     ],
                   }),
               }),
-              o(R, {
+              o(y, {
                 type: "submit",
                 className: "w-full",
                 disabled: n.formState.isSubmitting,
@@ -80,4 +80,4 @@ var y = a.object({ name: a.string().optional() }),
       u
     );
   };
-export { A as Form };
+export { C as Form };

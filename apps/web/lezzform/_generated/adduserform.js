@@ -7,7 +7,7 @@ import {
   FormControl as s,
   FormMessage as u,
   Input as b,
-  EmailInput as S,
+  EmailInput as L,
   TextArea as v,
   Dropdown as w,
   PasswordInput as F,
@@ -15,10 +15,10 @@ import {
   TwoColumn as P,
   Button as h,
 } from "@lezzform/react";
-import { UserRound as A, Mail as B, CreditCard as I } from "lucide-react";
+import { UserRound as A, Mail as k, CreditCard as B } from "lucide-react";
 import * as i from "react";
 import { jsx as e, jsxs as n } from "react/jsx-runtime";
-var k = a.object({
+var I = a.object({
     fullname: a.string(),
     email: a.string().email(),
     phone: a.string(),
@@ -28,8 +28,8 @@ var k = a.object({
     password: a.string().max(14).min(6),
     confirmPassword: a.string().max(14).min(6),
   }),
-  C = "E5BfPfLbbNLZIhzMvoAM",
-  M = ({
+  C = "UGRv0Q1kXjWYVrL7TlAT",
+  D = ({
     onSubmit: c,
     onError: R,
     onSuccess: g,
@@ -41,7 +41,7 @@ var k = a.object({
     i.useEffect(() => {
       c && (d.current = c);
     }, [c]);
-    let L = i.useCallback(async (r, o) => {
+    let S = i.useCallback(async (r, o) => {
       if (d.current) return d.current(r, o);
     }, []);
     return e(
@@ -49,10 +49,10 @@ var k = a.object({
       {
         id: C,
         defaultValues: z,
-        onSubmit: L,
+        onSubmit: S,
         onError: R,
         onSuccess: g,
-        zodSchema: k,
+        zodSchema: I,
         mode: "onTouched",
         children: (r) =>
           n(p.Container, {
@@ -92,7 +92,7 @@ var k = a.object({
                     children: [
                       e(t, { isRequired: !0, children: "Email" }),
                       e(s, {
-                        children: e(S, {
+                        children: e(L, {
                           label: "Email",
                           name: o.name,
                           value: o.value ?? "",
@@ -103,7 +103,7 @@ var k = a.object({
                           isRequired: !0,
                           styles: { root: {} },
                           prefixAdornment: {
-                            icon: e(B, { size: 18, color: "#000000" }),
+                            icon: e(k, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
@@ -154,7 +154,7 @@ var k = a.object({
                           isRequired: !0,
                           styles: { root: {} },
                           prefixAdornment: {
-                            icon: e(I, { size: 18, color: "#000000" }),
+                            icon: e(B, { size: 18, color: "#000000" }),
                           },
                         }),
                       }),
@@ -289,4 +289,4 @@ var k = a.object({
       C
     );
   };
-export { M as Form };
+export { D as Form };

@@ -19,7 +19,7 @@ import {
 } from "lucide-react";
 import * as c from "react";
 import { jsx as o, jsxs as a } from "react/jsx-runtime";
-var P = n.object({
+var f = n.object({
     licenseNumber: n.string(),
     clinicId: n.string(),
     clinicName: n.string(),
@@ -36,14 +36,14 @@ var P = n.object({
     address: n.string(),
     price: n.coerce.number(),
   }),
-  h = "stvWPnGExRJIN79oRSIR",
-  D = ({
+  h = "YOWCwMH5sOnjzOsWVoDm",
+  A = ({
     onSubmit: m,
     onError: b,
-    onSuccess: g,
-    defaultValues: z,
-    onAction: f,
-    formProps: k,
+    onSuccess: z,
+    defaultValues: g,
+    onAction: k,
+    formProps: P,
   }) => {
     let F = c.useRef();
     c.useEffect(() => {
@@ -56,11 +56,11 @@ var P = n.object({
       p,
       {
         id: h,
-        defaultValues: z,
+        defaultValues: g,
         onSubmit: R,
         onError: b,
-        onSuccess: g,
-        zodSchema: P,
+        onSuccess: z,
+        zodSchema: f,
         mode: "onTouched",
         children: (r) =>
           a(p.Container, {
@@ -239,4 +239,4 @@ var P = n.object({
       h
     );
   };
-export { D as Form };
+export { A as Form };
