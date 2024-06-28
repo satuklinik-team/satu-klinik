@@ -55,6 +55,17 @@ export class PharmacyTasksService {
             norm: pharmacyTask.norm,
             clinicsId: dto.clinicsId,
           },
+          include: {
+            mr: {
+              select: {
+                queue: true,
+              },
+              orderBy: {
+                visitAt: 'desc',
+              },
+              take: 1
+            }
+          }
         }),
       };
     });
