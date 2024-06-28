@@ -32,7 +32,14 @@ export function ClinicPharmacyTable(): JSX.Element {
       {
         key: "taskId",
         name: "Nomor Antrian",
-        renderCell: (row: PharmacyTaskEntity) => <Cell>{row.id}</Cell>,
+        renderCell: (row: PharmacyTaskEntity) => {
+          try {
+            const medicalRecord = row.patient.mr[row.patient.mr.length - 1];
+            return <Cell>{medicalRecord.queue}</Cell>;
+          } catch (error) {
+            return <Cell>-</Cell>;
+          }
+        },
       },
       {
         key: "name",
