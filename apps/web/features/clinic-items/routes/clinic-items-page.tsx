@@ -50,7 +50,7 @@ export function ClinicItemsPage(): JSX.Element {
   const { mutateAsync: deleteMedicine } = useDeleteMedicine(toBeDeletedId);
   const { data: medicineCategoryData } = useFindMedicineCategory();
   const { data: medicineByCategoryData } = useFindMedicineByCategory(
-    selectedCategory === "All" ? "" : selectedCategory,
+    selectedCategory === "All" ? "" : selectedCategory
   );
 
   return (
