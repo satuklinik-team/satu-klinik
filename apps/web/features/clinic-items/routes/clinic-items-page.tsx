@@ -55,13 +55,6 @@ export function ClinicItemsPage(): JSX.Element {
 
   return (
     <div className="h-full">
-      <div className="mb-6 flex flex-col gap-2">
-        <h1 className="text-2xl sm:text-3xl md:text-3xl lg:text-4xl xl:text-4xl 2xl:text-4xl font-semibold">
-          Inventories
-        </h1>
-        <p className="text-muted-foreground">Manage inventories</p>
-      </div>
-
       <div className="flex flex-row justify-between items-center mb-6">
         <div className="hidden sm:hidden md:flex lg:flex xl:flex 2xl:flex flex-row items-center flex-wrap gap-2">
           <Badge
