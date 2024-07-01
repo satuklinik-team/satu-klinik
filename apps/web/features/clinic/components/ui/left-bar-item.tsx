@@ -1,7 +1,6 @@
 import Link from "next/link";
 import type { HTMLAttributes } from "react";
 
-import { Badge } from "@/components/ui/badge";
 import {
   Tooltip,
   TooltipContent,
@@ -62,18 +61,27 @@ export function LeftBarItem({
                 >
                   {text}
                 </p>
+
                 {Boolean(notifCount) && (
-                  <Badge
-                    variant="destructive"
+                  <div
                     className={cn(
                       isOpen &&
-                        "text-sm static font-medium flex justify-center items-center w-5 h-5 p-0 rounded-full",
+                        "text-sm static font-medium flex justify-center items-center min-w-5 min-h-5 px-1 p-0 rounded-full",
                       !isOpen &&
-                        "md:absolute md:top-0 md:right-0 min-h-5 min-w-5 flex items-center justify-center text-xs px-1 py-0 rounded-full"
+                        "font-medium md:absolute md:-top-2 md:-right-2 min-h-5 min-w-5 flex items-center justify-center text-xs px-1 py-0 rounded-full"
                     )}
                   >
-                    {notifCount}
-                  </Badge>
+                    <span className="relative flex min-h-5 min-w-5">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-destructive opacity-75" />
+                      <div
+                        className={cn(
+                          "rounded-full min-h-5 min-w-5 bg-destructive text-white flex justify-center items-center"
+                        )}
+                      >
+                        {notifCount}
+                      </div>
+                    </span>
+                  </div>
                 )}
               </div>
             </Link>
