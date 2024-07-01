@@ -137,6 +137,7 @@ export function DiagnosePatientForm({
                 <FormLabel>ICD10</FormLabel>
                 <FormControl>
                   <ICD10nput
+                    key={value}
                     onChange={onChange}
                     readOnly={isReadOnly}
                     value={value}
@@ -175,6 +176,7 @@ export function DiagnosePatientForm({
                 <FormLabel>ICD9CM / Tindakan</FormLabel>
                 <FormControl>
                   <ICD9CMInput
+                    key={value}
                     onChange={onChange}
                     readOnly={isReadOnly}
                     value={value}
