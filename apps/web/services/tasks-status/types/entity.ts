@@ -12,8 +12,8 @@ export interface TasksStatusEntity {
 }
 
 export interface TasksStatusNotificationEntity {
-  doctorTask: boolean;
-  pharmacyTask: boolean;
+  doctorTask: number;
+  pharmacyTask: number;
 }
 
 export interface TasksStatusChartEntity {

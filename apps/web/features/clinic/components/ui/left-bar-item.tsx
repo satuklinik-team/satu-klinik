@@ -1,7 +1,6 @@
 import Link from "next/link";
 import type { HTMLAttributes } from "react";
 
-import { Badge } from "@/components/ui/badge";
 import {
   Tooltip,
   TooltipContent,
@@ -17,17 +16,17 @@ interface LeftBarItemProps
     Omit<ILeftBarItem, "id"> {
   isOpen?: boolean;
   isActive?: boolean;
-  isNotified?: boolean;
+  notifCount: number;
 }
 
 export function LeftBarItem({
   isActive = false,
   isOpen = false,
-  isNotified = false,
   className,
   icon,
   text,
   path,
+  notifCount,
   ...rest
 }: LeftBarItemProps): JSX.Element {
   const Icon = icon;
@@ -62,26 +61,27 @@ export function LeftBarItem({
                 >
                   {text}
                 </p>
-                {isNotified && (
-                  <Badge
-                    variant="destructive"
+
+                {Boolean(notifCount) && (
+                  <div
                     className={cn(
-                      "text-xs font-normal flex justify-center items-center w-5 h-5 p-0 rounded-full",
+                      isOpen &&
+                        "text-sm static font-medium flex justify-center items-center min-w-5 min-h-5 px-1 p-0 rounded-full",
                       !isOpen &&
-                        "flex sm:hidden md:hidden lg:hidden xl:hidden 2xl:hidden"
+                        "font-medium md:absolute md:-top-2 md:-right-2 min-h-5 min-w-5 flex items-center justify-center text-xs px-1 py-0 rounded-full"
                     )}
                   >
-                    2
-                  </Badge>
-                )}
-                {isNotified && (
-                  <Badge
-                    variant="destructive"
-                    className={cn(
-                      "absolute top-1.5 right-3 w-2 h-2 p-0 rounded-full hidden",
-                      !isOpen && "hidden sm:block"
-                    )}
-                  />
+                    <span className="relative flex min-h-5 min-w-5">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-destructive opacity-75" />
+                      <div
+                        className={cn(
+                          "rounded-full min-h-5 min-w-5 bg-destructive text-white flex justify-center items-center"
+                        )}
+                      >
+                        {notifCount}
+                      </div>
+                    </span>
+                  </div>
                 )}
               </div>
             </Link>
