@@ -63,9 +63,9 @@ export class PharmacyTasksService {
               orderBy: {
                 visitAt: 'desc',
               },
-              take: 1
-            }
-          }
+              take: 1,
+            },
+          },
         }),
       };
     });
