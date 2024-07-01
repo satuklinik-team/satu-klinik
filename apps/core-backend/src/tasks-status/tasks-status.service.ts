@@ -134,26 +134,24 @@ export class TasksService {
     if (dto.role !== Role.PHARMACY) {
       response = {
         ...response,
-        doctorTask:
-          (
-            await this.getDoctorPharmacyTaskStatus({
-              ...dto,
-              type: GetTasksStatusTypes.DOCTOR,
-            })
-          ).todo > 0,
+        doctorTask: (
+          await this.getDoctorPharmacyTaskStatus({
+            ...dto,
+            type: GetTasksStatusTypes.DOCTOR,
+          })
+        ).todo,
       };
     }
 
     if (dto.role !== Role.DOCTOR) {
       response = {
         ...response,
-        pharmacyTask:
-          (
-            await this.getDoctorPharmacyTaskStatus({
-              ...dto,
-              type: GetTasksStatusTypes.PHARMACY,
-            })
-          ).todo > 0,
+        pharmacyTask: (
+          await this.getDoctorPharmacyTaskStatus({
+            ...dto,
+            type: GetTasksStatusTypes.PHARMACY,
+          })
+        ).todo,
       };
     }
 
