@@ -5,7 +5,6 @@ import duration from "dayjs/plugin/duration";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 import type { PatientEntity } from "@/services/patient/types/entity";
 import type { VitalSignEntity } from "@/services/patient-vital-sign/types/entity";
 import { getInitial, getWhatsappUrl } from "@/utils";
@@ -106,13 +105,12 @@ export function PatientProfileContent({
         <div className="flex flex-col gap-2">
           <div>
             <p className="font-semibold">Alergi</p>
-            <p
-              className={cn(
-                isValidAllergic && "font-semibold text-lg text-destructive",
-              )}
-            >
-              {vitalSign.allergic}
-            </p>
+            {!isValidAllergic && <p>{vitalSign.allergic}</p>}
+            {Boolean(isValidAllergic) && (
+              <div className="px-2 bg-destructive text-white rounded-md relative">
+                <p className="font-semibold text-lg">{vitalSign.allergic}</p>
+              </div>
+            )}
           </div>
         </div>
       </div>
