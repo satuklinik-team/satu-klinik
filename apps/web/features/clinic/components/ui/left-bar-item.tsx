@@ -68,7 +68,7 @@ export function LeftBarItem({
                       isOpen &&
                         "text-sm static font-medium flex justify-center items-center min-w-5 min-h-5 px-1 p-0 rounded-full",
                       !isOpen &&
-                        "font-medium md:absolute md:-top-2 md:-right-2 min-h-5 min-w-5 flex items-center justify-center text-xs px-1 py-0 rounded-full"
+                        "font-medium md:absolute md:-top-2 md:-right-1 min-h-5 min-w-5 flex items-center justify-center text-xs px-1 py-0 rounded-full"
                     )}
                   >
                     <span className="relative flex min-h-5 min-w-5">
