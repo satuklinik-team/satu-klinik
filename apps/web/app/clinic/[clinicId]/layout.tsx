@@ -12,7 +12,7 @@ export default function ClinicLayout({
       <div className="flex-1 flex flex-col">
         <TopBar />
         <div className="flex-grow overflow-auto" id="clinic-layout">
-          <div className="min-h-dashboard-content px-4 py-6">{children}</div>
+          <div className="min-h-dashboard-content p-4">{children}</div>
         </div>
       </div>
     </div>

@@ -1,5 +1,9 @@
 "use client";
 
+import { ArrowLeft } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -26,14 +30,26 @@ export function HeaderTemplate({
   title,
   description,
 }: HeaderTemplateProps): React.JSX.Element {
+  const router = useRouter();
+
   return (
     <div className="mb-6 flex flex-col gap-2">
       {Boolean(breadcrumbs.length) && (
-        <div>
+        <div className="mb-2">
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>
-                <BreadcrumbLink href="/clinic/:clinicId">Clinic</BreadcrumbLink>
+                <BreadcrumbLink
+                  asChild
+                  onClick={() => {
+                    router.back();
+                  }}
+                >
+                  <div className="cursor-pointer flex items-center gap-2">
+                    <ArrowLeft size={16} />
+                    <p>Back</p>
+                  </div>
+                </BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               {breadcrumbs.map((breadcrumb, index, arr) => {
@@ -48,9 +64,11 @@ export function HeaderTemplate({
                 return (
                   <>
                     <BreadcrumbItem>
-                      <BreadcrumbLink href={breadcrumb.path}>
-                        {breadcrumb.name}
-                      </BreadcrumbLink>
+                      <Link href={breadcrumb.path}>
+                        <BreadcrumbLink href={breadcrumb.path}>
+                          {breadcrumb.name}
+                        </BreadcrumbLink>
+                      </Link>
                     </BreadcrumbItem>
                     <BreadcrumbSeparator />
                   </>
