@@ -44,6 +44,9 @@ export class MedicineCategoryService {
         clinicsId: dto.clinicsId,
       },
       select: this._findAllSelectFactory(),
+      orderBy: {
+        createdAt: 'desc',
+      },
     };
 
     return await this.findAllService.findAll({

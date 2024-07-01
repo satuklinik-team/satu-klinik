@@ -1,23 +1,16 @@
 "use client";
 
 import { StarIcon } from "lucide-react";
-import { useParams, usePathname } from "next/navigation";
+import Image from "next/image";
+import { useParams } from "next/navigation";
 
 import { Badge } from "@/components/ui/badge";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useGetMedicine } from "@/services/medicine/hooks/use-get-medicine";
 import { DEFAULT_MEDICINE_URL } from "@/utils";
 
 export function ClinicItemDetailPage(): JSX.Element | undefined {
-  const pathname = usePathname();
   const { itemId } = useParams();
 
   const { data: medicineData } = useGetMedicine(Number(itemId));
@@ -29,22 +22,8 @@ export function ClinicItemDetailPage(): JSX.Element | undefined {
 
   return (
     <div className="flex flex-col gap-8">
-      <Breadcrumb>
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink href={pathname.replace(`/${medicineData.id}`, "")}>
-              Data Inventori
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink href={pathname}>Nama Item</BreadcrumbLink>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
-
       <div className="flex flex-col sm:flex-col md:flex-row lg:flex-row xl:flex-row 2xl:flex-row items-start sm:items-start md:items-center lg:items-center xl:items-center 2xl:items-center gap-4">
-        <img
+        <Image
           alt={medicineData.title}
           className="w-full sm:w-full md:w-96 lg:w-96 xl:w-96 2xl:w-96 h-96 bg-muted-foreground/20 rounded-xl object-cover"
           height={400}

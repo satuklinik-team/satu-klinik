@@ -28,7 +28,7 @@ export function ICD9CMInput({
   value,
   readOnly,
 }: Properties): React.JSX.Element {
-  const { isOpen, setIsOpen, onClose } = useDisclose(true);
+  const { isOpen, setIsOpen, onClose } = useDisclose();
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const [search, setSearch] = useState<string>(value ?? "");

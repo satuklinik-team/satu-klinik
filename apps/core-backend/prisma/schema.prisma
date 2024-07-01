@@ -493,6 +493,7 @@ model Medicine {
 
 model MedicineCategory {
   id        Int        @id @default(autoincrement())
+  createdAt DateTime   @default(now())
   name      String
   clinicsId String?    @db.Uuid
   clinics   Clinics?   @relation(fields: [clinicsId], references: [id])

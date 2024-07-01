@@ -77,6 +77,9 @@ export class PatientsService {
     const args: Prisma.PatientFindManyArgs = {
       where: this._findAllWhereFactory(dto),
       select: this._findAllSelectFactory(),
+      orderBy: {
+        createdAt: 'desc',
+      },
     };
 
     return await this.findAllService.findAll({

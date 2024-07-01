@@ -2,16 +2,9 @@
 
 import { useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
-import { useParams, usePathname, useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useCallback } from "react";
 
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
 import { useToast } from "@/components/ui/use-toast";
 import { ClinicCard } from "@/features/clinic/components/ui/card";
 import { Form as EditPatientForm } from "@/lezzform/_generated/addpatientwithoutvitalform";
@@ -23,7 +16,6 @@ import { PatientQueryKeyFactory } from "@/services/patient/utils/query-key.facto
 export function ClinicEditPatientPage(): JSX.Element | undefined {
   const queryClient = useQueryClient();
   const router = useRouter();
-  const pathname = usePathname();
   const { toast } = useToast();
 
   const { clinicId, patientId } = useParams();
@@ -57,37 +49,6 @@ export function ClinicEditPatientPage(): JSX.Element | undefined {
 
   return (
     <div className="flex flex-col gap-4">
-      <Breadcrumb>
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink
-              href={pathname.replace(`/${patientId as string}/edit`, "")}
-            >
-              Data Pasien
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink href={pathname.replace("/edit", "")}>
-              Profil Pasien
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink href={pathname}>Edit Pasien</BreadcrumbLink>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
-
-      <div className="mb-6 flex flex-col gap-2">
-        <h1 className="text-2xl sm:text-3xl md:text-3xl lg:text-4xl xl:text-4xl 2xl:text-4xl font-semibold">
-          Edit Patient&apos;s Profile
-        </h1>
-        <p className="text-muted-foreground">
-          Fill the form below to edit this patient&apos;s profile
-        </p>
-      </div>
-
       <ClinicCard title="Edit Patient">
         <EditPatientForm
           defaultValues={{

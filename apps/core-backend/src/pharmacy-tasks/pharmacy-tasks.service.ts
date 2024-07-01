@@ -63,9 +63,9 @@ export class PharmacyTasksService {
               orderBy: {
                 visitAt: 'desc',
               },
-              take: 1
-            }
-          }
+              take: 1,
+            },
+          },
         }),
       };
     });
@@ -209,16 +209,9 @@ export class PharmacyTasksService {
         throw new IncorrectPrescriptionIdException();
       }
 
-      const notBoughtPrescriptionsId = newPrescriptionsId.filter(
-        (id) => !dto.boughtPrescriptionsId.includes(id),
-      );
-
-      for (const prescriptionId of notBoughtPrescriptionsId) {
-        const prescription = await tx.patient_prescription.findFirst({
-          where: {
-            id: prescriptionId,
-          },
-        });
+      for (const prescription of boughtPrescriptions) {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { id, Medicine, ...medicationDispense } = prescription;
 
         await tx.medicine.update({
           where: {
@@ -226,15 +219,10 @@ export class PharmacyTasksService {
           },
           data: {
             stock: {
-              increment: prescription.totalQuantity,
+              decrement: prescription.totalQuantity,
             },
           },
         });
-      }
-
-      for (const prescription of boughtPrescriptions) {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { id, Medicine, ...medicationDispense } = prescription;
 
         await tx.medication_dispense.create({
           data: {

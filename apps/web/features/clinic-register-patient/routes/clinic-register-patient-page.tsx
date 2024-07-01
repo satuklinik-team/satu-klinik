@@ -183,9 +183,9 @@ export function ClinicRegisterPatientPage(): JSX.Element {
     <div>
       <div className="mb-6 flex flex-col gap-2">
         <h1 className="text-2xl sm:text-3xl md:text-3xl lg:text-4xl xl:text-4xl 2xl:text-4xl font-semibold">
-          Pendaftaran Pasien
+          Patient Registration
         </h1>
-        <p className="text-muted-foreground">Daftar baru atau member</p>
+        <p className="text-muted-foreground">Register or create new patient</p>
       </div>
 
       <div className="flex flex-col sm:flex-col md:flex-col lg:flex-row xl:flex-row 2xl:flex-row gap-4">
