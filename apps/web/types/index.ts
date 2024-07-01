@@ -19,4 +19,5 @@ export interface FormatterCellProps {
 export interface RouteParams extends Params {
   clinicId: string;
   mrId: string;
+  patientId: string;
 }
