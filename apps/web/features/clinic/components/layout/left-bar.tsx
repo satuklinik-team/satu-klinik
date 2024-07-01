@@ -43,7 +43,7 @@ export function LeftBar({ className, ...rest }: LeftBarProps): JSX.Element {
       .filter((item) => {
         const isValid = item.items
           .map((menu) =>
-            getIsValidMenuAccess(roles, { groupId: item.id, menuId: menu.id }),
+            getIsValidMenuAccess(roles, { groupId: item.id, menuId: menu.id })
           )
           .includes(true);
 
@@ -66,7 +66,7 @@ export function LeftBar({ className, ...rest }: LeftBarProps): JSX.Element {
     <div
       className={cn(
         "flex flex-col justify-between h-screen border-r",
-        className,
+        className
       )}
       {...rest}
     >
@@ -76,7 +76,7 @@ export function LeftBar({ className, ...rest }: LeftBarProps): JSX.Element {
             alt="Brand Logo"
             className={cn(
               "w-8 h-8 hidden",
-              !isLeftBarOpen && "hidden sm:block",
+              !isLeftBarOpen && "hidden sm:block"
             )}
             height={44}
             src="/brand-logo-2.png"
@@ -105,7 +105,7 @@ export function LeftBar({ className, ...rest }: LeftBarProps): JSX.Element {
             <LeftBarTitle isOpen={isLeftBarOpen}>{group.category}</LeftBarTitle>
             {group.items.map((item) => {
               let isActive;
-              let isNotified;
+              let notifCount = 0;
 
               if (item.path !== "/")
                 isActive = reducedPathname.includes(item.path);
@@ -113,23 +113,24 @@ export function LeftBar({ className, ...rest }: LeftBarProps): JSX.Element {
               if (item.path === "/") isActive = item.path === reducedPathname;
 
               if (
-                item.path === "/doctor" &&
+                item.path.includes("/doctor") &&
                 Boolean(notificationData?.doctorTask)
-              )
-                isNotified = true;
+              ) {
+                notifCount = notificationData?.doctorTask ?? 0;
+              }
 
               if (
-                item.path === "/pharmacy" &&
+                item.path.includes("/pharmacy") &&
                 Boolean(notificationData?.pharmacyTask)
               )
-                isNotified = true;
+                notifCount = notificationData?.pharmacyTask ?? 0;
 
               return (
                 <LeftBarItem
                   isActive={isActive}
-                  isNotified={isNotified}
                   isOpen={isLeftBarOpen}
                   key={item.text}
+                  notifCount={notifCount}
                   {...item}
                   path={`/clinic/${clinicId as string}${item.path}`}
                 />
