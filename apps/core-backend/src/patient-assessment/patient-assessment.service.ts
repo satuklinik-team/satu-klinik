@@ -122,17 +122,6 @@ export class PatientAssessmentService {
           prescription.medicineId,
           dto.clinicsId,
         );
-
-        await tx.medicine.update({
-          where: {
-            id: prescription.medicineId,
-          },
-          data: {
-            stock: {
-              decrement: prescription.totalQuantity,
-            },
-          },
-        });
       }
 
       const medicalRecord = await tx.patient_medical_records.update({
