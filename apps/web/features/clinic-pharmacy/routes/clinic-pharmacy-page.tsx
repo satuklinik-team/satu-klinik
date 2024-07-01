@@ -10,13 +10,6 @@ export function ClinicPharmacyPage(): JSX.Element {
 
   return (
     <div className="h-full">
-      <div className="mb-6 flex flex-col gap-2">
-        <h1 className="text-2xl sm:text-3xl md:text-3xl lg:text-4xl xl:text-4xl 2xl:text-4xl font-semibold">
-          Pharmacy
-        </h1>
-        <p className="text-muted-foreground">manajemen tugas preskripsi</p>
-      </div>
-
       <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 gap-4 mb-4">
         <ClinicCard
           borderPosition="bottom"

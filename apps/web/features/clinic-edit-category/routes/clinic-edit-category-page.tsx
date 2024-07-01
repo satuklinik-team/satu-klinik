@@ -1,16 +1,9 @@
 "use client";
 
 import { useQueryClient } from "@tanstack/react-query";
-import { useParams, usePathname, useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useCallback } from "react";
 
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
 import { useToast } from "@/components/ui/use-toast";
 import { ClinicCard } from "@/features/clinic/components/ui/card";
 import { Form as EditMedicineCategoryForm } from "@/lezzform/_generated/addmedicinecategoryform";
@@ -22,7 +15,6 @@ import { MedicineCategoryQueryKeyFactory } from "@/services/medicine-category/ut
 export function ClinicEditCategoryPage(): JSX.Element | undefined {
   const { toast } = useToast();
   const router = useRouter();
-  const pathname = usePathname();
   const { categoryId, clinicId } = useParams();
 
   const queryClient = useQueryClient();
@@ -42,42 +34,17 @@ export function ClinicEditCategoryPage(): JSX.Element | undefined {
       toast({ title: "Berhasil Memperbarui Kategori!", variant: "success" });
       router.push(`/clinic/${clinicId as string}/categories`);
     },
-    [clinicId, mutateAsync, queryClient, router, toast],
+    [clinicId, mutateAsync, queryClient, router, toast]
   );
 
   const { data: medicineCategoryData } = useGetMedicineCategory(
-    categoryId as string,
+    categoryId as string
   );
 
   if (!medicineCategoryData) return;
 
   return (
     <div className="flex flex-col gap-4">
-      <Breadcrumb>
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink
-              href={pathname.replace(`/${categoryId as string}/edit`, "")}
-            >
-              Data Kategori
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink href={pathname}>Edit Kategori</BreadcrumbLink>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
-
-      <div className="mb-6 flex flex-col gap-2">
-        <h1 className="text-2xl sm:text-3xl md:text-3xl lg:text-4xl xl:text-4xl 2xl:text-4xl font-semibold">
-          Edit Kategori
-        </h1>
-        <p className="text-muted-foreground">
-          Fill the form below to edit this category
-        </p>
-      </div>
-
       <ClinicCard title="Edit Item">
         <EditMedicineCategoryForm
           defaultValues={{ name: medicineCategoryData.name }}
