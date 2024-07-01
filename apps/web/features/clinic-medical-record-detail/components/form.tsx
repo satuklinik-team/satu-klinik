@@ -71,50 +71,6 @@ export function DiagnosePatientForm({
     form.reset(defaultValues);
   }, [defaultValues, form]);
 
-  // const { mutateAsync } = useCreatePatientAssessment();
-
-  // const onSubmit = useCallback(
-  //   async (data: CreatePatientAssessmentDto) => {
-  //     await mutateAsync({
-  //       ...data,
-  //       prescriptions: [
-  //         ...(data.prescriptions?.map((item) => ({
-  //           ...item,
-  //           medicineId: Number(item.medicine?.id) as unknown as string,
-  //           medicine: undefined,
-  //         })) ?? []),
-  //       ],
-  //     });
-
-  //     toast({ title: "Berhasil Membuat Diagnosa!", variant: "success" });
-
-  //     await Promise.all([
-  //       queryClient.invalidateQueries({
-  //         queryKey: new PharmacyTaskQueryKeyFactory().lists(),
-  //       }),
-  //       queryClient.invalidateQueries({
-  //         queryKey: new TasksStatusQueryKeyFactory().notifications(),
-  //       }),
-  //       queryClient.invalidateQueries({
-  //         queryKey: new TasksStatusQueryKeyFactory().list({ type: "DOCTOR" }),
-  //       }),
-  //     ]);
-
-  //     router.push(`/clinic/${clinicId}/doctor`);
-  //   },
-  //   [clinicId, mutateAsync, queryClient, router, toast]
-  // );
-
-  // useEffect(() => {
-  //   if (!medicalRecordData?.vitalSign?.length) return;
-
-  //   const defaultSubjective = medicalRecordData.vitalSign[0].pain;
-
-  //   if (defaultSubjective) {
-  //     form.setValue("subjective", defaultSubjective);
-  //   }
-  // }, [form, medicalRecordData]);
-
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
