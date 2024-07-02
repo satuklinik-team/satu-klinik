@@ -1,7 +1,8 @@
 "use client";
 
 import { useQueryClient } from "@tanstack/react-query";
-import { Edit, Eye, MessageCircle, Trash } from "lucide-react";
+import { Edit, Eye, Trash } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useMemo, useState } from "react";
@@ -66,7 +67,12 @@ export function ClinicPatientTable(): JSX.Element {
                 <Tooltip>
                   <Link href={getWhatsappUrl(row.phone)}>
                     <TooltipTrigger className="h-min p-2">
-                      <MessageCircle className="text-green-500" size={20} />
+                      <Image
+                        alt="whatsapp icon"
+                        height={20}
+                        src="/icons/whatsapp-icon.svg"
+                        width={20}
+                      />
                     </TooltipTrigger>
                   </Link>
                   <TooltipContent>Kontak WA</TooltipContent>
@@ -83,7 +89,9 @@ export function ClinicPatientTable(): JSX.Element {
                 </Tooltip>
                 <Tooltip>
                   <Link
-                    href={`/clinic/${clinicId as string}/patient/${row.id}/edit`}
+                    href={`/clinic/${clinicId as string}/patient/${
+                      row.id
+                    }/edit`}
                   >
                     <TooltipTrigger className="h-min p-2">
                       <Edit size={20} />

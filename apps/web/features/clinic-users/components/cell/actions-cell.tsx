@@ -1,4 +1,5 @@
-import { MessageCircle, Trash } from "lucide-react";
+import { Trash } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 import { Cell } from "@/components/shared/table/cell";
@@ -18,7 +19,12 @@ export function ClinicUsersActionsCell(row: UserEntity): JSX.Element {
         <Tooltip>
           <Link href={getWhatsappUrl(row.phone)}>
             <TooltipTrigger className="h-min p-2">
-              <MessageCircle className="text-green-500" size={20} />
+              <Image
+                alt="whatsapp icon"
+                height={20}
+                src="/icons/whatsapp-icon.svg"
+                width={20}
+              />
             </TooltipTrigger>
           </Link>
           <TooltipContent>Kontak WA</TooltipContent>
