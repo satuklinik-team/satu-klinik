@@ -1,12 +1,7 @@
 "use client";
 
-import {
-  Edit,
-  Eye,
-  HeartPulse,
-  MessageCircle,
-  Stethoscope,
-} from "lucide-react";
+import { Edit, Eye, HeartPulse, Stethoscope } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { type ComponentProps, useEffect, useMemo, useRef } from "react";
@@ -149,7 +144,12 @@ export function MedicalRecordTable({
                 <Link href={getWhatsappUrl(row.Patient.phone)}>
                   <TooltipTrigger asChild>
                     <Button size="icon" variant="ghost">
-                      <MessageCircle className="text-green-500" size={20} />
+                      <Image
+                        alt="whatsapp icon"
+                        height={20}
+                        src="/icons/whatsapp-icon.svg"
+                        width={20}
+                      />
                     </Button>
                   </TooltipTrigger>
                 </Link>

@@ -8,6 +8,7 @@ import { type HTMLAttributes, useMemo } from "react";
 import { useGetUserData } from "@/hooks/use-get-user-data";
 import { cn } from "@/lib/utils";
 import { useGetNotification } from "@/services/tasks-status/services/use-get-notification";
+import type { RouteParams } from "@/types";
 
 import { UserButton } from "../../../../components/layout/user-button";
 import { useClinicLayoutStore } from "../../stores/use-clinic-layout-store";
@@ -22,12 +23,12 @@ type LeftBarProps = HTMLAttributes<HTMLDivElement>;
 export function LeftBar({ className, ...rest }: LeftBarProps): JSX.Element {
   const { isLeftBarOpen } = useClinicLayoutStore();
   const pathname = usePathname();
-  const { clinicId } = useParams();
+  const { clinicId } = useParams<RouteParams>();
 
   const { data: notificationData } = useGetNotification();
   const { roles } = useGetUserData();
 
-  const reducedPathname = pathname.replace(`clinic/${clinicId as string}`, "");
+  const currentClinicPathname = pathname.replace(`clinic/${clinicId}`, "");
 
   const authorizedleftBarGroups = useMemo(() => {
     // if (roles === "PHARMACY")
@@ -107,10 +108,13 @@ export function LeftBar({ className, ...rest }: LeftBarProps): JSX.Element {
               let isActive;
               let notifCount = 0;
 
-              if (item.path !== "/")
-                isActive = reducedPathname.includes(item.path);
+              if (item.path !== "/") {
+                isActive = currentClinicPathname.includes(item.path);
+              }
 
-              if (item.path === "/") isActive = item.path === reducedPathname;
+              if (item.path === "/") {
+                isActive = item.path === currentClinicPathname;
+              }
 
               if (
                 item.path.includes("/doctor") &&
@@ -122,8 +126,9 @@ export function LeftBar({ className, ...rest }: LeftBarProps): JSX.Element {
               if (
                 item.path.includes("/pharmacy") &&
                 Boolean(notificationData?.pharmacyTask)
-              )
+              ) {
                 notifCount = notificationData?.pharmacyTask ?? 0;
+              }
 
               return (
                 <LeftBarItem
@@ -132,7 +137,7 @@ export function LeftBar({ className, ...rest }: LeftBarProps): JSX.Element {
                   key={item.text}
                   notifCount={notifCount}
                   {...item}
-                  path={`/clinic/${clinicId as string}${item.path}`}
+                  path={`/clinic/${clinicId}${item.path}`}
                 />
               );
             })}
