@@ -2,6 +2,7 @@
 
 import dayjs, { extend } from "dayjs";
 import duration from "dayjs/plugin/duration";
+import Image from "next/image";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
@@ -31,8 +32,14 @@ export function PatientProfileContent({
         <p>{patient.fullname}</p>
         <p>{patient.norm}</p>
         <Link href={getWhatsappUrl(patient.phone)}>
-          <Button className="bg-white" variant="outline">
-            Kirim Pesan
+          <Button className="bg-white gap-2" variant="outline">
+            <Image
+              alt="whatsapp icon"
+              height={20}
+              src="/icons/whatsapp-icon.svg"
+              width={20}
+            />
+            <span>Kirim Pesan</span>
           </Button>
         </Link>
       </div>

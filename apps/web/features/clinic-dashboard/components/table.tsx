@@ -1,6 +1,6 @@
 "use client";
 
-import { MessageCircle } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -55,7 +55,12 @@ export function ClinicDashboardUsersTable(): JSX.Element {
                 <Tooltip>
                   <Link href={getWhatsappUrl(row.phone)}>
                     <TooltipTrigger className="h-min p-2">
-                      <MessageCircle className="text-green-500" size={20} />
+                      <Image
+                        alt="whatsapp icon"
+                        height={20}
+                        src="/icons/whatsapp-icon.svg"
+                        width={20}
+                      />
                     </TooltipTrigger>
                   </Link>
                   <TooltipContent>Kontak WA</TooltipContent>
